@@ -1,13 +1,10 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const pify = require('pify');
-
-const apiFactory = require('../../api.js');
+const api22 = require('../../api22.js');
 const eventBus = require('../../event-bus.js');
 
-
-const apiSearch = pify((st, q, cb) => apiFactory(st).search(q, cb));
+function orf(x) { return x || false; }
 
 
 async function fetchList(vuexApi) {
@@ -19,10 +16,13 @@ async function fetchList(vuexApi) {
   });
   eventBus.$emit('fetching');
   try {
-    const query = {
-      '$target': state.targetSource,
-    };
-    const list = await apiSearch(state, query);
+    const coll = await api22(state).aepGet(
+      'anno/by/subject-target/' + state.targetSource);
+    // window.stColl = coll;
+    const list = orf(orf(orf(coll).data).first).items;
+    if (!Array.isArray(list)) {
+      throw new TypeError('Received an invalid annotations list');
+    }
     await commit('REPLACE_LIST', list);
     eventBus.$emit('fetched', list);
   } catch (cannotList) {
