@@ -27,7 +27,7 @@ module.exports = {
     template: require('./anno-editor-modal.html'),
     style:    require('./anno-editor-modal.scss'),
     computed: {
-        id()           {return this.$store.state.editing.id},
+        annoIdUrl()    {return this.$store.state.editing.id},
         doi()          {return this.$store.state.editing.doi},
         editMode()     {return this.$store.state.editMode},
         replyTo()      {return this.$store.state.editing.replyTo},
@@ -47,7 +47,7 @@ module.exports = {
 
     methods: {
         save() {eventBus.$emit('save')},
-        remove() {eventBus.$emit('remove', this.id)},
+        remove() {eventBus.$emit('remove', this.annoIdUrl)},
         discard() {eventBus.$emit('discard')},
         startHighlighting(...args) {eventBus.$emit('startHighlighting', ...args)},
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},
