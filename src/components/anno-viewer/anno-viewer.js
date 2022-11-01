@@ -200,10 +200,6 @@ module.exports = {
           return this.annoIdToPermaUrl((this.annotation || false).id);
         },
 
-        slug() {
-            if (!this.annotation.id) return 'unsaved-annotation-' + Date.now()
-            return this.annotation.id.replace(/[^A-Za-z0-9]/g, '')
-        },
         newestVersion() {
           const versions = this.annotation.hasVersion
           if (!versions || versions.length <= 1) {
