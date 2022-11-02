@@ -133,11 +133,8 @@ module.exports = {
     }
 
     // Expand this annotation
-    eventBus.$on('expand', (id) => {
-      if (id !== viewer.id) return
-      viewer.collapse(false)
-      const rootId = viewer.id.replace(/[~\.][~\.0-9]+$/, '')
-      if (rootId !== id) eventBus.$emit('expand', rootId)
+    eventBus.$on('expand', (annoIdUrl) => {
+      console.error('Expand Handler: Needs full rewrite.', { annoIdUrl });
     })
 
     viewer.toplevelCreated = viewer.annotation.modified;
