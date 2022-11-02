@@ -112,10 +112,5 @@ module.exports = {
           return func(vuexApi);
         },
 
-        assumeLoggedOut({commit}) {
-            commit('DELETE_TOKEN')
-            commit('EMPTY_ACL')
-        },
-
     },
 }

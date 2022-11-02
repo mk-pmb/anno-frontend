@@ -106,7 +106,9 @@ module.exports = {
     sort(...args) { return this.$store.dispatch('sort', ...args); },
     create() { return eventBus.$emit('create', this.targetSource); },
 
-    logoutButtonClicked() { this.$store.dispatch('assumeLoggedOut'); },
+    logoutButtonClicked() {
+      window.error(':TODO: Confirm logout');
+    },
 
     collapseAll(action) {
       const annoList = this;
