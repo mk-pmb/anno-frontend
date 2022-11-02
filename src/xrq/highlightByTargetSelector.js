@@ -35,26 +35,26 @@ async function doHighlightByTargetSelector(vuexApi, param) {
   };
   const matchedValues = new Map();
   annos.forEach(function check(anno) {
-    const aid = anno.id;
-    if (!aid) { return; }
+    const annoIdUrl = anno.id;
+    if (!annoIdUrl) { return; }
     const m = matcher(values, anno);
     let { isMatch } = (m || false);
     if (isMatch === undefined) {
       isMatch = others;
-      matchedAnnoIds.other.add(aid);
+      matchedAnnoIds.other.add(annoIdUrl);
     } else {
-      matchedAnnoIds[isMatch ? 'yes' : 'no'].add(aid);
+      matchedAnnoIds[isMatch ? 'yes' : 'no'].add(annoIdUrl);
       const { value } = m;
       let reasons = matchedValues.get(value);
       if (!reasons) {
         reasons = new Map();
         matchedValues.set(value, reasons);
       }
-      reasons.set(aid, m);
+      reasons.set(annoIdUrl, m);
     }
     if (typeof isMatch !== 'boolean') { return; }
     const ev = (isMatch ? 'startHighlighting' : 'stopHighlighting');
-    eventBus.$emit(ev, aid);
+    eventBus.$emit(ev, annoIdUrl);
   });
   const report = {
     matchedAnnoIds: loMapValues(matchedAnnoIds,
