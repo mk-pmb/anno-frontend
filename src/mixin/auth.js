@@ -1,5 +1,5 @@
 /**
- * ### `this.$auth(cond, [id])`
+ * ### `this.$auth(cond, [annoIdUrl])`
  *
  * Check authorization of user against `$store.state.acl`
  *
@@ -26,12 +26,12 @@ function authApiError(msg) {
 }
 
 
-function checkAuth(cond, id) {
+function checkAuth(cond, annoIdUrl) {
   if (!knownConditions.includes(cond)) {
     return authApiError('Unsupported ACL condition (operation): ' + cond);
   }
-  if (!id ) {
-    // return authApiError('No ID given for ACL check, condition=' + cond);
+  if (!annoIdUrl ) {
+    // return authApiError('No Anno ID given for ACL check, condition=' + cond);
     return false;
   }
   const annoApp = this;
@@ -41,18 +41,18 @@ function checkAuth(cond, id) {
     return false;
   }
 
-  let rulesForId = getOwn(acl, id);
-  if (rulesForId === undefined) { rulesForId  = getOwn(acl, '*'); }
-  if (!rulesForId) {
-    // console.warn(`No auth permissions info for ${id}, denying.`)
+  let rulesForThisAnno = getOwn(acl, annoIdUrl);
+  if (rulesForThisAnno === undefined) { rulesForThisAnno  = getOwn(acl, '*'); }
+  if (!rulesForThisAnno) {
+    // console.warn(`No auth permissions info for ${annoIdUrl}, denying.`)
     return false;
   }
 
-  const origPermSpec = getOwn(rulesForId, cond, rulesForId['*']);
+  const origPermSpec = getOwn(rulesForThisAnno, cond, rulesForThisAnno['*']);
   if (!origPermSpec) { return false; }
   if (origPermSpec === true) { return true; }
   const errMsg = ('Unexpected detailed permissions data for condition '
-    + cond + ' for annotation ID ' + id);
+    + cond + ' for annotation ID ' + annoIdUrl);
   throw new TypeError(errMsg);
 };
 
