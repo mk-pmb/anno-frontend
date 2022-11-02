@@ -14,7 +14,7 @@ const EX = function bindDataApi(viewer) {
       return getOwn(annoDataApi, mthd, notImpl)(viewer.annotation, ...args);
     } catch (err) {
       err.message += (' in annoDataApi call "' + mthd
-        + '" for Anno ID "' + viewer.id + '"');
+        + '" for Anno ID "' + viewer.annoIdUrl + '"');
       throw err;
     }
   };

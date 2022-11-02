@@ -22,8 +22,18 @@ function annoIdToPermaUrl(annoIdOrRevId) {
   return url;
 }
 
+
+function findResourceUrl(res) {
+  if (!res) { return ''; }
+  if (typeof res === 'string') { return res; }
+  return (res.id || res.source || '');
+}
+
+
+
 module.exports = {
   methods: {
     annoIdToPermaUrl,
+    findResourceUrl,
   },
 };
