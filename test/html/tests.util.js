@@ -241,7 +241,8 @@
 
     async ajax2str(req, convert) {
       try {
-        let resp = await jq.ajax(req);
+        const jqXHR = jq.ajax(req);
+        let resp = await jqXHR;
         if (convert) {
           convert.forEach(function apply(c) {
             const tmp = c(resp);
@@ -249,7 +250,7 @@
           });
         }
         resp = tu.prettyPrintJson(resp);
-        resp = String(resp);
+        resp = jqXHR.status + ' ' + jqXHR.statusText + '\n' + String(resp);
         return resp;
       } catch (err) {
         return String(annoErrors.augmentWebbrowserError(err));
