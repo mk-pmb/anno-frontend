@@ -81,13 +81,11 @@ module.exports = {
     list() { return this.$store.state.annotationList.list; },
 
     targetSource() { return this.$store.state.targetSource; },
-    token() { return this.$store.state.token; },
     purlId() { return this.$store.state.purlId; },
     purlAnnoInitiallyOpen() { return this.$store.state.purlAnnoInitiallyOpen; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
 
     isLoggedIn() { return this.$store.getters.isLoggedIn; },
-    tokenDecoded() { return this.$store.getters.tokenDecoded; },
 
     logoutButtonVisible() {
       return Boolean(this.isLoggedIn && this.$store.state.logoutPageUrl);
@@ -108,6 +106,7 @@ module.exports = {
 
     logoutButtonClicked() {
       window.error(':TODO: Confirm logout');
+      // UBHD GitLab issue #10
     },
 
     collapseAll(action) {

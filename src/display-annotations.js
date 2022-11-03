@@ -89,7 +89,6 @@ module.exports = function displayAnnotations(customOptions) {
       'isLoggedIn',
       'purlTemplate',
       'targetSource',
-      'token',
     ]));
 
     //

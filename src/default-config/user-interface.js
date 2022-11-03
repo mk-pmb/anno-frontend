@@ -15,8 +15,8 @@ const uiCfg = {
   logoutPageUrl: null, /*
     URL where the logout button should lead to.
     Use the special URL "fake://insecure" to have the logout button just
-    make the anno app forget its token without notifying the session server
-    about the user's attempt to invalidate it.
+    make the anno app just pretend the session has ended, without notifying
+    the session server about the user's attempt to invalidate it.
   */
 
   permissionsRequestFormUrl: null,

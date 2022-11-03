@@ -26,11 +26,6 @@ const srvCfg = {
 
   collection: 'default',
 
-  tokenEndpoint: '', /*
-    URL of the endpoint providing a JSON Web Token for login.
-    For discussion of JWT risks, see docs/security/jwt.md.
-  */
-
   purlTemplate: [
     /* Template for generating persistent anno URLs. For details, see
       `../mixin/annoUrls.js`.
