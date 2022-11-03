@@ -4,11 +4,8 @@
 
 1.  Initialize the state of the Vue store based on a `config` object.
     See chapter "Configuration" below.
-1.  Dispatches a `fetchToken` action to retrieve the token from localStorage
-    or from the `tokenEndpoint`.
-1.  Dispatches a `fetchList` action to retrieve all anotations that match
-    the configured `targetSource`.
-1.  Dispatches a `fetchAcl` action to retrieve the permissions.
+1.  Start retrieving initial user session/identity information.
+1.  Start retrieving initial annotations list.
 1.  Install the Annotations Sidebar App ("AnnoApp") into the DOM.
 1.  Returns a reference to the AnnoApp, which can be stored to use its API.
 

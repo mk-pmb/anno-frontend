@@ -4,6 +4,7 @@
 const {collectIds} = require('@kba/anno-util');
 const jwtDecode = require('jwt-decode');
 const promisify = require('pify');
+const pEachSeries = require('p-each-series').default;
 
 const apiFactory = require('../api');
 const eventBus = require('../event-bus');
@@ -11,8 +12,7 @@ const editing = require('./module/editing');
 const annotationList = require('./module/annotationList');
 const sessionStore = require('../browserStorage.js').session;
 
-const fetchToken = require('./fetchers/fetchToken.js');
-const fetchList = require('./fetchers/fetchList.js');
+const fetchAnnoList = require('./fetchers/annoList.js');
 
 // function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
@@ -90,8 +90,23 @@ module.exports = {
 
     actions: {
 
-      fetchToken,
-      fetchList,
+      async retrieveInitialState(store) {
+        pEachSeries([
+          'fetchUserSessionInfo',
+          'fetchAnnoList',
+          'fetchAcl',
+        ], async function dare(phase) {
+          try {
+            await store.dispatch(phase);
+          } catch (err) {
+            err.appInitPhase = phase;
+            err.message += '; phase: ' + phase;
+            eventBus.$emit('error', err);
+          }
+        });
+      },
+
+      fetchAnnoList,
 
       async fetchAcl({state, commit, getters}) {
         if ((state.acl || false)['debug:skipFetchAcl']) { return; }
