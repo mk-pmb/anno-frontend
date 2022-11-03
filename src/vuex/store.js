@@ -107,10 +107,10 @@ module.exports = {
         }
       },
 
-        async runInjectedFunc(vuexApi, func) {
-          // console.debug('runInjectedFunc', { vuexApi, func });
-          return func(vuexApi);
-        },
+      async runInjectedFunc(vuexApi, func) {
+        // console.debug('runInjectedFunc', { vuexApi, func });
+        return func(vuexApi);
+      },
 
     },
 }
