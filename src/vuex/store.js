@@ -2,7 +2,6 @@
 'use strict';
 
 const {collectIds} = require('@kba/anno-util');
-const jwtDecode = require('jwt-decode');
 const promisify = require('pify');
 const pEachSeries = require('p-each-series').default;
 
@@ -10,11 +9,13 @@ const apiFactory = require('../api');
 const eventBus = require('../event-bus');
 const editing = require('./module/editing');
 const annotationList = require('./module/annotationList');
-const sessionStore = require('../browserStorage.js').session;
 
 const fetchAnnoList = require('./fetchers/annoList.js');
 
 // function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+
+function orf(x) { return x || false; }
+
 
 module.exports = {
     strict: process.env.NODE_ENV != 'production',
@@ -23,7 +24,7 @@ module.exports = {
       acl: null,
       cacheBusterEnabled: false,
       editMode: null,
-      token: null,
+      userSessionInfo: false,
     },
     modules: {
         editing,
@@ -31,18 +32,12 @@ module.exports = {
     },
     getters: {
 
-        isLoggedIn(state) {
-            const fake = (state.acl || false)['debug:override:isLoggedIn'];
-            if (fake || (fake === false)) { return fake; }
-            const { token } = state;
-            if (!token) { return false; }
-            return Boolean((jwtDecode(state.token) || false).sub);
-        },
-
-        tokenDecoded(state) {
-            // console.log('tokenDecoded', state.token, state.isLoggedIn)
-            return state.isLoggedIn ? jwtDecode(state.token) : {}
-        },
+      isLoggedIn(state) {
+        const fake = orf(state.acl)['debug:override:isLoggedIn'];
+        if (fake || (fake === false)) { return fake; }
+        const { userId } = orf(state.userSessionInfo);
+        return Boolean(userId);
+      },
 
         allIds(state) {
             const ret = collectIds(state.annotationList.list).filter(u => u.startsWith('http'))
@@ -61,16 +56,6 @@ module.exports = {
         EMPTY_ACL(state) {
             state.acl = {};
             eventBus.$emit('updatedPermissions');
-        },
-
-        SET_TOKEN(state, token) {
-          state.token = token;
-          sessionStore.put('authToken', token);
-        },
-
-        DELETE_TOKEN(state/* , token */) {
-          state.token = null;
-          sessionStore.del('authToken');
         },
 
         SET_EDIT_MODE(state, editMode) {
