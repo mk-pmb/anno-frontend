@@ -3,7 +3,6 @@ const Vue = require('vuejs-debug-traverse-210506-pmb/vue.esm.js').default;
 const Vuex = require('vuex/dist/vuex.esm.js').default;
 
 const mergeOptions = require('merge-options');
-const pEachSeries = require('p-each-series').default;
 
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true;
@@ -116,24 +115,8 @@ module.exports = function displayAnnotations(customOptions) {
     annoapp.stopHighlighting = function(...args) {eventBus.$emit('stopHighlighting', ...args)}
     annoapp.expand = function(...args) {eventBus.$emit('expand', ...args)}
 
-    //
-    // Kick off fetching tokens/list/ACL rules
-    //
-    setTimeout(async function init() {
-      pEachSeries([
-        'fetchToken',
-        'fetchList',
-        'fetchAcl',
-      ], async function dare(phase) {
-        try {
-          await annoapp.$store.dispatch(phase);
-        } catch (err) {
-          err.appInitPhase = phase;
-          err.message += '; phase: ' + phase;
-          annoapp.eventBus.$emit('error', err);
-        }
-      });
-    }, 1);
+    // Initialize store state
+    setTimeout(() => annoapp.$store.dispatch('retrieveInitialState'), 1);
 
     //
     // Return the app for event emitting
