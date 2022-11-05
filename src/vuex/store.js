@@ -2,10 +2,8 @@
 'use strict';
 
 const {collectIds} = require('@kba/anno-util');
-const promisify = require('pify');
 const pEachSeries = require('p-each-series').default;
 
-const apiFactory = require('../api');
 const eventBus = require('../event-bus');
 const editing = require('./module/editing');
 const annotationList = require('./module/annotationList');
@@ -79,7 +77,6 @@ module.exports = {
         pEachSeries([
           'fetchUserSessionInfo',
           'fetchAnnoList',
-          'fetchAcl',
         ], async function dare(phase) {
           try {
             await store.dispatch(phase);
@@ -92,20 +89,6 @@ module.exports = {
       },
 
       fetchAnnoList,
-
-      async fetchAcl({state, commit, getters}) {
-        if ((state.acl || false)['debug:skipFetchAcl']) { return; }
-        const api = apiFactory(state);
-        const chk = promisify(api.aclCheck.bind(api));
-        try {
-          const perms = await chk(getters.allIds);
-          commit('CHANGE_ACL', perms);
-        } catch (aclFetchFailed) {
-          window.aclFetchFailed = aclFetchFailed;
-          console.error({ aclFetchFailed });
-          throw aclFetchFailed;
-        }
-      },
 
       async runInjectedFunc(vuexApi, func) {
         // console.debug('runInjectedFunc', { vuexApi, func });
