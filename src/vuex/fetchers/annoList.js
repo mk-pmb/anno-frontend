@@ -25,12 +25,12 @@ const EX = async function fetchAnnoList(store) {
     }
     await commit('ANNOLIST_REPLACE', list);
     eventBus.$emit('fetched', list);
-  } catch (cannotList) {
+  } catch (fetchFailed) {
     await commit('ANNOLIST_UPDATE_STATE', {
       fetching: false,
-      fetchFailed: cannotList,
+      fetchFailed,
     });
-    eventBus.$emit('fetchListFailed', cannotList);
+    eventBus.$emit('fetchListFailed', fetchFailed);
   }
 };
 
