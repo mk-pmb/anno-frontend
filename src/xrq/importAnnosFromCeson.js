@@ -5,8 +5,7 @@ const mergeOptions = require('merge-options');
 const parseCeson = require('ceson/parse.js');
 
 
-async function doImportAnnosFromCeson(vuexApi, how) {
-  const { annoApp } = this;
+async function doImportAnnosFromCeson(store, how) {
   const cesonData = parseCeson(how.data);
   let annos = [].concat(cesonData);
   // console.debug('xrq: ImportAnnosFromCeson:', { cesonText, cesonData, annos });
@@ -22,7 +21,7 @@ async function doImportAnnosFromCeson(vuexApi, how) {
     alSt.list = alSt.list.concat(annos);
     // console.debug('xrq: ImportAnnosFromCeson: added.');
   }
-  annoApp.$store.commit('INJECTED_MUTATION', [append]);
+  store.commit('INJECTED_MUTATION', [append]);
 }
 
 module.exports = {

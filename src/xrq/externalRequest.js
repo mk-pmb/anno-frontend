@@ -16,9 +16,9 @@ const mixins = [
 const EX = async function externalRequest(annoApp, action, ...args) {
   const impl = getOwn(EX, 'do' + action);
   if (!impl) { throw new Error('Unsupported action: ' + action); }
-  async function proxy(vuexApi) {
-    const ctx = { annoApp, vuexApi, action, args };
-    return impl.call(ctx, vuexApi, ...args);
+  async function proxy(store) {
+    const ctx = { annoApp, store, action, args };
+    return impl.call(ctx, store, ...args);
   }
   return annoApp.$store.dispatch('runInjectedFunc', proxy);
 };

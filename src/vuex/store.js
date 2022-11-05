@@ -90,9 +90,9 @@ module.exports = {
 
       fetchAnnoList,
 
-      async runInjectedFunc(vuexApi, func) {
-        // console.debug('runInjectedFunc', { vuexApi, func });
-        return func(vuexApi);
+      async runInjectedFunc(store, func) {
+        // console.debug('runInjectedFunc', { store, func });
+        return func(store);
       },
 
     },

@@ -20,13 +20,12 @@ const selectorMatchers = {
 };
 
 
-async function doHighlightByTargetSelector(vuexApi, param) {
-  const { annoApp } = this;
-  const { eventBus } = annoApp;
+async function doHighlightByTargetSelector(store, param) {
+  const { eventBus } = this.annoApp;
   const { selector, values, others } = param;
   const matcher = getOwn(selectorMatchers, selector);
   if (!matcher) { throw new Error('Unsupported selector type: ' + selector); }
-  const annos = [].concat(vuexApi.state.annotationList.list);
+  const annos = [].concat(store.state.annotationList.list);
   // console.debug('hlBySel:', selector, matcher, values, others, annos);
   const matchedAnnoIds = {
     yes:    new Set(),  // highlighted by explicit match
