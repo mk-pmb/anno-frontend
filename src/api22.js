@@ -28,12 +28,13 @@ const EX = function apiFactory(state) {
 
   async function annoEndpointRequest(method, subUrl, data) {
     if (!subUrl) { throw new Error('No endpoint sub URL given'); }
-    return axios({
+    const result = await axios({
       ...defaultAxiosOpts,
       method,
       url: annoEndpoint + subUrl,
       data,
     });
+    return result.data;
   }
 
   supportedHttpMethods.forEach(function add(method) {

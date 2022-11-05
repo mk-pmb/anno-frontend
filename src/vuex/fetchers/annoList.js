@@ -16,10 +16,9 @@ const EX = async function fetchAnnoList(store) {
   });
   eventBus.$emit('fetching');
   try {
-    const coll = await api22(state).aepGet(
+    const annos = await api22(state).aepGet(
       'anno/by/subject-target/' + state.targetSource);
-    // window.stColl = coll;
-    const list = orf(orf(orf(coll).data).first).items;
+    const list = orf(orf(annos).first).items;
     if (!Array.isArray(list)) {
       throw new TypeError('Received an invalid annotations list');
     }
