@@ -9,6 +9,7 @@ const editing = require('./module/editing');
 const annotationList = require('./module/annotationList');
 
 const fetchAnnoList = require('./fetchers/annoList.js');
+const fetchUserSessionInfo = require('./fetchers/userSessionInfo.js');
 
 // function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
@@ -75,8 +76,8 @@ module.exports = {
 
       async retrieveInitialState(store) {
         pEachSeries([
-          'fetchUserSessionInfo',
           'fetchAnnoList',
+          'fetchUserSessionInfo',
         ], async function dare(phase) {
           try {
             await store.dispatch(phase);
@@ -89,6 +90,7 @@ module.exports = {
       },
 
       fetchAnnoList,
+      fetchUserSessionInfo,
 
       async runInjectedFunc(store, func) {
         // console.debug('runInjectedFunc', { store, func });
