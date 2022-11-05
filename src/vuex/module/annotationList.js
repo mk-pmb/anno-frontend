@@ -87,9 +87,6 @@ const annoList = {
             state.list = list;
         },
 
-        ADD_TO_LIST(state, v) {
-            state.list.push(v)
-        },
     }
 }
 
