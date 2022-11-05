@@ -157,7 +157,7 @@ module.exports = {
                 }
                 $store.commit('RESET_ANNOTATION')
                 eventBus.$emit('close-editor')
-                $store.dispatch('fetchList')
+                $store.dispatch('fetchAnnoList');
             }
 
             const legacyPreArgsFactory = getOwn({
@@ -194,7 +194,7 @@ module.exports = {
             if (err) { return console.error(err); }
             console.debug('API confirms anno as removed:', annoIdUrl);
             eventBus.$emit('removed', annoIdUrl);
-            $store.dispatch('fetchList');
+            $store.dispatch('fetchAnnoList');
             self.discard();
           });
         },

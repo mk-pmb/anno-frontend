@@ -81,7 +81,7 @@ const annoList = {
           Object.assign(state, upd);
         },
 
-        REPLACE_LIST(state, list) {
+        ANNOLIST_REPLACE(state, list) {
             state.fetching = false;
             state.fetchFailed = false;
             state.list = list;

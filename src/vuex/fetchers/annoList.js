@@ -7,8 +7,8 @@ const eventBus = require('../../event-bus.js');
 function orf(x) { return x || false; }
 
 
-async function fetchList(vuexApi) {
-  const { state, commit } = vuexApi;
+const EX = async function fetchAnnoList(store) {
+  const { state, commit } = store;
   await commit('ANNOLIST_UPDATE_STATE', {
     list: [],
     fetching: true,
@@ -23,7 +23,7 @@ async function fetchList(vuexApi) {
     if (!Array.isArray(list)) {
       throw new TypeError('Received an invalid annotations list');
     }
-    await commit('REPLACE_LIST', list);
+    await commit('ANNOLIST_REPLACE', list);
     eventBus.$emit('fetched', list);
   } catch (cannotList) {
     await commit('ANNOLIST_UPDATE_STATE', {
@@ -32,7 +32,7 @@ async function fetchList(vuexApi) {
     });
     eventBus.$emit('fetchListFailed', cannotList);
   }
-}
+};
 
 
-module.exports = fetchList;
+module.exports = EX;

@@ -307,7 +307,7 @@ module.exports = {
               function mutate() { Object.assign(viewer.annotation, updAnno); }
             ]);
             */
-            // viewer.$store.dispatch('fetchList');
+            // viewer.$store.dispatch('fetchAnnoList');
             // ^- We cannot even do that, because automatically reloading
             //    the list would hide the success message.
             return setDoiMsg('mint_doi.success');
