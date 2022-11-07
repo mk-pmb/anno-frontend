@@ -86,7 +86,6 @@ module.exports = function displayAnnotations(customOptions) {
       });
     }([
       'collection',
-      'isLoggedIn',
       'purlTemplate',
       'targetSource',
     ]));

@@ -24,19 +24,24 @@ const EX = async function fetchUserSessionInfo(store) {
 
   fetching = {};
   await commit('INJECTED_MUTATION', [updateStoredUsi, false, { fetching }]);
-  const fetchPr = api22(state).aepGet('session/whoami');
+  const mutateUpdate = {
+    fetchQueryTs: Date.now(),
+    // ^-- Using a number in order to reduce Vue store proxification.
+  };
+  const fetchPr = api22(state).aepGet('session/whoami'
+    + '?author_identities=full');
   fetching.getPr = Object.bind(null, fetchPr);
   // ^- Wrapping the PR in a getter function will protect it from
   //    the vue store's proxification.
 
   let mutateReplace;
-  let mutateUpdate;
   try {
     const usi = await fetchPr;
     mutateReplace = (usi || {});
   } catch (fetchFailed) {
-    mutateUpdate = { fetching: false, fetchFailed };
+    mutateUpdate.fetchFailed = fetchFailed;
   }
+  mutateUpdate.fetchReplyTs = Date.now();
 
   fetching = orf(state[usiKey]).fetching;
   const superseded = ((fetching && fetching.getPr()) !== fetchPr);
@@ -48,6 +53,10 @@ const EX = async function fetchUserSessionInfo(store) {
     // reply. Our reply might have stale old data, so we just drop it.
     return;
   }
+
+  mutateUpdate.fetching = false;
+  // ^-- Using a number in order to reduce Vue store proxification.
+
   await commit('INJECTED_MUTATION',
     [updateStoredUsi, mutateReplace, mutateUpdate]);
   eventBus.$emit('userSessionInfoUpdated');
