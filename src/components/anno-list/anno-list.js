@@ -22,6 +22,10 @@ const HelpButton = require('../help-button');
 const bootstrapCompat = require('../../bootstrap-compat.js');
 const sessionStore = require('../../browserStorage.js').session;
 
+
+function orf(x) { return x || false; }
+
+
 /* eslint-disable global-require */
 module.exports = {
 
@@ -86,9 +90,11 @@ module.exports = {
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
 
     isLoggedIn() { return this.$store.getters.isLoggedIn; },
+    userSessionInfo() { return orf(this.$store.state.userSessionInfo); },
 
     logoutButtonVisible() {
-      return Boolean(this.isLoggedIn && this.$store.state.logoutPageUrl);
+      return Boolean(this.userSessionInfo.userId
+        && this.$store.state.logoutPageUrl);
     },
 
     logoutButtonUrl() {

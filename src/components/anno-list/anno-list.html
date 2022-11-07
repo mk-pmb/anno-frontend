@@ -9,6 +9,12 @@
     pull-left
     hidden-print
     " role="group">
+    <bootstrap-button ref="userIdentityButton"
+      btn-class="outline-secondary"
+      :v-show="userSessionInfo.userId"
+      :icon-fa="userSessionInfo.userId ? 'user' : 'user-secret'"
+      >{{ userSessionInfo.userId || l10n('guest_identity_short') }}
+    </bootstrap-button>
     <template v-if="isLoggedIn">
       <a v-if="logoutButtonVisible"
         @click="logoutButtonClicked"
