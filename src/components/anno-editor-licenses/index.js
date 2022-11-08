@@ -5,7 +5,6 @@ module.exports = {
 
   mixins: [
     require('../../mixin/l10n'),
-    require('../../mixin/prefix'),
   ],
 
   template: require('./licenses.html'),
