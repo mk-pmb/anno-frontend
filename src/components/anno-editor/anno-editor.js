@@ -20,6 +20,7 @@ const validateEditorFields = require('./validateEditorFields.js');
 const decideAnnoTarget = require('./decideAnnoTarget.js');
 
 function soon(f) { return setTimeout(f, 1); }
+function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
 const defaultSaveLegacyPreArgsFactories = {
   create() { return []; },
@@ -39,6 +40,11 @@ module.exports = {
     props: {
         editorId: {type: String, default: 'anno-editor'},
         enableTabTags: {type: Boolean, default: false},
+    },
+    data() {
+      return {
+        forceUpdatePreviewTs: 0,
+      };
     },
     created() {
         // TODO Move these to store maybe??
@@ -100,16 +106,22 @@ module.exports = {
         svgTarget()       {return this.$store.getters.svgTarget},
         zoneEditor()      {return this.$refs.zoneEditor},
 
+        knownAuthorIdentities() {
+          const sess = this.$store.state.userSessionInfo;
+          // ^- Already proxified by vue, so we don't need to
+          //    protect anything by deep-copying it.
+          return ((sess || false).authorIdentities || []);
+        },
+
         stubbedAnnotationForPreview() {
           const editor = this;
-          const { l10n } = editor;
-          const orig = editor.$store.state.editing;
           const now = Date.now();
+          const orig = editor.$store.state.editing;
           const ann = {
-            creator: l10n('generic_author_name'),
             created: now,
             modified: now,
-            ...orig,
+            'x-force-update-preview': editor.forceUpdatePreviewTs,
+            ...jsonDeepCopy(orig),
           };
           return ann;
         },
@@ -130,6 +142,8 @@ module.exports = {
 
     },
     methods: {
+
+      forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
 
         save() {
             const editor = this;
@@ -240,6 +254,13 @@ module.exports = {
           };
         }
         this.$store.commit('INJECTED_MUTATION', [upd]);
+      },
+
+      async onSelectAuthorIdentity(evt) {
+        const agent = evt.currentAgent;
+        function upd(state) { state.editing.creator = agent; }
+        await this.$store.commit('INJECTED_MUTATION', [upd]);
+        this.forceUpdatePreview();
       },
 
     }

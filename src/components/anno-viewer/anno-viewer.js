@@ -154,7 +154,10 @@ module.exports = {
         creatorsList() {
           const { creator } = this.annotation;
           if (!creator) { return []; }
-          return [].concat(creator).filter(Boolean);
+          const list = jsonDeepCopy([].concat(creator).filter(Boolean));
+          const lastItem = list.slice(-1);
+          if (lastItem) { lastItem['x-is-last-in-list'] = true; }
+          return list;
         },
 
         currentLicense() {
