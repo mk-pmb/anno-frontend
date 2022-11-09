@@ -1,0 +1,26 @@
+<div class="row agent-identity-selector-row">
+  <div class="col-sm-1">
+    <label class="agent-identity-label" :for="dropdownId"
+      :v-if="rowCaption"
+      >{{ rowCaption }}:</label>
+  </div>
+  <div class="agent-identity-selector-col col-md-11">
+    <select ref="dropdown" :id="dropdownId" :name="dropdownName"
+      class="form-control"
+      @change="internalSelectionChanged($event)">
+      <option
+        class="keep-old-value"
+        :data-agent="JSON.stringify(initialAgentBackup || null)"
+        >{{ l10n('dropdown_keep_old_value') }}
+        {{ makeCaptionForIdentity(initialAgentBackup) }}
+      </option>
+      <option v-for="(agent, aidIndex) in knownIdentities"
+        :key="agent.id || ('invalid:' + aidIndex)"
+        :value="agent.id || ''"
+        :disabled="!agent.id"
+        :selected="agent.id && (agent.id === initialAgentBackup.id)"
+        :data-agent="JSON.stringify(agent || null)"
+        >{{ makeCaptionForIdentity(agent) }}</option>
+    </select>
+  </div>
+</div>

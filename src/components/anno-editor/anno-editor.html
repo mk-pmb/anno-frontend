@@ -22,6 +22,13 @@
           type="text"
           :required="titleRequired"
           >
+        <agent-identity-selector ref="authorIdentitySelector"
+          :row-caption="l10n('author_identity')"
+          dropdown-id="annoeditor-author-identity-selector"
+          :known-identities="knownAuthorIdentities"
+          :initial-agent="$store.state.editing.creator"
+          :onchange="onSelectAuthorIdentity"
+          />
         <anno-editor-licenses />
       </template>
       <template slot="extra-bodyparts-bottom">
@@ -83,6 +90,7 @@
     <anno-viewer
       ref="preview"
       :annotation="stubbedAnnotationForPreview"
+      :forceUpdatePreviewTs="forceUpdatePreviewTs"
       :thumb-stroke-color="$store.state.thumbStrokeColor"
       :thumb-fill-color="$store.state.thumbStrokeColor"
       purl="http://example.net/purl/dummy"

@@ -19,10 +19,11 @@ const components = {
     'dt-url-caption-link': require('./dt-url-caption-link'),
 
     // editing
+    'agent-identity-selector':    require('./agent-identity-selector'),
     'anno-editor-licenses':       require('./anno-editor-licenses'),
     'anno-editor-modal':          require('./anno-editor-modal'),
     'anno-editor-rows-addable':   require('./anno-editor-rows-addable'),
-    'anno-editor':         require('./anno-editor'),
+    'anno-editor':                require('./anno-editor'),
     'html-editor':         require('./html-editor'),
     'semtags-editor':      require('./semtags-editor'),
     'relationlink-editor': require('./relationlink-editor'),

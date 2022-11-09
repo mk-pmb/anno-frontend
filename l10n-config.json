@@ -36,6 +36,7 @@
             "comments":            "Kommentare",
             "commenttarget":       "Kommentar zu",
             "date_time_unknown":   "Datum/Zeit unbekannt",
+            "author_identity":     "Autor",
             "generic_author_name": "M. Muster",
             "edit":                "Editieren",
             "edit_headline":       "Annotationen-Editor",
@@ -100,6 +101,7 @@
 
             "generic_list_item_add_short": "Hinzuf.",
             "dropdown_please_select_an_option": "Bitte wählen:",
+            "dropdown_keep_old_value": "beibehalten:",
 
             "add_relationlink":          "Link hinzufügen",
             "delete_relationlink":       "Link löschen",
@@ -216,6 +218,7 @@
             "comments":            "Comments",
             "commenttarget":       "Comment on",
             "date_time_unknown":   "date/time unknown",
+            "author_identity":     "Author",
             "generic_author_name": "J. Doe",
             "edit":                "Edit",
             "edit_headline":       "Annotation Editor",
@@ -286,6 +289,7 @@
 
             "generic_list_item_add_short": "Add",
             "dropdown_please_select_an_option": "Please select:",
+            "dropdown_keep_old_value": "keep as is:",
 
             "add_relationlink":          "Add Link",
             "delete_relationlink":       "Delete Link",
