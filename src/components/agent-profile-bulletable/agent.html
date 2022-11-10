@@ -1,0 +1,58 @@
+<div :class="[
+  'agent-profile',
+  'agent-profile-bulletable',
+  (icon ? 'has-icon' : 'no-icon'),
+  ]"
+  >
+
+<img v-if="icon"
+  class="
+    media-object
+    icon
+  "
+  :src="icon.url"
+  :alt="icon.name"
+  :width="icon.width"
+  :height="icon.height"
+  >
+
+<span class="name">{{
+  agt.nickname
+  || agt.name
+}}</span>
+
+<template v-for="website of [].concat(agt.homepage).filter(Boolean)">
+  <span class="item-sep"></span>
+  <a
+    :href="website"
+    target="_blank"
+    rel="
+      nofollow
+      noopener
+      noreferrer
+    "
+    class="
+      contact-info
+      homepage-link
+      "
+    >
+    <i class="fa fa-globe"></i>
+    {{ website }}
+  </a>
+</template>
+
+<template v-for="email of [].concat(agt.email).filter(Boolean)">
+  <span class="item-sep"></span>
+  <a
+    :href="'mailto:' + email"
+    class="
+      contact-info
+      email-link
+      "
+    >
+    <i class="fa fa-envelope"></i>
+    {{ email }}
+  </a>
+</template>
+
+</div>
