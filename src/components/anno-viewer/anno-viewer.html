@@ -165,7 +165,8 @@
               <li class="agent-description"
                 v-for="(agent, aidIndex) in creatorsList"
                 :key="agent.id || ('invalid:' + aidIndex)"
-                >{{ agent }}</li>
+                :data-agentid="agent.id || ''"
+                ><agent-profile-bulletable :agent="agent" /></li>
             </ul>
             <p v-else class="no-creator">
               <i class="fa fa-user-secret"></i>
