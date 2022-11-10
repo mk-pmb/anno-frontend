@@ -12,9 +12,9 @@ const components = {
 
     // viewing
     'anno-list':         require('./anno-list'),
-    'anno-viewer':       require('./anno-viewer'),
-    'anno-viewer-versions-dropdown': require('./anno-viewer-versions-dropdown'),
     'anno-viewer-thumbnail-svg': require('./anno-viewer-thumbnail-svg'),
+    'anno-viewer-versions-dropdown': require('./anno-viewer-versions-dropdown'),
+    'anno-viewer':       require('./anno-viewer'),
     'clipboard-copy-button': require('./clipboard-copy-button'),
     'dt-url-caption-link': require('./dt-url-caption-link'),
 
@@ -25,8 +25,8 @@ const components = {
     'anno-editor-rows-addable':   require('./anno-editor-rows-addable'),
     'anno-editor':                require('./anno-editor'),
     'html-editor':         require('./html-editor'),
-    'semtags-editor':      require('./semtags-editor'),
     'relationlink-editor': require('./relationlink-editor'),
+    'semtags-editor':      require('./semtags-editor'),
     'tags-editor':         require('./tags-editor'),
     'xrx-vue':             require('@kba/xrx-vue').XrxVue,
 
