@@ -2,7 +2,7 @@
   'annoeditor-list',
   `access-${isLoggedIn ? 'logged-in' : 'guest'}`,
   ]"
-  :data-number-of-annots="list.length"
+  :data-number-of-annots="annos.length"
   >
   <div class="btn-group
     anno-list-buttonbar-top
@@ -122,8 +122,8 @@
   <div style="clear: both;"></div>
 
   <div class="panel-group annot-list">
-    <slot name="annot-list-empty" v-if="!list.length" />
-    <anno-viewer v-for="annotation in list" :key="annotation.id"
+    <slot name="annot-list-empty" v-if="!annos.length" />
+    <anno-viewer v-for="annotation in annos" :key="annotation.id"
       :annotation="annotation"
       :purl-id="purlId"
       :as-reply="false"

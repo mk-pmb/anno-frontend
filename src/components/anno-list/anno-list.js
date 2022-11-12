@@ -81,8 +81,8 @@ module.exports = {
     }
   },
   computed: {
+    annos() { return this.$store.state.annotationList.list; },
     sortedBy() { return this.$store.state.annotationList.sortedBy; },
-    list() { return this.$store.state.annotationList.list; },
 
     targetSource() { return this.$store.state.targetSource; },
     purlId() { return this.$store.state.purlId; },
