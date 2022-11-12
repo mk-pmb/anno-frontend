@@ -68,7 +68,10 @@ module.exports = {
 
     // Sort the list initially and after every fetch
     annoList.sort();
-    eventBus.$on('fetched', () => annoList.sort());
+    eventBus.$on('fetched', async function onFetched() {
+      await annoList.sort();
+      await annoList.collapseAll('apply');
+    });
 
     // When permissions have been updated, force an update.
     eventBus.$on('updatedPermissions', () => annoList.$forceUpdate());
