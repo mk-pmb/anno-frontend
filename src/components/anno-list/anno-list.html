@@ -116,46 +116,6 @@
       >{{ collapsed ? l10n('open_all') : l10n('close_all') }}
     </bootstrap-button>
 
-    <button v-if="numberOfAnnotations > 0" class="btn btn-default btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" @click="collapseAll('hide')">
-      <span class="fa fa-sort"></span>&nbsp;{{ l10n('sort') }} <span class="caret"></span>
-    </button>
-
-    <!-- {{ sortedBy }} -->
-    <component :is="bootstrapOpts.tags.dropdownMenu"
-      role="menu" class="sort-criterion-dropdown-menu
-        dropdown-menu
-        dropdown-menu-small
-        dropdown-menu-right
-        small
-        sort-menu
-        ">
-      <template v-for="sortProp in [
-        'created',
-        'modified',
-        'title',
-        'creator',
-      ]">
-      <component :is="bootstrapOpts.tags.dropdownMenuItem"
-        v-for="sortOrder in ['az', 'za']"
-        :key="`sort_${sortProp}_${sortOrder}`"
-        :class="[
-          'criterion',
-          bootstrapOpts.tags.snowflakes.annoListSortMenu.clsAll,
-          'text-nowrap',
-          ((sortedBy === `${sortProp}_${sortOrder}`) &&
-            bootstrapOpts.tags.snowflakes.annoListSortMenu.clsChosen),
-          'sort-prop-' + sortProp,
-          'sort-order-' + sortOrder,
-        ].filter(Boolean)"
-        @click="sort(`${sortProp}_${sortOrder}`)"
-        :data-sort-prop="sortProp"
-        :data-sort-order="sortOrder"
-        >{{ l10n(`sort_prop_${sortProp}`) }}
-          <span :title="l10n(`sort_order_word_${sortOrder}`)"
-            >{{ l10n(`sort_order_symbol_${sortOrder}`) }}</span>
-          </component><!-- sortOrder -->
-      </template><!-- sortProp -->
-    </component><!-- dropdownMenu -->
 
   </div><!-- .anno-list-buttonbar-top.pull-right -->
 
