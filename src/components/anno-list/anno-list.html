@@ -115,10 +115,77 @@
     </bootstrap-btnbar-dropdown><!-- ddSort -->
 
     <bootstrap-btnbar-dropdown ref="ddUser"
-      :icon-fa="'user' + (userSessionInfo.userId ? '' : '-secret')"
+      :icon-fa="'user' + (isLoggedIn ? '' : '-secret')"
       :caption="userSessionInfo.userId || l10n('guest_identity_short')"
       >
-      user menu content
+      <template v-if="isLoggedIn">
+        <component :is="bootstrapOpts.tags.dropdownMenuItem"
+          :class="[
+            bootstrapOpts.tags.dropdownMenuItemCls,
+            bootstrapOpts.tags.dropdownMenuItemBtnCls,
+            'ddi-session-logout',
+          ].filter(Boolean)"
+          v-if="logoutButtonVisible"
+          ><bootstrap-button ref="btnLogout"
+            class="btn-session-logout"
+            :caption="l10n('logout')"
+            :linkUrl="logoutButtonUrl"
+            @click="logoutButtonClicked"
+          />
+        </component><!-- dropdownMenuItem -->
+        <component :is="bootstrapOpts.tags.dropdownMenuItem"
+          :class="[
+            bootstrapOpts.tags.dropdownMenuItemCls,
+            bootstrapOpts.tags.dropdownMenuItemBtnCls,
+            'ddi-session-valid-until',
+          ].filter(Boolean)"
+          v-for="renewUts in [userSessionInfo.renewalAvailableBefore]"
+          key="renewUts"
+          v-if="renewUts"
+          ><template v-for="jsDate in [new Date(renewUts * 1e3)]">
+            {{ l10n('session_valid_until') }}:
+            <bootstrap-button ref="btnRenewSession"
+              icon-fa="refresh"
+              @click="tryRenewSession"
+            /><br>
+            <time :data-uts="renewUts" :title="String(jsDate)">
+              {{ jsDate.toLocaleDateString() }}<br>
+              {{ jsDate.toLocaleTimeString() }}
+              </time>
+          </template><!-- v-for="jsDate" -->
+        </component><!-- dropdownMenuItem -->
+      </template><!-- isLoggedIn -->
+      <template v-else><!-- guest session -->
+
+        <component :is="bootstrapOpts.tags.dropdownMenuItem"
+          v-if="$store.state.loginFormUrl"
+          :class="[
+            bootstrapOpts.tags.dropdownMenuItemCls,
+            bootstrapOpts.tags.dropdownMenuItemBtnCls,
+            'ddi-session-login',
+          ].filter(Boolean)"
+          ><bootstrap-button ref="btnRenewSession"
+            :caption="l10n('login')"
+            :linkUrl="$store.state.loginFormUrl"
+          />
+          <help-button topic="popover-not-logged-in" />
+        </component><!-- dropdownMenuItem -->
+
+        <component :is="bootstrapOpts.tags.dropdownMenuItem"
+          v-if="$store.state.loginRegistrationFormUrl"
+          :class="[
+            bootstrapOpts.tags.dropdownMenuItemCls,
+            bootstrapOpts.tags.dropdownMenuItemBtnCls,
+            'ddi-session-register',
+          ].filter(Boolean)"
+          ><bootstrap-button ref="btnRegisterUserAccount"
+            :caption="l10n('register')"
+            :linkUrl="$store.state.loginRegistrationFormUrl"
+          />
+          <help-button topic="popover-not-logged-in" />
+        </component><!-- dropdownMenuItem -->
+
+      </template><!-- guest session -->
     </bootstrap-btnbar-dropdown>
 
   </div><!-- .anno-list-buttonbar-top.pull-right -->
