@@ -5,6 +5,13 @@
 
 const installPopOvers = require('../../popover-helper.js').install;
 
+const defaultLinkRel = [
+  'external',
+  'nofollow',
+  'noopener',
+  'noreferrer',
+].join(' ');
+
 module.exports = {
 
   template: require('./bootstrap-button.html'),
@@ -20,6 +27,9 @@ module.exports = {
     iconFa:       String,
     src:          String,
     alt:          String,
+    linkUrl:      String,
+    linkRel:      { type: String, default: defaultLinkRel },
+    linkTarget:   String,
     clickTarget:  { type: Object },
     btnSize:      { type: String, default: 'sm' },
     btnClass:     { type: [String, Array], default: 'outline-secondary' },
@@ -30,12 +40,18 @@ module.exports = {
 
   mounted() {
     const btn = this;
+    const domElem = btn.$el;
     if (btn.$slots.popover) {
-      installPopOvers(btn.$el, {
+      installPopOvers(domElem, {
         subSel: null,
         content: btn.$refs.popoverContent,
         ...btn.popoverContentOpts,
       });
+    }
+    if (btn.linkUrl) {
+      domElem.setAttribute('href', btn.linkUrl);
+      if (btn.linkTarget) { domElem.setAttribute('target', btn.linkTarget); }
+      if (btn.linkRel) { domElem.setAttribute('rel', btn.linkRel); }
     }
   },
 
@@ -43,8 +59,12 @@ module.exports = {
 
     decideButtonTag() {
       const btn = this;
-      const { elem } = btn.$props;
+      const {
+        elem,
+        linkUrl,
+      } = btn.$props;
       if (elem) { return elem; }
+      if (linkUrl) { return 'a'; }
       if (btn.$slots.balloon) { return 'div'; }
       if (btn.$slots.popover) { return 'div'; }
       return 'button';
