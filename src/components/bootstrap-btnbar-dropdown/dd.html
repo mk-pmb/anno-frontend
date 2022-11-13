@@ -1,0 +1,38 @@
+<div class="
+    btn
+    btn-default
+    btn-outline-secondary
+    text-nowrap
+    btn-sm
+    p-0
+  ]"
+  >
+  <!-- We use a borderless button inside a border-only button because
+    bootstrap, according to its manual, needs the trigger and menu to be
+    wrapped inside a common parent.
+    What this really means is that any dropdown trigger will trigger any
+    (in our tests: always the first) menu inside its parent element.
+    -->
+  <button data-toggle="dropdown" ref="btnToggle" class="
+    btn
+    btn-default
+    btn-sm
+    m-0
+    "
+    @click="$emit('toggle')"
+    >
+    <i v-if="iconFa" :class="'fa fa-' + iconFa"></i>
+    <i v-if="iconText" class="icon">{{ iconText }}</i>
+    <slot name="icon-custom" />
+    {{ caption }}
+    <slot name="caption-custom" />
+  </button>
+  <component :is="bootstrapOpts.tags.dropdownMenu" role="menu" class="
+    dropdown-menu
+    dropdown-menu-small
+    dropdown-menu-right
+    small
+    ">
+    <slot></slot>
+  </component>
+</div>

@@ -5,6 +5,7 @@ const vue2Teleport = require('vue2-teleport').default;
 const components = {
 
     // helpers
+    'bootstrap-btnbar-dropdown': require('./bootstrap-btnbar-dropdown'),
     'bootstrap-button':  require('./bootstrap-button'),
     'bootstrap-tab':     require('./bootstrap-tab'),
     'bootstrap-tabs':    require('./bootstrap-tabs'),
