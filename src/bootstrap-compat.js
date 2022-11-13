@@ -21,12 +21,10 @@ const defaultTagsByBsMajorVer = {
     dropdownMenuItem: 'li',
     dropdownMenuItemCls: '',
     dropdownMenuItemPad: 'a',
+    dropdownMenuItemBtnCls: 'btn btn-sm',
+    dropdownMenuItemChosen: 'btn-primary',
 
     modalHeaderTitle: 'h4',
-
-    snowflakes: {
-      annoListSortMenu: { clsAll: 'btn btn-sm', clsChosen: 'btn-primary' },
-    },
   },
 
   '4': {
@@ -45,12 +43,10 @@ const defaultTagsByBsMajorVer = {
 
     dropdownMenuItemCls: 'dropdown-item',
     dropdownMenuItemPad: 'span', // should be omitted once we drop BS3
+    dropdownMenuItemBtnCls: '',
+    dropdownMenuItemChosen: 'active',
 
     modalHeaderTitle: 'h5',
-
-    snowflakes: {
-      annoListSortMenu: { clsAll: 'dropdown-item', clsChosen: 'active' },
-    },
   },
 
 };
