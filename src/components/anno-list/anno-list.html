@@ -80,6 +80,20 @@
       >{{ collapsed ? l10n('open_all') : l10n('close_all') }}
     </bootstrap-button>
 
+    <bootstrap-btnbar-dropdown ref="ddSort"
+      v-if="numberOfAnnotations"
+      icon-fa="sort"
+      :caption="l10n('sort')"
+      >
+      sort menu content
+    </bootstrap-btnbar-dropdown>
+
+    <bootstrap-btnbar-dropdown ref="ddUser"
+      :icon-fa="'user' + (userSessionInfo.userId ? '' : '-secret')"
+      :caption="userSessionInfo.userId || l10n('guest_identity_short')"
+      >
+      user menu content
+    </bootstrap-btnbar-dropdown>
 
   </div><!-- .anno-list-buttonbar-top.pull-right -->
 
