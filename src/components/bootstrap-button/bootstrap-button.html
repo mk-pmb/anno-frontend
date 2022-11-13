@@ -14,6 +14,7 @@
   <i v-if="iconText" class="icon">{{ iconText }}</i>
   <slot name="icon-custom" />
   <img v-if="src" :src="src" :alt="alt" />
+  <span v-if="caption" class="caption">{{ caption }}</span>
   <slot></slot>
 
   <div v-if="$slots.balloon"
