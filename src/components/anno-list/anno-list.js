@@ -19,7 +19,6 @@
 
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
-const bootstrapCompat = require('../../bootstrap-compat.js');
 const sessionStore = require('../../browserStorage.js').session;
 
 
@@ -33,9 +32,10 @@ module.exports = {
   style: require('./anno-list.scss'),
 
   mixins: [
-    require('../../mixin/l10n.js'),
-    require('../../mixin/auth.js'),
     require('../../mixin/api.js'),
+    require('../../mixin/auth.js'),
+    require('../../mixin/bootstrap-compat.js'),
+    require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
   ],
 
@@ -46,7 +46,6 @@ module.exports = {
   data() {
     return {
       collapsed: true,
-      bootstrapOpts: bootstrapCompat.sharedConfig,
     };
   },
 

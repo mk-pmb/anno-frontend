@@ -10,20 +10,17 @@
 const $ = require('jquery')
 const eventBus = require('@/event-bus')
 const HelpButton = require('@/components/help-button')
-const bootstrapCompat = require('../../bootstrap-compat');
 
 module.exports = {
     mixins: [
         require('../../mixin/annoUrls.js'),
         require('../../mixin/auth.js'),
+        require('../../mixin/bootstrap-compat.js'),
         require('../../mixin/l10n.js'),
         require('../../mixin/prefix.js'),
         require('../../mixin/toplevel-css.js'),
     ],
     components: {HelpButton},
-    data() {return {
-      bootstrapOpts: bootstrapCompat.sharedConfig,
-    }},
     template: require('./anno-editor-modal.html'),
     style:    require('./anno-editor-modal.scss'),
     computed: {
