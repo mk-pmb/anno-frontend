@@ -1,5 +1,3 @@
-const bootstrapCompat = require('../../bootstrap-compat');
-
 module.exports = {
 
   template: require('./versions.html'),
@@ -8,15 +6,10 @@ module.exports = {
   ],
 
   mixins: [
-    require('../../mixin/l10n'),
-    require('../../mixin/dateFmt'),
+    require('../../mixin/bootstrap-compat.js'),
+    require('../../mixin/dateFmt.js'),
+    require('../../mixin/l10n.js'),
   ],
-
-  data() {
-    return {
-      bootstrapOpts: bootstrapCompat.sharedConfig,
-    }
-  },
 
   computed: {
     versionsList() { return (this.anno.hasVersion || [this.anno]); },

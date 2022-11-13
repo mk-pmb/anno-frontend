@@ -11,7 +11,6 @@ const {
 const pify = require('pify');
 const pDelay = require('delay');
 
-const bootstrapCompat = require('../../bootstrap-compat.js');
 const eventBus = require('../../event-bus.js');
 const bindDataApi = require('./dataApi.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
@@ -63,11 +62,12 @@ module.exports = {
 
     mixins: [
       require('../../mixin/annoUrls.js'),
-      require('../../mixin/api'),
-      require('../../mixin/auth'),
-      require('../../mixin/dateFmt'),
-      require('../../mixin/l10n'),
-      require('../../mixin/prefix'),
+      require('../../mixin/api.js'),
+      require('../../mixin/auth.js'),
+      require('../../mixin/bootstrap-compat.js'),
+      require('../../mixin/dateFmt.js'),
+      require('../../mixin/l10n.js'),
+      require('../../mixin/prefix.js'),
       require('../relationlink-editor/determinePredicateCaption.js'),
     ],
 
@@ -75,7 +75,6 @@ module.exports = {
       const el = this;
       const anno = orf(el.annotation);
       const initData = {
-        bootstrapOpts: bootstrapCompat.sharedConfig,
         cachedIiifLink: '',
         collapsed: el.collapseInitially,
         currentVersion: el.initialAnnotation,
