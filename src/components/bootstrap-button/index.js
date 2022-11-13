@@ -13,6 +13,7 @@ module.exports = {
   ],
 
   props: {
+    caption:     String,
     title:       String,
     prefix:      { type: String, default: 'ubhdannoprefix_zoneeditor' },
     iconText:    String,    // for using Unicode as icons

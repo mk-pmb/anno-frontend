@@ -77,8 +77,8 @@
       btn-class="outline-secondary"
       :data-state="collapsed ? 'hide' : 'show'"
       :icon-fa="collapsed ? 'plus' : 'minus'"
-      >{{ collapsed ? l10n('open_all') : l10n('close_all') }}
-    </bootstrap-button>
+      :caption="collapsed ? l10n('open_all') : l10n('close_all')"
+      />
 
     <bootstrap-btnbar-dropdown ref="ddSort"
       v-if="numberOfAnnotations"
