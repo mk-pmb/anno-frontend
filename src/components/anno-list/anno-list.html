@@ -9,42 +9,6 @@
     pull-left
     hidden-print
     " role="group">
-    <bootstrap-button ref="userIdentityButton"
-      btn-class="outline-secondary"
-      :v-show="userSessionInfo.userId"
-      :icon-fa="userSessionInfo.userId ? 'user' : 'user-secret'"
-      >{{ userSessionInfo.userId || l10n('guest_identity_short') }}
-    </bootstrap-button>
-    <template v-if="isLoggedIn">
-      <a v-if="logoutButtonVisible"
-        @click="logoutButtonClicked"
-        class="btn btn-sm btn-warning"
-        :href="logoutButtonUrl"
-        >
-        {{ l10n('logout') }}
-      </a>
-    </template><!-- logged in -->
-    <template v-else><!-- guest access -->
-      <a v-if="$store.state.loginFormUrl"
-        class="btn btn-sm btn-default btn-outline-secondary
-          login-button"
-        :href="$store.state.loginFormUrl"
-        >
-        {{ l10n('login') }}
-      </a>
-      <a v-if="$store.state.loginRegistrationFormUrl"
-        class="btn btn-sm btn-default btn-outline-secondary
-          login-button"
-        :href="$store.state.loginRegistrationFormUrl"
-        >
-        {{ l10n('register') }}
-      </a>
-      <help-button topic="popover-not-logged-in"
-        v-if="$store.state.loginFormUrl
-          || $store.state.loginRegistrationFormUrl
-          "
-        />
-    </template><!-- guest access -->
 
     <template v-if="$store.state.offerCreateNewAnnotationButton">
       <template v-if="$auth('create', targetSource)">
