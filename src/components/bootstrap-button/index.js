@@ -13,17 +13,17 @@ module.exports = {
   ],
 
   props: {
-    caption:     String,
-    title:       String,
-    prefix:      { type: String, default: 'ubhdannoprefix_zoneeditor' },
-    iconText:    String,    // for using Unicode as icons
-    iconFa:      String,
-    src:         String,
-    alt:         String,
-    clickTarget: { type: Object },
-    btnSize:     { type: String, default: 'sm' },
-    btnClass:    { type: [String, Array], default: 'outline-secondary' },
-    elem:        { type: String },
+    caption:      String,
+    title:        String,
+    prefix:       { type: String, default: 'ubhdannoprefix_zoneeditor' },
+    iconText:     String,    // for using Unicode as icons
+    iconFa:       String,
+    src:          String,
+    alt:          String,
+    clickTarget:  { type: Object },
+    btnSize:      { type: String, default: 'sm' },
+    btnClass:     { type: [String, Array], default: 'outline-secondary' },
+    elem:         { type: String },
     balloonColorName: { type: String, default: 'secondary' },
     popoverContentOpts: { type: [Object, false, null, undefined] },
   },
