@@ -132,6 +132,9 @@ module.exports = {
       });
     },
 
+    tryRenewSession() {
+      console.debug('tryRenewSession: stub!');
+    },
+
   },
 };
-
