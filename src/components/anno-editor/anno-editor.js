@@ -14,11 +14,12 @@
  */
 
 const eventBus = require('../../event-bus.js');
+
 const decideAnnoTarget = require('./decideAnnoTarget.js');
 const saveCreate = require('./saveCreate.js');
+const fixupLegacyAnno = require('./fixupLegacyAnno.js');
 
 function soon(f) { return setTimeout(f, 1); }
-function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
 
 module.exports = {
@@ -39,6 +40,7 @@ module.exports = {
       };
     },
     created() {
+      const editor = this;
         // TODO Move these to store maybe??
         const editorOpenCssClass = 'has-annoeditor-showing';
         eventBus.$on('create', this.create)
@@ -52,7 +54,6 @@ module.exports = {
         });
         eventBus.$on('open-editor', () => {
           document.body.classList.add(editorOpenCssClass);
-          const editor = this;
           soon(() => editor.$refs.tablist.switchToNthTab(1));
 
           const { targetImage, zoneEditor } = editor;
@@ -108,12 +109,12 @@ module.exports = {
         stubbedAnnotationForPreview() {
           const editor = this;
           const now = Date.now();
-          const orig = editor.$store.state.editing;
+          const orig = editor.getCleanAnno();
           const ann = {
             created: now,
             modified: now,
             'x-force-update-preview': editor.forceUpdatePreviewTs,
-            ...jsonDeepCopy(orig),
+            ...orig,
           };
           return ann;
         },
@@ -136,6 +137,7 @@ module.exports = {
     methods: {
 
       forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
+      getCleanAnno() { return fixupLegacyAnno(this.$store.state.editing); },
 
       save() {
         const editor = this;

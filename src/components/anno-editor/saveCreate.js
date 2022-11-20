@@ -6,19 +6,6 @@ const eventBus = require('../../event-bus.js');
 
 const validateEditorFields = require('./validateEditorFields.js');
 
-function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
-
-
-function fixupAnno(legacyEditorAnno) {
-  const anno = jsonDeepCopy(legacyEditorAnno);
-  if (!anno.id) { delete anno.id; }
-  anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
-  delete anno.doi;
-  delete anno.collection;
-  delete anno.replyTo;
-  return anno;
-};
-
 
 const EX = async function saveCreate(editor) {
   if (!validateEditorFields(editor)) { return; }
@@ -27,7 +14,7 @@ const EX = async function saveCreate(editor) {
   if (!window.confirm(l10n('confirm_publish'))) { return; }
 
   const { state, commit, dispatch } = editor.$store;
-  const anno = fixupAnno(state.editing);
+  const anno = editor.getCleanAnno();
 
   console.debug('POSTing annotation:', anno);
   let saveResp;
