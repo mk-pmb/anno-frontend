@@ -55,9 +55,9 @@
 
   };
 
-  // cfg.setTarget.uniHdKarlLange1896();
+  cfg.setTarget.uniHdKarlLange1896(); // Alte Uni mit Glockenturm
   // cfg.setTarget.ubHdDigLit(1494, 2348, 'cpg389/0015', '002r.jpg');
-  cfg.setTarget.ubHdDigLit(1494, 2348, 'cpg389/0055', '022r.jpg');
+  // cfg.setTarget.ubHdDigLit(1494, 2348, 'cpg389/0055', '022r.jpg');
 
   // cfg.events.appReady = function ready() {};
 
