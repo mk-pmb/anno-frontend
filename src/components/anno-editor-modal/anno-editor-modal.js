@@ -7,9 +7,17 @@
  *
  */
 
-const $ = require('jquery')
-const eventBus = require('@/event-bus')
-const HelpButton = require('@/components/help-button')
+const jq = require('jquery');
+const HelpButton = require('../help-button');
+const eventBus = require('../../event-bus.js');
+
+const simpleEmitButtonHandlers = {
+  // These handlers are so simple, I was tempted to just put their code in
+  // @click. However, these buttons are prime candidates for having them in
+  // multiple locations, which justifies a named method.
+  save() { eventBus.$emit('save'); },
+  discard() { eventBus.$emit('discard'); },
+};
 
 module.exports = {
     mixins: [
@@ -43,16 +51,16 @@ module.exports = {
     },
 
     methods: {
-        save() {eventBus.$emit('save')},
+        ...simpleEmitButtonHandlers,
         remove() {eventBus.$emit('remove', this.annoIdUrl)},
-        discard() {eventBus.$emit('discard')},
+
         startHighlighting(...args) {eventBus.$emit('startHighlighting', ...args)},
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},
 
         updateModal(opt) {
           const vueDialog = this;
           const dialogDomElem = vueDialog.$refs.annoEditorDialog;
-          $(dialogDomElem).modal(opt);
+          jq(dialogDomElem).modal(opt);
         },
 
         show(/* annotation */) {
