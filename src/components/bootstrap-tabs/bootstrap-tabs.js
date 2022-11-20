@@ -26,14 +26,15 @@ module.exports = {
     },
 
     switchToNthTab(n) {
+      const refs = this.$refs;
       const idx = (+n || 0) - 1;
       const activate = jqSetSingularClass.bind(null, 'active', idx);
       // Highlight the correct tab in BS3:
-      activate(this.$refs.tabs.children);
+      activate(refs.tabs.children);
       // Highlight the correct tab in BS4:
-      activate(this.$refs.tabs.querySelectorAll('.nav-link'));
+      activate(refs.tabs.querySelectorAll('.nav-link'));
       // Show only the relevant pane:
-      activate(this.$refs.panesContainer.children);
+      activate(refs.panesContainer.children);
     },
 
   },
