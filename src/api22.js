@@ -28,13 +28,24 @@ const EX = function apiFactory(state) {
 
   async function annoEndpointRequest(method, subUrl, data) {
     if (!subUrl) { throw new Error('No endpoint sub URL given'); }
-    const result = await axios({
-      ...defaultAxiosOpts,
-      method,
-      url: annoEndpoint + subUrl,
-      data,
-    });
-    return result.data;
+    try {
+      const result = await axios({
+        ...defaultAxiosOpts,
+        method,
+        url: annoEndpoint + subUrl,
+        data,
+      });
+      return result.data;
+    } catch (err) {
+      const rsp = (err.response || false);
+      if (rsp.status && rsp.statusText && rsp.data) {
+        const msg = (rsp.status + ' ' + rsp.statusText + '\n' + rsp.data);
+        const aug = new Error(msg);
+        Object.assign(aug, err);
+        throw aug;
+      }
+      throw err;
+    }
   }
 
   supportedHttpMethods.forEach(function add(method) {
