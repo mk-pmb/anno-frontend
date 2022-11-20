@@ -13,20 +13,12 @@
  *
  */
 
-const getOwn = require('getown');
-
 const eventBus = require('../../event-bus.js');
-const validateEditorFields = require('./validateEditorFields.js');
 const decideAnnoTarget = require('./decideAnnoTarget.js');
+const saveCreate = require('./saveCreate.js');
 
 function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
-
-const defaultSaveLegacyPreArgsFactories = {
-  create() { return []; },
-  reply(annoDetails) { return [annoDetails.replyTo]; },
-  revise(annoDetails) { return [annoDetails.id]; },
-};
 
 
 module.exports = {
@@ -145,48 +137,12 @@ module.exports = {
 
       forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
 
-        save() {
-            const editor = this;
-            const {
-              $store,
-              api,
-              editMode,
-              l10n,
-            } = editor;
-            const anno = $store.state.editing;
-            const {
-              customSaveLegacyPreArgsFactories,
-            } = $store.state;
-
-            if (!validateEditorFields(editor)) { return; }
-
-            if (editMode === 'create') {
-              if (!window.confirm(l10n('confirm_publish'))) { return; }
-            }
-
-            function whenSaved(err/* , newAnno */) {
-                if (err) {
-                    console.error("Error saving annotation", err)
-                    return
-                }
-                $store.commit('RESET_ANNOTATION')
-                eventBus.$emit('close-editor')
-                $store.dispatch('fetchAnnoList');
-            }
-
-            const legacyPreArgsFactory = getOwn({
-              // :TODO: Improve API so these are no longer required. [ubgl:136]
-              ...defaultSaveLegacyPreArgsFactories,
-              ...customSaveLegacyPreArgsFactories,
-            }, editMode);
-            if (!legacyPreArgsFactory) {
-              throw new Error('Unsupported editMode: ' + editMode);
-            }
-            const legacyPreArgs = legacyPreArgsFactory(anno);
-            api[editMode].call(api, ...legacyPreArgs, anno, whenSaved);
-            // ^- .call probably required because the API seems to
-            //    really be "this" broken.
-        },
+      save() {
+        const editor = this;
+        const { editMode } = editor;
+        if (editMode === 'create') { return saveCreate(editor); }
+        window.alert('Save not implemented for editMode = ' + editMode);
+      },
 
         loadSvg() {
             const svg = (this.svgTarget && this.svgTarget.selector.value) ? this.svgTarget.selector.value : false
@@ -216,17 +172,15 @@ module.exports = {
         create(/* annotation */) {
           const editor = this;
           const { commit, state } = editor.$store;
-          commit('SET_EDIT_MODE', 'create')
-          commit('RESET_ANNOTATION')
-          commit('SET_COLLECTION', this.$store.state.collection)
+          commit('SET_EDIT_MODE', 'create');
+          commit('RESET_ANNOTATION');
           commit('ADD_TARGET', decideAnnoTarget(state));
-          eventBus.$emit('open-editor')
+          eventBus.$emit('open-editor');
         },
 
         reply(annotation) {
             this.$store.commit('SET_EDIT_MODE', 'reply')
             this.$store.commit('RESET_ANNOTATION')
-            this.$store.commit('SET_COLLECTION', this.$store.state.collection)
             this.$store.commit('SET_HTML_BODY_VALUE', '')
             this.$store.commit('ADD_TARGET', {id: annotation.id, scope: this.targetSource})
             this.$store.commit('ADD_MOTIVATION', 'replying')
