@@ -6,6 +6,9 @@ function build_cli () {
   local REPO_TOP="$(readlink -m -- "$BASH_SOURCE"/../..)"
   cd -- "$REPO_TOP" || return $?
 
+  local LINT_BEFORE_BUILD=+
+  if [ "$1" == --no-lint ]; then LINT_BEFORE_BUILD=; shift; fi
+
   local FLAVOR="${1:-all}"; shift
   build_"$FLAVOR" "$@" || return $?
 }
@@ -26,20 +29,28 @@ function build_lint () {
 }
 
 
+function build_all () {
+  build_dev || return $?
+  build_prod || return $?
+}
+
+
+function build_maybe_lint () {
+  [ -n "$LINT_BEFORE_BUILD" ] || return 0
+  build_lint || return $?
+  LINT_BEFORE_BUILD=
+}
+
+
 function build_dev () {
+  build_maybe_lint || return $?
   WEBPACK_AUDIENCE= webpack || return $?
 }
 
 
 function build_prod () {
+  build_maybe_lint || return $?
   WEBPACK_AUDIENCE='prod' webpack || return $?
-}
-
-
-function build_all () {
-  build_lint || return $?
-  build_dev || return $?
-  build_prod || return $?
 }
 
 
