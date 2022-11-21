@@ -7,7 +7,7 @@
 
   <bootstrap-tab :name="`${prefix}-${editorId}-tab-comment`"
     :title="l10n('comment_tab')"
-    topic='comment_text'
+    topic="comment_text"
     ref="commentTextTab"
     >
     <html-editor
@@ -40,10 +40,10 @@
     :name="`${prefix}-${editorId}-tab-zones`"
     :title="l10n('zones')"
     :visible="Boolean(targetImage)"
-    topic='zones'
+    topic="zones"
     >
     <xrx-vue
-      ref='zoneEditor'
+      ref="zoneEditor"
       class="card panel panel-default annoeditor-svg-zones-editor"
       :target-thumbnail="$store.state.targetThumbnail"
       :grouped="false"
@@ -101,7 +101,7 @@
 
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-debug`"
-    :title="'⚙'"
+    title="⚙"
     tab-cls="ml-auto debug-feature debug-panel-tab"
     >
     <anno-editor-debug-panel
