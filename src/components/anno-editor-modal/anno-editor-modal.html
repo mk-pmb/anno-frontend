@@ -21,29 +21,14 @@
             />
         </div>
 
-        <!-- <h4>{{ l10n('annoeditor') }}</h4> -->
         <component :is="bootstrapOpts.tags.modalHeaderTitle"
-          class="modal-title"
-          v-if="editMode === 'create'">
-          {{ l10n(`annoeditor_mode_create`) }}
-        </component>
-        <component :is="bootstrapOpts.tags.modalHeaderTitle"
-          class="modal-title"
-          v-if="editMode === 'revise'">
-          {{ l10n(`annoeditor_mode_revise`) }}
-          <a
-            @mouseenter="startHighlighting(annoIdUrl)"
-            @mouseleave="stopHighlighting(annoIdUrl)"
-            >{{ this.annoIdToPermaUrl(annoIdUrl) }}</a>
-        </component>
-        <component :is="bootstrapOpts.tags.modalHeaderTitle"
-          class="modal-title"
-          v-if="editMode === 'reply'">
-          {{ l10n(`annoeditor_mode_reply`) }}
-          <a
-            @mouseenter="startHighlighting(replyTo)"
-            @mouseleave="stopHighlighting(replyTo)"
-            >{{ this.annoIdToPermaUrl(replyTo) }}</a>
+          v-for="hdr in [decideHeaderDetails()]" :key="0"
+          class="modal-title">
+          {{ l10n(hdr.title) }}
+          <a v-if="hdr.annoIdUrl"
+            @mouseenter="startHighlighting(hdr.annoIdUrl)"
+            @mouseleave="stopHighlighting(hdr.annoIdUrl)"
+            >{{ annoIdToPermaUrl(hdr.annoIdUrl) }}</a>
         </component>
 
         <div class="top-right-buttons ml-auto text-nowrap"
