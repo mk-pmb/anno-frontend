@@ -19,7 +19,7 @@ const decideAnnoTarget = require('./decideAnnoTarget.js');
 const saveCreate = require('./saveCreate.js');
 const fixupLegacyAnno = require('./fixupLegacyAnno.js');
 
-function soon(f) { return setTimeout(f, 1); }
+// function soon(f) { return setTimeout(f, 1); }
 
 
 module.exports = {
@@ -49,12 +49,14 @@ module.exports = {
         eventBus.$on('remove', this.remove)
         eventBus.$on('discard', this.discard)
         eventBus.$on('save', this.save)
+        eventBus.$on('switchEditorTabByRefName', editor.switchTabByRefName);
         eventBus.$on('close-editor', () => {
           document.body.classList.remove(editorOpenCssClass);
         });
-        eventBus.$on('open-editor', () => {
+        eventBus.$on('open-editor', function onOpenEditor(opt) {
+          if (!opt) { return onOpenEditor(true); }
           document.body.classList.add(editorOpenCssClass);
-          soon(() => editor.$refs.tablist.switchToNthTab(1));
+          editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
 
           const { targetImage, zoneEditor } = editor;
           if (zoneEditor) {
@@ -139,6 +141,11 @@ module.exports = {
       forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
       getCleanAnno() { return fixupLegacyAnno(this.$store.state.editing); },
 
+      switchTabByRefName(refName) {
+        const refs = this.$refs;
+        refs.tablist.switchToTabPaneByVueElem(refs[refName]);
+      },
+
       save() {
         const editor = this;
         const { editMode } = editor;
@@ -171,7 +178,7 @@ module.exports = {
           });
         },
 
-        create(/* annotation */) {
+        create() {
           const editor = this;
           const { commit, state } = editor.$store;
           commit('SET_EDIT_MODE', 'create');
