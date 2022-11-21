@@ -3,6 +3,7 @@
 /* eslint-disable global-require */
 
 
+const eventBus = require('../../event-bus.js');
 const installPopOvers = require('../../popover-helper.js').install;
 
 const defaultLinkRel = [
@@ -11,6 +12,7 @@ const defaultLinkRel = [
   'noopener',
   'noreferrer',
 ].join(' ');
+
 
 module.exports = {
 
@@ -22,6 +24,7 @@ module.exports = {
   props: {
     caption:      String,
     title:        String,
+    eventbusEmit: String,
     prefix:       { type: String, default: 'ubhdannoprefix_zoneeditor' },
     iconText:     String,    // for using Unicode as icons
     iconFa:       String,
@@ -82,6 +85,7 @@ module.exports = {
     clicked(ev) {
       const btn = this;
       btn.$emit('click', ev);
+      if (btn.eventbusEmit) { eventBus.$emit(btn.eventbusEmit); }
       if (btn.$slots.balloon) { btn.$el.classList.toggle('balloon-open'); }
     },
 

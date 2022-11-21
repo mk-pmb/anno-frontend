@@ -13,7 +13,7 @@
 
         <div class="top-right-buttons pull-right"
           v-if="bootstrapOpts.version.major < 4">
-          <bootstrap-button @click="discard"
+          <bootstrap-button eventbus-emit="discard"
             btn-class="close"
             data-dismiss="modal"
             aria-label="Close"
@@ -48,7 +48,7 @@
 
         <div class="top-right-buttons ml-auto text-nowrap"
           v-if="bootstrapOpts.version.major >= 4">
-          <bootstrap-button @click="discard"
+          <bootstrap-button eventbus-emit="discard"
             btn-class="close"
             data-dismiss="modal"
             aria-label="Close"
@@ -67,26 +67,24 @@
       <div class="modal-footer">
 
         <div class="pull-left">
-          <bootstrap-button @click="remove"
-            btn-class="outline-danger"
+          <bootstrap-button eventbus-emit="remove"
             icon-fa="trash-o"
-            v-if="$auth('remove', annoIdUrl) && editMode === 'revise'">
-            {{ l10n('delete_anno') }}
-          </bootstrap-button>
+            btn-class="outline-danger"
+            v-if="$auth('remove', annoIdUrl) && (editMode === 'revise')"
+            :caption="l10n('delete_anno')" />
         </div>
 
-        <bootstrap-button @click="discard"
+        <bootstrap-button eventbus-emit="discard"
+          icon-fa="close"
           btn-class="close btn-outline-secondary"
           data-dismiss="modal"
           aria-label="Close"
-          icon-fa="close">
-          {{ l10n('discard') }}
-        </bootstrap-button>
+          :caption="l10n('discard')" />
 
-        <bootstrap-button btn-class="primary" @click="save"
-          icon-fa="paper-plane">
-          {{ l10n('publish') }}
-        </bootstrap-button>
+        <bootstrap-button eventbus-emit="save"
+          icon-fa="paper-plane"
+          btn-class="primary"
+          :caption="l10n('publish')" />
 
       </div><!-- .modal-footer -->
 
