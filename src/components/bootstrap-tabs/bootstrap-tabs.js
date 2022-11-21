@@ -1,3 +1,7 @@
+// -*- coding: utf-8, tab-width: 2 -*-
+'use strict';
+/* eslint-disable global-require */
+
 const jQuery = require('jquery');
 
 const HelpButton = require('../help-button');
@@ -35,6 +39,18 @@ module.exports = {
       activate(refs.tabs.querySelectorAll('.nav-link'));
       // Show only the relevant pane:
       activate(refs.panesContainer.children);
+    },
+
+    switchToTabPaneByVueElem(elem) {
+      const panes = this.tabPanesAsVueElements();
+      let n = 0;
+      if (elem) {
+        n = panes.findIndex(p => (
+          (p === elem)
+          || (p === elem.$parent)
+        )) + 1;
+      }
+      this.switchToNthTab(n);
     },
 
   },
