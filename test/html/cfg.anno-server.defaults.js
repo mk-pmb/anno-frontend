@@ -8,6 +8,8 @@
 
   cfg.collection = 'default';
   cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
+  cfg.draftStoreEndpoint = (window.document.URL.split(/\?|\#/
+    )[0].replace(/\/html\/[\w\.]+$/, '') + '/drafts/');
 
   (function compile() {
     var l = document.createElement('a');

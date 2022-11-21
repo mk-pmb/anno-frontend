@@ -23,6 +23,9 @@ const srvCfg = {
   annoEndpoint: '', /*
     URL of the Web Annotation Protocol server. Should end with a slash.
   */
+  draftStoreEndpoint: '', /*
+    URL of a WebDAV collection. Should end with a slash.
+  */
 
   collection: 'default',
 

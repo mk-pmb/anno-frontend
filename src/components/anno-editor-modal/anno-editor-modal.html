@@ -66,6 +66,14 @@
           aria-label="Close"
           :caption="l10n('discard')" />
 
+        <div class="position-relative save-draft-buttons-area">
+          <bootstrap-button eventbus-emit="saveNewDraft"
+            icon-fa="floppy-o"
+            btn-class="outline-secondary"
+            v-if="$store.state.draftStoreEndpoint"
+            :caption="l10n('save_as_draft')" />
+        </div>
+
         <bootstrap-button eventbus-emit="save"
           icon-fa="paper-plane"
           btn-class="primary"
