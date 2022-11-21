@@ -35,7 +35,6 @@ module.exports = {
         annoIdUrl()    {return this.$store.state.editing.id},
         doi()          {return this.$store.state.editing.doi},
         editMode()     {return this.$store.state.editMode},
-        replyTo()      {return this.$store.state.editing.replyTo},
         editor()       {return this.$refs['editor']},
     },
 
@@ -56,6 +55,14 @@ module.exports = {
 
         startHighlighting(...args) {eventBus.$emit('startHighlighting', ...args)},
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},
+
+        decideHeaderDetails() {
+          const { editMode, editing } = this.$store.state;
+          const hdr = { title: 'annoeditor_mode_' + editMode };
+          if (editMode === 'revise') { hdr.annoIdUrl = editing.id; }
+          if (editMode === 'reply') { hdr.annoIdUrl = editing.replyTo; }
+          return hdr;
+        },
 
         updateModal(opt) {
           const vueDialog = this;
