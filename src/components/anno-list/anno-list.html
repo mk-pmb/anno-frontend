@@ -12,13 +12,9 @@
 
     <template v-if="$store.state.offerCreateNewAnnotationButton">
       <template v-if="$auth('create', targetSource)">
-        <button class="btn btn-sm
-          btn-success
-          create-new-annotation-button"
-          @click="create"
-          >
-          {{ l10n('compose_new_annot') }}
-        </button>
+        <bootstrap-button eventbus-emit="create"
+          btn-class="success create-new-annotation-button"
+          :caption="l10n('compose_new_annot')" />
         <template v-if="isLoggedIn">
           <!-- authorized AND logged in -->
           <help-button topic="popover-logged-in" />
@@ -62,14 +58,12 @@
     hidden-print
     " role="group">
 
-    <button class="btn btn-sm
+    <bootstrap-button caption="⚙" btn-class="
+      outline-secondary
       pull-right
       debug-feature
       debug-button-force-compose
-      "
-      @click="create"
-      >⚙
-    </button>
+      " eventbus-emit="create" />
 
     <bootstrap-button ref="btnCollapseAll"
       @click="collapseAll('toggle')"

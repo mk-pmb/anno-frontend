@@ -4,10 +4,6 @@
  *
  * List of [anno-viewer](#anno-viewer) components.
  *
- * #### Events
- *
- * - `create`: A new annotation on `targetSource` shall be created
- *
  * #### Methods
  *
  * ##### `collapseAll(state)`
@@ -110,7 +106,6 @@ module.exports = {
 
   methods: {
     sort(...args) { return this.$store.dispatch('sort', ...args); },
-    create() { return eventBus.$emit('create', this.targetSource); },
 
     logoutButtonClicked() {
       window.error(':TODO: Confirm logout');
