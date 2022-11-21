@@ -1,12 +1,19 @@
+// -*- coding: utf-8, tab-width: 2 -*-
+'use strict';
+/* eslint-disable global-require */
+
 module.exports = {
-    mixins: [require('@/mixin/l10n')],
-    template: require('./bootstrap-tab.html'),
-    props: {
-        title:  {type: String, required: true},
-        name:   {type: String, required: true},
-        topic:  {type: String, required: false},
-        tabCls:   {type: String, required: false},
-        paneCls:  {type: String, required: false},
-        visible:  { type: Boolean, default: true },
-    }
-}
+
+  mixins: require('@/mixin/l10n'),
+  template: require('./bootstrap-tab.html'),
+
+  props: {
+    title:    {type: String, required: true},
+    name:     {type: String, required: true},
+    topic:    String,
+    tabCls:   String,
+    paneCls:  String,
+    visible:  { type: Boolean, default: true },
+  },
+
+};
