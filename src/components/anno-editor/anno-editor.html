@@ -100,6 +100,17 @@
   </bootstrap-tab>
 
   <bootstrap-tab
+    :name="`${prefix}-${editorId}-tab-drafts`"
+    :title="l10n('drafts')"
+    v-if="$store.state.draftStoreEndpoint"
+    topic="drafts"
+    >
+    <anno-drafts-panel ref="draftsPanel"
+      :editorApi="{ getCleanAnno }"
+      />
+  </bootstrap-tab>
+
+  <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-debug`"
     title="⚙"
     tab-cls="ml-auto debug-feature debug-panel-tab"

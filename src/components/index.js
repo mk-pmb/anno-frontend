@@ -22,6 +22,7 @@ const components = {
     // editing
     'agent-identity-selector':    require('./agent-identity-selector'),
     'agent-profile-bulletable':   require('./agent-profile-bulletable'),
+    'anno-drafts-panel':          require('./anno-drafts-panel'),
     'anno-editor-licenses':       require('./anno-editor-licenses'),
     'anno-editor-modal':          require('./anno-editor-modal'),
     'anno-editor-rows-addable':   require('./anno-editor-rows-addable'),

@@ -1,6 +1,6 @@
 { "name": "anno-frontend",
   "private": true,
-  "version": "0.7.2201100441",
+  "version": "0.7.2211210700",
   "description": "UB Heidelberg Annotations Web Frontend",
   "main": "entry.js",
   "scripts": {
@@ -43,8 +43,10 @@
     "getown": "^1.0.0",
     "is-string": "^1.0.7",
     "jquery": "^3.6.0",
+    "lighter-crc32": "^1.0.0",
     "lodash.get": "^4.4.2",
     "lodash.mapvalues": "^4.6.0",
+    "lodash.memoize": "^4.1.2",
     "lodash.set": "^4.3.2",
     "merge-options": "^3.0.4",
     "p-each-series": "^3.0.0",

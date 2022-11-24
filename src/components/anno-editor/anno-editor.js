@@ -49,6 +49,10 @@ module.exports = {
         eventBus.$on('remove', this.remove)
         eventBus.$on('discard', this.discard)
         eventBus.$on('save', this.save)
+        eventBus.$on('saveNewDraft', () => {
+          editor.switchTabByRefName('draftsPanel');
+          editor.$refs.draftsPanel.saveNew();
+        });
         eventBus.$on('switchEditorTabByRefName', editor.switchTabByRefName);
         eventBus.$on('close-editor', () => {
           document.body.classList.remove(editorOpenCssClass);
