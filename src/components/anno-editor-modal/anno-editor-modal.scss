@@ -1,4 +1,7 @@
-#anno-editor-modal-content {
+.anno-editor-modal-dialog {
+
+  @media (min-width: 768px) { .modal-lg { max-width: 720px; } }
+  @media (min-width: 1020px) { .modal-lg { max-width: 960px; } }
 
   .panel-body {
     padding: 0.5em;

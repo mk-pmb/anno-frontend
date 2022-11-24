@@ -11,6 +11,18 @@ const EX = function fixupLegacyAnno(legacyEditorAnno) {
   delete anno.doi;
   delete anno.collection;
   delete anno.replyTo;
+
+  let bodies = [].concat(anno.body);
+  bodies = bodies.map(function cleanupBody(body) {
+    if (body.value) { return body; }
+    if (body.type && (body.type !== 'TextualBody')) { return body; }
+    return null;
+  }).filter(Boolean);
+  if (bodies.length === 0) { bodies = false; }
+  if (bodies.length === 1) { bodies = bodies[0]; }
+  anno.body = bodies;
+  if (!bodies) { delete anno.body; }
+
   return anno;
 };
 

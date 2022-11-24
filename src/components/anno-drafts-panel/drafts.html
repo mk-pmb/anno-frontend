@@ -1,0 +1,20 @@
+<div class="card panel panel-default drafts-panel">
+<div class="card-body panel-body">
+
+<section class="existing-drafts-list">
+
+<div class="row label-row">
+  <div class="col-sm label-col"
+    ><label>{{ l10n('existing_drafts') }}:</label></div>
+  <div class="col-sm action-col">
+    <bootstrap-button eventbus-emit="refreshDraftsList"
+      icon-fa="refresh"
+      :caption="l10n('refresh')" />
+  </div>
+</div>
+<div class="row list-row"><div class="col-xl"><ol>
+
+</ol></div></div>
+
+</div><!-- /.card panel -->
+</div><!-- /.card-body -->
