@@ -22,6 +22,15 @@ const annoDataCfg = {
   targetImageWidth: -1,
   targetThumbnail: null,
 
+  targetScopeImpliesSource: true, /*
+    Whether the targetImage can be unambiguously inferred from targetSource.
+    If set, the frontend will consider both targetImage and targetSource
+    to denote the same subject-matter.
+    This affects how drafts are saved, and grouped in the drafts list.
+    It's useful in cases where the scope represents a subject-matter that
+    is available in several formats, where the image is only one of them.
+  */
+
   targetFragment: null,
 
   iiifUrlTemplate: '',
