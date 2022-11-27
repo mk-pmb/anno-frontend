@@ -18,21 +18,14 @@ const defaultAxiosOpts = {
 };
 
 
-const EX = function apiFactory(state) {
-  const {
-    annoEndpoint,
-  } = state;
-
-  const api = {
-  };
-
-  async function annoEndpointRequest(method, subUrl, data) {
+const EX = function apiFactory(vueStoreState) {
+  async function endpointRequest(endpointName, method, subUrl, data) {
     if (!subUrl) { throw new Error('No endpoint sub URL given'); }
     try {
       const result = await axios({
         ...defaultAxiosOpts,
         method,
-        url: annoEndpoint + subUrl,
+        url: vueStoreState[endpointName + 'Endpoint'] + subUrl,
         data,
       });
       return result.data;
@@ -48,9 +41,14 @@ const EX = function apiFactory(state) {
     }
   }
 
+  const api = {
+    endpointRequest,
+  };
+
   supportedHttpMethods.forEach(function add(method) {
     // Define aepGet, aepPost etc.:
-    api['aep' + ucFirst(method)] = annoEndpointRequest.bind(null, method);
+    const key = 'aep' + ucFirst(method);
+    api[key] = endpointRequest.bind(null, 'anno', method);
   });
 
   return api;
