@@ -1,0 +1,26 @@
+<div
+  :class="[
+    'row',
+    'border',
+    (colorCls || 'border-primary text-default'),
+    'mb-4',
+    'msgbox-row',
+    ].concat(topicCls).filter(Boolean)"
+  v-show="!!text"
+  >
+  <div
+    :class="[
+      'col-xl',
+      'msgbox-col',
+      ].concat(topicCls).filter(Boolean)"
+    >
+    <p class="m-1">{{ textPre }}{{ text }}{{ textSuf }}</p>
+  </div>
+  <div class="col-sm-1">
+    <bootstrap-button @click="dismiss"
+      btn-class="close pull-right"
+      aria-label="Close"
+      icon-fa="close"
+      />
+  </div>
+</div>

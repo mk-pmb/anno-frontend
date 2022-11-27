@@ -2,45 +2,45 @@
 'use strict';
 /* eslint-disable global-require */
 
-const crc32 = require('lighter-crc32');
-const sortedJson = require('safe-sortedjson');
+const eventBus = require('../../event-bus.js');
 
-// const api22 = require('../../api22.js');
-// const eventBus = require('../../event-bus.js');
-
-function padStart(pad, text) { return (pad + text).slice(-pad.length); }
-function hash(data) { return padStart('00000000', crc32(data).toString(16)); }
-
-window.annoDraftHash = hash;
+const listDraftsGrouped = require('./listDraftsGrouped.js');
+const saveNew = require('./saveNew.js');
 
 
 module.exports = {
 
   template: require('./drafts.html'),
-  // style: require('./drafts.scss'),
+  style: require('./style.scss'),
 
   mixins: [
     require('../../mixin/l10n.js'),
+    require('../../mixin/prefix.js'),
   ],
+
+  data() { return {
+    allDrafts: [],
+    refreshDraftsHintVoc: 'init',
+  }; },
 
   props: {
     editorApi: Object,
   },
 
+  mounted() {
+    const panel = this;
+    eventBus.$on('reloadDraftsList', () => panel.reloadDraftsList());
+  },
+
   methods: {
 
-    async saveNew() {
-      // const { state } = editor.$store;
-      const panel = this;
-      const anno = panel.editorApi.getCleanAnno();
-
-      const draftJson = sortedJson(anno) + '\n';
-      const draftContentHash = hash(draftJson);
-      window.alert('Stub! >>' + draftJson + '<< ' + draftContentHash);
-    },
+    listDraftsGrouped,
+    saveNew,
 
   },
 
 };
 
-setTimeout(() => window.annoApp.eventBus.$emit('create'), 1e3);
+setTimeout(() => eventBus.$emit('create'), 1e3);
+setTimeout(() => eventBus.$emit('switchEditorTabByRefName',
+  'draftsPanel'), 2e3);

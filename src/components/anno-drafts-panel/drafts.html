@@ -1,20 +1,59 @@
 <div class="card panel panel-default drafts-panel">
 <div class="card-body panel-body">
 
-<section class="existing-drafts-list">
+<msgbox-row ref="statusMsg" />
+
+<div class="existing-drafts-list">
 
 <div class="row label-row">
   <div class="col-sm label-col"
     ><label>{{ l10n('existing_drafts') }}:</label></div>
-  <div class="col-sm action-col">
-    <bootstrap-button eventbus-emit="refreshDraftsList"
-      icon-fa="refresh"
-      :caption="l10n('refresh')" />
+  <div class="col-sm-1 action-col">
+    <div class="btn-group pull-right" role="group">
+      <bootstrap-button eventbus-emit="reloadDraftsList"
+        icon-fa="refresh"
+        :caption="l10n('refresh')" />
+    </div>
   </div>
 </div>
-<div class="row list-row"><div class="col-xl"><ol>
+<msgbox-row ref="refreshDraftsHintBox"
+  v-show="!!refreshDraftsHintVoc"
+  severity="warn"
+  :text="refreshDraftsHintVoc &&
+    l10n('scan_draftslist_' + refreshDraftsHintVoc)"
+  :textSuf="' ' + l10n('scan_draftslist_how')"
+  />
+<div class="row list-row"><div class="col-xl">
+  <div v-for="draftGroup in listDraftsGrouped()" :key="draftGroup.voc"
+    class="draft-group
+      border-secondary
+      border-bottom
+      mb-4
+      "
+    :data-draft-group="draftGroup.voc"
+    >
+    <h6
+      class="mb-0"
+      :data-voc="draftGroup.voc"
+      :data-n="draftGroup.items.length"
+      >{{ l10n('draft_group_' + draftGroup.voc) }}
+      <span class="number-of-items">(<var>{{
+        draftGroup.items.length }}</var>)</span>
+      </h6>
+      <ol>
+        <li v-for="draftMeta in draftGroup.items"
+          :key="draftGroup.voc + ':' + draftMeta.filename"
+        >{{ draftMeta.filename }}</li>
+      </ol>
+    </div>
+  </div>
+</div></div><!-- /.col-xl /.row -->
 
-</ol></div></div>
 
-</div><!-- /.card panel -->
+
+</div></div>
+
+</div><!-- /.existing-drafts-list -->
+
 </div><!-- /.card-body -->
+</div><!-- /.card panel -->

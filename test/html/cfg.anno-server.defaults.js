@@ -9,7 +9,7 @@
   cfg.collection = 'default';
   cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
   cfg.draftStoreEndpoint = (window.document.URL.split(/\?|\#/
-    )[0].replace(/\/html\/[\w\.]+$/, '') + '/drafts/');
+    )[0].replace(/\/html\/[\w\.]+$/, '') + '/fixtures/drafts/');
 
   (function compile() {
     var l = document.createElement('a');

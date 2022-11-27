@@ -1,0 +1,26 @@
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": [
+    {
+      "label": "Pferd",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/4045503-8",
+      "value": "Pferd"
+    },
+    {
+      "label": "Pferdekopf <Motiv>",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/4174027-0",
+      "value": "Pferdekopf <Motiv>"
+    }
+  ],
+  "rights": "https://creativecommons.org/licenses/by/4.0/",
+  "target": {
+    "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg389/0015",
+    "selector": {
+      "type": "SvgSelector",
+      "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n  width=\"1494\">\n  <ellipse cx=\"1027.6988996816626\" cy=\"1885.7065430113028\" rx=\"89.10303587856492\" ry=\"97.20331186752514\"/>\n</svg>"
+    },
+    "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg389/0015/_image"
+  },
+  "title": "Pferdekopf"
+}

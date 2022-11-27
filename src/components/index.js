@@ -9,6 +9,7 @@ const components = {
     'bootstrap-button':  require('./bootstrap-button'),
     'bootstrap-tab':     require('./bootstrap-tab'),
     'bootstrap-tabs':    require('./bootstrap-tabs'),
+    'msgbox-row':        require('./msgbox-row'),
     'teleport':          vue2Teleport,
 
     // viewing
