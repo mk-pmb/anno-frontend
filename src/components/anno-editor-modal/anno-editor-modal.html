@@ -33,6 +33,11 @@
 
         <div class="top-right-buttons ml-auto text-nowrap"
           v-if="bootstrapOpts.version.major >= 4">
+          <bootstrap-button eventbus-emit="saveNewDraft"
+            btn-class="none"
+            icon-fa="floppy-o"
+            v-if="$store.state.draftStoreEndpoint"
+            />
           <bootstrap-button eventbus-emit="discard"
             btn-class="close"
             data-dismiss="modal"
