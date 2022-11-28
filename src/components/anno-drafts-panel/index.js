@@ -4,7 +4,9 @@
 
 const eventBus = require('../../event-bus.js');
 
+const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
 const listDraftsGrouped = require('./listDraftsGrouped.js');
+const reloadDraftsList = require('./reloadDraftsList.js');
 const saveNew = require('./saveNew.js');
 
 
@@ -34,8 +36,15 @@ module.exports = {
 
   methods: {
 
+    downloadAndRestoreDraft,
     listDraftsGrouped,
+    reloadDraftsList,
     saveNew,
+
+    clickedRestoreDraft(evt) {
+      const { filename } = evt.target.parentElement.dataset;
+      return this.downloadAndRestoreDraft(filename);
+    },
 
   },
 

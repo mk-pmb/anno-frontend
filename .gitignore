@@ -11,4 +11,8 @@
 /.nyc_output
 
 
+# Host-specific files
+/*.@*
+
+
 # unsorted stuff (this section should be empty):

@@ -3,19 +3,24 @@
 /* eslint-disable global-require */
 
 const draftGroupsConfig = require('./cfg.draftGroups.js');
+const hash = require('./hash.js');
 
 
-function decideVocGroup(draft, editorAnno) {
-  if (!draft) { return; }
-  if (!editorAnno) { return; }
-  if (draft.id === editorAnno.id) { return 'same_anno'; }
-  console.debug('decideVocGroup', draft, editorAnno.$store.state);
+function decideVocGroup(draftMeta, annoHashes) {
+  if (!draftMeta) { return; }
+  if (!annoHashes) { return; }
+  const sameAnno = ((draftMeta.annoIdUrlHash === annoHashes.annoIdUrl)
+    && (draftMeta.annoIdUrlHash !== '0')
+    );
+  if (sameAnno) { return 'same_anno'; }
+  if (draftMeta.targetHash === '0') { return 'no_target'; }
+  if (draftMeta.targetHash === annoHashes.target) { return 'same_subj'; }
 }
 
 
 const EX = function listDraftsGrouped() {
   const panel = this;
-  const editorAnno = panel.editorApi.getCleanAnno();
+  const editorAnnoHashes = hash.fileNameHashes(panel.editorApi.getCleanAnno());
   const byVoc = {};
   const groups = draftGroupsConfig.map(function setup(grpCfg) {
     const gr = {
@@ -25,11 +30,11 @@ const EX = function listDraftsGrouped() {
     byVoc[grpCfg.voc] = gr;
     return gr;
   });
+  window.groups = groups;
   groups.byVoc = byVoc;
-  panel.allDrafts.forEach(function add(draft) {
-    const gr = decideVocGroup(draft, editorAnno);
-    const { items } = (groups.byVoc[gr] || groups.other);
-    items.push(draft);
+  panel.allDrafts.forEach(function add(draftMeta) {
+    const grVoc = decideVocGroup(draftMeta, editorAnnoHashes);
+    (byVoc[grVoc] || byVoc.other).items.push(draftMeta);
   });
   return groups;
 };
