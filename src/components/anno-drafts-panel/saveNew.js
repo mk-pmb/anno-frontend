@@ -31,13 +31,14 @@ const EX = async function saveNew() {
     await api22(state).endpointRequest('draftStore',
       'PUT', fileName, draftJson);
     statusMsg.setMsg({ severity: 'ok', text: '💾 ✅ ' + fileName });
+    panel.refreshDraftsHintVoc = 'old';
   } catch (apiFail) {
     const debugSave = ('>' + fileName + ' '
       + draftJson.replace(/"/g, "'").replace(/\n/g, '¶'));
     Object.assign(apiFail, { '>': debugSave, fileName, draftJson });
     const text = '💾 ❌ ' + apiFail;
     statusMsg.setMsg({ severity: 'fail', text });
-    console.error(apiFail);
+    console.debug(EX.name, { apiFail });
     if (state.debugPromptSaveOnPutFail) {
       setTimeout(() => window.prompt(text, debugSave), 1);
     }
