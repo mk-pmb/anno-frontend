@@ -20,7 +20,9 @@ const defaultAxiosOpts = {
 
 const EX = function apiFactory(vueStoreState) {
   async function endpointRequest(endpointName, method, subUrl, data) {
-    if (!subUrl) { throw new Error('No endpoint sub URL given'); }
+    if ((!subUrl) && (subUrl !== '')) {
+      throw new Error('No endpoint sub URL given');
+    }
     try {
       const result = await axios({
         ...defaultAxiosOpts,

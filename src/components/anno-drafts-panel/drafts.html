@@ -7,7 +7,7 @@
 
 <div class="row label-row">
   <div class="col-sm label-col"
-    ><label>{{ l10n('existing_drafts') }}:</label></div>
+    ><h4>{{ l10n('existing_drafts') }}</h4></div>
   <div class="col-sm-1 action-col">
     <div class="btn-group pull-right" role="group">
       <bootstrap-button eventbus-emit="reloadDraftsList"
@@ -16,34 +16,34 @@
     </div>
   </div>
 </div>
-<msgbox-row ref="refreshDraftsHintBox"
-  v-show="!!refreshDraftsHintVoc"
-  severity="warn"
-  :text="refreshDraftsHintVoc &&
-    l10n('scan_draftslist_' + refreshDraftsHintVoc)"
-  :textSuf="' ' + l10n('scan_draftslist_how')"
-  />
+
+<div v-show="!!refreshDraftsHintVoc" class="row mb-4 drafts-list-reload-hint">
+  <div class="col-xl bg-warning"><p class="m-2">
+    {{ l10n('scan_draftslist_' + refreshDraftsHintVoc) }}
+    {{ l10n('scan_draftslist_how') }}
+  </p></div>
+</div>
+
 <div class="row list-row"><div class="col-xl">
   <div v-for="draftGroup in listDraftsGrouped()" :key="draftGroup.voc"
-    class="draft-group
-      border-secondary
-      border-bottom
-      mb-4
-      "
+    class="draft-group border-bottom mb-4"
     :data-draft-group="draftGroup.voc"
     >
-    <h6
+    <h5
       class="mb-0"
       :data-voc="draftGroup.voc"
       :data-n="draftGroup.items.length"
       >{{ l10n('draft_group_' + draftGroup.voc) }}
       <span class="number-of-items">(<var>{{
         draftGroup.items.length }}</var>)</span>
-      </h6>
+      </h5>
       <ol>
         <li v-for="draftMeta in draftGroup.items"
-          :key="draftGroup.voc + ':' + draftMeta.filename"
-        >{{ draftMeta.filename }}</li>
+          :key="draftGroup.voc + ':' + draftMeta.fileName"
+          :data-filename="draftMeta.fileName"
+        >{{ draftMeta.fileName }}
+          <bootstrap-button @click="clickedRestoreDraft" icon-fa="edit" />
+        </li>
       </ol>
     </div>
   </div>
