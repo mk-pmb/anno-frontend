@@ -3,6 +3,39 @@
 
 <msgbox-row ref="statusMsg" />
 
+<div class="save-as-draft
+  border-bottom pb-4
+  ">
+
+<div class="row draft-filename-comment"><div class="col-xl">
+  <h4>{{ l10n('save_as_draft') }}</h4>
+  <div>{{ l10n('draft_filename_comment') }}:</div>
+  <div class="ml-4">
+    <input class="form-control" type="text"
+      v-model="draftFilenameCommentCustom">
+    <div class="form-control-explain smallprint filename-rules">{{
+      l10n('draft_filename_rules')
+      .replace(/@@maxlen@@/g, draftFilenameCommentMaxLen)
+    }}</div>
+  </div>
+</div></div>
+<div class="row">
+  <div class="col-sm-3">{{ l10n('draft_filename_adjusted') }}:</div>
+  <div class="col-xl"><code>{{ draftFilenameCommentAdjusted }}</code></div>
+  <div class="col-sm-1">
+    <div class="btn-group pull-right" role="group">
+      <bootstrap-button eventbus-emit="saveNewDraft"
+        icon-fa="floppy-o"
+        btn-class="outline-primary"
+        :caption="l10n('save')" />
+    </div>
+  </div>
+</div></div>
+
+</div><!-- /.save-as-draft -->
+
+
+
 <div class="existing-drafts-list">
 
 <div class="row label-row">
@@ -37,12 +70,19 @@
       <span class="number-of-items">(<var>{{
         draftGroup.items.length }}</var>)</span>
       </h5>
-      <ol>
+      <ol class="p-0 ml-0">
         <li v-for="draftMeta in draftGroup.items"
           :key="draftGroup.voc + ':' + draftMeta.fileName"
           :data-filename="draftMeta.fileName"
-        >{{ draftMeta.fileName }}
-          <bootstrap-button @click="clickedRestoreDraft" icon-fa="edit" />
+          class="row"
+        >
+          <div class="col-sm-2 text-nowrap smallprint date-time-col"
+            >{{ draftMeta.humanDate }}<br>{{ draftMeta.humanTime }}</div>
+          <div class="col-sm-1 buttons-col">
+            <bootstrap-button @click="clickedRestoreDraft" icon-fa="edit" />
+          </div>
+          <div class="col-xl custom-name-part-col"
+            >{{ draftMeta.customNamePart }}</div>
         </li>
       </ol>
     </div>

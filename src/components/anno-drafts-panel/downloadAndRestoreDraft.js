@@ -12,9 +12,10 @@ const EX = async function downloadAndRestoreDraft(fileName) {
   // const { l10n } = panel;
   statusMsg.setMsg({ text: '⏳ ' + fileName });
 
+  const store = panel.$store;
   let draftData;
   try {
-    draftData = await api22(panel.$store.state).endpointRequest('draftStore',
+    draftData = await api22(store.state).endpointRequest('draftStore',
       'GET', fileName);
   } catch (apiFail) {
     console.debug(EX.name, { apiFail });
@@ -22,8 +23,9 @@ const EX = async function downloadAndRestoreDraft(fileName) {
     return;
   }
 
-  await panel.$store.commit('INJECTED_MUTATION', [
-    function upd(state) { state.editing = draftData; }
+  await store.commit('RESET_ANNOTATION');
+  await store.commit('INJECTED_MUTATION', [
+    function upd(state) { Object.assign(state.editing, draftData); }
   ]);
   eventBus.$emit('switchEditorTabByRefName', 'commentTextTab');
 };

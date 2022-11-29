@@ -21,6 +21,7 @@ module.exports = {
   ],
 
   data() { return {
+    draftFilenameCommentCustom: '',
     allDrafts: [],
     refreshDraftsHintVoc: 'init',
   }; },
@@ -34,6 +35,25 @@ module.exports = {
     eventBus.$on('reloadDraftsList', () => panel.reloadDraftsList());
   },
 
+  computed: {
+
+    draftFilenameCommentMaxLen() {
+      const n = (+this.$store.state.draftFilenameCommentMaxLen || 0);
+      return (n >= 1 ? n : 64);
+    },
+
+    draftFilenameCommentAdjusted() {
+      let v = this.draftFilenameCommentCustom
+        || this.editorApi.getAnnoTitle()
+        || this.l10n('no_data');
+      v = (String(v).match(/[\w\-]+/g) || []).join(' ');
+      v = v.replace(/ (?=_)/g, '').replace(/_ /g, '_').replace(/ /g, '_');
+      v = v.slice(0, this.draftFilenameCommentMaxLen).toLowerCase();
+      return v;
+    },
+
+  },
+
   methods: {
 
     downloadAndRestoreDraft,
@@ -42,7 +62,8 @@ module.exports = {
     saveNew,
 
     clickedRestoreDraft(evt) {
-      const { filename } = evt.target.parentElement.dataset;
+      window.restoreTgt = evt.target;
+      const { filename } = evt.target.parentElement.parentElement.dataset;
       return this.downloadAndRestoreDraft(filename);
     },
 

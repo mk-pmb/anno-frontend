@@ -3,6 +3,7 @@
 /* eslint-disable global-require */
 
 const dateFmt = require('now-yyyymmdd-hhmmss');
+const pDelay = require('delay');
 const sortedJson = require('safe-sortedjson');
 
 const api22 = require('../../api22.js');
@@ -13,14 +14,11 @@ const hash = require('./hash.js');
 const EX = async function saveNew() {
   const panel = this;
   const anno = panel.editorApi.getCleanAnno();
-  const fileNameHashes = hash.fileNameHashes(anno);
 
   const draftJson = sortedJson(anno).replace(/'/g, '\\u0027') + '\n';
   const draftContentHash = hash.weaklyHashAnnoDraft(draftJson);
-  const fileName = (dateFmt()
-    + '-' + fileNameHashes.target
-    + '-' + fileNameHashes.annoIdUrl
-    + '-' + draftContentHash
+  const fileName = (EX.compileMinusParts(anno, draftContentHash).join('-')
+    + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
   const { statusMsg } = panel.$refs;
@@ -37,13 +35,37 @@ const EX = async function saveNew() {
       + draftJson.replace(/"/g, "'").replace(/\n/g, '¶'));
     Object.assign(apiFail, { '>': debugSave, fileName, draftJson });
     const text = '💾 ❌ ' + apiFail;
-    statusMsg.setMsg({ severity: 'fail', text });
     console.debug(EX.name, { apiFail });
     if (state.debugPromptSaveOnPutFail) {
-      setTimeout(() => window.prompt(text, debugSave), 1);
+      await pDelay(1);
+      if (window.prompt(text, debugSave) === 'ok') { return; }
     }
+    statusMsg.setMsg({ severity: 'fail', text });
+    throw apiFail;
   }
 };
+
+
+Object.assign(EX, {
+
+  compileMinusParts(anno, contentHash) {
+    const h = hash.fileNameHashes(anno);
+    const p = dateFmt.parts();
+    const m = {
+      date: p.d,
+      time: p.t,
+      targetHash: h.target,
+      annoIdUrlHash: h.annoIdUrl,
+      contentHash,
+    };
+    return hash.minusPartKeys.map(function lookup(k) {
+      const v = m[k];
+      if (!v) { throw new Error('Mislabeled meta data slot: ' + k); }
+      return v;
+    });
+  },
+
+});
 
 
 module.exports = EX;
