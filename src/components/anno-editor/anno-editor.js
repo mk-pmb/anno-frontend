@@ -144,6 +144,7 @@ module.exports = {
 
       forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
       getCleanAnno() { return fixupLegacyAnno(this.$store.state.editing); },
+      getAnnoTitle() { return this.$store.state.editing.title; },
 
       switchTabByRefName(refName) {
         const refs = this.$refs;

@@ -1,6 +1,21 @@
-﻿
-.drafts-panel {
+﻿.drafts-panel {
 
   var { font-style: inherit; }
+
+  .smallprint {
+    font-size: 85%;
+    line-height: 1.2;
+  }
+
+  .form-control-explain {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .draft-group ol { list-style-type: none; }
+
+  .draft-group ol .date-time-col { text-align: right; }
+
 
 }

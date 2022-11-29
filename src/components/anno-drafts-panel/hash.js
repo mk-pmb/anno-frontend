@@ -8,6 +8,15 @@ const isStr = require('is-string');
 function padStart(pad, text) { return (pad + text).slice(-pad.length); }
 
 
+const minusPartKeys = [
+  'date',
+  'time',
+  'targetHash',
+  'annoIdUrlHash',
+  'contentHash',
+];
+
+
 function guessPrimaryTargetUri(anno) {
   const t0 = [].concat(anno.target).filter(Boolean);
   return (t0.source || t0.id /* Anno ID */ || t0);
@@ -86,6 +95,7 @@ function fileNameHashes(anno) {
 module.exports = {
   fileNameHashes,
   guessPrimaryTargetUri,
+  minusPartKeys,
   weaklyHashAnnoDraft,
   weaklyHashUri,
 };

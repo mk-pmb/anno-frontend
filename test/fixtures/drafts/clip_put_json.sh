@@ -20,7 +20,7 @@ function clip_put_json () {
   echo -n "$CLIP" >"$SAVE_FN"
 
   local CRC_WANT="$SAVE_FN"
-  CRC_WANT="${CRC_WANT##*-*-*-*-}"
+  CRC_WANT="${CRC_WANT#*-*-*-*-}"
   CRC_WANT="${CRC_WANT%%.*}"
   CRC_WANT="${CRC_WANT%%-*}"
   local CRC_RCVD="$(crc32 /dev/stdin <"$SAVE_FN")"
