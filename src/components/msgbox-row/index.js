@@ -60,7 +60,9 @@ const compoDef = {
       const pr = panel.$props;
       const m = {};
       simpleStringProps.forEach(key => { m[key] = (pr[key] || ''); });
-      panel.msg = Object.assign(m, msg);
+      Object.assign(m, msg);
+      panel.msg = m;
+      console.debug('msgbox upd:', { ...m });
       return this;
     },
 
