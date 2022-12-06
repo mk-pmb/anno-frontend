@@ -2,13 +2,23 @@
 'use strict';
 
 const objFromKeysList = require('obj-from-keys-list').default;
+const isStr = require('is-string');
 
 
 const severityColors = {
   fail:   'border-danger text-danger',
-  warn:   'bg-warning text-default',
   info:   'border-info text-info',
   ok:     'border-succcess text-succcess',
+  wait:   'border-secondary text-default',
+  warn:   'bg-warning text-default',
+};
+
+const severityIcons = {
+  fail: '❌',
+  info: '💡',
+  ok: '✅',
+  wait: '⏳',
+  warn: '⚠',
 };
 
 
@@ -24,6 +34,7 @@ const simpleStringProps = (function init () {
   ssp.emptyStrings = objFromKeysList(() => '', ssp);
   return ssp;
 }());
+
 
 
 const compoDef = {
@@ -43,11 +54,19 @@ const compoDef = {
   },
 
   computed: {
+
     colorCls() {
       const sev = this.severity;
       return (severityColors[sev || '']
         || ('border-' + (sev || 'secondary') + ' text-default'));
     },
+
+    maybeIcon() {
+      const icon = severityIcons[this.severity];
+      if (icon) { return icon + ' '; }
+      return '';
+    },
+
   },
 
   methods: {
@@ -55,15 +74,17 @@ const compoDef = {
     reset() { this.setMsg(); },
     dismiss() { this.setMsg({ text: '' }); },
 
-    setMsg(msg) {
-      const panel = this;
-      const pr = panel.$props;
+    setMsg(severity, text, ...opt) {
+      const box = this;
+      if (isStr(severity)) { return box.setMsg({ severity }, text, ...opt); }
+      if (isStr(text)) { return box.setMsg(severity, { text }, ...opt); }
+      const pr = box.$props;
       const m = {};
       simpleStringProps.forEach(key => { m[key] = (pr[key] || ''); });
-      Object.assign(m, msg);
-      panel.msg = m;
+      Object.assign(m, severity, text, ...opt);
+      box.msg = m;
       console.debug('msgbox upd:', { ...m });
-      return this;
+      return box;
     },
 
   },
