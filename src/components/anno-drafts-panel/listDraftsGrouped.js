@@ -22,7 +22,8 @@ const EX = function listDraftsGrouped() {
   const panel = this;
   const editorAnnoHashes = hash.fileNameHashes(panel.editorApi.getCleanAnno());
   const byVoc = {};
-  const groups = draftGroupsConfig.map(function setup(grpCfg) {
+  const appCfg = panel.$store.state;
+  const groups = draftGroupsConfig(appCfg).map(function setup(grpCfg) {
     const gr = {
       ...grpCfg,
       items: [],
