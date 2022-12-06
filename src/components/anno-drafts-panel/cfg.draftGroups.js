@@ -1,14 +1,22 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const grp = [
+function getDraftGroups(cfg) {
+  const sameSvc = (cfg.draftGroupSameServiceTargetPrefix && {
+    voc: 'same_svc',
+  });
 
-  { voc: 'same_anno' },
-  { voc: 'same_subj' },
-  { voc: 'other' },
-  { voc: 'no_target' },
+  const grp = [
 
-];
+    { voc: 'same_anno' },
+    { voc: 'same_subj' },
+    sameSvc,
+    { voc: 'other' },
+    { voc: 'no_target' },
+
+  ].filter(Boolean);
+  return grp;
+}
 
 
-module.exports = grp;
+module.exports = getDraftGroups;
