@@ -2,9 +2,12 @@
 'use strict';
 /* eslint-disable global-require */
 
+const jQuery = require('jquery');
+
 const eventBus = require('../../event-bus.js');
 
 const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
+const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 const listDraftsGrouped = require('./listDraftsGrouped.js');
 const reloadDraftsList = require('./reloadDraftsList.js');
 const saveNew = require('./saveNew.js');
@@ -33,6 +36,7 @@ module.exports = {
   mounted() {
     const panel = this;
     eventBus.$on('reloadDraftsList', () => panel.reloadDraftsList());
+    panel.scheduleAutoRescanDraftsList();
   },
 
   computed: {
@@ -61,17 +65,29 @@ module.exports = {
     reloadDraftsList,
     saveNew,
 
+    scheduleAutoRescanDraftsList() {
+      setTimeout(() => eventBus.$emit('reloadDraftsList'), 100);
+    },
+
     clickedDraftActionButton(evt) {
-      const meta = {
-        ...evt.target.parentElement.parentElement.dataset,
-        ...evt.target.dataset,
-      };
+      const parents = jQuery(evt.target).parentsUntil('ul, ol').toArray();
+      const datasets = parents.reverse().map(x => x.dataset);
+      const meta = Object.assign({}, ...datasets);
       console.debug('clickedDraftActionButton', meta);
-      const { action, confirm } = meta;
+      const { action } = meta;
       const impl = this[action];
       if (!impl) { throw new Error('Draft action not implemented: ' + action); }
-      if (confirm && (!window.confirm(confirm))) { return; }
       return impl.call(this, meta);
+    },
+
+    async reallyDeleteDraft(meta) {
+      return genericSimpleApiCall({
+        ...meta,
+        panel: this,
+        confirmVoc: 'delete_draft_confirm',
+        actionDescrVoc: 'delete_draft',
+        apiVerb: 'DELETE',
+      });
     },
 
   },

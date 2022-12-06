@@ -78,11 +78,16 @@
         >
           <div class="col-sm-2 text-nowrap smallprint date-time-col"
             >{{ draftMeta.humanDate }}<br>{{ draftMeta.humanTime }}</div>
-          <div class="col-sm-1 buttons-col">
+          <div class="col-sm-1 text-nowrap buttons-col">
             <bootstrap-button icon-fa="edit"
               @click="clickedDraftActionButton"
               data-action="downloadAndRestoreDraft"
               :title="l10n('edit_draft')"
+              />
+            <bootstrap-button icon-fa="trash-o"
+              @click="clickedDraftActionButton"
+              data-action="reallyDeleteDraft"
+              :title="l10n('delete_draft')"
               />
           </div>
           <div class="col-xl custom-name-part-col"

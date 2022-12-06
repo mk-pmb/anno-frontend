@@ -6,7 +6,7 @@ const dateFmt = require('now-yyyymmdd-hhmmss');
 const pDelay = require('delay');
 const sortedJson = require('safe-sortedjson');
 
-const api22 = require('../../api22.js');
+const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 
 const hash = require('./hash.js');
 
@@ -17,32 +17,28 @@ const EX = async function saveNew() {
 
   const draftJson = sortedJson(anno).replace(/'/g, '\\u0027') + '\n';
   const draftContentHash = hash.weaklyHashAnnoDraft(draftJson);
-  const fileName = (EX.compileMinusParts(anno, draftContentHash).join('-')
+  const filename = (EX.compileMinusParts(anno, draftContentHash).join('-')
     + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
-  const { statusMsg } = panel.$refs;
-  statusMsg.setMsg({ text: '💾 ⏳ ' + fileName });
-
-  const { state } = panel.$store;
-  try {
-    await api22(state).endpointRequest('draftStore',
-      'PUT', fileName, draftJson);
-    statusMsg.setMsg({ severity: 'ok', text: '💾 ✅ ' + fileName });
-    panel.refreshDraftsHintVoc = 'old';
-  } catch (apiFail) {
-    const debugSave = ('>' + fileName + ' '
-      + draftJson.replace(/"/g, "'").replace(/\n/g, '¶'));
-    Object.assign(apiFail, { '>': debugSave, fileName, draftJson });
-    const text = '💾 ❌ ' + apiFail;
-    console.debug(EX.name, { apiFail });
-    if (state.debugPromptSaveOnPutFail) {
-      await pDelay(1);
-      if (window.prompt(text, debugSave) === 'ok') { return; }
-    }
-    statusMsg.setMsg({ severity: 'fail', text });
-    throw apiFail;
-  }
+  genericSimpleApiCall({
+    panel,
+    actionDescrVoc: 'save_as_draft',
+    apiVerb: 'PUT',
+    filename,
+    apiData: draftJson,
+    async apiCatch(err) {
+      const debugSave = ('>' + filename + ' '
+        + draftJson.replace(/"/g, "'").replace(/\n/g, '¶'));
+      Object.assign(err, { '>': debugSave, filename, draftJson });
+      console.debug(EX.name, { err });
+      if (panel.$store.state.debugPromptSaveOnPutFail) {
+        await pDelay(1);
+        if (window.prompt(String(err), debugSave) === 'ok') { return; }
+      }
+      throw err;
+    },
+  });
 };
 
 

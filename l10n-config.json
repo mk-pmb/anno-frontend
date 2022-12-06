@@ -143,7 +143,9 @@
             "tags":                "Stichworte",
 
             "delete_anno":         "Löschen",
-            "delete_anno_confirm": "Sind sie sicher dass Sie die Annotation löschen wollen?",
+            "delete_anno_confirm": "Diese Annotation wirklich endgültig löschen?",
+            "delete_draft":        "Löschen",
+            "delete_draft_confirm": "Diesen Entwurf wirklich endgültig löschen?",
 
             "mint_doi":            "DOI registrieren",
             "mint_doi.success":    "DOI wurde registriert. Vermutlich müssen Sie die Seite neu laden und die Annotation erneut aufklappen, um die DOI zu sehen. Für diesen Mehraufwand bitten wir um Verzeihung. Er wird hoffentlich ab Winter 2022 entfallen.",
@@ -152,6 +154,10 @@
             "annoeditor":          "Annotations-Editor",
 
             "preview":             "Vorschau",
+
+            "generic_api_call_in_progress":   "Wird verarbeitet:",
+            "generic_api_call_failed":        "Fehlgeschlagen:",
+            "generic_api_call_success":       "Erfolg:",
 
             "relationlink_predicate=http://www.w3.org/2000/01/rdf-schema#seeAlso": "siehe auch",
             "relationlink_predicate=http://purl.org/dc/terms/references": "referenziert",
@@ -343,6 +349,8 @@
 
             "delete_anno":         "Delete",
             "delete_anno_confirm": "Are you sure you want to delete this annotation?",
+            "delete_draft":        "Delete",
+            "delete_draft_confirm": "Are you sure you want to delete this draft?",
 
             "mint_doi":            "Mint DOI",
             "mint_doi.success":    "A DOI was registered. To see the new DOI, you'll probably need to reload the page and open the annotation again. We apologize for this inconvenience. We hope we will be able to rectify this in winter of 2022.",
@@ -397,6 +405,10 @@
             "relationlink_predicate=http://terminology.lido-schema.org/lido01086": "had formerly part",
 
             "preview":             "Preview",
+
+            "generic_api_call_in_progress":   "Waiting for result:",
+            "generic_api_call_failed":        "Failed:",
+            "generic_api_call_success":       "Success:",
 
             "fmt_bold": "Bold"
         }
