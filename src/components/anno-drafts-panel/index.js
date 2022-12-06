@@ -61,10 +61,17 @@ module.exports = {
     reloadDraftsList,
     saveNew,
 
-    clickedRestoreDraft(evt) {
-      window.restoreTgt = evt.target;
-      const { filename } = evt.target.parentElement.parentElement.dataset;
-      return this.downloadAndRestoreDraft(filename);
+    clickedDraftActionButton(evt) {
+      const meta = {
+        ...evt.target.parentElement.parentElement.dataset,
+        ...evt.target.dataset,
+      };
+      console.debug('clickedDraftActionButton', meta);
+      const { action, confirm } = meta;
+      const impl = this[action];
+      if (!impl) { throw new Error('Draft action not implemented: ' + action); }
+      if (confirm && (!window.confirm(confirm))) { return; }
+      return impl.call(this, meta);
     },
 
   },
