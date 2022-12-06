@@ -170,7 +170,7 @@ module.exports = {
         },
 
         remove(annoOrId) {
-          if (!window.confirm(this.l10n('confirm_delete'))) { return; }
+          if (!window.confirm(this.l10n('delete_anno_confirm'))) { return; }
           const annoIdUrl = (annoOrId.id || annoOrId);
           const self = this;
           const { api, $store } = self;
