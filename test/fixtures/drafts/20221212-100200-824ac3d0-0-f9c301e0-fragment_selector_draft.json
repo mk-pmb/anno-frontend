@@ -1,0 +1,12 @@
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "creator": null,
+  "rights": "https://creativecommons.org/licenses/by/4.0/",
+  "target": {
+    "selector": {
+      "type": "FragmentSelector",
+      "value": "frag-ex1"
+    },
+    "source": "http://anno.test/displayAnnotations"
+  },
+  "title": "Fragment Selector Draft"
+}
