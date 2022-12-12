@@ -8,9 +8,12 @@
   }
 
   .form-control-explain {
-    display: block;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    display: none;
+    position: absolute; left: 0; right: 0; top: 0;
+  }
+  input:focus + .form-control-explain { display: block; }
+  .form-control-explain > div {
+    position: absolute; left: 0; right: 0; bottom: 2px;
   }
 
   .draft-group ol { list-style-type: none; }
