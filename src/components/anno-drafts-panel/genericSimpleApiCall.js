@@ -2,6 +2,8 @@
 'use strict';
 /* eslint-disable global-require */
 
+const getOwn = require('getown');
+
 const api22 = require('../../api22.js');
 
 
@@ -16,6 +18,7 @@ const EX = async function genericSimpleApiCall(how) {
     filename,
     panel,
     refine,
+    silent,
   } = how;
 
   const { l10n } = panel;
@@ -23,19 +26,22 @@ const EX = async function genericSimpleApiCall(how) {
     if (!window.confirm(l10n(confirmVoc))) { return; }
   }
 
-  const spad = l10n(actionDescrVoc).replace(/<<filename>>/g, filename) + ' ';
+  function vocSlot(m, k) { return getOwn(vocSlot.s, k, '?' + m + '?'); }
+  vocSlot.s = {
+    filename,
+    ...(how.vocSlots || false),
+  };
+  const spad = (' ' + l10n(actionDescrVoc).replace(/@@(\w+)@@/g, vocSlot));
   const { state } = panel.$store;
-  const { statusMsg } = panel.$refs;
-  statusMsg.setMsg('wait', l10n('generic_api_call_in_progress') + spad);
+  const setMsg = (silent ? Boolean : panel.editorApi.setStatusMsg);
+  setMsg('wait', l10n('generic_api_call_in_progress') + spad);
   try {
     const result = await api22(state).endpointRequest('draftStore',
       apiVerb, filename, apiData).then(refine).then(null, apiCatch);
-    statusMsg.setMsg('ok', l10n('generic_api_call_success') + spad);
-    panel.scheduleAutoRescanDraftsList();
+    setMsg('ok', l10n('generic_api_call_success') + spad);
     return result;
   } catch (apiFail) {
-    statusMsg.setMsg('fail', l10n('generic_api_call_failed') + spad
-      + ': ' + apiFail);
+    setMsg('fail', l10n('generic_api_call_failed') + spad + ': ' + apiFail);
     throw apiFail;
   }
 

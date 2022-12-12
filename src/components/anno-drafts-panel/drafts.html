@@ -1,7 +1,5 @@
 <div class="card panel panel-default drafts-panel">
-<div class="card-body panel-body">
-
-<msgbox-row ref="statusMsg" />
+<div class="card-body panel-body" ref="panelBody">
 
 <div class="save-as-draft
   border-bottom pb-4
@@ -56,7 +54,7 @@
     ><h4>{{ l10n('existing_drafts') }}</h4></div>
   <div class="col-sm-1 action-col">
     <div class="btn-group pull-right" role="group">
-      <bootstrap-button eventbus-emit="reloadDraftsList"
+      <bootstrap-button eventbus-emit="userReloadDraftsList"
         icon-fa="refresh"
         :caption="l10n('refresh')" />
     </div>
@@ -95,6 +93,9 @@
             <bootstrap-button icon-fa="edit"
               @click="clickedDraftActionButton"
               data-action="downloadAndRestoreDraft"
+              :data-draft-name="draftMeta.customNamePart"
+              :data-draft-date="draftMeta.humanDate"
+              :data-draft-time="draftMeta.humanTime"
               :title="l10n('edit_draft')"
               />
             <bootstrap-button icon-fa="trash-o"

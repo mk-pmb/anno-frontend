@@ -1,4 +1,5 @@
-<teleport :to="$store.state.modalTeleportTarget || 'body'">
+<teleport :to="$store.state.modalTeleportTarget || 'body'"
+   ref="teleporter">
 <div role="dialog"
   :class="[
     'modal fade',

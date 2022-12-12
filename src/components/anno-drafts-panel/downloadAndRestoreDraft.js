@@ -2,28 +2,22 @@
 'use strict';
 /* eslint-disable global-require */
 
-const api22 = require('../../api22.js');
 const eventBus = require('../../event-bus.js');
+
+const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 
 
 const EX = async function downloadAndRestoreDraft(meta) {
-  const { filename } = meta;
   const panel = this;
-  const { statusMsg } = panel.$refs;
-  // const { l10n } = panel;
-  statusMsg.setMsg({ text: '⏳ ' + filename });
+  const draftData = await genericSimpleApiCall({
+    panel,
+    actionDescrVoc: 'edit_draft_labeled',
+    vocSlots: meta,
+    apiVerb: 'GET',
+    ...meta,
+  });
 
   const store = panel.$store;
-  let draftData;
-  try {
-    draftData = await api22(store.state).endpointRequest('draftStore',
-      'GET', filename);
-  } catch (apiFail) {
-    console.debug(EX.name, { apiFail });
-    statusMsg.setMsg({ severity: 'fail', text: '❌ ' + apiFail });
-    return;
-  }
-
   await store.commit('RESET_ANNOTATION');
   await store.commit('INJECTED_MUTATION', [
     function upd(state) { Object.assign(state.editing, draftData); }
