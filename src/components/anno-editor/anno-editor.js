@@ -60,6 +60,7 @@ module.exports = {
         eventBus.$on('open-editor', function onOpenEditor(opt) {
           if (!opt) { return onOpenEditor(true); }
           document.body.classList.add(editorOpenCssClass);
+          editor.setStatusMsg(); // reset = dismiss
           editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
 
           const { targetImage, zoneEditor } = editor;
