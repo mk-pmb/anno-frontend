@@ -5,16 +5,22 @@
     (colorCls || 'border-primary text-default'),
     'mb-4',
     'msgbox-row',
-    ].concat(topicCls).filter(Boolean)"
-  v-show="!!text"
+    ].concat(msg.topicCls).filter(Boolean)"
+  v-show="!!msg.text"
   >
+  <div class="scroll-offset" ref="scrollOffset"></div>
   <div
     :class="[
       'col-xl',
       'msgbox-col',
-      ].concat(topicCls).filter(Boolean)"
+      ].concat(msg.topicCls).filter(Boolean)"
     >
-    <p class="m-1">{{ maybeIcon }}{{ textPre }}{{ text }}{{ textSuf }}</p>
+    <p class="m-1">
+      <span v-show="msg.maybeIcon" class="icon">{{ msg.maybeIcon }}</span>
+      <span v-show="title" class="title">{{ title }}</span>
+      {{ msg.textPre }}{{ msg.text }}{{ msg.textSuf }}
+      <span class="timestamp" v-if="msg.timestamp">{{ msg.timestamp }}</span>
+    </p>
   </div>
   <div class="col-sm-1">
     <bootstrap-button @click="dismiss"

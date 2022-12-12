@@ -21,7 +21,7 @@ const EX = async function saveNew() {
     + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
-  genericSimpleApiCall({
+  await genericSimpleApiCall({
     panel,
     actionDescrVoc: 'save_as_draft',
     apiVerb: 'PUT',
@@ -39,6 +39,7 @@ const EX = async function saveNew() {
       throw err;
     },
   });
+  await panel.scheduleAutoRescanDraftsList();
 };
 
 
