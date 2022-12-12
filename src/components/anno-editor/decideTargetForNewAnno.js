@@ -4,7 +4,7 @@
 function unpackSingleElementArray(a) { return (a.length === 1 ? a[0] : a); }
 
 
-const dat = function decideAnnoTarget(state) {
+const EX = function decideTargetForNewAnno(state) {
   const tgtSels = [];
 
   if (state.targetFragment) {
@@ -32,4 +32,4 @@ const dat = function decideAnnoTarget(state) {
 };
 
 
-module.exports = dat;
+module.exports = EX;

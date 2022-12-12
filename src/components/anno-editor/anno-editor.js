@@ -15,7 +15,7 @@
 
 const eventBus = require('../../event-bus.js');
 
-const decideAnnoTarget = require('./decideAnnoTarget.js');
+const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const saveCreate = require('./saveCreate.js');
 const fixupLegacyAnno = require('./fixupLegacyAnno.js');
 
@@ -189,7 +189,7 @@ module.exports = {
           const { commit, state } = editor.$store;
           commit('SET_EDIT_MODE', 'create');
           commit('RESET_ANNOTATION');
-          commit('ADD_TARGET', decideAnnoTarget(state));
+          commit('ADD_TARGET', decideTargetForNewAnno(state));
           eventBus.$emit('open-editor');
         },
 
