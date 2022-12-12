@@ -97,6 +97,8 @@ module.exports = {
 
 };
 
+/*
 setTimeout(() => eventBus.$emit('create'), 1e3);
 setTimeout(() => eventBus.$emit('switchEditorTabByRefName',
   'draftsPanel'), 2e3);
+*/
