@@ -9,16 +9,29 @@
 
 <div class="row draft-filename-comment"><div class="col-xl">
   <h4>{{ l10n('save_as_draft') }}</h4>
-  <div>{{ l10n('draft_filename_comment') }}:</div>
-  <div class="ml-4">
+</div></div>
+<div class="row">
+  <div class="col-sm-2 pt-2">{{ l10n('draft_filename_comment') }}:</div>
+  <div class="col-xl"><div class="position-relative">
     <input class="form-control" type="text"
       v-model="draftFilenameCommentCustom">
-    <div class="form-control-explain smallprint filename-rules">{{
-      l10n('draft_filename_rules')
-      .replace(/@@maxlen@@/g, draftFilenameCommentMaxLen)
-    }}</div>
-  </div>
-</div></div>
+    <div class="form-control-explain filename-rules"><div>
+      <div class="
+        border
+        border-info
+        rounded
+        bg-light
+        text-default
+        smallprint
+        p-2
+        mb-0
+        ">{{
+        l10n('draft_filename_rules')
+        .replace(/@@maxlen@@/g, draftFilenameCommentMaxLen)
+      }}</div>
+    </div></div>
+  </div><!-- /.pos-rel --></div><!-- /.col-xl -->
+</div><!-- /.row -->
 <div class="row">
   <div class="col-sm-3">{{ l10n('draft_filename_adjusted') }}:</div>
   <div class="col-xl"><code>{{ draftFilenameCommentAdjusted }}</code></div>
