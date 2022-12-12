@@ -35,7 +35,9 @@ module.exports = {
 
   mounted() {
     const panel = this;
-    eventBus.$on('reloadDraftsList', () => panel.reloadDraftsList());
+    eventBus.$on('userReloadDraftsList', () => panel.reloadDraftsList());
+    eventBus.$on('autoReloadDraftsList',
+      () => panel.reloadDraftsList({ silent: true }));
     panel.scheduleAutoRescanDraftsList();
   },
 
@@ -66,14 +68,15 @@ module.exports = {
     saveNew,
 
     scheduleAutoRescanDraftsList() {
-      setTimeout(() => eventBus.$emit('reloadDraftsList'), 100);
+      setTimeout(() => eventBus.$emit('autoReloadDraftsList'), 100);
     },
 
     clickedDraftActionButton(evt) {
       const parents = jQuery(evt.target).parentsUntil('ul, ol').toArray();
-      const datasets = parents.reverse().map(x => x.dataset);
+      const lineage = parents.reverse().concat(evt.target);
+      const datasets = lineage.map(x => x.dataset);
       const meta = Object.assign({}, ...datasets);
-      console.debug('clickedDraftActionButton', meta);
+      console.debug('clickedDraftActionButton', parents, meta);
       const { action } = meta;
       const impl = this[action];
       if (!impl) { throw new Error('Draft action not implemented: ' + action); }
@@ -87,7 +90,7 @@ module.exports = {
         confirmVoc: 'delete_draft_confirm',
         actionDescrVoc: 'delete_draft',
         apiVerb: 'DELETE',
-      });
+      }).then(this.scheduleAutoRescanDraftsList);
     },
 
   },

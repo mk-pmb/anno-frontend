@@ -1,0 +1,22 @@
+.annoeditor-global-css .msgbox-row {
+
+  position: relative;
+
+  .scroll-offset {
+    position: absolute;
+    left: 0;
+    top: -2em;
+  }
+
+
+  .timestamp {
+    font-size: 80%;
+    margin-left: 1em;
+  }
+
+  .timestamp:before { content: "["; }
+  .timestamp:after { content: "]"; }
+
+
+
+}

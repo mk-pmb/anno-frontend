@@ -60,6 +60,7 @@
     "semtonotes-utils": "^0.2.2",
     "vue": "^2.6.12",
     "vue-frag": "^1.3.1",
+    "vue-guess-refname-path-to-pmb": "^0.1.0",
     "vue2-teleport": "^1.0.1",
     "vuejs-debug-traverse-210506-pmb": "mk-pmb/vuejs-debug-traverse-210506-pmb-js#master",
     "vuex": "vuejs/vuex#3.x",

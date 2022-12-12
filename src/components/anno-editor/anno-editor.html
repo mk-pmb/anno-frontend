@@ -1,9 +1,15 @@
+<div class="anno-editor" ref="editorWrapper">
+
 <bootstrap-tabs
   class="card-body panel-body annoeditor-editor"
   ref="tablist"
   :help-url-template="l10n('help.url.template')"
   :help-url-manual="l10n('help.url.manual')"
 >
+
+  <template slot="extras-above">
+    <msgbox-row ref="statusMsg" :addTimestamp="true" />
+  </template>
 
   <bootstrap-tab :name="`${prefix}-${editorId}-tab-comment`"
     :title="l10n('comment_tab')"
@@ -106,7 +112,7 @@
     topic="drafts"
     >
     <anno-drafts-panel ref="draftsPanel"
-      :editorApi="{ getCleanAnno, getAnnoTitle }"
+      :editorApi="{ getCleanAnno, getAnnoTitle, setStatusMsg }"
       />
   </bootstrap-tab>
 
@@ -122,3 +128,5 @@
   </bootstrap-tab>
 
 </bootstrap-tabs>
+
+</div>
