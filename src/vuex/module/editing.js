@@ -75,11 +75,6 @@ const mutations = {
         })
     },
 
-    ADD_TARGET(state, v) {
-        ensureArray(state, 'target')
-        add(state, 'target', v)
-    },
-
     RESET_ANNOTATION(state) {
         Object.keys(state).forEach(function reset(key) {
           state[key] = null;    // trigger potential setter

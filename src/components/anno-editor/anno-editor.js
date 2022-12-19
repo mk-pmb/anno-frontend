@@ -16,8 +16,9 @@
 const eventBus = require('../../event-bus.js');
 
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
-const saveCreate = require('./saveCreate.js');
 const fixupLegacyAnno = require('./fixupLegacyAnno.js');
+const loadAnnoData = require('./loadAnnoData.js');
+const saveCreate = require('./saveCreate.js');
 
 // function soon(f) { return setTimeout(f, 1); }
 
@@ -131,6 +132,8 @@ module.exports = {
     getAnnoTitle() { return this.$store.state.editing.title; },
     setStatusMsg(...args) { return this.$refs.statusMsg.setMsg(...args); },
 
+    loadAnnoData,
+
     switchTabByRefName(refName) {
       const refs = this.$refs;
       refs.tablist.switchToTabPaneByVueElem(refs[refName]);
@@ -172,8 +175,9 @@ module.exports = {
       const editor = this;
       const { commit, state } = editor.$store;
       commit('SET_EDIT_MODE', 'create');
-      commit('RESET_ANNOTATION');
-      commit('ADD_TARGET', decideTargetForNewAnno(state));
+      editor.loadAnnoData({
+        target: decideTargetForNewAnno(state),
+      });
       eventBus.$emit('open-editor');
     },
 
