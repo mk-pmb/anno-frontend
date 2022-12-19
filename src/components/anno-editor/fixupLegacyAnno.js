@@ -14,6 +14,7 @@ const EX = function fixupLegacyAnno(legacyEditorAnno) {
 
   let bodies = [].concat(anno.body);
   bodies = bodies.map(function cleanupBody(body) {
+    if (!body) { return; }
     if (body.value) { return body; }
     if (body.type && (body.type !== 'TextualBody')) { return body; }
     return null;
