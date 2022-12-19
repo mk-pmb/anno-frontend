@@ -16,7 +16,6 @@ module.exports = {
   style: require('./exim.scss'),
 
   props: {
-    wrapTextBox:    { type: Boolean, default: false },
     extraButtons:   { type: Array },
     path:           { type: String },
     dumpFunc:       { type: Function },
@@ -24,9 +23,11 @@ module.exports = {
   },
 
   data() {
+    const attr = this.$props;
     return {
       baseCls: 'json-export-import-field',
       redumpedAt: 0,
+      wrapTextBox: !!attr.wrapTextBox,
     };
   },
 
