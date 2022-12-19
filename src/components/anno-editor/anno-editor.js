@@ -59,6 +59,8 @@ module.exports = {
       editor.$refs.draftsPanel.saveNew();
     });
     eventBus.$on('switchEditorTabByRefName', editor.switchTabByRefName);
+    eventBus.$on('updateZoneEditorImage',
+      (imgUrl) => window.alert('Stub! updateZoneEditorImage:\n' + imgUrl));
     eventBus.$on('close-editor', () => {
       document.body.classList.remove(editorOpenCssClass);
     });
@@ -67,26 +69,8 @@ module.exports = {
       document.body.classList.add(editorOpenCssClass);
       editor.setStatusMsg(); // reset = dismiss
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
-
-      const { targetImage, zoneEditor } = editor;
-      if (zoneEditor) {
-        try {
-          if (zoneEditor.shouldHaveHadAnyImageEverBefore) {
-            // Without an image loaded, the first reset() call would
-            // log a confusing error message about the image not having
-            // been loaded yet.
-            // :TODO: Fix upstream.
-            zoneEditor.reset();
-          }
-          if (targetImage) {
-            zoneEditor.shouldHaveHadAnyImageEverBefore = true;
-            zoneEditor.loadImage(targetImage);
-          }
-        } catch (zoneEditErr) {
-          console.error('Zone editor init failure:', zoneEditErr);
-        }
-      }
-    })
+      editor.initializeZoneEditor();
+    });
   },
 
   mounted() {
@@ -240,6 +224,27 @@ module.exports = {
       function upd(state) { state.editing.creator = agent; }
       await this.$store.commit('INJECTED_MUTATION', [upd]);
       this.forceUpdatePreview();
+    },
+
+    initializeZoneEditor() {
+      const editor = this;
+      const { targetImage, zoneEditor } = editor;
+      if (!zoneEditor) { return; } // no yet loaded.
+      try {
+        if (zoneEditor.shouldHaveHadAnyImageEverBefore) {
+          // Without an image loaded, the first reset() call would
+          // log a confusing error message about the image not having
+          // been loaded yet.
+          // :TODO: Fix upstream.
+          zoneEditor.reset();
+        }
+        if (targetImage) {
+          zoneEditor.shouldHaveHadAnyImageEverBefore = true;
+          zoneEditor.loadImage(targetImage);
+        }
+      } catch (zoneEditErr) {
+        console.error('Zone editor init failure:', zoneEditErr);
+      }
     },
 
   },
