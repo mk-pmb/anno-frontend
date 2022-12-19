@@ -41,6 +41,7 @@ module.exports = {
   data() {
     return {
       forceUpdatePreviewTs: 0,
+      zoneEditorEventsSetupDone: false,
     };
   },
 
@@ -75,18 +76,7 @@ module.exports = {
 
   mounted() {
     const editor = this;
-    const { targetImage, zoneEditor } = editor;
-    if (targetImage) {
-      zoneEditor.$on('load-image', () => {
-        editor.loadSvg();
-      });
-      zoneEditor.$on('svg-changed', (/* svg */) => {
-        const { thumbnail } = editor.$refs.preview.$refs;
-        if (!thumbnail) { return; }
-        thumbnail.reset();
-        thumbnail.loadSvg(editor.svgTarget.selector.value);
-      });
-    }
+    editor.initializeZoneEditor();
   },
 
   computed: {
@@ -231,6 +221,18 @@ module.exports = {
       const { targetImage, zoneEditor } = editor;
       if (!zoneEditor) { return; } // no yet loaded.
       try {
+        if (!editor.zoneEditorEventsSetupDone) {
+          zoneEditor.$on('load-image', () => {
+            editor.loadSvg();
+          });
+          zoneEditor.$on('svg-changed', (/* svg */) => {
+            const tn = editor.$refs.preview.$refs.thumbnail;
+            if (!tn) { return; }
+            tn.reset();
+            tn.loadSvg(editor.svgTarget.selector.value);
+          });
+          editor.zoneEditorEventsSetupDone = Date.now();
+        }
         if (zoneEditor.shouldHaveHadAnyImageEverBefore) {
           // Without an image loaded, the first reset() call would
           // log a confusing error message about the image not having
