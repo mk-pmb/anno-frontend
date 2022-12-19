@@ -9,6 +9,10 @@
 
   <template slot="extras-above">
     <msgbox-row ref="statusMsg" class="status-msg" :addTimestamp="true" />
+    <msgbox-row ref="targetAdjustedMsg" class="target-adjusted"
+      severity="info"
+      :title="l10n('target_adjusted_title')"
+      />
   </template>
 
   <bootstrap-tab :name="`${prefix}-${editorId}-tab-comment`"
@@ -112,7 +116,12 @@
     topic="drafts"
     >
     <anno-drafts-panel ref="draftsPanel"
-      :editorApi="{ getCleanAnno, getAnnoTitle, setStatusMsg }"
+      :editorApi="{
+        getAnnoTitle,
+        getCleanAnno,
+        loadAnnoData,
+        setStatusMsg,
+        }"
       />
   </bootstrap-tab>
 
