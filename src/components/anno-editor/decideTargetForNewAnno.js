@@ -22,8 +22,7 @@ const EX = function decideTargetForNewAnno(state) {
     return state.targetSource;
   }
 
-  // Using any selector(s) means our target is must be a
-  // Specific Resource (ch 4):
+  // Using any selector(s) means our target must be a Specific Resource (ch 4):
   const tgtSpec = {
     source: state.targetSource,
     selector: unpackSingleElementArray(tgtSels),
