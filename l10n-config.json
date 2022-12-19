@@ -205,9 +205,11 @@
             "relationlink_predicate=http://terminology.lido-schema.org/lido01085": "war früher Teil von",
             "relationlink_predicate=http://terminology.lido-schema.org/lido01086": "hatte früher Teil",
 
-            "target_adjusted_title": "Bezug (\"target\") wurde angepasst:",
-            "target_adjusted_added": "Wurde hinzugefügt.",
-            "target_adjusted_hoisted": "Wurde an den Anfang der Liste verschoben.",
+            "targets_list_headline":    "Bezug",
+            "targets_list_explain":     "Die Annotation bezieht sich auf diese @@count@@ Untersuchungsgegenstände (\"target\"):",
+            "target_adjusted_title":    "Bezug (\"target\") wurde angepasst:",
+            "target_adjusted_added":    "Wurde hinzugefügt.",
+            "target_adjusted_hoisted":  "Wurde an den Anfang der Liste verschoben.",
 
             "fmt_bold":        "Fett",
             "fmt_size":        "Schriftgröße",
@@ -408,9 +410,11 @@
             "relationlink_predicate=http://terminology.lido-schema.org/lido01085": "was formerly part of",
             "relationlink_predicate=http://terminology.lido-schema.org/lido01086": "had formerly part",
 
-            "target_adjusted_title": "Subject-matter (\"target\") was adjusted:",
-            "target_adjusted_added": "Added.",
-            "target_adjusted_hoisted": "Moved to start of list.",
+            "targets_list_headline":    "Subject-matter",
+            "targets_list_explain":     "The annotation concerns these @@count@@ subject-matter item(s) (\"target\"):",
+            "target_adjusted_title":    "Subject-matter (\"target\") was adjusted:",
+            "target_adjusted_added":    "Added.",
+            "target_adjusted_hoisted":  "Moved to start of list.",
 
             "preview":             "Preview",
 

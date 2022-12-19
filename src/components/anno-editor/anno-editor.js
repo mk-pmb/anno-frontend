@@ -13,6 +13,8 @@
  *
  */
 
+const isStr = require('is-string');
+
 const eventBus = require('../../event-bus.js');
 
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
@@ -26,8 +28,9 @@ const saveCreate = require('./saveCreate.js');
 module.exports = {
 
   mixins: [
-    require('../../mixin/l10n.js'),
+    require('../../mixin/annoUrls.js'),
     require('../../mixin/api.js'),
+    require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
   ],
 
@@ -252,6 +255,26 @@ module.exports = {
       } catch (zoneEditErr) {
         console.error('Zone editor init failure:', zoneEditErr);
       }
+    },
+
+    compileTargetsListForTemplating() {
+      const editor = this;
+
+      function fmt(tgt, index) {
+        if (!tgt) { return; }
+        if (isStr(tgt)) { return fmt({ id: tgt }, index); }
+        const url = editor.findResourceUrl(tgt);
+        const rec = {
+          index,
+          url,
+          title: (tgt['dc:title'] || url),
+        };
+        return rec;
+      }
+
+      const { target } = editor.$store.state.editing;
+      const list = [].concat(target).map(fmt).filter(Boolean);
+      return list;
     },
 
   },
