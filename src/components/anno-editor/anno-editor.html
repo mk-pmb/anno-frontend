@@ -107,6 +107,24 @@
       :accept-empty-anno-id="true"
       :show-edit-preview-warnings="true"
       />
+    <div class="mt-4 preview-targets-urllist-section"
+      v-for="list in [compileTargetsListForTemplating()]">
+      <h5>{{ l10n('targets_list_headline') }}</h5>
+      <p class="explain">{{
+        l10n('targets_list_explain').replace(/@@count@@/g, list.length)
+        }}</p>
+      <ol class="targets" v-show="list.length">
+        <li v-for="tgt in list"
+          :key="tgt.index + ':' + tgt.url">
+          <a :href="tgt.url" target="_blank"
+            rel="nofollow noopener noreferrer"
+            >{{ tgt.title || tgt.url }}</a>
+        </li>
+      </ol>
+      <ul class="no-targets" v-show="!list.length">
+        <li>{{ l10n('no_data') }}</li>
+      </ul>
+    </div>
   </bootstrap-tab>
 
   <bootstrap-tab

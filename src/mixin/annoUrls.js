@@ -1,5 +1,8 @@
 ﻿'use strict';
 
+const isStr = require('is-string');
+
+
 function annoIdToPermaUrl(annoIdOrRevId) {
   /*
     The "perma" here is meant to be the canonical URL that people can
@@ -25,7 +28,7 @@ function annoIdToPermaUrl(annoIdOrRevId) {
 
 function findResourceUrl(res) {
   if (!res) { return ''; }
-  if (typeof res === 'string') { return res; }
+  if (isStr(res)) { return res; }
   return (res.id || res.source || '');
 }
 
