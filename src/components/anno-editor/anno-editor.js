@@ -25,9 +25,9 @@ const fixupLegacyAnno = require('./fixupLegacyAnno.js');
 module.exports = {
 
   mixins: [
-    require('@/mixin/l10n'),
-    require('@/mixin/api'),
-    require('@/mixin/prefix'),
+    require('../../mixin/l10n.js'),
+    require('../../mixin/api.js'),
+    require('../../mixin/prefix.js'),
   ],
 
   template: require('./anno-editor.html'),
@@ -46,7 +46,7 @@ module.exports = {
 
   created() {
     const editor = this;
-    // TODO Move these to store maybe??
+    // :TODO: [legacy-todo] Move these to store maybe??
     const editorOpenCssClass = 'has-annoeditor-showing';
     eventBus.$on('create', this.create)
     eventBus.$on('reply', this.reply)
@@ -107,12 +107,12 @@ module.exports = {
 
   computed: {
 
-    annoIdUrl()       { return this.$store.state.editing.id },
-    targetImage()     { return this.$store.state.targetImage },
-    targetThumbnail() { return this.$store.state.targetThumbnail },
-    targetSource()    { return this.$store.state.targetSource },
-    svgTarget()       { return this.$store.getters.svgTarget },
-    zoneEditor()      { return this.$refs.zoneEditor },
+    annoIdUrl()       { return this.$store.state.editing.id; },
+    targetImage()     { return this.$store.state.targetImage; },
+    targetThumbnail() { return this.$store.state.targetThumbnail; },
+    targetSource()    { return this.$store.state.targetSource; },
+    svgTarget()       { return this.$store.getters.svgTarget; },
+    zoneEditor()      { return this.$refs.zoneEditor; },
 
     knownAuthorIdentities() {
       const sess = this.$store.state.userSessionInfo;
@@ -242,6 +242,6 @@ module.exports = {
       this.forceUpdatePreview();
     },
 
-  }
+  },
 
-}
+};
