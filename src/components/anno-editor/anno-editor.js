@@ -56,6 +56,7 @@ module.exports = {
     eventBus.$on('remove', this.remove)
     eventBus.$on('discard', this.discard)
     eventBus.$on('save', this.save)
+    eventBus.$on('loadAnnoData', editor.loadAnnoData);
     eventBus.$on('saveNewDraft', () => {
       editor.switchTabByRefName('draftsPanel');
       editor.$refs.draftsPanel.saveNew();

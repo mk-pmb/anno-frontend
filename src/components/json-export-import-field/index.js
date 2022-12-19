@@ -2,10 +2,11 @@
 'use strict';
 /* eslint-disable global-require */
 
-
 const loGet = require('lodash.get');
 const loSet = require('lodash.set');
 const sortedJson = require('safe-sortedjson');
+
+const eventBus = require('../../event-bus.js');
 
 // eslint-disable-next-line no-alert,no-undef
 function panic(msg) { window.alert(msg); }
@@ -16,10 +17,11 @@ module.exports = {
   style: require('./exim.scss'),
 
   props: {
-    extraButtons:   { type: Array },
-    path:           { type: String },
-    dumpFunc:       { type: Function },
-    importFunc:     { type: Function },
+    extraButtons:   Array,
+    path:           String,
+    importEvent:    String,
+    importFunc:     Function,
+    dumpFunc:       Function,
   },
 
   data() {
@@ -64,22 +66,22 @@ module.exports = {
       return sortedJson(data);
     },
 
-    importJson() {
+    async importJson() {
       const exim = this;
-      const { path, importFunc } = exim;
+      const { path, importEvent, importFunc } = exim;
       const inputJson = exim.$refs.txa.value;
-      function upd(state) {
-        try {
-          const data = JSON.parse(inputJson);
-          (importFunc || loSet)(state, path, data);
-          panic('Imported into: ' + path);
-        } catch (err) {
-          err.inputJson = inputJson;
-          console.error('Error while trying to import JSON:', err);
-          panic('Error while trying to import JSON:\n' + err);
-        }
+      try {
+        const data = JSON.parse(inputJson);
+        if (importEvent) { return eventBus.$emit(importEvent, data); }
+        await exim.$store.commit('INJECTED_MUTATION', [function upd(state) {
+          return (importFunc || loSet)(state, path, data);
+        }]);
+        panic('Imported into: ' + path);
+      } catch (err) {
+        err.inputJson = inputJson;
+        console.error('Error while trying to import JSON:', err);
+        panic('Error while trying to import JSON:\n' + err);
       }
-      this.$store.commit('INJECTED_MUTATION', [upd]);
     },
 
   },
