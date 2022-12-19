@@ -107,7 +107,7 @@ const compoDef = {
       box.msg = m;
       // console.debug('msgbox upd:', { ...m });
       boxStateByUniqId.set(box.effectiveUniqId, m);
-      if (box.autoscroll) {
+      if (m.text && box.autoscroll) {
         const domEl = box.$refs.scrollOffset;
         if (domEl.scrollIntoView) {
           // Defer until DOM updates have been rendered.
