@@ -35,10 +35,11 @@ module.exports = {
 
   mounted() {
     const panel = this;
-    eventBus.$on('userReloadDraftsList', () => panel.reloadDraftsList());
-    eventBus.$on('autoReloadDraftsList',
-      () => panel.reloadDraftsList({ silent: true }));
-    panel.scheduleAutoRescanDraftsList();
+    eventBus.$on('userReloadDraftsList', panel.reloadDraftsList);
+    eventBus.$on('autoReloadDraftsList', panel.autoReloadDraftsList);
+    // Defer draft list loading until editor is opened: If we'd laod it
+    // before we know the editor's target, groups will be wrong.
+    eventBus.$on('open-editor', panel.autoReloadDraftsList);
   },
 
   computed: {
@@ -67,6 +68,8 @@ module.exports = {
     reloadDraftsList,
     saveNew,
 
+    autoReloadDraftsList() { return this.reloadDraftsList({ silent: true }); },
+
     scheduleAutoRescanDraftsList() {
       setTimeout(() => eventBus.$emit('autoReloadDraftsList'), 100);
     },
@@ -76,7 +79,7 @@ module.exports = {
       const lineage = parents.reverse().concat(evt.target);
       const datasets = lineage.map(x => x.dataset);
       const meta = Object.assign({}, ...datasets);
-      console.debug('clickedDraftActionButton', parents, meta);
+      // console.debug('clickedDraftActionButton', parents, meta);
       const { action } = meta;
       const impl = this[action];
       if (!impl) { throw new Error('Draft action not implemented: ' + action); }
