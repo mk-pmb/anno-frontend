@@ -17,9 +17,19 @@ const minusPartKeys = [
 ];
 
 
-function guessPrimaryTargetUri(anno) {
-  const t0 = [].concat(anno.target).filter(Boolean);
-  return (t0.source || t0.id /* Anno ID */ || t0);
+function guessPrimaryTargetUri(vueElem, anno) {
+  const targets = [].concat(anno.target).filter(Boolean);
+  const appCfg = vueElem.$store.state;
+  if (appCfg.targetScopeImpliesSource) {
+    const scopes = targets.map(t => t.scope).filter(Boolean);
+    // console.debug('drafts/hash/guessPrimaryTargetUri: scopes:', scopes);
+    const [scope0] = scopes;
+    if (scope0) { return scope0; }
+  }
+  const t0 = targets[0];
+  // console.debug('drafts/hash/guessPrimaryTargetUri:', { t0 });
+  if (!t0) { return ''; }
+  return (t0.source || t0.id /* Anno ID */ || t0 || '');
 }
 
 
@@ -84,9 +94,9 @@ function weaklyHashUri(uri) {
 }
 
 
-function fileNameHashes(anno) {
+function fileNameHashes(vueElem, anno) {
   return {
-    target: weaklyHashUri(guessPrimaryTargetUri(anno)),
+    target: weaklyHashUri(guessPrimaryTargetUri(vueElem, anno)),
     annoIdUrl: weaklyHashUri(anno.id),
   };
 }

@@ -29,10 +29,10 @@ const EX = function loadAnnoData(origAnno) {
 
 Object.assign(EX, {
 
-  adjustMultiTarget(cfgTgt, origTgt) {
+  adjustMultiTarget(appCfg, origTgt) {
     let primary;
     let adjusted = '';
-    const matchesConfigTarget = targetRelatedness.sameAsConfigTarget(cfgTgt);
+    const matchesConfigTarget = targetRelatedness.sameAsConfigTarget(appCfg);
 
     function isAdditionalTarget(tgt, idx) {
       if (!tgt) { return false; }
@@ -47,7 +47,7 @@ Object.assign(EX, {
     const additional = [].concat(origTgt).filter(isAdditionalTarget);
 
     if (!primary) {
-      primary = cfgTgt;
+      primary = matchesConfigTarget.getConfiguredTarget();
       adjusted = 'added';
     }
     const targets = [primary, ...additional];
