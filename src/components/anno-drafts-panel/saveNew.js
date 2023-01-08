@@ -13,8 +13,10 @@ const hash = require('./hash.js');
 
 const EX = async function saveNew() {
   const panel = this;
-  const anno = panel.editorApi.getCleanAnno();
-
+  let anno = panel.editorApi.getCleanAnno();
+  if (panel.$refs.saveAsTemplateCkb.checked) {
+    anno = EX.convertToTemplate(anno);
+  }
   const draftJson = sortedJson(anno).replace(/'/g, '\\u0027') + '\n';
   const draftContentHash = hash.weaklyHashAnnoDraft(draftJson);
   const filename = (EX.compileMinusParts(anno, draftContentHash).join('-')
@@ -60,6 +62,12 @@ Object.assign(EX, {
       if (!v) { throw new Error('Mislabeled meta data slot: ' + k); }
       return v;
     });
+  },
+
+  convertToTemplate(origAnno) {
+    // i.e. just discard the target:
+    const { target, ...tmpl } = origAnno;
+    return tmpl;
   },
 
 });

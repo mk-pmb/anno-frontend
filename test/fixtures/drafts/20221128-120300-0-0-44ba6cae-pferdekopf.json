@@ -1,0 +1,18 @@
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": [
+    {
+      "label": "Pferd",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/4045503-8",
+      "value": "Pferd"
+    },
+    {
+      "label": "Pferdekopf <Motiv>",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/4174027-0",
+      "value": "Pferdekopf <Motiv>"
+    }
+  ],
+  "rights": "https://creativecommons.org/licenses/by/4.0/",
+  "title": "Pferdekopf"
+}
