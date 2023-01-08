@@ -171,14 +171,18 @@ module.exports = {
       });
     },
 
-    create() {
+    async startCompose(editMode, annoDataTmpl) {
       const editor = this;
       const { commit, state } = editor.$store;
-      commit('SET_EDIT_MODE', 'create');
-      editor.loadAnnoData({
-        target: decideTargetForNewAnno(state),
-      });
+      commit('SET_EDIT_MODE', editMode);
+      await editor.loadAnnoData(annoDataTmpl(state));
       eventBus.$emit('open-editor');
+    },
+
+    async create() {
+      await this.startCompose('create', state => ({
+        target: decideTargetForNewAnno(state),
+      }));
     },
 
     reply(annotation) {
