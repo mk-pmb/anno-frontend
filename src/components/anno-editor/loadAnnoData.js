@@ -22,6 +22,8 @@ const EX = function loadAnnoData(origAnno) {
   const { l10n } = editor;
   editor.$refs.targetAdjustedMsg.setMsg(null,
     (tgtAdj && l10n('target_adjusted_' + tgtAdj)));
+
+  editor.redisplayZoneEditorSvg();
 };
 
 

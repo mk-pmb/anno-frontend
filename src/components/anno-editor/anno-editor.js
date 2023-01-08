@@ -23,6 +23,7 @@ const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
 
 // function soon(f) { return setTimeout(f, 1); }
+function orf(x) { return x || false; }
 
 
 module.exports = {
@@ -90,7 +91,8 @@ module.exports = {
     targetImage()     { return this.$store.state.targetImage; },
     targetThumbnail() { return this.$store.state.targetThumbnail; },
     targetSource()    { return this.$store.state.targetSource; },
-    svgTarget()       { return this.$store.getters.svgTarget; },
+    svgTarget()       { return orf(this.$store.getters.svgTarget); },
+    zoneSelectorSvg() { return orf(this.svgTarget.selector).value || ''; },
     zoneEditor()      { return this.$refs.zoneEditor; },
 
     knownAuthorIdentities() {
@@ -150,12 +152,6 @@ module.exports = {
       window.alert('Save not implemented for editMode = ' + editMode);
     },
 
-    loadSvg() {
-      const svg = (this.svgTarget && this.svgTarget.selector.value) ? this.svgTarget.selector.value : false
-      // console.log({svg})
-      if (svg) this.zoneEditor.loadSvg(svg)
-    },
-
     discard() {
       this.$store.commit('RESET_ANNOTATION')
       eventBus.$emit('close-editor')
@@ -203,7 +199,11 @@ module.exports = {
       eventBus.$emit('open-editor')
     },
 
-    updateSvgSelector(svg) {
+    setZoneSelector(newSvg) {
+      const editor = this;
+      const oldSvg = editor.zoneSelectorSvg;
+      if (newSvg === oldSvg) { return; }
+
       function upd(state) {
         // Do not preserve any previous selectors because we'd have to
         // ensure they are conceptually equivalent, and we cannot do that
@@ -211,10 +211,11 @@ module.exports = {
         state.editing.target = {
           scope: state.targetSource,
           source: state.targetImage,
-          selector: { type: 'SvgSelector', value: svg },
+          selector: { type: 'SvgSelector', value: newSvg },
         };
       }
-      this.$store.commit('INJECTED_MUTATION', [upd]);
+      editor.$store.commit('INJECTED_MUTATION', [upd]);
+      editor.redisplayPreviewThumbnail();
     },
 
     async onSelectAuthorIdentity(evt) {
@@ -230,15 +231,8 @@ module.exports = {
       if (!zoneEditor) { return; } // no yet loaded.
       try {
         if (!editor.zoneEditorEventsSetupDone) {
-          zoneEditor.$on('load-image', () => {
-            editor.loadSvg();
-          });
-          zoneEditor.$on('svg-changed', (/* svg */) => {
-            const tn = editor.$refs.preview.$refs.thumbnail;
-            if (!tn) { return; }
-            tn.reset();
-            tn.loadSvg(editor.svgTarget.selector.value);
-          });
+          zoneEditor.$on('load-image', editor.redisplayZoneEditorSvg);
+          zoneEditor.$on('svg-changed', editor.setZoneSelector);
           editor.zoneEditorEventsSetupDone = Date.now();
         }
         if (zoneEditor.shouldHaveHadAnyImageEverBefore) {
@@ -255,6 +249,23 @@ module.exports = {
       } catch (zoneEditErr) {
         console.error('Zone editor init failure:', zoneEditErr);
       }
+    },
+
+    redisplayZoneEditorSvg() {
+      const editor = this;
+      const { zoneEditor } = editor;
+      zoneEditor.reset();
+      const svg = editor.zoneSelectorSvg;
+      if (svg) { zoneEditor.loadSvg(svg); }
+    },
+
+    redisplayPreviewThumbnail() {
+      const editor = this;
+      const tn = editor.$refs.preview.$refs.thumbnail;
+      if (!tn) { return; }
+      tn.reset();
+      const svg = editor.zoneSelectorSvg;
+      if (svg) { tn.loadSvg(svg); }
     },
 
     compileTargetsListForTemplating() {
