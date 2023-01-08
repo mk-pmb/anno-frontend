@@ -19,7 +19,8 @@ const EX = async function saveNew() {
   }
   const draftJson = sortedJson(anno).replace(/'/g, '\\u0027') + '\n';
   const draftContentHash = hash.weaklyHashAnnoDraft(draftJson);
-  const filename = (EX.compileMinusParts(anno, draftContentHash).join('-')
+  const filename = (
+    EX.compileMinusParts(panel, anno, draftContentHash).join('-')
     + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
@@ -47,8 +48,9 @@ const EX = async function saveNew() {
 
 Object.assign(EX, {
 
-  compileMinusParts(anno, contentHash) {
-    const h = hash.fileNameHashes(anno);
+  compileMinusParts(vueElem, anno, contentHash) {
+    const h = hash.fileNameHashes(vueElem, anno);
+    // console.debug('drafts/compileMinusParts:', anno, 'hashes:', h);
     const p = dateFmt.parts();
     const m = {
       date: p.d,

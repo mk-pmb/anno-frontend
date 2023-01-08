@@ -5,7 +5,12 @@ const sortedJson = require('safe-sortedjson');
 
 
 function jsonifyTarget(tgt) {
-  return sortedJson(tgt, null, 2);
+  try {
+    return sortedJson(tgt, null, 2);
+  } catch (err) {
+    console.error('jsonifyTarget failed:', err, tgt);
+    throw err;
+  }
 }
 
 
@@ -13,14 +18,28 @@ const EX = {
 
   sameAsConfigTarget(cfgTgt, oneshotTgt) {
     const ctJson = jsonifyTarget(cfgTgt);
+
+    function cmpCore(annoTgt, atJson) {
+      if (atJson === ctJson) { return 'exact match'; }
+      function propMatch(prop) {
+        const av = annoTgt[prop];
+        if ((av === cfgTgt) || (av === cfgTgt[prop])) { return prop; }
+        return false;
+      }
+      return propMatch('scope') || propMatch('source');
+    }
+
     const cmp = function matchesConfigTarget(annoTgt) {
       const atJson = jsonifyTarget(annoTgt);
-      if (atJson === ctJson) { return 'exact match'; }
-      if (annoTgt.scope === ctJson) { return 'scope matches'; }
-      if (annoTgt.source === ctJson) { return 'source matches'; }
-      return false;
+      const r = cmpCore(annoTgt, atJson);
+      // console.debug('matchesConfigTarget', { annoTgt, cfgTgt, r });
+      return r;
     };
+
     if (oneshotTgt) { return cmp(oneshotTgt); }
+    Object.assign(cmp, {
+      getConfiguredTarget() { return cfgTgt; },
+    });
     return cmp;
   },
 
