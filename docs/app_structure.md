@@ -12,7 +12,7 @@ Both install the application factory function into the property
 of the window global.
 
 Choose either one and include it as a script tag into the website in which
-the annotations sidebar app shall run.
+the annotation's sidebar app shall run.
 
 This factory function can then be used to initialize an instance of the
 annotations sidebar app into an existing DOM element.
