@@ -40,12 +40,8 @@ module.exports = {
 
     created() {
       const vueDialog = this;
-      eventBus.$on('open-editor', function openEditor() {
-        vueDialog.show();
-      });
-      eventBus.$on('close-editor', function closeEditor() {
-        vueDialog.hide();
-      });
+      eventBus.$on('open-editor', () => vueDialog.show());
+      eventBus.$on('close-editor', () => vueDialog.hide());
     },
 
     methods: {
