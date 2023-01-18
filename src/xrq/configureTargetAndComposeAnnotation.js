@@ -51,7 +51,7 @@ async function composeAnno(store, origParam) {
     throw err;
   }
 
-  commit('INJECTED_MUTATION', [Object.assign, updCfg]);
+  commit('FLAT_UPDATE_APP_STATE', updCfg);
   eventBus.$emit('create');
 }
 
