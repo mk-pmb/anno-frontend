@@ -55,6 +55,7 @@ module.exports = {
             if (html === '<p><br></p>') html = ''
             this.value = html
         })
+        eventBus.$on('html-editor-reload-html', () => this.quill.pasteHTML(this.value))
         eventBus.$on('open-editor', () => this.quill.pasteHTML(this.value))
         eventBus.$on('close-editor', () => this.quill.pasteHTML(''))
     },
