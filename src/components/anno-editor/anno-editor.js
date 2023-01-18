@@ -1,18 +1,3 @@
-/*
- * ### anno-editor
- *
- * The editor has three modes: `create`, `reply` and `revise` that represent
- * the function of the anno-store to be used on `save`
- *
- * Properties:
- *
- * Events:
- *
- * - `close-editor`: The editor was closed
- * - `removed(annoIdUrl)`: Annotation was removed
- *
- */
-
 const isStr = require('is-string');
 
 const eventBus = require('../../event-bus.js');
