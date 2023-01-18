@@ -44,7 +44,6 @@ module.exports = {
         vueDialog.show();
       });
       eventBus.$on('close-editor', function closeEditor() {
-        vueDialog.$store.commit('SET_EDIT_MODE', '');
         vueDialog.hide();
       });
     },
