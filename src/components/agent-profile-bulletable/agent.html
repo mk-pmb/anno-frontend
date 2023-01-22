@@ -16,10 +16,7 @@
   :height="icon.height"
   >
 
-<span class="name">{{
-  agt.nickname
-  || agt.name
-}}</span>
+<span class="name">{{ viewerFormatters('agentNickname', agt) }}</span>
 
 <template v-for="website of [].concat(agt.homepage).filter(Boolean)">
   <span class="item-sep"></span>

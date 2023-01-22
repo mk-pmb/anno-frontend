@@ -13,6 +13,7 @@ const pDelay = require('delay');
 
 const eventBus = require('../../event-bus.js');
 const bindDataApi = require('./dataApi.js');
+const formatters = require('./formatters.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
@@ -213,6 +214,7 @@ module.exports = {
 
     methods: {
         toggleDetailBar,
+        formatters,
 
         revise()     {return eventBus.$emit('revise', this.annotation)},
         reply()      {return eventBus.$emit('reply',  this.annotation)},
