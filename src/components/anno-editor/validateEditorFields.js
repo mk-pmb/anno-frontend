@@ -21,6 +21,7 @@ const vali = function validateEditorFields(onBehalfOfVueComponent) {
 
   const anno = $store.state.editing;
   if (!anno.title) { mf('annofield_title'); }
+  if (!anno.rights) { mf('License'); }
 
   [].concat(anno.body || []).forEach(function verifyBody(body) {
     const {
