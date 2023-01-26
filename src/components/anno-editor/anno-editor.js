@@ -185,21 +185,25 @@ module.exports = {
       }));
     },
 
-    reply(annotation) {
-      this.$store.commit('SET_EDIT_MODE', 'reply')
-      this.$store.commit('RESET_ANNOTATION')
-      this.$store.commit('SET_HTML_BODY_VALUE', '')
-      this.$store.commit('ADD_TARGET', {id: annotation.id, scope: this.targetSource})
-      this.$store.commit('ADD_MOTIVATION', 'replying')
-      this.$store.commit('SET_REPLY_TO', annotation.id)
-      eventBus.$emit('open-editor')
+    async reply(refAnno) {
+      const editor = this;
+      const replyToUrl = (
+        refAnno['dc:isVersionOf']
+        || refAnno.id
+        );
+      const replyTgt = { id: replyToUrl, scope: editor.targetSource };
+      const { l10n } = editor;
+      const title = (l10n('reply_title_prefix')
+        + (refAnno['dc:title'] || refAnno.title));
+      await editor.startCompose('reply', state => ({
+        title,
+        target: [replyTgt, decideTargetForNewAnno(state)],
+        motivation: ['replying'],
+      }));
     },
 
-    revise(annotation) {
-      this.$store.commit('SET_EDIT_MODE', 'revise')
-      this.$store.commit('RESET_ANNOTATION')
-      this.$store.commit('REPLACE_ANNOTATION', annotation)
-      eventBus.$emit('open-editor')
+    async revise(anno) {
+      await this.startCompose('revise', () => anno);
     },
 
     setZoneSelector(newSvg) {
