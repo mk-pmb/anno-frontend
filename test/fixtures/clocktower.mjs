@@ -5,7 +5,6 @@
     "type": "TextualBody",
     "value": "<p>hat Zeit.</p>"
   },
-  "collection": "default",
   "doi": null,
   "id": "",
   "replyTo": null,

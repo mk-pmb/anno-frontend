@@ -27,8 +27,6 @@ const srvCfg = {
     URL of a WebDAV collection. Should end with a slash.
   */
 
-  collection: 'default',
-
   purlTemplate: [
     /* Template for generating persistent anno URLs. For details, see
       `../mixin/annoUrls.js`.

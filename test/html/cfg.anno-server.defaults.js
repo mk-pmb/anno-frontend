@@ -6,7 +6,6 @@
     protoHost = location.protocol + '//' + host;
   if ((port === 80) || (port === 443)) { port = 0; }
 
-  cfg.collection = 'default';
   cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
   cfg.draftStoreEndpoint = (window.document.URL.split(/\?|\#/
     )[0].replace(/\/html\/[\w\.]+$/, '') + '/fixtures/drafts/');
@@ -18,19 +17,6 @@
       return l.href;
     };
   }());
-
-  function authSrv(baseURL) {
-    var ueColl = encodeURIComponent(cfg.collection),
-      fromUrl = window.location.href,
-      qsCollFrom = ('?c=' + ueColl + '&from=' + encodeURIComponent(fromUrl));
-    cfg.tokenEndpoint = baseURL + 'token/' + ueColl;
-    cfg.loginFormUrl = baseURL + 'login' + qsCollFrom;
-    cfg.logoutPageUrl = baseURL + 'logout' + qsCollFrom;
-    cfg.loginRegistrationFormUrl = baseURL + 'register' + qsCollFrom;
-    cfg.permissionsRequestFormUrl = baseURL + 'request' + qsCollFrom;
-  }
-  window.annoCfgSetUbStyleAuthServer = authSrv;
-  authSrv(protoHost + (port ? ':3008/' : '/anno/auth/'));
 
   cfg.fixBogusRemoteAnnoEndpoint = function (badEndpointRgx) {
     if (!badEndpointRgx) { badEndpointRgx = /^\S+?\/anno\//; }

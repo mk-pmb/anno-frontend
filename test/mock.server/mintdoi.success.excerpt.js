@@ -9,7 +9,6 @@ setTimeout(function install() {
           "type": "Annotation",
           "id": "https://anno.ub.uni-heidelberg.de/anno/anno/PIG8QUudQzSkAgGOZ8ADsQ",
           "title": "…",
-          "collection": "diglit",
           "target": "…",
           "creator": "…",
           "created": "2022-06-25T17:27:34.236Z",

@@ -75,7 +75,7 @@ window.jQuery().ready(function installLate() {
       const jwtResp = await testUtil.ajax2str(jwtRequest, [rawJwt, decodeJWT]);
 
       const aclHeaders = {
-        'X-Anno-Collection': 'default',
+        // deprecated -> // 'X-Anno-Collection': 'default',
       };
       if (rawJwt.t) { aclHeaders.Authorization = 'Bearer ' + rawJwt.t; }
       const aclRequest = {
