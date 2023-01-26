@@ -76,16 +76,16 @@ const mutations = {
     },
 
     RESET_ANNOTATION(state) {
-        Object.keys(state).forEach(function reset(key) {
-          state[key] = null;    // trigger potential setter
-          /* don't: delete state[key];
-            It somehow breaks vue bindings on the bodies array,
-            which would disconnect the list of SemTags and Links so
-            they would be displayed as always-empty even though their
-            "add" buttons do indeed still add empty entries.
-          */
-        });
-        Object.assign(state, initialState());
+      Object.keys(state).forEach(function reset(key) {
+        state[key] = null;    // trigger potential setter
+        /* don't: delete state[key];
+          It somehow breaks vue bindings on the bodies array,
+          which would disconnect the list of SemTags and Links so
+          they would be displayed as always-empty even though their
+          "add" buttons do indeed still add empty entries.
+        */
+      });
+      Object.assign(state, initialState());
     },
 
     SET_REPLY_TO(state, v) {
