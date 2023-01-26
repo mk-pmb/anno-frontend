@@ -3,7 +3,6 @@ export default {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "id": "https://anno.ub.uni-heidelberg.de/anno/anno/HQhZh1nqS3adkzQ0QHK4_w",
   "type": "Annotation",
-  "collection": "diglit",
   "target": {
     "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079",
     "source": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079/_image",
@@ -23,7 +22,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/HQhZh1nqS3adkzQ0QHK4_w~1",
       "type": "Annotation",
       "title": "Epigram I.2",
-      "collection": "diglit",
       "target": {
         "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079",
         "source": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079/_image",
@@ -44,7 +42,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/HQhZh1nqS3adkzQ0QHK4_w~2",
       "type": "Annotation",
       "title": "Epigram 1.2",
-      "collection": "diglit",
       "target": {
         "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079",
         "source": "https://digi.ub.uni-heidelberg.de/diglit/cpgraec23/0079/_image",
@@ -62,7 +59,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/HQhZh1nqS3adkzQ0QHK4_w~3",
       "type": "Annotation",
       "title": "Epigram 1.2",
-      "collection": "diglit",
       "body": [
         {
           "purpose": "linking",

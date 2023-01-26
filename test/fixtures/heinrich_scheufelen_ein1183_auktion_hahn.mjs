@@ -3,7 +3,6 @@ export default {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "id": "https://anno.ub.uni-heidelberg.de/anno/anno/U6Uu6LA2R5umI-P4uBr-3A",
   "type": "Annotation",
-  "collection": "diglit",
   "body": [
     {
       "type": "TextualBody",
@@ -54,7 +53,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/U6Uu6LA2R5umI-P4uBr-3A~1",
       "type": "Annotation",
       "title": "Heinrich Scheufelen, Oberlenningen (Einlieferung „1183 Dr. Sch.“), Auktion Hahn, 13./14.4.1943",
-      "collection": "diglit",
       "body": [
         {
           "type": "TextualBody",

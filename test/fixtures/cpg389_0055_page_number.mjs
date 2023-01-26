@@ -4,7 +4,6 @@ export default {
     "type": "TextualBody",
     "value": "<p>22?</p>"
   },
-  "collection": "default",
   "doi": null,
   "id": "",
   "replyTo": null,
