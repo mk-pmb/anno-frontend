@@ -1,4 +1,3 @@
-const Vue = require('vue').default
 const {
     ensureArray, add, remove,
 } = require('@kba/anno-util')
@@ -9,6 +8,8 @@ const {
     svgSelectorResource,
     textualHtmlBody,
 } = require('@kba/anno-queries')
+
+const vuexUtil = require('../util.js');
 
 function initialState() {return {
     id: '',
@@ -68,10 +69,8 @@ const mutations = {
     },
 
     REPLACE_ANNOTATION(state, newState) {
-        Object.keys(state).forEach(k => {
-            if (newState[k]) Vue.set(state, k, newState[k])
-            else state[k] = null
-        })
+      mutations.RESET_ANNOTATION(state);
+      vuexUtil.typesafeFlatUpdateState(state, newState);
     },
 
     RESET_ANNOTATION(state) {
