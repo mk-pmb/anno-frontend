@@ -193,7 +193,6 @@ module.exports = {
 
     revise(annotation) {
       this.$store.commit('SET_EDIT_MODE', 'revise')
-      this.$store.commit('SET_COLLECTION', this.$store.state.collection)
       this.$store.commit('RESET_ANNOTATION')
       this.$store.commit('REPLACE_ANNOTATION', annotation)
       eventBus.$emit('open-editor')

@@ -2,7 +2,6 @@ export default {
   "title": "Propaganda-Ministerium, Berlin („Besitz P (116)“), Auktion C. G. Boerner 28.4.1939",
   "id": "https://anno.ub.uni-heidelberg.de/anno/anno/C76UjkRNTxGJFtAvB3q3uA",
   "type": "Annotation",
-  "collection": "diglit",
   "body": [
     {
       "type": "TextualBody",
@@ -61,7 +60,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/C76UjkRNTxGJFtAvB3q3uA~1",
       "type": "Annotation",
       "title": "Propaganda-Ministerium, Berlin („Besitz P (116)“), Auktion C. G. Boerner 28.4.1939",
-      "collection": "diglit",
       "body": [
         {
           "type": "TextualBody",
@@ -122,7 +120,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/C76UjkRNTxGJFtAvB3q3uA~2",
       "type": "Annotation",
       "title": "Propaganda-Ministerium, Berlin („Besitz P (116)“), Auktion C. G. Boerner 28.4.1939",
-      "collection": "diglit",
       "body": [
         {
           "type": "TextualBody",
@@ -180,7 +177,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/C76UjkRNTxGJFtAvB3q3uA~3",
       "type": "Annotation",
       "title": "Propaganda-Ministerium, Berlin („Besitz P (116)“), Auktion C. G. Boerner 28.4.1939",
-      "collection": "diglit",
       "body": [
         {
           "type": "TextualBody",
@@ -238,7 +234,6 @@ export default {
       "id": "https://anno.ub.uni-heidelberg.de/anno/anno/C76UjkRNTxGJFtAvB3q3uA~4",
       "type": "Annotation",
       "title": "Propaganda-Ministerium, Berlin („Besitz P (116)“), Auktion C. G. Boerner 28.4.1939",
-      "collection": "diglit",
       "body": [
         {
           "type": "TextualBody",

@@ -85,7 +85,6 @@ module.exports = function displayAnnotations(customOptions) {
         if (typeof oldValue === 'function') { options[key] = oldValue(); }
       });
     }([
-      'collection',
       'purlTemplate',
       'targetSource',
     ]));
