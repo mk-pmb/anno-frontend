@@ -54,14 +54,6 @@ const mutations = {
         textualHtmlBody.first(state).value = v
     },
 
-    SET_TITLE(state, title) {
-        state.title = title
-    },
-
-    SET_RIGHTS(state, rights) {
-        state.rights = rights
-    },
-
     REMOVE_TARGET(state, v) {
         remove(state, 'target', v)
     },
@@ -87,6 +79,9 @@ const mutations = {
       });
       Object.assign(state, initialState());
     },
+
+    SET_EDITOR_ANNO_PROP: vuexUtil.typesafeSetStateProp,
+    FLAT_UPDATE_EDITOR_ANNO: vuexUtil.typesafeFlatUpdateState,
 
     ADD_MOTIVATION(state, v) {
         ensureArray(state, 'motivation')
