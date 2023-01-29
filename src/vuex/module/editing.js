@@ -11,15 +11,17 @@ const {
 
 const vuexUtil = require('../util.js');
 
-function initialState() {return {
-    id: '',
+function initialState() {
+  return {
+    body: null,
     doi: null,
-    title: '',
-    body: [],
-    target: [],
+    id: '',
     replyTo: null,
     rights: '',
-}}
+    target: null,
+    title: '',
+  };
+}
 
 //
 // getters
