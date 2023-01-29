@@ -87,10 +87,6 @@ const mutations = {
       Object.assign(state, initialState());
     },
 
-    SET_REPLY_TO(state, v) {
-        state.replyTo = v
-    },
-
     ADD_MOTIVATION(state, v) {
         ensureArray(state, 'motivation')
         add(state, 'motivation', v)
