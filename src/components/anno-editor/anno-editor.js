@@ -21,6 +21,7 @@ const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const fixupLegacyAnno = require('./fixupLegacyAnno.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
+const targetRelatedness = require('./targetRelatedness.js');
 
 // function soon(f) { return setTimeout(f, 1); }
 function orf(x) { return x || false; }
@@ -210,17 +211,20 @@ module.exports = {
       const editor = this;
       const oldSvg = editor.zoneSelectorSvg;
       if (newSvg === oldSvg) { return; }
-
-      function upd(state) {
-        // Do not preserve any previous selectors because we'd have to
+      const { state } = editor.$store;
+      const origTgt = state.editing.target;
+      const tgtCateg = targetRelatedness.categorizeTargets(state, origTgt);
+      tgtCateg.subjTgt = {
+        // ^-- Do not preserve any previous selectors because we'd have to
         // ensure they are conceptually equivalent, and we cannot do that
         // in software.
-        state.editing.target = {
-          scope: state.targetSource,
-          source: state.targetImage,
-          selector: { type: 'SvgSelector', value: newSvg },
-        };
-      }
+        scope: state.targetSource,
+        source: state.targetImage,
+        selector: { type: 'SvgSelector', value: newSvg },
+      };
+      const newTargetsList = tgtCateg.recombine();
+
+      function upd(tmpState) { tmpState.editing.target = newTargetsList; }
       editor.$store.commit('INJECTED_MUTATION', [upd]);
       editor.redisplayPreviewThumbnail();
     },
