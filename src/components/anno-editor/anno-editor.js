@@ -118,7 +118,7 @@ module.exports = {
 
     editMode: {
       get() { return this.$store.state.editMode },
-      set(newVal) { this.$store.commit('SET_EDIT_MODE', newVal); },
+      set(v) { throw new Error('Legacy assignment: editMode = ' + v); },
     },
 
     title: {
@@ -175,7 +175,7 @@ module.exports = {
     async startCompose(editMode, annoDataTmpl) {
       const editor = this;
       const { commit, state } = editor.$store;
-      commit('SET_EDIT_MODE', editMode);
+      commit('SET_APP_STATE_PROP', ['editMode', editMode]);
       await editor.loadAnnoData(annoDataTmpl(state));
       eventBus.$emit('open-editor');
     },
