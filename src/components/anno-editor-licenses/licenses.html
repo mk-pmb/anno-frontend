@@ -16,7 +16,7 @@
         :key="licKey"
         :title="l10n(licInfo.title)"
         :data-content="l10n(licInfo.author_desc)"
-        @click="$store.commit('SET_RIGHTS', licInfo.url)"
+        @click="$store.commit('SET_EDITOR_ANNO_PROP', ['rights', licInfo.url])"
         :class="[
           'btn',
           'btn-default',
