@@ -123,7 +123,7 @@ module.exports = {
 
     title: {
       get() { return this.$store.state.editing.title; },
-      set(newVal) { this.$store.commit('SET_TITLE', newVal); },
+      set(t) { this.$store.commit('SET_EDITOR_ANNO_PROP', ['title', t]); },
     },
 
     titleRequired() {
