@@ -5,8 +5,11 @@ const {collectIds} = require('@kba/anno-util');
 const pEachSeries = require('p-each-series').default;
 
 const eventBus = require('../event-bus');
-const editing = require('./module/editing');
+
+const vuexUtil = require('./util.js');
+
 const annotationList = require('./module/annotationList');
+const editing = require('./module/editing');
 
 const fetchAnnoList = require('./fetchers/annoList.js');
 const fetchUserSessionInfo = require('./fetchers/userSessionInfo.js');
@@ -57,9 +60,8 @@ module.exports = {
             eventBus.$emit('updatedPermissions');
         },
 
-        SET_EDIT_MODE(state, editMode) {
-            state.editMode = editMode
-        },
+        SET_APP_STATE_PROP: vuexUtil.typesafeSetStateProp,
+        FLAT_UPDATE_APP_STATE: vuexUtil.typesafeFlatUpdateState,
 
         INJECTED_MUTATION(state, mutationSpec) {
           const [mutaFunc, ...mutaArgs] = mutationSpec;
