@@ -18,7 +18,7 @@ const isStr = require('is-string');
 const eventBus = require('../../event-bus.js');
 
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
-const fixupLegacyAnno = require('./fixupLegacyAnno.js');
+const getCleanAnno = require('./getCleanAnno.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
 const targetRelatedness = require('./targetRelatedness.js');
@@ -135,11 +135,11 @@ module.exports = {
   methods: {
 
     forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
-    getCleanAnno() { return fixupLegacyAnno(this.$store.state.editing); },
     getAnnoTitle() { return this.$store.state.editing.title; },
     setStatusMsg(...args) { return this.$refs.statusMsg.setMsg(...args); },
 
     loadAnnoData,
+    getCleanAnno,
 
     switchTabByRefName(refName) {
       const refs = this.$refs;
