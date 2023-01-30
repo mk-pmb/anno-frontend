@@ -6,11 +6,16 @@ function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
 const EX = function getCleanAnno() {
   const editor = this;
-  const { extraFields, ...anno } = jsonDeepCopy(editor.$store.state.editing);
+  const {
+    title,
+    extraFields,
+    ...anno
+  } = jsonDeepCopy(editor.$store.state.editing);
   Object.assign(anno, extraFields);
 
   if (!anno.id) { delete anno.id; }
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
+  if (title) { anno['dc:title'] = title; }
   delete anno.doi;
   delete anno.collection;
   delete anno.replyTo;

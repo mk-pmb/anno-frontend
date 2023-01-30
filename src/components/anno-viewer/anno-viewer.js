@@ -141,12 +141,17 @@ module.exports = {
 
     computed: {
         annoIdUrl()          {return this.annotation.id},
-        title()              {return this.annotation.title},
         firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
         simpleTagBodies()    {return simpleTagBody.all(this.annotation)},
         semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
         relationLinkBodies() {return relationLinkBody.all(this.annotation)},
         svgTarget()          {return svgSelectorResource.first(this.annotation)},
+
+        title() {
+          const anno = this.annotation;
+          if (!anno) { return ''; }
+          return String(anno['dc:title'] || anno.title || '');
+        },
 
         targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
@@ -180,7 +185,7 @@ module.exports = {
 
           (function checkExpectedProps() {
             const expected = [
-              'title',
+              'dc:title',
               (viewer.acceptEmptyAnnoId ? null : 'id' /* Anno ID */),
             ];
             const miss = l10n('missing_required_field') + ' ';
