@@ -15,6 +15,7 @@ function initialState() {
   return {
     body: null,
     doi: null,
+    extraFields: null,
     id: '',
     replyTo: null,
     rights: '',
@@ -60,11 +61,6 @@ const mutations = {
 
     REMOVE_BODY(state, v) {
         remove(state, 'body', v)
-    },
-
-    REPLACE_ANNOTATION(state, newState) {
-      mutations.RESET_ANNOTATION(state);
-      vuexUtil.typesafeFlatUpdateState(state, newState);
     },
 
     RESET_ANNOTATION(state) {
