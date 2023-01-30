@@ -38,7 +38,7 @@ module.exports = {
     btnClass:     { type: [String, Array], default: 'outline-secondary' },
     elem:         { type: String },
     balloonColorName: { type: String, default: 'secondary' },
-    popoverContentOpts: { type: [Object, false, null, undefined] },
+    popoverContentOpts: { type: [Object] },
   },
 
   mounted() {

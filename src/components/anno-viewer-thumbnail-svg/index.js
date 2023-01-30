@@ -4,8 +4,8 @@
 const getOwn = require('getown');
 
 const xrxStyleProps = {
-  thumbStrokeColor:   { type: [String, undefined] },
-  thumbFillColor:     { type: [String, undefined] },
+  thumbStrokeColor:   { type: [String] },
+  thumbFillColor:     { type: [String] },
 };
 
 
@@ -17,8 +17,8 @@ module.exports = {
   props: {
     svgTarget:    { type: [Object] },
     sizePx:       { type: [Number], default: 36 },
-    widthPx:      { type: [Number, undefined] },
-    heightPx:     { type: [Number, undefined] },
+    widthPx:      { type: [Number] },
+    heightPx:     { type: [Number] },
 
     ...xrxStyleProps,
 
