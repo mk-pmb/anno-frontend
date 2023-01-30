@@ -66,6 +66,7 @@ const EX = async function loadAnnoData(origAnno) {
     (tgtAdj && l10n('target_adjusted_' + tgtAdj)));
 
   editor.redisplayZoneEditorSvg();
+  editor.reloadAnnoHtml();
 };
 
 

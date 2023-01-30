@@ -247,6 +247,10 @@ module.exports = {
       }
     },
 
+    reloadAnnoHtml() {
+      eventBus.$emit('html-editor-reload-html');
+    },
+
     redisplayZoneEditorSvg() {
       const editor = this;
       const { zoneEditor } = editor;
