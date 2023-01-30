@@ -16,8 +16,8 @@ module.exports = {
     dropdownName:     { type: [String], required: false, default: '' },
     rowCaption:       { type: [String], required: false, default: '' },
     knownIdentities: { type: [Array] },
-    initialAgent: { type: [Object, undefined], required: false },
-    onchange: { type: [Function, undefined], required: false },
+    initialAgent: { type: [Object], required: false },
+    onchange: { type: [Function], required: false },
   },
 
   data() { return {
