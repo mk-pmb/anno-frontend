@@ -11,13 +11,13 @@ const {
 const pify = require('pify');
 const pDelay = require('delay');
 
-const eventBus = require('../../event-bus.js');
 const bindDataApi = require('./dataApi.js');
+const eventBus = require('../../event-bus.js');
 const formatters = require('./formatters.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
+const revisionsProps = require('./revisionsProps.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
-const revisionsProps = require('./revisionsProps.js');
 
 
 /**
