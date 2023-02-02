@@ -192,7 +192,7 @@
           <dl class="detailbar-license"><dt>
             {{ l10n('License') }}: {{ licenseTitleOrUnknown }}
           </dt><dd>
-            {{ l10n(currentLicense.user_desc) }}
+            {{ l10n(currentLicense.user_desc) || l10n('license_no_descr') }}
           </dd></dl>
 
           <dl class="detailbar-doi">
