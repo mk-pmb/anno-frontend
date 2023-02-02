@@ -9,6 +9,7 @@ const saveCreate = require('./saveCreate.js');
 const targetRelatedness = require('./targetRelatedness.js');
 
 // function soon(f) { return setTimeout(f, 1); }
+function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
 
@@ -188,7 +189,18 @@ module.exports = {
       }));
     },
 
-    async revise(anno) {
+    async revise(oldAnno) {
+      const anno = jsonDeepCopy(oldAnno);
+      if (!anno['dc:isVersionOf']) {
+        anno['dc:isVersionOf'] = (
+          anno.canonical
+          || anno.id
+          );
+      }
+      delete anno.canonical;
+      delete anno.id;
+      delete anno.via;
+      console.debug('anno-editor revise():', anno);
       await this.startCompose('revise', () => anno);
     },
 
