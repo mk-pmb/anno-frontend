@@ -219,17 +219,14 @@ module.exports = {
         source: state.targetImage,
         selector: { type: 'SvgSelector', value: newSvg },
       };
-      const newTargetsList = tgtCateg.recombine();
-
-      function upd(tmpState) { tmpState.editing.target = newTargetsList; }
-      editor.$store.commit('INJECTED_MUTATION', [upd]);
+      const newTgtList = tgtCateg.recombine();
+      editor.$store.commit('SET_EDITOR_ANNO_PROP', ['target', newTgtList]);
       editor.redisplayPreviewThumbnail();
     },
 
     async onSelectAuthorIdentity(evt) {
       const agent = evt.currentAgent;
-      function upd(state) { state.editing.creator = agent; }
-      await this.$store.commit('INJECTED_MUTATION', [upd]);
+      this.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
       this.forceUpdatePreview();
     },
 
