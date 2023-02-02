@@ -20,7 +20,7 @@ module.exports = {
     agt() {
       const { agent } = this;
       if (!agent) { return false; }
-      if (isStr(agent)) { return { name: agent }; }
+      if (isStr(agent)) { return { id: agent }; }
       return agent;
     },
 
