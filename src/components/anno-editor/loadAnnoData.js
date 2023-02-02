@@ -37,8 +37,8 @@ const EX = async function loadAnnoData(origAnno) {
   // :TODO: replyTo: Detect here or remove globally.
 
   const editorFields = {
-    doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi'),
-    title: legacyFieldsMustAgree(popField, String, 'dc:title title'),
+    doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi') || '',
+    title: legacyFieldsMustAgree(popField, String, 'dc:title title') || '',
     creator: wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */),
     target,
     replyTo,
