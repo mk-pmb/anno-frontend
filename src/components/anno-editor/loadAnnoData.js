@@ -15,6 +15,12 @@ function arrayOfTruths(...x) { return [].concat(...x).filter(Boolean); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function keys2str(x) { return String(Object.keys(x).sort()); }
 
+function wrapNonObj(x, k, u) {
+  if (x === undefined) { return u; }
+  if (typeof x === 'object') { return x; }
+  return { [k]: x };
+}
+
 const expectedModelKeys = keys2str(editorModelDef.state);
 
 
@@ -33,6 +39,7 @@ const EX = async function loadAnnoData(origAnno) {
   const editorFields = {
     doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi'),
     title: legacyFieldsMustAgree(popField, String, 'dc:title title'),
+    creator: wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */),
     target,
     replyTo,
     body: arrayOfTruths(popField('body')),
@@ -42,6 +49,7 @@ const EX = async function loadAnnoData(origAnno) {
   function copyStr(k) { editorFields[k] = String(popField(k) || ''); }
   copyStr('id');
   copyStr('rights');
+  copyStr('created');
 
   console.debug('loadAnnoData: editorFields:', editorFields, 'extra:', anno);
   const model = {

@@ -14,6 +14,8 @@ const vuexUtil = require('../util.js');
 function initialState() {
   return {
     body: null,
+    created: '',
+    creator: null,
     doi: null,
     extraFields: null,
     id: '',
