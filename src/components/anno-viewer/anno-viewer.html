@@ -73,8 +73,9 @@
                   <template v-else>
                     <i class="fa fa-user"></i>
                   </template>
-                  <span class="name">{{ aCreator.name || aCreator }}</span
-                    ><span class="list-sep"
+                  <span class="name">{{
+                    formatters('agentNickname', aCreator)
+                    }}</span><span class="list-sep"
                     :v-if="!aCreator['x-is-last-in-list']"
                     >,</span>
                 </span>

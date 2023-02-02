@@ -1,5 +1,7 @@
 const isStr = require('is-string');
 
+const viewerFormatters = require('../anno-viewer/formatters.js');
+
 function orf(x) { return x || false; }
 
 module.exports = {
@@ -25,6 +27,12 @@ module.exports = {
     },
 
     icon() { return orf(orf(this.agent)['as:icon']); },
+
+  },
+
+  methods: {
+
+    viewerFormatters,
 
   },
 
