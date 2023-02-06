@@ -136,6 +136,7 @@ module.exports = {
       const editor = this;
       const { editMode } = editor;
       if (editMode === 'create') { return saveCreate(editor); }
+      if (editMode === 'reply') { return saveCreate(editor); }
       window.alert('Save not implemented for editMode = ' + editMode);
     },
 
