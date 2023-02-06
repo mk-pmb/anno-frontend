@@ -105,7 +105,10 @@ module.exports = {
 
 
   methods: {
-    sort(...args) { return this.$store.dispatch('sort', ...args); },
+    sort(...args) {
+      return this.$store.dispatch('sort', ...args);
+      // Implemented in src/vuex/module/annotationList.js
+    },
 
     logoutButtonClicked() {
       window.error(':TODO: Confirm logout');
