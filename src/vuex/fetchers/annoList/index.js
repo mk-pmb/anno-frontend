@@ -1,8 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const api22 = require('../../api22.js');
-const eventBus = require('../../event-bus.js');
+const api22 = require('../../../api22.js');
+const eventBus = require('../../../event-bus.js');
 
 function orf(x) { return x || false; }
 

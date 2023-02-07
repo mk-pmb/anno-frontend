@@ -11,7 +11,7 @@ const vuexUtil = require('./util.js');
 const annotationList = require('./module/annotationList');
 const editing = require('./module/editing');
 
-const fetchAnnoList = require('./fetchers/annoList.js');
+const fetchAnnoList = require('./fetchers/annoList/index.js');
 const fetchUserSessionInfo = require('./fetchers/userSessionInfo.js');
 
 // function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
