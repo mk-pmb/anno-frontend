@@ -4,15 +4,17 @@
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
 
-const omitVuePropIfFalsey = [
+const omitFieldsIfFalsey = [
   'created',
   'id', /* Anno ID */
 ];
 
 
-const alwaysOmitVueProp = [
+const alwaysOmitFields = [
   'collection', // <- non-standard legacy prop used by ancient anno-fe
+  'created',
   'doi',
+  'iana:version-history',
   'replyTo',
 ];
 
@@ -26,8 +28,8 @@ const EX = function getCleanAnno() {
   } = jsonDeepCopy(editor.$store.state.editing);
   Object.assign(anno, extraFields);
 
-  omitVuePropIfFalsey.forEach(k => (anno[k] || delete anno[k]));
-  alwaysOmitVueProp.forEach(k => delete anno[k]);
+  omitFieldsIfFalsey.forEach(k => (anno[k] || delete anno[k]));
+  alwaysOmitFields.forEach(k => delete anno[k]);
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   if (title) { anno['dc:title'] = title; }
 
