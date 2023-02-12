@@ -410,6 +410,13 @@ module.exports = {
           return errors;
         },
 
+    replyRefNumText() {
+      const anno = this.annotation;
+      const ref = anno[':ANNO_FE:replyRefNum'];
+      const tgt = anno[':ANNO_FE:inReplyToRefNum'];
+      return this.l10n(tgt ? 'reply_refnum_deep' : 'reply_refnum_lv1'
+        ).replace(/@@ref@@/g, ref).replace(/@@tgt@@/g, tgt);
+    },
 
 
 
