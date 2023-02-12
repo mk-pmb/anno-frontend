@@ -28,8 +28,11 @@ const EX = function getCleanAnno() {
   } = jsonDeepCopy(editor.$store.state.editing);
   Object.assign(anno, extraFields);
 
-  omitFieldsIfFalsey.forEach(k => (anno[k] || delete anno[k]));
   alwaysOmitFields.forEach(k => delete anno[k]);
+  function omitIf(k, c) { if (c) { delete anno[k]; } }
+  omitFieldsIfFalsey.forEach(k => omitIf(k, !anno[k]));
+  Object.keys(anno).forEach(k => omitIf(k, k.startsWith(':ANNO_FE:')));
+
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   if (title) { anno['dc:title'] = title; }
 

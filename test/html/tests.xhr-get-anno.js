@@ -73,7 +73,7 @@ jq().ready(function installLate() {
       // eslint-disable-next-line camelcase
       { v: 'trace', ckb: true },
       // eslint-disable-next-line camelcase
-      function clear_list() { store.commit('REPLACE_LIST', []); },
+      function clear_list() { store.commit('ANNOLIST_REPLACE', []); },
       { v: 'import', f() { ldr.fromForm(form); } },
     ]);
   });

@@ -4,8 +4,11 @@
 const mergeOptions = require('merge-options');
 const parseCeson = require('ceson/parse.js');
 
+const optimizeList = require('../vuex/fetchers/annoList/optimizeAnnoList.js');
+
 
 async function doImportAnnosFromCeson(store, how) {
+  const oldState = store.state;
   const cesonData = parseCeson(how.data);
   let annos = [].concat(cesonData);
   // console.debug('xrq: ImportAnnosFromCeson:', { cesonText, cesonData, annos });
@@ -14,10 +17,10 @@ async function doImportAnnosFromCeson(store, how) {
     annos = annos.map(a => (a && mergeOptions(a, how.mergeIntoEach)));
   }
   if (how.refineEach) { annos = annos.map(how.refineEach); }
-  annos = annos.filter(Boolean);
+  annos = await optimizeList(annos, oldState);
 
-  function append(state) {
-    const alSt = state.annotationList;
+  function append(tmpState) {
+    const alSt = tmpState.annotationList;
     alSt.list = alSt.list.concat(annos);
     // console.debug('xrq: ImportAnnosFromCeson: added.');
   }
