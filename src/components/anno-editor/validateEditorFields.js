@@ -1,6 +1,9 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+function orf(x) { return x || false; }
+
+
 const vali = function validateEditorFields(onBehalfOfVueComponent) {
   console.debug('validateEditorFields', onBehalfOfVueComponent);
   window.onBehalf = onBehalfOfVueComponent;
@@ -22,6 +25,7 @@ const vali = function validateEditorFields(onBehalfOfVueComponent) {
   const anno = $store.state.editing;
   if (!anno.title) { mf('annofield_title'); }
   if (!anno.rights) { mf('License'); }
+  if (!orf(anno.creator).id /* Agent ID */) { mf('author_identity'); }
 
   [].concat(anno.body || []).forEach(function verifyBody(body) {
     const {
