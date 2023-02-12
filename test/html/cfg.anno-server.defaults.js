@@ -3,12 +3,15 @@
 (function () {
   'use strict';
   var cfg = {}, host = location.hostname, port = (+location.port || 0),
-    protoHost = location.protocol + '//' + host;
+    protoHost = location.protocol + '//' + host, testDirBaseUrl;
   if ((port === 80) || (port === 443)) { port = 0; }
 
   cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
-  cfg.draftStoreEndpoint = (window.document.URL.split(/\?|\#/
-    )[0].replace(/\/html\/[\w\.]+$/, '') + '/fixtures/drafts/');
+  testDirBaseUrl = (window.document.URL.split(/\?|\#/
+    )[0].replace(/\/html\/[\w\.]+$/, '') + '/');
+  cfg.draftStoreEndpoint = testDirBaseUrl + 'fixtures/drafts/';
+  cfg.loginFormUrl = () => (cfg.annoEndpoint.replace(/\w+\/$/, '')
+    + 'session/login');
 
   (function compile() {
     var l = document.createElement('a');
