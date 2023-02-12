@@ -46,6 +46,8 @@ const uiCfg = {
     Usually, this should be a description of what the
     `targetFragmentButtonClicked` event handler does. (see `events.md`) */
 
+  replyDisplayStyle: 'nested',
+  // How to display replies: 'flat' or 'nested'
 
 
 

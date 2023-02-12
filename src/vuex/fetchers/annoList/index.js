@@ -4,6 +4,8 @@
 const api22 = require('../../../api22.js');
 const eventBus = require('../../../event-bus.js');
 
+const optimizeAnnoList = require('./optimizeAnnoList.js');
+
 function orf(x) { return x || false; }
 
 
@@ -16,14 +18,15 @@ const EX = async function fetchAnnoList(store) {
   });
   eventBus.$emit('fetching');
   try {
-    const annos = await api22(state).aepGet(
+    let annos = await api22(state).aepGet(
       'anno/by/subject-target/' + state.targetSource);
-    const list = orf(orf(annos).first).items;
-    if (!Array.isArray(list)) {
+    annos = orf(orf(annos).first).items;
+    if (!Array.isArray(annos)) {
       throw new TypeError('Received an invalid annotations list');
     }
-    await commit('ANNOLIST_REPLACE', list);
-    eventBus.$emit('fetched', list);
+    annos = await optimizeAnnoList(annos, state);
+    await commit('ANNOLIST_REPLACE', annos);
+    eventBus.$emit('fetched', annos);
   } catch (fetchFailed) {
     await commit('ANNOLIST_UPDATE_STATE', {
       fetching: false,

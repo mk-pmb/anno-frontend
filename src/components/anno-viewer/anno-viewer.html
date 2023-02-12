@@ -231,6 +231,13 @@
           <a @click="setToVersion(newestVersion)">{{ l10n('newer_version') }}</a>
         </div>
 
+        <div v-if="this.annotation[':ANNO_FE:replyRefNum']" class="
+          card-body panel-body
+          anno-reply-refnum
+          ">
+          <p>{{ replyRefNumText() }}</p>
+        </div>
+
         <h4 class="media-heading" v-if="asReply">{{ title }}</h4>
 
         <div v-if="firstHtmlBody"
@@ -350,10 +357,10 @@
     </div><!-- role="toolbar" -->
     <div class="toolbar-end-clear" style="clear: both;"></div>
 
-    <template v-if="(annotation.hasReply || false).length">
+    <template v-if="(annotation[':ANNO_FE:replies'] || false).length">
       <div class="comment-separator"></div>
       <anno-viewer
-        v-for="reply in annotation.hasReply"
+        v-for="reply in annotation[':ANNO_FE:replies']"
         :key="reply.id /* Anno ID of reply */"
         as-reply
         :purl-id="purlId"
