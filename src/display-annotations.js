@@ -77,17 +77,20 @@ module.exports = function displayAnnotations(customOptions) {
       });
     }());
 
-    (function evaluateFactoryOptions(optNames) {
-      // These options can also be functions to be called to produce
+    (function evaluateFactoryOptions() {
+      // Some options can also be functions to be called to produce
       // the value now.
-      optNames.forEach(function check(key) {
-        const oldValue = options[key];
-        if (typeof oldValue === 'function') { options[key] = oldValue(); }
+      Object.entries(options).forEach(function check(pair) {
+        const [key, oldValue] = pair;
+        if (typeof oldValue !== 'function') { return; }
+        const qualified = (key.endsWith('Url')
+          || (key === 'purlTemplate')
+          || (key === 'targetSource')
+          );
+        if (!qualified) { return; }
+        options[key] = oldValue(options);
       });
-    }([
-      'purlTemplate',
-      'targetSource',
-    ]));
+    }());
 
     //
     // Set up the store
