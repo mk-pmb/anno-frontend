@@ -1,21 +1,16 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+
+// eslint-disable-next-line no-param-reassign
+function deleteIf(o, k, c) { if (c) { delete o[k]; } }
 
 
 const omitFieldsIfFalsey = [
   'created',
   'id', /* Anno ID */
-];
-
-
-const alwaysOmitFields = [
-  'collection', // <- non-standard legacy prop used by ancient anno-fe
-  'created',
-  'doi',
-  'iana:version-history',
-  'replyTo',
 ];
 
 
@@ -28,10 +23,7 @@ const EX = function getCleanAnno() {
   } = jsonDeepCopy(editor.$store.state.editing);
   Object.assign(anno, extraFields);
 
-  alwaysOmitFields.forEach(k => delete anno[k]);
-  function omitIf(k, c) { if (c) { delete anno[k]; } }
-  omitFieldsIfFalsey.forEach(k => omitIf(k, !anno[k]));
-  Object.keys(anno).forEach(k => omitIf(k, k.startsWith(':ANNO_FE:')));
+  EX.deleteNonEditableFieldsInplace(anno);
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   if (title) { anno['dc:title'] = title; }
@@ -53,6 +45,11 @@ const EX = function getCleanAnno() {
 
 
 Object.assign(EX, {
+
+  deleteNonEditableFieldsInplace(a) {
+    omitFieldsIfFalsey.forEach(k => deleteIf(a, k, !a[k]));
+    Object.keys(a).forEach(k => deleteIf(a, k, k.startsWith(':ANNO_FE:')));
+  },
 
   setOrDeleteMultiProp(anno, prop, values) {
     let v = values;
