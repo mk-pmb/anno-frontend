@@ -1,6 +1,6 @@
 
 function orf(x) { return x || false; }
-function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+// function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
 module.exports = {
 
@@ -22,14 +22,11 @@ module.exports = {
 
   data() { return {
     currentAgentId: '',
-    initialAgentBackup: null,
   } },
 
   created() {
     const vueElem = this;
-    const bak = jsonDeepCopy(orf(vueElem.initialAgent));
-    vueElem.initialAgentBackup = bak;
-    vueElem.currentAgentId = (bak.id /* Agent ID URL */ || '');
+    vueElem.currentAgentId = (orf(vueElem.initialAgent).id || '');
   },
 
   methods: {
