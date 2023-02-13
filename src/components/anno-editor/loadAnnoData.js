@@ -47,6 +47,7 @@ const EX = async function loadAnnoData(origAnno) {
     creator: wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */),
     target,
     replyTo,
+    versionOf: popField('dc:isVersionOf') || '',
     body: arrayOfTruths(popField('body')),
     rights: '',
   };

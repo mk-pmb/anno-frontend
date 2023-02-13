@@ -23,6 +23,7 @@ function initialState() {
     rights: '',
     target: null,
     title: '',
+    versionOf: '',
   };
 }
 

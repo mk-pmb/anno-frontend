@@ -18,6 +18,7 @@ const EX = function getCleanAnno() {
   const editor = this;
   const {
     title,
+    versionOf,
     extraFields,
     ...anno
   } = jsonDeepCopy(editor.$store.state.editing);
@@ -27,6 +28,7 @@ const EX = function getCleanAnno() {
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   if (title) { anno['dc:title'] = title; }
+  if (versionOf) { anno['dc:isVersionOf'] = versionOf; }
 
   let bodies = [].concat(anno.body);
   bodies = bodies.map(function cleanupBody(body) {
