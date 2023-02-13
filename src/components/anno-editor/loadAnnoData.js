@@ -8,6 +8,7 @@ const objPop = require('objpop');
 const editorModelDef = require('../../vuex/module/editing.js');
 
 const adjustMultiTarget = require('./adjustMultiTarget.js');
+const getCleanAnno = require('./getCleanAnno.js');
 const legacyFieldsMustAgree = require('./legacyFieldsMustAgree.js');
 
 
@@ -28,6 +29,7 @@ const EX = async function loadAnnoData(origAnno) {
   const editor = this;
   const { commit, state } = editor.$store;
   const anno = jsonDeepCopy(origAnno);
+  getCleanAnno.deleteNonEditableFieldsInplace(anno);
   const popField = objPop.d(anno);
 
   const target = adjustMultiTarget(state, popField('target'));

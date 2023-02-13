@@ -15,6 +15,7 @@ const EX = async function saveCreate(editor) {
 
   const { state, commit, dispatch } = editor.$store;
   const anno = editor.getCleanAnno();
+  EX.neverSubmitFields.forEach(k => delete anno[k]);
 
   console.debug('POSTing annotation:', anno);
   let saveResp;
@@ -36,6 +37,19 @@ const EX = async function saveCreate(editor) {
   // so let's continue that behavior for now.
   dispatch('fetchAnnoList');
 };
+
+
+EX.neverSubmitFields = [
+  'as:deleted',
+  'collection', // <- non-standard legacy prop used by ancient anno-fe
+  'created',
+  'dc:dateAccepted',
+  'doi',
+  'iana:latest-version',
+  'iana:version-history',
+  'iana:working-copy',
+  'replyTo',
+];
 
 
 module.exports = EX;
