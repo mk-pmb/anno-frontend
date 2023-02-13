@@ -34,7 +34,8 @@ module.exports = {
     return {
       forceUpdatePreviewTs: 0,
       zoneEditorEventsSetupDone: false,
-      previousChosenAuthorAgent: false,
+      previousChosenAuthorIdUrl: '',
+      initialAuthorAgent: {},
     };
   },
 
@@ -163,12 +164,14 @@ module.exports = {
 
     decideDefaultAuthorAgent() {
       const editor = this;
-      const previousAgent = editor.previousChosenAuthorAgent;
-      if (previousAgent.id) { return previousAgent; }
       const { authorIdentities } = orf(editor.$store.state.userSessionInfo);
-      if (!orf(authorIdentities).length) { return false; }
+      if (!orf(authorIdentities).length) { return; }
       if (authorIdentities.length === 1) { return authorIdentities[0]; }
-      return false;
+      const prev = editor.previousChosenAuthorIdUrl;
+      if (!prev) { return; }
+      function isPrevAgent(a) { return orf(a).id /* Agent ID */ === prev; }
+      const agent = authorIdentities.find(isPrevAgent);
+      return agent;
     },
 
     async startCompose(editMode, annoDataTmpl) {
@@ -244,7 +247,7 @@ module.exports = {
       const agent = evt.currentAgent;
       const editor = this;
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
-      editor.previousChosenAuthorAgent = agent;
+      editor.previousChosenAuthorIdUrl = agent.id;
       editor.forceUpdatePreview();
     },
 
