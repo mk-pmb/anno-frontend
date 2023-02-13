@@ -360,11 +360,11 @@
     <template v-if="(annotation[':ANNO_FE:replies'] || false).length">
       <div class="comment-separator"></div>
       <anno-viewer
-        v-for="reply in annotation[':ANNO_FE:replies']"
-        :key="reply.id /* Anno ID of reply */"
+        v-for="subAnno in annotation[':ANNO_FE:replies']"
+        :key="subAnno.id /* Anno ID of nested anno */"
         as-reply
         :purl-id="purlId"
-        :annotation="reply"
+        :annotation="subAnno"
         />
 
     </template>
