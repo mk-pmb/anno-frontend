@@ -34,6 +34,7 @@ module.exports = {
     return {
       forceUpdatePreviewTs: 0,
       zoneEditorEventsSetupDone: false,
+      previousChosenAuthorAgent: false,
     };
   },
 
@@ -160,6 +161,16 @@ module.exports = {
       });
     },
 
+    decideDefaultAuthorAgent() {
+      const editor = this;
+      const previousAgent = editor.previousChosenAuthorAgent;
+      if (previousAgent.id) { return previousAgent; }
+      const { authorIdentities } = orf(editor.$store.state.userSessionInfo);
+      if (!orf(authorIdentities).length) { return false; }
+      if (authorIdentities.length === 1) { return authorIdentities[0]; }
+      return false;
+    },
+
     async startCompose(editMode, annoDataTmpl) {
       const editor = this;
       const { commit, state } = editor.$store;
@@ -169,7 +180,9 @@ module.exports = {
     },
 
     async create() {
-      await this.startCompose('create', state => ({
+      const editor = this;
+      await editor.startCompose('create', state => ({
+        creator: editor.decideDefaultAuthorAgent(),
         target: decideTargetForNewAnno(state),
       }));
     },
@@ -185,6 +198,7 @@ module.exports = {
       const title = (l10n('reply_title_prefix')
         + (refAnno['dc:title'] || refAnno.title));
       await editor.startCompose('reply', state => ({
+        creator: editor.decideDefaultAuthorAgent(),
         title,
         target: [replyTgt, decideTargetForNewAnno(state)],
         motivation: ['replying'],
@@ -228,8 +242,10 @@ module.exports = {
 
     async onSelectAuthorIdentity(evt) {
       const agent = evt.currentAgent;
-      this.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
-      this.forceUpdatePreview();
+      const editor = this;
+      editor.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
+      editor.previousChosenAuthorAgent = agent;
+      editor.forceUpdatePreview();
     },
 
     initializeZoneEditor() {
