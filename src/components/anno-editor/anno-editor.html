@@ -36,7 +36,7 @@
           :row-caption="l10n('author_identity')"
           dropdown-id="annoeditor-author-identity-selector"
           :known-identities="knownAuthorIdentities"
-          :initial-agent="$store.state.editing.creator"
+          :initial-agent="initialAuthorAgent"
           :onchange="onSelectAuthorIdentity"
           />
         <anno-editor-licenses />

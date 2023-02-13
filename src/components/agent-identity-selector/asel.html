@@ -10,15 +10,16 @@
       @change="internalSelectionChanged($event)">
       <option
         class="keep-old-value"
-        :data-agent="JSON.stringify(initialAgentBackup || null)"
+        :data-agent="JSON.stringify(initialAgent || null)"
+        :selected="!currentAgentId"
         >{{ l10n('dropdown_keep_old_value') }}
-        {{ makeCaptionForIdentity(initialAgentBackup) }}
+        {{ makeCaptionForIdentity(initialAgent) }}
       </option>
       <option v-for="(agent, aidIndex) in knownIdentities"
         :key="agent.id || ('invalid:' + aidIndex)"
         :value="agent.id || ''"
         :disabled="!agent.id"
-        :selected="agent.id && (agent.id === initialAgentBackup.id)"
+        :selected="agent.id && (agent.id === currentAgentId)"
         :data-agent="JSON.stringify(agent || null)"
         >{{ makeCaptionForIdentity(agent) }}</option>
     </select>

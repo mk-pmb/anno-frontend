@@ -41,10 +41,13 @@ const EX = async function loadAnnoData(origAnno) {
   const title = (legacyFieldsMustAgree(popField, String, 'dc:title title')
     || '').replace(/\s+/g, ' ').trim();
 
+  const creator = wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */);
+  editor.initialAuthorAgent = jsonDeepCopy(creator);
+
   const editorFields = {
     doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi') || '',
     title,
-    creator: wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */),
+    creator,
     target,
     replyTo,
     versionOf: popField('dc:isVersionOf') || '',
