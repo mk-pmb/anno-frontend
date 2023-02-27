@@ -10,6 +10,7 @@
 
         "de": {
             "error:": "Fehler:",
+            "please_report_error:": "Ein (hoffentlich) besonders seltener Fehler trat auf. Bitte melden Sie über unser Kontaktformular die folgenden Fehler-Details, gerne auch mit einer Beschreibung, welche Schritte zu diesem Fehler geführt haben könnten:",
             "unexpected_error": "Fehler: Sonstiger Fehler. Bitte versuchen Sie es in ein paar Minuten nochmal. Wenn der Fehler weiterbesteht, nehmen Sie bitte Kontakt auf.",
             "hint:": "Hinweis:",
             "doi": "DOI",
@@ -225,6 +226,7 @@
 
         "en": {
             "error:": "Error:",
+            "please_report_error:": "A (hopefully) extra rare error occurred. Please use our contact form to report the error details shown below, ideally with a description of what you were trying to do when the error occurred:",
             "unexpected_error": "Error: Unexpected type of failure. Please retry in a few minutes. If the problem persists, please contact us.",
             "hint:": "Hint:",
             "doi": "DOI",
