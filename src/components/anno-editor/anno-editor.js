@@ -12,6 +12,8 @@ const targetRelatedness = require('./targetRelatedness.js');
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
+const emptySvgTagRgx = /^<svg\s*>\s*<\/svg\s*>$/;
+
 
 module.exports = {
 
@@ -228,19 +230,25 @@ module.exports = {
 
     setZoneSelector(newSvg) {
       const editor = this;
+      let optimizedSvg = String(newSvg || '').trim();
+      if (emptySvgTagRgx.test(optimizedSvg)) { optimizedSvg = ''; }
+      if (optimizedSvg && (!/\d/.test(optimizedSvg))) {
+        window.prompt(editor.l10n('please_report_error:'),
+          'Error: numberless SVG selector: ' + encodeURI(optimizedSvg));
+      }
       const oldSvg = editor.zoneSelectorSvg;
       if (newSvg === oldSvg) { return; }
       const { state } = editor.$store;
       const origTgt = state.editing.target;
       const tgtCateg = targetRelatedness.categorizeTargets(state, origTgt);
-      tgtCateg.subjTgt = {
+      tgtCateg.subjTgt = (optimizedSvg ? {
         // ^-- Do not preserve any previous selectors because we'd have to
         // ensure they are conceptually equivalent, and we cannot do that
         // in software.
         scope: state.targetSource,
         source: state.targetImage,
         selector: { type: 'SvgSelector', value: newSvg },
-      };
+      } : decideTargetForNewAnno(state));
       const newTgtList = tgtCateg.recombine();
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['target', newTgtList]);
       editor.redisplayPreviewThumbnail();
