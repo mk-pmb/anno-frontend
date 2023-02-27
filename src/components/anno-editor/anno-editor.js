@@ -210,12 +210,15 @@ module.exports = {
 
     async revise(oldAnno) {
       const anno = jsonDeepCopy(oldAnno);
+      const oldAnnoIdUrl = anno.id;
+      if (!oldAnnoIdUrl) { throw new Error('revise(): oldAnno has no id!'); }
       if (!anno['dc:isVersionOf']) {
         anno['dc:isVersionOf'] = (
           anno.canonical
-          || anno.id
+          || oldAnnoIdUrl
           );
       }
+      anno['dc:replaces'] = oldAnnoIdUrl;
       delete anno.canonical;
       delete anno.id;
       delete anno.via;
