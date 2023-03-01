@@ -60,7 +60,7 @@ const EX = async function loadAnnoData(origAnno) {
   copyStr('rights');
   copyStr('created');
 
-  console.debug('loadAnnoData: editorFields:', editorFields, 'extra:', anno);
+  // console.debug('loadAnnoData: editorFields:', editorFields, 'extra:', anno);
   const model = {
     ...editorFields,
     /*

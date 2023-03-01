@@ -224,7 +224,7 @@ module.exports = {
       delete anno.canonical;
       delete anno.id;
       delete anno.via;
-      console.debug('anno-editor revise():', anno);
+      // console.debug('anno-editor revise():', anno);
       await this.startCompose('revise', () => anno);
     },
 
