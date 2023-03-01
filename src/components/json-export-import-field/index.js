@@ -41,7 +41,7 @@ module.exports = {
         { c: '⤦', n: 'wrap', h: 'toggle text wrap', f: exim.toggleTextWrap },
         ((exim.path || exim.dumpFunc)
           && { c: '✍', n: 'dump', h: 'export', f: exim.redumpJson }),
-        ((exim.path || exim.importFunc)
+        ((exim.path || exim.importFunc || exim.importEvent)
           && { c: '⏎', n: 'load', h: 'import', f: exim.importJson }),
       ]).filter(Boolean);
       return buttons;
@@ -63,7 +63,7 @@ module.exports = {
       const { path, dumpFunc } = exim;
       const { state } = exim.$store;
       const data = (dumpFunc || loGet)(state, path);
-      return sortedJson(data);
+      return sortedJson(data) + '\n';
     },
 
     async importJson() {
