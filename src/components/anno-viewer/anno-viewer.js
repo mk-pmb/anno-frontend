@@ -40,7 +40,6 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  *
  * - `revise`: This annotation should be opened in an editor for revision
  * - `reply`: A new annotation as a reply to this annotation should be opened in an editor
- * - `remove`: This annotation should be removed from the store
  * - `startHighlighting`: Start highlighting this annotation
  * - `stopHighlighting`: Stop highlighting this annotation
  * - `mouseenter`: The mouse cursor is now on this annotation
@@ -218,7 +217,6 @@ module.exports = {
 
         revise()     {return eventBus.$emit('revise', this.annotation)},
         reply()      {return eventBus.$emit('reply',  this.annotation)},
-        remove()     {return eventBus.$emit('remove', this.annotation)},
 
         makeEventContext() {
           const viewer = this;

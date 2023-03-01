@@ -339,14 +339,6 @@
           {{ l10n('compose_reply') }}
         </bootstrap-button
 
-        ><bootstrap-button
-          @click="remove"
-          v-if="$auth('remove', annoIdUrl)"
-          :title="l10n('delete_anno')"
-          btn-class="outline-danger"
-          icon-fa="trash-o">
-        </bootstrap-button
-
         ><anno-viewer-versions-dropdown
           :anno="annotation"
           :on-select-version="this.setToVersion.bind(this)"
