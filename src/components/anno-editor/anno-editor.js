@@ -48,7 +48,6 @@ module.exports = {
     eventBus.$on('create', this.create)
     eventBus.$on('reply', this.reply)
     eventBus.$on('revise', this.revise)
-    eventBus.$on('remove', this.remove)
     eventBus.$on('discard', this.discard)
     eventBus.$on('save', this.save)
     eventBus.$on('loadAnnoData', editor.loadAnnoData);
@@ -148,20 +147,6 @@ module.exports = {
     discard() {
       this.$store.commit('RESET_ANNOTATION')
       eventBus.$emit('close-editor')
-    },
-
-    remove(annoOrId) {
-      if (!window.confirm(this.l10n('delete_anno_confirm'))) { return; }
-      const annoIdUrl = (annoOrId.id || annoOrId);
-      const self = this;
-      const { api, $store } = self;
-      api.delete(annoIdUrl, (err) => {
-        if (err) { return console.error(err); }
-        console.debug('API confirms anno as removed:', annoIdUrl);
-        eventBus.$emit('removed', annoIdUrl);
-        $store.dispatch('fetchAnnoList');
-        self.discard();
-      });
     },
 
     decideDefaultAuthorAgent() {
