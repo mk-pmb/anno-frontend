@@ -17,12 +17,20 @@
 
 
 <div class="topic" data-topic="annot">
-  <h3>Annotation</h3>
+  <h3>Annotation (Vue data model)</h3>
   <json-export-import-field class="jsondump-annot" path="editing"
-    import-event="loadAnnoData"
     :extraButtons="[
       { c: '🗯', n: 'Validate editor fields', f: validateEditorFields, a: null },
     ]"
+    />
+</div>
+
+
+<div class="topic" data-topic="annot">
+  <h3>Annotation (standard compliant format)</h3>
+  <json-export-import-field class="jsondump-annot"
+    :dumpFunc="editorApi.getCleanAnno"
+    import-event="loadAnnoData"
     />
 </div>
 

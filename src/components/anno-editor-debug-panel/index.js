@@ -21,6 +21,10 @@ module.exports = {
     require('../../mixin/l10n.js'),
   ],
 
+  props: {
+    editorApi: Object,
+  },
+
   methods: {
 
     ...loMapValues({
