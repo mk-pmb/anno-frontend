@@ -133,7 +133,7 @@
             </button>
 
             <button class="btn btn-sm btn-secondary"
-              v-if="latestRevisionDoi || $auth('mintDoi', annoIdUrl)"
+              v-if="latestVersionDoi || $auth('mintDoi', annoIdUrl)"
               @click="toggleDetailBar"
               data-detailbar="doi"
               :title="l10n('doi')"
@@ -196,14 +196,14 @@
           </dd></dl>
 
           <dl class="detailbar-doi">
-            <template v-if="latestRevisionDoi">
+            <template v-if="latestVersionDoi">
               <dt-url-caption-link
                 :caption="l10n('doi.of.annotation')"
-                :url="doi2url(latestRevisionDoi)"
+                :url="doi2url(latestVersionDoi)"
                 />
               <dt-url-caption-link
-                :caption="l10n('doi.of.annotation.revision')"
-                :url="doi2url(currentRevisionDoi)"
+                :caption="l10n('doi.of.annotation.version')"
+                :url="doi2url(currentVersionDoi)"
                 />
             </template>
             <template v-else><!-- else = we have mintDoi permission,
