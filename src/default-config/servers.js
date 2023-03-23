@@ -34,7 +34,7 @@ const srvCfg = {
 
     '%ep', // annoEndpoint
     'anno/',
-    '%ri', // revision identifier
+    '%ri', // version identifier
   ].join(''),
 
 };
