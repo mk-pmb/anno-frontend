@@ -53,6 +53,11 @@
         + '/%ir/full/0/default.jpg');
     },
 
+    ubHdJournal: function (zsKuerzel, submissionId) {
+      cfg.targetSource = ('https://journals.ub.uni-heidelberg.de/index.php/'
+        + zsKuerzel + '/article/view/' + submissionId);
+    },
+
   };
 
   (function setTargetFromUrl() {
@@ -61,6 +66,15 @@
     switch (t) {
     case 'alteuni':
       return s.uniHdKarlLange1896();
+    case 'engel':
+      cfg.initAppMode = 'cmp';
+      cfg.initCmpBaseId = 'EOEXrHgLT3GfoXYnQ6es6g';
+      cfg.initCmpPrimarySideVersionNumber = 4;
+      return s.ubHdDigLit(1528, 2353, 'sauer1941/0012', '219.jpg');
+    case 'esau':
+      return s.ubHdDigLit(1233, 1901, 'cpg148/0074', '033v.jpg');
+    case 'wat':
+      return s.ubHdJournal('arch-inf', 69356);
     case 'wg15':
       return s.ubHdDigLit(1494, 2348, 'cpg389/0015', '002r.jpg');
     case 'wg55':
