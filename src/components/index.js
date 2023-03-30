@@ -5,7 +5,8 @@ const vue2Teleport = require('vue2-teleport').default;
 const components = {
 
     // helpers
-    'bootstrap-btnbar-dropdown': require('./bootstrap-btnbar-dropdown'),
+    'anno-cmp-ver-chooser':      require('./anno-cmp-ver-chooser'),
+    'bootstrap-btnbar-dropdown':  require('./bootstrap-btnbar-dropdown'),
     'bootstrap-button':  require('./bootstrap-button'),
     'bootstrap-tab':     require('./bootstrap-tab'),
     'bootstrap-tabs':    require('./bootstrap-tabs'),
@@ -13,6 +14,7 @@ const components = {
     'teleport':          vue2Teleport,
 
     // viewing
+    'anno-cmp-mode':     require('./anno-cmp-mode'),
     'anno-list':         require('./anno-list'),
     'anno-viewer-thumbnail-svg': require('./anno-viewer-thumbnail-svg'),
     'anno-viewer-versions-dropdown': require('./anno-viewer-versions-dropdown'),
@@ -39,7 +41,7 @@ const components = {
     'json-export-import-field':   require('./json-export-import-field'),
 
     // apps
-    'sidebar-app':       require('./sidebar-app')
+    'sidebar-app':       require('./sidebar-app'),
 
 };
 

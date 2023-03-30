@@ -16,6 +16,7 @@
             "doi": "DOI",
             "doi.of.annotation": "DOI der Annotation",
             "doi.of.annotation.version": "DOI der Annotation in dieser Version",
+            "latest_version": "Neueste Version",
             "dateformat":  "dd.mm.yyyy HH:MM",
             "help.url.manual": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/de/manual.html#{{ topic }}",
             "help.url.template": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/de/{{ topic }}.html",
@@ -215,6 +216,11 @@
             "target_adjusted_added":    "Wurde hinzugefügt.",
             "target_adjusted_hoisted":  "Wurde an den Anfang der Liste verschoben.",
 
+            "cmp_layout_top":       "Oben:",
+            "cmp_layout_left":      "Links:",
+            "cmp_layout_right":     "Rechts:",
+            "cmp_layout_bottom":    "Unten:",
+
             "fmt_bold":        "Fett",
             "fmt_size":        "Schriftgröße",
             "fmt_size_small":  "Klein",
@@ -232,6 +238,7 @@
             "doi": "DOI",
             "doi.of.annotation": "DOI of the annotation",
             "doi.of.annotation.version": "DOI of this version of the annotation",
+            "latest_version": "Latest Version",
             "dateformat":  "yyyy-mm-dd hh:MM:ss TT",
             "help.url.manual": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/en/manual.html#{{ topic }}",
             "help.url.template": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/en/{{ topic }}.html",
@@ -429,6 +436,11 @@
             "generic_api_call_in_progress":   "Waiting for result:",
             "generic_api_call_failed":        "Failed:",
             "generic_api_call_success":       "Success:",
+
+            "cmp_layout_top":       "Top:",
+            "cmp_layout_left":      "Left:",
+            "cmp_layout_right":     "Right:",
+            "cmp_layout_bottom":    "Bottom:",
 
             "fmt_bold": "Bold"
         }

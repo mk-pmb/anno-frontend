@@ -3,6 +3,7 @@
 
 html { font-size: 15px; }
 body > main { float: left; width: 40%; margin: 1em; margin-right: 2em; }
+body[anno-app-mode="cmp"] > main { width: 90%; }
 
 .sidebar-container { overflow: auto; }
 .popups-boundary-marker { border: 1em solid skyblue; }
