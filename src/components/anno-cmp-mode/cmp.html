@@ -1,0 +1,52 @@
+<div
+  :class="[
+    'annocmp-wrapper',
+    `annocmp-layout-${priSide}-${secSide}`,
+    ].filter(Boolean)"
+  >
+  <div class="
+    annocmp-side
+    annocmp-primary-side
+    border
+    border-secondary
+    ">
+    <div class="row header"><div class="col-lg">
+      <select ref="layoutChooser" v-model="priSide">
+        <option value="left">{{ l10n('cmp_layout_left') }}</option>
+        <option value="top">{{ l10n('cmp_layout_top') }}</option>
+      </select>
+      <anno-cmp-ver-chooser
+        ref="priVerChooser"
+        :choice="priVerChoice"
+        :api="{ getVersions() { return knownVersions; } }"
+        />
+    </div></div>
+    <div class="row content"><div class="col-lg">
+      <h3>Primary Side Content</h3>
+      <p>Anno: {{ baseId }}<br>Version: {{ priVerChoice.versNum }}</p>
+    </div></div>
+  </div>
+
+  <div class="
+    annocmp-side
+    annocmp-secondary-side
+    border
+    border-secondary
+    ">
+    <div class="row header"><div class="col-lg">
+      {{ l10n('cmp_layout_' + secSide) }}
+      <anno-cmp-ver-chooser
+        ref="secVerChooser"
+        :choice="secVerChoice"
+        :api="{ getVersions() { return knownVersions; } }"
+        />
+    </div></div>
+    <div class="row content"><div class="col-lg">
+      <h3>Secondary Side Content</h3>
+      <p>Anno: {{ baseId }}<br>Version: {{ secVerChoice.versNum }}</p>
+    </div></div>
+  </div>
+
+  <div class="unfloat annocmp-clear-sides"></div>
+
+</div>

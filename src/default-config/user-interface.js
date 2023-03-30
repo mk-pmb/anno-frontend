@@ -7,6 +7,10 @@ const uiCfg = {
 
   // For HTML/DOM specific stuff, see `html-dom.js`.
 
+  initAppMode: 'list',
+  // ^- 'list' = annotation list (default)
+  //    'cmp' = comparison view / print view
+
   uiDebugMode: false,
 
   loginRegistrationFormUrl: null,

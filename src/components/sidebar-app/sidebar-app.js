@@ -39,6 +39,7 @@ module.exports = {
     }},
 
     computed: {
+      appMode() { return this.$store.state.initAppMode; },
       numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
 
       noAnnotsReason() {
@@ -81,5 +82,6 @@ module.exports = {
         Object.freeze(box);
         sidebarApp.msgBoxes.push(box);
       });
+      document.body.setAttribute('anno-app-mode', sidebarApp.appMode);
     },
 }

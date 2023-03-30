@@ -1,0 +1,26 @@
+.annoeditor-global-css .annocmp-wrapper {
+
+  position: relative;
+
+  .annocmp-side {
+    width: 100%;
+    overflow: auto;
+  }
+
+  &.annocmp-layout-top-bottom {
+    .annocmp-primary-side { margin-bottom: 2em; }
+  }
+  &.annocmp-layout-left-right {
+    .annocmp-side {
+      width: 48%;
+      float: left;
+    }
+    .annocmp-primary-side {
+      margin-right: 2%;
+    }
+  }
+
+  .unfloat { clear: both; }
+
+
+}
