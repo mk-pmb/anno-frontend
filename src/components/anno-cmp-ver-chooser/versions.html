@@ -1,0 +1,12 @@
+<span class="version-chooser-wrapper">
+  <select ref="chooser" v-model="choice.versNum">
+    <option value="0">{{ l10n('latest_version') }}</option>
+    <option
+      v-for="ver in api.getVersions()"
+      :value="ver.versNum"
+      >#<span class="versnum">{{ ver.versNum }}</span>
+        <span class="versdate">{{ dateFmt(ver.created) }}</span>
+        <span class="vershint" v-if="ver.hint">{{ ver.hint}}</span>
+      </option>
+  </select>
+</span>

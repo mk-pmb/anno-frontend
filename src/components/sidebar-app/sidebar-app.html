@@ -4,6 +4,7 @@
     'annoeditor-sidebar',
     (standalone && 'annoeditor-sidebar-standalone'),
     `annoeditor-sidebar-${collapsed ? 'collapsed' : 'open'}`,
+    `annoeditor-appmpde-${appMode}`,
     ].filter(Boolean)"
   :data-number-of-annotations="numberOfAnnotations"
   >
@@ -44,7 +45,9 @@
       </div>
     </div><!-- .msgboxes -->
 
-    <anno-list ref="annoList">
+    <anno-list ref="annoList"
+      v-if="appMode === 'list'"
+      >
       <div v-if="noAnnotsReason"
         slot="annot-list-empty"
         :class="[
@@ -57,5 +60,10 @@
         <p class="msg">{{ noAnnotsReason.msg }}</p>
       </div>
     </anno-list>
+
+    <anno-cmp-mode
+      v-if="appMode === 'cmp'"
+      >
+    </anno-cmp-mode>
   </div>
 </div>
