@@ -77,12 +77,14 @@ module.exports = {
     actions: {
 
       async retrieveInitialState(store) {
-        pEachSeries([
-          'fetchAnnoList',
+        const appMode = store.state.initAppMode;
+        const todo = [
+          ((appMode === 'list') && 'fetchAnnoList'),
           'fetchUserSessionInfo',
-        ], async function dare(phase) {
+        ];
+        pEachSeries(todo, async function dare(phase) {
           try {
-            await store.dispatch(phase);
+            await (phase && store.dispatch(phase));
           } catch (err) {
             err.appInitPhase = phase;
             err.message += '; phase: ' + phase;
