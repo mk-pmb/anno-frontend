@@ -3,6 +3,9 @@
 
 const getOwn = require('getown');
 
+const eventBus = require('../../event-bus.js');
+const fetchVersionsList = require('./fetchVersionsList.js');
+
 
 const oppoSides = {
   left: 'right',
@@ -27,20 +30,20 @@ const compoDef = {
 
   data() {
     const st = this.$store.state;
+    // const { l10n } = this;
     return {
       baseId: (st.initCmpBaseId || ''),
       priSide: 'left',
       priVerChoice: { versNum: (+st.initCmpPrimarySideVersionNumber || 0) },
       secVerChoice: { versNum: (+st.initCmpSecondarySideVersionNumber || 0) },
-      knownVersions: Array.from({ length: 8 }).map((x, i) => ({
-        versNum: i + 1,
-        hint: 'dummy',
-        created: new Date('2023-03-30T1' + i + ':00:00Z'),
-      })),
+      knownVersions: false,
+      latestVerNum: 0,
     };
   },
 
   mounted() {
+    const cmp = this;
+    eventBus.$emit('trackPromise', fetchVersionsList(cmp));
   },
 
   computed: {
@@ -50,6 +53,10 @@ const compoDef = {
   },
 
   methods: {
+
+    forceRerenderAnnos() {
+    },
+
   },
 
 };
