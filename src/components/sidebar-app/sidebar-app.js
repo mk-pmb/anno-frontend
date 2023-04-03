@@ -16,72 +16,76 @@
 
 const eventBus = require('../../event-bus');
 
+
 module.exports = {
-    props: {
-        collapseInitially: {type: Boolean, default: false},
-        standalone: {type: Boolean, default: false},
+
+  props: {
+      collapseInitially: {type: Boolean, default: false},
+      standalone: {type: Boolean, default: false},
+  },
+
+  mixins: [
+      require('../../mixin/l10n.js'),
+      require('../../mixin/prefix.js'),
+      require('../../mixin/toplevel-css.js'),
+  ],
+
+  template: require('./sidebar-app.html'),
+  style: [
+    require('./sidebar-app.scss'),
+    require('./bootstrap-tweaks.scss'),
+  ],
+
+  data() {return {
+      collapsed: this.collapseInitially,
+      msgBoxes: [],
+  }},
+
+  computed: {
+    appMode() { return this.$store.state.initAppMode; },
+    numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
+
+    noAnnotsReason() {
+      const app = this;
+      const alSt = app.$store.state.annotationList;
+      if (alSt.list.length) { return false; }
+      const loadFail = alSt.fetchFailed;
+      const code = ((alSt.fetching && 'loading')
+        || (loadFail && 'loadfail')
+        || 'empty');
+      const reason = { code, msg: app.l10n('anno_list:' + code) };
+      if (code === 'loadfail') {
+        reason.msg += ' ' + String(loadFail);
+        reason.err = loadFail;
+      }
+      return reason;
     },
-    mixins: [
-        require('../../mixin/l10n.js'),
-        require('../../mixin/prefix.js'),
-        require('../../mixin/toplevel-css.js'),
-    ],
+  },
 
-    template: require('./sidebar-app.html'),
-    style: [
-      require('./sidebar-app.scss'),
-      require('./bootstrap-tweaks.scss'),
-    ],
+  methods: {
 
-    data() {return {
-        collapsed: this.collapseInitially,
-        msgBoxes: [],
-    }},
+    toggle() { this.collapsed = !this.collapsed; },
 
-    computed: {
-      appMode() { return this.$store.state.initAppMode; },
-      numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
-
-      noAnnotsReason() {
-        const app = this;
-        const alSt = app.$store.state.annotationList;
-        if (alSt.list.length) { return false; }
-        const loadFail = alSt.fetchFailed;
-        const code = ((alSt.fetching && 'loading')
-          || (loadFail && 'loadfail')
-          || 'empty');
-        const reason = { code, msg: app.l10n('anno_list:' + code) };
-        if (code === 'loadfail') {
-          reason.msg += ' ' + String(loadFail);
-          reason.err = loadFail;
-        }
-        return reason;
-      },
+    discardMsgBox(box) {
+      this.msgBoxes = this.msgBoxes.filter(b => (b !== box));
     },
 
-    methods: {
+  },
 
-      toggle() { this.collapsed = !this.collapsed; },
+  mounted() {
+    const sidebarApp = this;
+    eventBus.$on('error', function displayError(err) {
+      const box = {
+        cls: 'error',
+        msgTypePrefix: sidebarApp.l10n('error:'),
+        msg: String(err),
+        hint: err.hint,
+        err,
+      };
+      Object.freeze(box);
+      sidebarApp.msgBoxes.push(box);
+    });
+    document.body.setAttribute('anno-app-mode', sidebarApp.appMode);
+  },
 
-      discardMsgBox(box) {
-        this.msgBoxes = this.msgBoxes.filter(b => (b !== box));
-      },
-
-    },
-
-    mounted() {
-      const sidebarApp = this;
-      eventBus.$on('error', function displayError(err) {
-        const box = {
-          cls: 'error',
-          msgTypePrefix: sidebarApp.l10n('error:'),
-          msg: String(err),
-          hint: err.hint,
-          err,
-        };
-        Object.freeze(box);
-        sidebarApp.msgBoxes.push(box);
-      });
-      document.body.setAttribute('anno-app-mode', sidebarApp.appMode);
-    },
 }
