@@ -14,7 +14,7 @@
  *
  */
 
-const eventBus = require('../../event-bus');
+const eventBus = require('../../event-bus.js');
 
 
 module.exports = {
@@ -66,26 +66,58 @@ module.exports = {
 
     toggle() { this.collapsed = !this.collapsed; },
 
-    discardMsgBox(box) {
-      this.msgBoxes = this.msgBoxes.filter(b => (b !== box));
+    updateMsgBox(add, discard) {
+      const sba = this;
+      console.debug('updateMsgBox', { add, discard });
+      if (add) {
+        Object.freeze(add);
+        window.added = add;
+      }
+      const { grp } = (add || false);
+      let dis = discard;
+      window.discarded = dis;
+      if (grp) {
+        if (dis) {
+          throw new Error('Discard invalid when adding box with group');
+        }
+        dis = grp;
+      }
+      const boxes = sba.msgBoxes.map(box => (box
+        && (dis !== box)
+        && (dis !== box.grp)
+        && box
+        )).filter(Boolean);
+      if (add) { boxes.push(add); }
+      window.boxes = boxes;
+      sba.msgBoxes = boxes;
+    },
+
+    reportError(err) {
+      if (!err) { return; }
+      const sba = this;
+      sba.updateMsgBox({
+        cls: 'error',
+        msgTypePrefix: sba.l10n('error:'),
+        msg: String(err),
+        hint: err.hint,
+        err,
+      });
     },
 
   },
 
-  mounted() {
-    const sidebarApp = this;
-    eventBus.$on('error', function displayError(err) {
-      const box = {
-        cls: 'error',
-        msgTypePrefix: sidebarApp.l10n('error:'),
-        msg: String(err),
-        hint: err.hint,
-        err,
-      };
-      Object.freeze(box);
-      sidebarApp.msgBoxes.push(box);
-    });
-    document.body.setAttribute('anno-app-mode', sidebarApp.appMode);
+  created() {
+    const sba = this;
+    eventBus.$on('showMsgBox', msg => sba.updateMsgBox(msg));
+    eventBus.$on('discardMsgBox', msg => sba.updateMsgBox(null, msg));
+    eventBus.$on('error', sba.reportError);
+    eventBus.$on('trackPromise',
+      pr => Promise.resolve(pr).then(null, sba.reportError));
   },
 
-}
+  mounted() {
+    const sba = this;
+    document.body.setAttribute('anno-app-mode', sba.appMode);
+  },
+
+};
