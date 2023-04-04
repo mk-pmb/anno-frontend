@@ -19,15 +19,23 @@ const defaultAxiosOpts = {
 };
 
 
+function resolveRelativeUrl(url) {
+  const lnk = document.createElement('a');
+  lnk.href = url;
+  return lnk.href;
+}
+
+
 const EX = function apiFactory(vueStoreState) {
   function constructRequestUri(endpointName, subUrl) {
     if ((!subUrl) && (subUrl !== '')) {
       throw new Error('No endpoint sub URL given');
     }
-    const epBaseUrl = getOwn(vueStoreState, endpointName + 'Endpoint');
+    let epBaseUrl = getOwn(vueStoreState, endpointName + 'Endpoint');
     if (!epBaseUrl) {
       throw new Error('Endpoint URL not configured for ' + endpointName);
     }
+    epBaseUrl = resolveRelativeUrl(epBaseUrl);
 
     if (subUrl.startsWith('://')) {
       // ^- Internal notation for: We expect the remainder to be an
