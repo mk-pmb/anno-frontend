@@ -18,7 +18,7 @@
       <anno-cmp-ver-chooser
         ref="priVerChooser"
         :choice="priVerChoice"
-        :api="{ getVersions() { return knownVersions; } }"
+        :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
     </div></div>
     <div class="row content"><div class="col-lg">
@@ -40,7 +40,7 @@
       <anno-cmp-ver-chooser
         ref="secVerChooser"
         :choice="secVerChoice"
-        :api="{ getVersions() { return knownVersions; } }"
+        :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
     </div></div>
     <div class="row content"><div class="col-lg">
