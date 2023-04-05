@@ -56,6 +56,7 @@ Object.assign(fvl, {
     versList = versList.map((r, i) => (r || { ...missing, versNum: i + 1 }));
     versList[latestVerNum - 1].data = latestVerData;
     cmpVueElem.knownVersions = versList;
+    cmpVueElem.reverseOrderKnownVersions = versList.slice().reverse();
     cmpVueElem.forceRerenderAnnos();
   },
 
