@@ -216,10 +216,11 @@
             "target_adjusted_added":    "Wurde hinzugefügt.",
             "target_adjusted_hoisted":  "Wurde an den Anfang der Liste verschoben.",
 
-            "cmp_layout_top":       "Oben:",
-            "cmp_layout_left":      "Links:",
-            "cmp_layout_right":     "Rechts:",
-            "cmp_layout_bottom":    "Unten:",
+            "cmp_layout_only":      "Zeige nur:",
+            "cmp_layout_top":       "Vgl. oben:",
+            "cmp_layout_left":      "Vgl. links:",
+            "cmp_layout_right":     "Vgl. rechts:",
+            "cmp_layout_bottom":    "Vgl. unten:",
 
             "fmt_bold":        "Fett",
             "fmt_size":        "Schriftgröße",
@@ -437,10 +438,11 @@
             "generic_api_call_failed":        "Failed:",
             "generic_api_call_success":       "Success:",
 
-            "cmp_layout_top":       "Top:",
-            "cmp_layout_left":      "Left:",
-            "cmp_layout_right":     "Right:",
-            "cmp_layout_bottom":    "Bottom:",
+            "cmp_layout_only":      "Show only:",
+            "cmp_layout_top":       "Compare top:",
+            "cmp_layout_left":      "Compare left:",
+            "cmp_layout_right":     "Compare right:",
+            "cmp_layout_bottom":    "Compare bottom:",
 
             "fmt_bold": "Bold"
         }

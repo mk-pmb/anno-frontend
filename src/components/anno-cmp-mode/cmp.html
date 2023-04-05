@@ -12,8 +12,8 @@
     ">
     <div class="row header"><div class="col-lg">
       <select ref="layoutChooser" v-model="priSide">
-        <option value="left">{{ l10n('cmp_layout_left') }}</option>
-        <option value="top">{{ l10n('cmp_layout_top') }}</option>
+        <option v-for="layout in ['only', 'left', 'top']"
+          :value="layout">{{ l10n('cmp_layout_' + layout) }}</option>
       </select>
       <anno-cmp-ver-chooser
         ref="priVerChooser"
@@ -32,7 +32,9 @@
     annocmp-secondary-side
     border
     border-secondary
-    ">
+    "
+    v-if="priSide !== 'only'"
+    >
     <div class="row header"><div class="col-lg">
       {{ l10n('cmp_layout_' + secSide) }}
       <anno-cmp-ver-chooser
