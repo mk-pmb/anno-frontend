@@ -10,6 +10,11 @@ const dfLangCode = l10nCfg.defaultlang;
 
 
 function l10n(cfg, vocKey, fallback) {
+  if (vocKey && vocKey.startsWith('<')) {
+    return vocKey.replace(/<([ -;=@-~]+)\s*>/g,
+      (m, k) => m && l10n(cfg, k, fallback));
+  }
+
   const { localizations } = cfg;
   const bestLang = cfg.language;
   const normalizedBestLangCode = getOwn(langCodesMap, bestLang);
