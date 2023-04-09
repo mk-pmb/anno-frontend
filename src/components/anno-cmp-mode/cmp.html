@@ -21,9 +21,11 @@
         :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
     </div></div>
-    <div class="row content"><div class="col-lg">
-      <h3>Primary Side Content</h3>
-      <p>Anno: {{ baseId }}<br>Version: {{ priVerChoice.versNum }}</p>
+    <div class="row content"><div class="col-lg"
+      v-for="cached in [getSideAnnoData('pri')]" :key="cached.vueKey">
+      <anno-viewer v-if="cached.fetchedAt"
+        :annotation="cached.anno || {}"></anno-viewer>
+      <p class="loading" v-else>{{ l10n('anno_list:loading') }}</p>
     </div></div>
   </div>
 
@@ -43,9 +45,11 @@
         :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
     </div></div>
-    <div class="row content"><div class="col-lg">
-      <h3>Secondary Side Content</h3>
-      <p>Anno: {{ baseId }}<br>Version: {{ secVerChoice.versNum }}</p>
+    <div class="row content"><div class="col-lg"
+      v-for="cached in [getSideAnnoData('sec')]" :key="cached.vueKey">
+      <anno-viewer v-if="cached.fetchedAt"
+        :annotation="cached.anno || {}"></anno-viewer>
+      <p class="loading" v-else>{{ l10n('anno_list:loading') }}</p>
     </div></div>
   </div>
 

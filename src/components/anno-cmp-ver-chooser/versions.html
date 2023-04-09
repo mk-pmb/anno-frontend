@@ -3,7 +3,9 @@
     v-model="choice.versNum"
     v-if="api.getVersions()"
     >
-    <option value="0">{{ l10n('latest_version') }}</option>
+    <option value="0">{{ l10n('latest_version') }} = #{{
+      api.getVersions().latestVerNum || l10n('no_data')
+      }}</option>
     <option
       v-for="ver in api.getVersions()"
       :value="ver.versNum"
@@ -11,9 +13,9 @@
       <span class="versnum"><span class="numsign"
         >#</span>{{ ver.versNum }}</span>
       <span class="versdate"><span class="sep">&nbsp; </span>{{
-        dateFmt(ver.created) || l10n('date_time_unknown') }}</span>
-      <span class="vershint" v-if="ver.hint"><span class="sep"
-        >&nbsp; </span>{{ ver.hint}}</span>
+        dateFmt(ver.anno.created) || l10n('date_time_unknown') }}</span>
+      <span class="vershint" v-if="ver.anno['skos:note']"><span class="sep"
+        >&nbsp; </span>{{ ver.anno['skos:note'] }}</span>
     </option>
   </select>
   <select v-else class="ver-list-loading"

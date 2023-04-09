@@ -35,7 +35,6 @@ Object.assign(fvl, {
     const lavStr = mustBe.tProp('Latest anno version ',
       latestVerData, 'nonEmpty str');
     const latestVerNum = fvl.guessVerNum(lavStr('id' /* Anno ID URL */));
-    cmpVueElem.latestVerNum = latestVerNum;
     const verHistUrl = lavStr('iana:version-history');
     const verHistRsp = await api.aepGet('://' + verHistUrl);
     const verHistItems = (verHistRsp.first || false).items;
@@ -43,20 +42,28 @@ Object.assign(fvl, {
       throw new Error('Received version history in unexpected data format.');
     }
     let versList = Array.from({ length: latestVerNum });
-    verHistItems.forEach(function learnVer(ver) {
-      if (!ver) { return; }
-      const versNum = fvl.guessVerNum(ver.id /* Anno ID URL */);
+    verHistItems.forEach(function learnVer(orig) {
+      if (!orig) { return; }
+      const versNum = fvl.guessVerNum(orig.id /* Anno ID URL */);
       // if (versNum % 2) { return; }
-      const ent = { versNum, created: ver.created };
-      const hint = String(ver['skos:note'] || '');
-      if (hint) { ent.hint = hint; }
-      versList[versNum - 1] = ent;
+      const rInfo = { versNum, anno: orig };
+      versList[versNum - 1] = rInfo;
     });
-    const missing = { created: null, hint: cmpVueElem.l10n('no_data') };
-    versList = versList.map((r, i) => (r || { ...missing, versNum: i + 1 }));
-    versList[latestVerNum - 1].data = latestVerData;
+
+    const missing = { 'skos:note': cmpVueElem.l10n('no_data') };
+    versList = versList.map((r, i) => (r
+      || { versNum: i + 1, anno: { ...missing } }));
+
+    const [lastSlot] = versList.slice(-1);
+    const fetchedAt = Date.now();
+    lastSlot.fetchedAt = fetchedAt;
+    Object.assign(lastSlot.anno, latestVerData);
+    const meta = { latestVerNum, fetchedAt };
+    Object.assign(versList, meta);
+
     cmpVueElem.knownVersions = versList;
-    cmpVueElem.reverseOrderKnownVersions = versList.slice().reverse();
+    const reversed = Object.assign(versList.slice().reverse(), meta);
+    cmpVueElem.reverseOrderKnownVersions = reversed;
     cmpVueElem.forceRerenderAnnos();
   },
 
