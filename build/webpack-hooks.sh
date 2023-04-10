@@ -13,9 +13,11 @@ function webpack_hooks () {
 }
 
 
+function wph_on_before_build () { true; }
 function wph_on_before_normal_run () { true; }
-function wph_on_build_start () { true; }
 function wph_on_build_end () { true; }
+function wph_on_build_error () { true; }
+function wph_on_build_start () { true; }
 
 
 function wph_on_build_exit () {
