@@ -1,8 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const assert = require('assert');
-
 const objPop = require('objpop');
 
 const editorModelDef = require('../../vuex/module/editing.js');
@@ -73,7 +71,9 @@ const EX = async function loadAnnoData(origAnno) {
     */
     extraFields: anno, // = whatever is left over = not popField()ed
   };
-  assert.strictEqual(keys2str(model), expectedModelKeys);
+  if (keys2str(model) !== expectedModelKeys) {
+    throw new Error('Anno data key list differs from model');
+  }
 
   commit('RESET_ANNOTATION');
   commit('FLAT_UPDATE_EDITOR_ANNO', model);
