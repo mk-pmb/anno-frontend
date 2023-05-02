@@ -17,9 +17,12 @@ const EX = async function fetchAnnoList(store) {
     fetchFailed: false,
   });
   eventBus.$emit('fetching');
+  const annoListSearchUrl = (state.annoListSearchUrl || (
+    (state.annoListSearchPrefix || 'anno/by/subject_target/')
+    + state.targetSource
+    ));
   try {
-    let annos = await api22(state).aepGet(
-      'anno/by/subject-target/' + state.targetSource);
+    let annos = await api22(state).aepGet(annoListSearchUrl);
     annos = orf(orf(annos).first).items;
     if (!Array.isArray(annos)) {
       throw new TypeError('Received an invalid annotations list');
