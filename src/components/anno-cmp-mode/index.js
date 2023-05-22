@@ -32,12 +32,22 @@ const compoDef = {
 
   data() {
     const st = this.$store.state;
+
+    // Usually a base ID means it explicitly does _not_ contain a
+    // version number, but here we're a bit lenient to make some
+    // config scenarios a bit easier.
+    const [baseId, verSuffixStr] = (st.initCmpBaseId || '').split(/~(\d+)$/);
+    const initVerSuffixNum = (+verSuffixStr || 0);
+
+    const priSide = (st.initCmpLayout
+      || (st.initCmpApprovalMode && 'only')
+      || 'left');
     // const { l10n } = this;
     return {
-      baseId: (st.initCmpBaseId || ''),
-      priSide: (st.initCmpLayout || 'left'),
-      priVerChoice: { versNum: (+st.initCmpPrimarySideVersionNumber || 0) },
-      secVerChoice: { versNum: (+st.initCmpSecondarySideVersionNumber || 0) },
+      baseId,
+      priSide,
+      priVerChoice: { versNum: (+st.initCmpPrimarySideVersionNumber || initVerSuffixNum) },
+      secVerChoice: { versNum: (+st.initCmpSecondarySideVersionNumber || initVerSuffixNum) },
       knownVersions: false,
       reverseOrderKnownVersions: false, // because Vue2 v-for cannot reverse
       fetchRetryCooldownSec: 5,
