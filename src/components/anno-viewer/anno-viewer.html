@@ -324,6 +324,14 @@
       <div role="group"
         class="btn-group btn-group-sm"
 
+        ><bootstrap-button
+          @click="reply"
+          btn-class="default btn-outline-secondary"
+          icon-fa="check-square"
+          v-if="this.$store.state.initCmpApprovalMode">
+          {{ l10n('approve_anno') }}
+        </bootstrap-button
+
         ><bootstrap-button @click="revise"
           btn-class="default btn-outline-secondary"
           icon-fa="pencil"
