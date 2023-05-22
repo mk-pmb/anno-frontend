@@ -13,6 +13,8 @@
   cfg.loginFormUrl = () => (cfg.annoEndpoint.replace(/\w+\/$/, '')
     + 'session/login');
 
+  cfg.annoListSearchPrefix = 'anno/by/subject_target;role=author/';
+
   (function compile() {
     var l = document.createElement('a');
     cfg.resolveURL = function resolveURL(url) {
