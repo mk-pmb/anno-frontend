@@ -25,11 +25,9 @@
       <a role="button">
         <span v-show="collapsed" class="fa fa-caret-right"></span>
         <span v-show="!collapsed" class="fa fa-caret-down"></span>
-        <span v-show="approvalPending" class="
-          anno-approval-pending-icon
-          fa fa-lock
-          text-danger
-          " :title="l10n('anno_approval_pending')"></span>
+        <span v-show="approval.iconCls"
+          :class="'anno-approval-icon ' + approval.iconCls"
+          :title="approval.explain"></span>
         <span v-show="Boolean(this.problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
@@ -62,16 +60,22 @@
         <div role="toolbar"
           class="btn-toolbar
             anno-editor-anno-body-buttonbar-top
-          "
+            "
           >
           <div role="group"
             class="btn-group btn-group-sm">
 
-            <span v-show="approvalPending" class="btn btn-sm btn-secondary
-              anno-approval-pending-btn
-              fa fa-lock
-              text-danger
-              " :title="l10n('anno_approval_pending')"></span>
+            <span v-if="approval.iconCls" :title="approval.explain"
+              class="btn btn-sm btn-secondary anno-approval-btn">
+              <span :class="'anno-approval-icon ' + approval.iconCls"></span>
+              <span v-if="approval.jsTs">
+                <span v-if="approval.future"
+                  title="scheduled" class="fa fa-clock-o"></span>
+                {{ dateFmt(approval.jsTs) }}
+              </span>
+              <span v-if="uiModeApproval && (!approval.jsTs)"
+                :title="l10n('date_time_unknown')">⛶</span>
+            </span>
 
             <button class="btn btn-sm btn-secondary
               anno-creators
@@ -342,10 +346,12 @@
         class="btn-group btn-group-sm"
 
         ><bootstrap-button
-          @click="reply"
+          @click="approve"
           btn-class="default btn-outline-secondary"
           icon-fa="unlock"
-          v-if="this.$store.state.initCmpApprovalMode">
+          v-if="uiModeApproval"
+          :disabled="approval.active"
+          >
           {{ l10n('approve_anno') }}
         </bootstrap-button
 
