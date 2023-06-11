@@ -1,7 +1,6 @@
-<div :class="[
-  'annoeditor-list',
-  `access-${isLoggedIn ? 'logged-in' : 'guest'}`,
-  ]"
+<div class="
+  annoeditor-list
+  "
   :data-number-of-annots="annos.length"
   >
   <div class="btn-group
@@ -196,9 +195,4 @@
     </anno-viewer>
   </div>
 
-  <div class="anno-editor-modal-wrapper">
-    <anno-editor-modal ref="modalEditor"
-      :editor-id="`${prefix}-modal-editor`"
-      />
-  </div>
 </div>

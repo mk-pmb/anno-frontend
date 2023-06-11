@@ -45,6 +45,8 @@ module.exports = {
     appMode() { return this.$store.state.initAppMode; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
 
+    isLoggedIn() { return this.$store.getters.isLoggedIn; },
+
     noAnnotsReason() {
       const app = this;
       const alSt = app.$store.state.annotationList;
