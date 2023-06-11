@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Single Anno View Test</title>
+  <!--
+
+  See `displayAnnotations.nm.html` for hints and warnings.
+
+  -->
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+</head><body>
+
+<main class="sidebar-container"><div class="popups-boundary-marker">
+<div id="anno-app-sidebar">
+  <div id="anno-app-container"></div>
+</div><!-- #anno-app-sidebar -->
+</div></main><!-- .sidebar-container -->
+
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+<script src="cfg.anno-server.defaults.js"></script>
+<script src="cfg.tests.defaults.js"></script>
+<script src="../../.git/@/config-override/cfg.anno-server.js"></script>
+<script src="../../.git/@/config-override/cfg.tests.js"></script>
+<script src="../../../anno-local/config-override/cfg.anno-server.js"></script>
+<script src="../../../anno-local/config-override/cfg.tests.js"></script>
+
+<style>
+  @import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
+  @import url("../../node_modules/font-awesome/css/font-awesome.min.css");
+
+  @import url("tests.defaults.css");
+  @import url("../../.git/@/config-override/tests.css");
+  @import url("../../../anno-local/config-override/tests.css");
+</style>
+<!-- [2021-04-16] Do not load popper.js separately. It fails with
+  "TypeError: Popper__default.default is not a constructor".
+  Instead, use the bundled version of bootstrap, baked with popper inside.
+  -->
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../node_modules/quill/dist/quill.js"></script>
+<script src="../../node_modules/axios/dist/axios.js"></script>
+<script src="../../node_modules/semtonotes-client/xrx.api.drawing.min.js"></script>
+<script src="../../node_modules/@ubhd/authorities-client/dist/authorities-client.js"></script>
+<script src="../../node_modules/semtonotes-utils/dist/xrx-utils.js"></script>
+<script src="../../node_modules/@kba/xrx-vue/dist/xrx-vue.js"></script>
+<script src="../../node_modules/@/anno-common/anno-webpack/dist/anno-common.dev.js"></script>
+<script src="../../dist/anno-frontend.dev.js"></script>
+
+<script>
+displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
+
+  targetSource:       'https://digi.ub.uni-heidelberg.de/diglit/sauer1941/0012',
+  targetImage:        'https://digi.ub.uni-heidelberg.de/diglit/sauer1941/0012/_image',
+  targetImageWidth:   1528,
+  targetImageHeight:  2353,
+  targetThumbnail:    'https://digi.ub.uni-heidelberg.de/diglit/sauer1941/0012/_thumb_image',
+  iiifUrlTemplate:    'https://digi.ub.uni-heidelberg.de/iiif/2/sauer1941:219.jpg/%ir/full/0/default.jpg',
+
+  initAppMode:    'cmp',
+  initCmpLayout:  'only',
+  initCmpBaseId:  'EOEXrHgLT3GfoXYnQ6es6g',
+  initCmpPrimarySideVersionNumber: 4,
+
+}));
+</script>
+
+</body></html>
