@@ -11,10 +11,12 @@ const {
 const pify = require('pify');
 const pDelay = require('delay');
 
-const bindDataApi = require('./dataApi.js');
 const eventBus = require('../../event-bus.js');
-const formatters = require('./formatters.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
+
+const simpleDateStamp = require('./simpleDateStamp.js');
+const bindDataApi = require('./dataApi.js');
+const formatters = require('./formatters.js');
 const versionsProps = require('./versionsProps.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
@@ -155,8 +157,31 @@ module.exports = {
 
         targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
-        approvalPending() {
-          return (this.annotation['dc:dateAccepted'] === false);
+        uiModeApproval() { return this.$store.state.initCmpApprovalMode; },
+
+        approval() {
+          const val = this.annotation['dc:dateAccepted'];
+          if ((val === undefined) && (!this.uiModeApproval)) { return true; }
+          const st = { val, explain: '' };
+          let colorCls = '';
+          if (val) {
+            st.jsTs = (new Date(val)).getTime();
+            st.delta = st.jsTs - Date.now();
+            st.future = (st.delta > 0);
+            st.active = !st.future;
+            if (st.active) {
+              if (!this.uiModeApproval) { return true; }
+            } else {
+              st.explain = (this.l10n('anno_approval_future')
+                + ' ' + this.dateFmt(st.jsTs));
+            }
+          } else {
+            st.active = false;
+            st.explain = this.l10n('anno_approval_pending');
+            colorCls = ' text-danger'; // No decision yet => Attention needed.
+          }
+          st.iconCls = 'fa fa-' + (st.active ? 'unlock' : 'lock') + colorCls;
+          return st;
         },
 
         creatorsList() {
@@ -220,8 +245,9 @@ module.exports = {
         toggleDetailBar,
         formatters,
 
-        revise()     {return eventBus.$emit('revise', this.annotation)},
-        reply()      {return eventBus.$emit('reply',  this.annotation)},
+        approve() { return simpleDateStamp(this, 'dc:dateAccepted'); },
+        revise() { return eventBus.$emit('revise', this.annotation) },
+        reply()  { return eventBus.$emit('reply',  this.annotation) },
 
         makeEventContext() {
           const viewer = this;
@@ -420,7 +446,6 @@ module.exports = {
       return this.l10n(tgt ? 'reply_refnum_deep' : 'reply_refnum_lv1'
         ).replace(/@@ref@@/g, ref).replace(/@@tgt@@/g, tgt);
     },
-
 
 
 
