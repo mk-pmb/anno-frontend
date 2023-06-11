@@ -3,6 +3,7 @@
     ...decideTopLevelCssClasses(),
     'annoeditor-sidebar',
     (standalone && 'annoeditor-sidebar-standalone'),
+    `access-${isLoggedIn ? 'logged-in' : 'guest'}`,
     `annoeditor-sidebar-${collapsed ? 'collapsed' : 'open'}`,
     `annoeditor-appmpde-${appMode}`,
     ].filter(Boolean)"
@@ -66,4 +67,11 @@
       >
     </anno-cmp-mode>
   </div>
-</div>
+
+  <div class="anno-editor-modal-wrapper">
+    <anno-editor-modal ref="modalEditor"
+      :editor-id="`${prefix}-modal-editor`"
+      />
+  </div>
+
+</div><!-- /#annoeditor-sidebar -->
