@@ -155,6 +155,10 @@ module.exports = {
 
         targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
+        approvalPending() {
+          return (this.annotation['dc:dateAccepted'] === false);
+        },
+
         creatorsList() {
           const { creator } = this.annotation;
           if (!creator) { return []; }
@@ -195,6 +199,7 @@ module.exports = {
               probs.push(miss + l10n('annofield_' + prop, prop));
             });
           }());
+
           if (!probs.length) { return ''; }
           return l10n('error:') + ' ' + probs.join('; ');
         },
