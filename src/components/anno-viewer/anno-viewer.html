@@ -23,28 +23,39 @@
         class="pull-right"
         />
       <a role="button">
-        <span class="fa fa-caret-right" v-show="collapsed"></span>
-        <span class="fa fa-caret-down" v-show="!collapsed"></span>
+        <span v-show="collapsed" class="fa fa-caret-right"></span>
+        <span v-show="!collapsed" class="fa fa-caret-down"></span>
+        <span v-show="approvalPending" class="
+          anno-approval-pending-icon
+          fa fa-lock
+          text-danger
+          " :title="l10n('anno_approval_pending')"></span>
         <span v-show="Boolean(this.problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
           danger
-          ">&#x26A0; {{ this.problemsWarningText }} &#x26A0;</span>
+          "
+          :title="this.problemsWarningText"
+          >&#x26A0;</span>
         {{ title }}
       </a>
     </h4>
   </div>
 
-  <div v-if="this.annotation['skos:note']" class="
-    card-body panel-body
-    anno-skos-note
-    ">
-    <p>{{ this.annotation['skos:note'] }}</p>
-  </div>
-
   <div role="tabpanel"
     class="card-body panel-body"
     v-show="!collapsed">
+
+    <div v-show="Boolean(this.problemsWarningText)" class="
+      anno-editor-error
+      anno-error-annotation-problems
+      danger
+      ">&#x26A0; {{ this.problemsWarningText }} &#x26A0;</div>
+
+    <div v-if="this.annotation['skos:note']" class="anno-skos-note">
+      <p>{{ this.annotation['skos:note'] }}</p>
+    </div>
+
     <div class="media" style="height: auto;">
 
       <div class="media-body">
@@ -55,6 +66,12 @@
           >
           <div role="group"
             class="btn-group btn-group-sm">
+
+            <span v-show="approvalPending" class="btn btn-sm btn-secondary
+              anno-approval-pending-btn
+              fa fa-lock
+              text-danger
+              " :title="l10n('anno_approval_pending')"></span>
 
             <button class="btn btn-sm btn-secondary
               anno-creators
@@ -327,7 +344,7 @@
         ><bootstrap-button
           @click="reply"
           btn-class="default btn-outline-secondary"
-          icon-fa="check-square"
+          icon-fa="unlock"
           v-if="this.$store.state.initCmpApprovalMode">
           {{ l10n('approve_anno') }}
         </bootstrap-button
