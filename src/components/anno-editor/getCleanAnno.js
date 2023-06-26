@@ -27,6 +27,7 @@ const EX = function getCleanAnno() {
   EX.deleteNonEditableFieldsInplace(anno);
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
+  anno.type = ['Annotation'];
   if (title) { anno['dc:title'] = title; }
   if (versionOf) { anno['dc:isVersionOf'] = versionOf; }
 
