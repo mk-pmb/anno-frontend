@@ -19,6 +19,7 @@
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-rsterr",
   "body": {
     "format": "text/html",
     "type": "TextualBody",
@@ -45,6 +46,7 @@
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-zweiter",
   "body": {
     "format": "text/html",
     "type": "TextualBody",
@@ -71,6 +73,7 @@
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-rsterr",
   "body": {
     "format": "text/html",
     "type": "TextualBody",
