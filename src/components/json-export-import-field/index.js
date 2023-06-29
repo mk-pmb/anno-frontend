@@ -22,6 +22,7 @@ module.exports = {
     importEvent:    String,
     importFunc:     Function,
     dumpFunc:       Function,
+    nicerJsonFunc:  Function,
   },
 
   data() {
@@ -63,7 +64,9 @@ module.exports = {
       const { path, dumpFunc } = exim;
       const { state } = exim.$store;
       const data = (dumpFunc || loGet)(state, path);
-      return sortedJson(data) + '\n';
+      const defaultJson = sortedJson(data) + '\n';
+      const nicerJson = (exim.nicerJsonFunc || String)(defaultJson);
+      return nicerJson;
     },
 
     async importJson() {
