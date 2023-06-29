@@ -30,6 +30,7 @@ const EX = function getCleanAnno() {
   anno.type = ['Annotation'];
   if (title) { anno['dc:title'] = title; }
   if (versionOf) { anno['dc:isVersionOf'] = versionOf; }
+  if (anno['dc:dateAccepted'] === false) { delete anno['dc:dateAccepted']; }
 
   let bodies = [].concat(anno.body);
   bodies = bodies.map(function cleanupBody(body) {
