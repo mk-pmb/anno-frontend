@@ -6,6 +6,8 @@ const loMapValues = require('lodash.mapvalues');
 
 const validateEditorFields = require('../anno-editor/validateEditorFields.js');
 
+const nicerAnnoJson = require('./nicerAnnoJson.js');
+
 
 function contextAsFirstArg(func) {
   return function proxy(...args) { return func(this, ...args); };
@@ -26,6 +28,8 @@ module.exports = {
   },
 
   methods: {
+
+    nicerAnnoJson,
 
     ...loMapValues({
       validateEditorFields,
