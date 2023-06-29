@@ -22,6 +22,7 @@
     :extraButtons="[
       { c: '🗯', n: 'Validate editor fields', f: validateEditorFields, a: null },
     ]"
+    :nicerJsonFunc="nicerAnnoJson"
     />
 </div>
 
@@ -30,6 +31,7 @@
   <h3>Annotation (standard compliant format)</h3>
   <json-export-import-field class="jsondump-annot"
     :dumpFunc="editorApi.getCleanAnno"
+    :nicerJsonFunc="nicerAnnoJson"
     import-event="loadAnnoData"
     />
 </div>
