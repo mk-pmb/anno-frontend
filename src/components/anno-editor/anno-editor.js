@@ -191,6 +191,7 @@ module.exports = {
         creator: editor.decideDefaultAuthorAgent(),
         title,
         target: [replyTgt, decideTargetForNewAnno(state)],
+        'as:inReplyTo': replyToUrl,
         motivation: ['replying'],
       }));
     },
