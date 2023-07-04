@@ -2,6 +2,7 @@
 'use strict';
 
 // const getOwn = require('getown');
+const makeDeferred = require('promise-deferred');
 const mustBe = require('typechecks-pmb/must-be.js');
 
 const api22 = require('../../api22.js');
@@ -44,21 +45,34 @@ Object.assign(fvl, {
     let versList = Array.from({ length: latestVerNum });
     verHistItems.forEach(function learnVer(orig) {
       if (!orig) { return; }
-      const versNum = fvl.guessVerNum(orig.id /* Anno ID URL */);
-      // if (versNum % 2) { return; }
-      const rInfo = { versNum, anno: orig };
-      versList[versNum - 1] = rInfo;
+      const verNum = fvl.guessVerNum(orig.id /* Anno ID URL */);
+      // if (verNum % 2) { return; }
+      const nowLoaded = makeDeferred();
+      const rInfo = {
+        verNum,
+        anno: orig,
+        waitUntilLoaded() { return nowLoaded.promise; },
+      };
+      const plumbing = {
+        receiveAnnoData(data) {
+          delete plumbing.receiveAnnoData;
+          rInfo.fetchedAt = Date.now();
+          Object.assign(rInfo.anno, data);
+          nowLoaded.resolve(rInfo);
+        },
+      };
+      rInfo.internalPlumbing = Object.bind(null, plumbing);
+      versList[verNum - 1] = rInfo;
     });
 
     const missing = { 'skos:note': cmpVueElem.l10n('no_data') };
     versList = versList.map((r, i) => (r
-      || { versNum: i + 1, anno: { ...missing } }));
+      || { verNum: i + 1, anno: { ...missing } }));
 
     const [lastSlot] = versList.slice(-1);
-    const fetchedAt = Date.now();
-    lastSlot.fetchedAt = fetchedAt;
     Object.assign(lastSlot.anno, latestVerData);
-    const meta = { latestVerNum, fetchedAt };
+    lastSlot.internalPlumbing().receiveAnnoData(latestVerData);
+    const meta = { latestVerNum, fetchedAt: lastSlot.fetchedAt };
     Object.assign(versList, meta);
 
     cmpVueElem.knownVersions = versList;

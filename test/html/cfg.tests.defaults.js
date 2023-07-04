@@ -4,6 +4,8 @@
   'use strict';
   var cfg = {
 
+    makeDebugLogger: Function.bind.bind(console.debug, console),
+
     exportAppAsWindowProp: 'annoApp',
     // ^- In production, rather save the result of displayAnnotations.
 
@@ -25,6 +27,8 @@
     '').replace(/\.\S+$/, ''));
 
   cfg.diglitBaseUrl = 'https://digi.ub.uni-heidelberg.de/diglit/';
+
+  cfg.initCmpOnVersionSelected = cfg.makeDebugLogger('Version selected:');
 
   // cfg.events.appReady = function ready() {};
 

@@ -9,6 +9,9 @@ const fetchVersionsList = require('./fetchVersionsList.js');
 const verCache = require('./verCache.js');
 
 
+function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+
+
 const oppoSides = {
   left: 'right',
   right: 'left',
@@ -31,7 +34,8 @@ const compoDef = {
   },
 
   data() {
-    const st = this.$store.state;
+    const cmp = this;
+    const st = cmp.$store.state;
 
     // Usually a base ID means it explicitly does _not_ contain a
     // version number, but here we're a bit lenient to make some
@@ -46,8 +50,14 @@ const compoDef = {
     return {
       baseId,
       priSide,
-      priVerChoice: { versNum: (+st.initCmpPrimarySideVersionNumber || initVerSuffixNum) },
-      secVerChoice: { versNum: (+st.initCmpSecondarySideVersionNumber || initVerSuffixNum) },
+      priVerChoice: {
+        onchange(evt) { return cmp.versionSelected(1, evt); },
+        verNum: (+st.initCmpPrimarySideVersionNumber || initVerSuffixNum),
+      },
+      secVerChoice: {
+        onchange(evt) { return cmp.versionSelected(2, evt); },
+        verNum: (+st.initCmpSecondarySideVersionNumber || initVerSuffixNum),
+      },
       knownVersions: false,
       reverseOrderKnownVersions: false, // because Vue2 v-for cannot reverse
       fetchRetryCooldownSec: 5,
@@ -57,8 +67,12 @@ const compoDef = {
 
   mounted() {
     const cmp = this;
-    eventBus.$emit('trackPromise', fetchVersionsList(cmp));
-    window.cmp = cmp;
+    const rllPr = fetchVersionsList(cmp);
+    rllPr.then(() => {
+      cmp.versionSelected(1, { verNum: cmp.priVerChoice.verNum });
+      cmp.versionSelected(2, { verNum: cmp.secVerChoice.verNum });
+    });
+    eventBus.$emit('trackPromise', rllPr);
   },
 
   computed: {
@@ -73,14 +87,41 @@ const compoDef = {
 
     getSideAnnoData(side) {
       const cmp = this;
-      const { versNum } = cmp[side + 'VerChoice'];
-      const rData = cmp.lookupCachedVerAnno(versNum);
-      const vueKey = [side, versNum, cmp.forcedRerenderTs].join('|');
+      const verNum = ((+cmp[side + 'VerChoice'].verNum)
+        || (+cmp.knownVersions.latestVerNum));
+      // console.debug('getSideAnnoData:', { side, verNum });
+      if (!verNum) { return false; }
+      const vueKey = [side, verNum, cmp.forcedRerenderTs].join('|');
+      const rData = ((verNum && cmp.lookupCachedVerAnno(verNum)) || false);
       return { vueKey, ...rData };
     },
 
     forceRerenderAnnos() {
       setTimeout(() => { this.forcedRerenderTs = Date.now(); }, 5);
+    },
+
+    async versionSelected(sideNum, origEvt) {
+      const cmp = this;
+      const verNum = (origEvt.verNum || origEvt.latestVerNum
+        // ^-- origEvt is constructed in anno-cmp-ver-chooser.
+        || +cmp.knownVersions.latestVerNum);
+      const hook = cmp.$store.state.initCmpOnVersionSelected;
+      // console.debug('versionSelected:', { sideNum, verNum, origEvt, hook });
+      if (!hook) { return; }
+      const rInfo = cmp.lookupCachedVerAnno(verNum);
+      if (!rInfo) { throw new Error('Failed lookupCachedVerAnno #' + verNum); }
+      await rInfo.waitUntilLoaded();
+      const anno = jsonDeepCopy(rInfo.anno);
+      const evt = {
+        type: 'cmpViewVersionSelected',
+        sideNum,
+        verNum,
+        sideVisible: ((sideNum === 1) || (cmp.priSide !== 'only')),
+        getFullAnno() { return anno; },
+        targets: [].concat(anno.target).filter(Boolean),
+      };
+      // console.debug('Version selected', sideNum, verNum, { evt });
+      setTimeout(() => hook(evt), 1);
     },
 
   },
