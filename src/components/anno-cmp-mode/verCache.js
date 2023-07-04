@@ -9,33 +9,38 @@ const EX = {};
 const vueMtd = {};
 
 
+function validateVersionNumber(trace, verNum) {
+  if (verNum === 0) { return; }
+  function bad(m) { throw new Error(trace + ': Bad version number: ' + m); }
+  const t = String(verNum && typeof verNum);
+  if (t !== 'number') { bad('expected number, got ' + t); }
+  if (verNum < 1) { bad('must be greater or equal to 1'); }
+}
+
+
 Object.assign(vueMtd, {
 
   lookupVerInfo(wantVerNum) {
+    validateVersionNumber('lookupVerInfo', wantVerNum);
     const kn = this.knownVersions;
     if (!kn) { return false; }
     // First, try a fast lookup assuming the versions list has no gaps:
     const noGap = kn[wantVerNum - 1];
-    if (noGap && (noGap.versNum === wantVerNum)) { return noGap; }
+    if (noGap && (noGap.verNum === wantVerNum)) { return noGap; }
     // If that failed, we have to search:
-    const found = kn.find(r => (r.versNum === wantVerNum));
+    const found = kn.find(r => (r.verNum === wantVerNum));
     return (found || false);
   },
 
 
-  lookupCachedVerAnno(versNum) {
+  lookupCachedVerAnno(verNum) {
     const cmpVueElem = this;
-    if (!versNum) {
-      const { latestVerNum } = cmpVueElem.knownVersions;
-      if (!latestVerNum) { return false; }
-      return cmpVueElem.lookupCachedVerAnno(latestVerNum);
-    }
-    const rInfo = cmpVueElem.lookupVerInfo(versNum);
+    const rInfo = cmpVueElem.lookupVerInfo(verNum);
     if (!rInfo) { return false; }
     if (rInfo.fetchedAt) { return rInfo; }
 
     const now = Date.now();
-    const apiSubUrl = 'anno/' + cmpVueElem.baseId + '~' + versNum;
+    const apiSubUrl = 'anno/' + cmpVueElem.baseId + '~' + verNum;
     const earliest = (+rInfo.fetchRetryNotBefore || 0);
 
     function dbg(msg, info) {
@@ -55,8 +60,7 @@ Object.assign(vueMtd, {
       dbg('reply looks acceptable.', { reply });
       const dest = rInfo.anno;
       if (!dest) { throw new Error('Bad destination in versions cache'); }
-      Object.assign(rInfo.anno, reply);
-      rInfo.fetchedAt = Date.now();
+      rInfo.internalPlumbing().receiveAnnoData(reply);
       cmpVueElem.forceRerenderAnnos();
     }());
     eventBus.$emit('trackPromise', fetchPr);

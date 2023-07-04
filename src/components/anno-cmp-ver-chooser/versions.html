@@ -1,17 +1,13 @@
 <span class="version-chooser-wrapper">
-  <select ref="chooser"
-    v-model="choice.versNum"
-    v-if="api.getVersions()"
+  <select ref="chooser" v-if="api.getVersions()"
+    v-model="choice.verNum"
+    @change="chooserChanged($event)"
     >
-    <option value="0">{{ l10n('latest_version') }} = #{{
-      api.getVersions().latestVerNum || l10n('no_data')
-      }}</option>
-    <option
-      v-for="ver in api.getVersions()"
-      :value="ver.versNum"
-      >
+    <option value="0">{{ l10n('latest_version')
+      }} = #{{ api.getVersions().latestVerNum || l10n('no_data') }}</option>
+    <option v-for="ver in api.getVersions()" :value="ver.verNum">
       <span class="versnum"><span class="numsign"
-        >#</span>{{ ver.versNum }}</span>
+        >#</span>{{ ver.verNum }}</span>
       <span class="versdate"><span class="sep">&nbsp; </span>{{
         dateFmt(ver.anno.created) || l10n('date_time_unknown') }}</span>
       <span class="vershint" v-if="ver.anno['skos:note']"><span class="sep"
