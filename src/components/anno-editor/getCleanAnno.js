@@ -52,7 +52,10 @@ Object.assign(EX, {
 
   deleteNonEditableFieldsInplace(a) {
     omitFieldsIfFalsey.forEach(k => deleteIf(a, k, !a[k]));
-    Object.keys(a).forEach(k => deleteIf(a, k, k.startsWith(':ANNO_FE:')));
+    Object.keys(a).forEach(k => deleteIf(a, k,
+      k.startsWith(':ANNO_FE:')
+      || k.startsWith('_')
+      ));
   },
 
   setOrDeleteMultiProp(anno, prop, values) {
