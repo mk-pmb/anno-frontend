@@ -8,7 +8,6 @@ const {
     svgSelectorResource
 } = require('@kba/anno-queries')
 
-const pify = require('pify');
 const pDelay = require('delay');
 
 const eventBus = require('../../event-bus.js');
@@ -64,7 +63,6 @@ module.exports = {
 
     mixins: [
       require('../../mixin/annoUrls.js'),
-      require('../../mixin/api.js'),
       require('../../mixin/auth.js'),
       require('../../mixin/bootstrap-compat.js'),
       require('../../mixin/dateFmt.js'),
@@ -161,7 +159,9 @@ module.exports = {
 
         approval() {
           const val = this.annotation['dc:dateAccepted'];
-          if ((val === undefined) && (!this.uiModeApproval)) { return true; }
+          if ((val === undefined) && (!this.uiModeApproval)) {
+            return { active: true };
+          }
           const st = { val, explain: '' };
           let colorCls = '';
           if (val) {
@@ -170,7 +170,7 @@ module.exports = {
             st.future = (st.delta > 0);
             st.active = !st.future;
             if (st.active) {
-              if (!this.uiModeApproval) { return true; }
+              if (!this.uiModeApproval) { return { active: true }; }
             } else {
               st.explain = (this.l10n('anno_approval_future')
                 + ' ' + this.dateFmt(st.jsTs));
@@ -245,9 +245,13 @@ module.exports = {
         toggleDetailBar,
         formatters,
 
-        approve() { return simpleDateStamp(this, 'dc:dateAccepted'); },
         revise() { return eventBus.$emit('revise', this.annotation) },
         reply()  { return eventBus.$emit('reply',  this.annotation) },
+
+        async approve() {
+          await simpleDateStamp(this, 'dc:dateAccepted');
+          window.location.reload();
+        },
 
         makeEventContext() {
           const viewer = this;
@@ -293,6 +297,10 @@ module.exports = {
           if (!annoIdUrl) {
             return setDoiMsg('<missing_required_field> <annofield_id>');
           }
+          if (!viewer.approval.active) {
+            // This is not a security check, just a reminder for users.
+            return setDoiMsg('<error:> <mint_doi.nonpublic>');
+          }
           const askReally = (l10n('confirm_irrevocable_action')
             + '\n' + l10n('mint_doi'));
           if (!window.confirm(askReally)) {
@@ -300,59 +308,16 @@ module.exports = {
           }
           setDoiMsg('request_sent_waiting');
           let resp = viewer.$store.state.debugStubMintDoiResponse;
-          let updAnno;
           try {
             if (resp) {
               await pDelay(5e3);
             } else {
-              resp = await pify(cb => viewer.api.mintDoi(annoIdUrl, cb))();
+              resp = await simpleDateStamp(viewer, '_ubhd:doiWant');
             }
-            updAnno = orf(orf(resp).minted)[0].minted;
           } catch (err) {
             return setDoiMsg('<error:> ', String(err));
           }
-          if (updAnno.doi) {
-            /*
-              The upcoming mutation replaces the history of the annotation as
-              well, and that seems to be necessary in order to distinguish
-              the DOI for the latest version from the one for the currently
-              displayed version.
-
-              Due to the unfortunate update style explained in setToVersion(),
-              we don't even know which version is currently being displayed.
-
-              Since our update affects the anno-list further up in the
-              element tree, the anno-list updates, and in doing so,
-              abandons the old viewer instance and makes a new one.
-              The new one starts out with all detailbars folded.
-              We do not get a reference to the new instance, so we cannot
-              directly command it to open the DOI detailbar.
-
-              Instead, we use `openDoiBarSoonForDoi` as an app-global dead
-              letter box that is obviously prone to race conditions, trusting
-              that no-one will produce DOI updates in rapid succession.
-
-              2022-07-18: Re-opening the DOI box works, but the
-              doi.of.annotation.version field shows the non-version DOI.
-              Also we currently don't have time to test whether the correct
-              version will be shown after the mutation. Thus, for now,
-              we have to make our users jump hoops and reload the page.
-            */
-            openDoiBarSoonForDoi = updAnno.doi;
-            // ^-- Set before the new viewer instance is being created.
-            /*
-            viewer.$store.commit('INJECTED_MUTATION', [
-              function mutate() { Object.assign(viewer.annotation, updAnno); }
-            ]);
-            */
-            // viewer.$store.dispatch('fetchAnnoList');
-            // ^- We cannot even do that, because automatically reloading
-            //    the list would hide the success message.
-            return setDoiMsg('mint_doi.success');
-          }
-          console.error('Unexpected mintDOI response', annoIdUrl, resp);
-          viewer.$el.mintDoiResp = resp;
-          return setDoiMsg('unexpected_error');
+          return setDoiMsg('mint_doi.success');
         },
 
         mouseenter() {

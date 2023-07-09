@@ -22,10 +22,10 @@ const EX = async function simpleDateStamp(viewer, origStampSpec, annoIdUrl) {
   console.log(debugTrace, 'querying.');
   try {
     await api22(viewer.$store.state).aepPatch('://' + annoIdUrl, patchData);
-    window.location.reload();
   } catch (err) {
     console.error(debugTrace, 'failed:', err);
-    return window.alert(viewer.l10n('error:') + '\n' + err);
+    window.alert(viewer.l10n('error:') + '\n' + err);
+    throw err;
   }
 };
 

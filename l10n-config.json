@@ -156,8 +156,9 @@
             "delete_draft":        "Löschen",
             "delete_draft_confirm": "Diesen Entwurf wirklich endgültig löschen?",
 
-            "mint_doi":            "DOI registrieren",
-            "mint_doi.success":    "DOI wurde registriert. Vermutlich müssen Sie die Seite neu laden und die Annotation erneut aufklappen, um die DOI zu sehen. Für diesen Mehraufwand bitten wir um Verzeihung. Er wird hoffentlich ab Winter 2022 entfallen.",
+            "mint_doi":            "DOI anfordern",
+            "mint_doi.nonpublic":  "Die Annotation scheint derzeit nicht öffentlich sichtbar zu sein.",
+            "mint_doi.success":    "DOI wurde angefordert.",
 
             "discard":             "Verwerfen",
             "annoeditor":          "Annotations-Editor",
@@ -382,8 +383,9 @@
             "delete_draft":        "Delete",
             "delete_draft_confirm": "Are you sure you want to delete this draft?",
 
-            "mint_doi":            "Mint DOI",
-            "mint_doi.success":    "A DOI was registered. To see the new DOI, you'll probably need to reload the page and open the annotation again. We apologize for this inconvenience. We hope we will be able to rectify this in winter of 2022.",
+            "mint_doi":            "Request DOI",
+            "mint_doi.nonpublic":  "This annotation seems to currently not be visible to the public.",
+            "mint_doi.success":    "DOI allocation was requested.",
 
             "discard":             "Discard",
             "annoeditor":          "Annotation editor",
