@@ -271,15 +271,15 @@ module.exports = {
           eventBus.$emit('targetFragmentButtonClicked', ev);
         },
 
-        setDoiMsg(vocs, ...details) {
+        setDoiMsg(voc, ...details) {
           const viewer = this;
-          if (!vocs) {
+          if (!voc) {
             viewer.mintDoiMsg = '';
             return;
           }
           viewer.mintDoiMsg = [
             ('[' + (new Date()).toLocaleTimeString() + ']'),
-            [].concat(vocs).map(viewer.l10n).join(''),
+            viewer.l10n(voc),
             ...details,
           ].join(' ');
         },
@@ -291,7 +291,7 @@ module.exports = {
             viewer.annotation);
           // window.viewerAnnotation = viewer.annotation;
           if (!annoIdUrl) {
-            return setDoiMsg(['missing_required_field', ' ', 'annofield_id']);
+            return setDoiMsg('<missing_required_field> <annofield_id>');
           }
           const askReally = (l10n('confirm_irrevocable_action')
             + '\n' + l10n('mint_doi'));
@@ -309,7 +309,7 @@ module.exports = {
             }
             updAnno = orf(orf(resp).minted)[0].minted;
           } catch (err) {
-            return setDoiMsg('error:', String(err));
+            return setDoiMsg('<error:> ', String(err));
           }
           if (updAnno.doi) {
             /*
