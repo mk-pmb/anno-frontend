@@ -220,6 +220,8 @@
   }
   .anno-skos-note p:before { content: "⬑ "; }
 
+  .mint-doi-button.unapproved { text-decoration: line-through; }
+
 }
 
 .annoeditor-viewer {
