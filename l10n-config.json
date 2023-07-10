@@ -17,6 +17,7 @@
             "doi": "DOI",
             "doi.of.annotation": "DOI der Annotation",
             "doi.of.annotation.version": "DOI der Annotation in dieser Version",
+            "doi_url_preview_warning": "(⚠ Vorschau! ⚠)",
             "latest_version": "Neueste Version",
             "dateformat":  "dd.mm.yyyy HH:MM",
             "help.url.manual": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/de/manual.html#{{ topic }}",
@@ -157,8 +158,9 @@
             "delete_draft_confirm": "Diesen Entwurf wirklich endgültig löschen?",
 
             "mint_doi":            "DOI anfordern",
+            "mint_doi.pending":    "Ein DOI-Antrag liegt bereits vor.",
             "mint_doi.nonpublic":  "Die Annotation scheint derzeit nicht öffentlich sichtbar zu sein.",
-            "mint_doi.success":    "DOI wurde angefordert.",
+            "mint_doi.success":    "DOI wurde soeben angefordert.",
 
             "discard":             "Verwerfen",
             "annoeditor":          "Annotations-Editor",
@@ -245,6 +247,7 @@
             "doi": "DOI",
             "doi.of.annotation": "DOI of the annotation",
             "doi.of.annotation.version": "DOI of this version of the annotation",
+            "doi_url_preview_warning": "(⚠ Preview! ⚠)",
             "latest_version": "Latest Version",
             "dateformat":  "yyyy-mm-dd hh:MM:ss TT",
             "help.url.manual": "https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/en/manual.html#{{ topic }}",
@@ -384,8 +387,9 @@
             "delete_draft_confirm": "Are you sure you want to delete this draft?",
 
             "mint_doi":            "Request DOI",
+            "mint_doi.pending":    "A DOI allocation request is in progress.",
             "mint_doi.nonpublic":  "This annotation seems to currently not be visible to the public.",
-            "mint_doi.success":    "DOI allocation was requested.",
+            "mint_doi.success":    "DOI allocation has been requested.",
 
             "discard":             "Discard",
             "annoeditor":          "Annotation editor",

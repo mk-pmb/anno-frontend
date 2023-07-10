@@ -154,7 +154,7 @@
             </button>
 
             <button class="btn btn-sm btn-secondary"
-              v-if="latestVersionDoi || $auth('mintDoi', annoIdUrl)"
+              v-if="currentVersionDoiUri || $auth('mintDoi', annoIdUrl)"
               @click="toggleDetailBar"
               data-detailbar="doi"
               :title="l10n('doi')"
@@ -217,20 +217,23 @@
           </dd></dl>
 
           <dl class="detailbar-doi">
-            <template v-if="latestVersionDoi">
+            <template v-if="currentVersionDoiUri">
               <dt-url-caption-link
+                v-show="latestVersionDoiUri"
+                :textBefore="doiLinkPreviewWarning"
                 :caption="l10n('doi.of.annotation')"
-                :url="doi2url(latestVersionDoi)"
+                :url="latestVersionDoiUri"
                 />
               <dt-url-caption-link
+                :textBefore="doiLinkPreviewWarning"
                 :caption="l10n('doi.of.annotation.version')"
-                :url="doi2url(currentVersionDoi)"
+                :url="currentVersionDoiUri"
                 />
             </template>
-            <template v-else><!-- else = we have mintDoi permission,
-              because with neither that nor a DOI, the detailbar would
-              be hidden. -->
-              <dt>
+            <template v-if="(!currentVersionDoiUri) || doiLinkPreviewWarning">
+              <!-- We have mintDoi permission, because with neither that nor
+                   a DOI, the detailbar would be hidden. -->
+                <dt>
                 <div role="group" class="btn-group btn-group-sm">
                   <button @click="askConfirmationToMintDoi" :class="[
                       'btn btn-default btn-outline-secondary btn-sm',
