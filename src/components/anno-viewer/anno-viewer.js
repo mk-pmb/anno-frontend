@@ -52,9 +52,6 @@ function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
 
-let openDoiBarSoonForDoi; // <-- See comments where it's used.
-
-
 module.exports = {
     name: 'anno-viewer', // necessary for nesting
 
@@ -73,17 +70,36 @@ module.exports = {
 
     data() {
       const el = this;
+      const { state } = el.$store;
       const anno = orf(el.annotation);
       const initData = {
         cachedIiifLink: '',
         collapsed: el.collapseInitially,
         currentVersion: el.initialAnnotation,
         detailBarClipCopyBtnCls: 'pull-right',
-        doiResolverBaseUrl: 'https://doi.org/',
         highlighted: false,
-        latestVersionDoi: anno.doi,
+        currentVersionDoiUri: String(anno['dc:identifier'] || ''),
         mintDoiMsg: '',
+        doiLinkPreviewWarning: '',
       };
+
+      if (anno['_ubhd:doiAssign']) {
+        // ^-- no `.extraFields`: That's an anno-editor thing.
+        initData.mintDoiMsg = el.l10n('mint_doi.pending');
+      }
+
+      (function maybePredictDoi() {
+        if (initData.currentVersionDoiUri) { return; }
+        const predict = state.predictMintedDoiUrl;
+        if (!predict) { return; }
+        const annoIdUrl = anno.id;
+        if (!annoIdUrl) { return; }
+        const cur = predict(annoIdUrl);
+        if (!cur) { return; }
+        initData.doiLinkPreviewWarning = el.l10n('doi_url_preview_warning');
+        initData.currentVersionDoiUri = cur;
+      }());
+
       return initData;
     },
 
@@ -123,12 +139,6 @@ module.exports = {
         viewer[methodName](expand);
       });
     });
-
-    const mainDoi = viewer.latestVersionDoi;
-    if (mainDoi && (mainDoi === openDoiBarSoonForDoi)) {
-      openDoiBarSoonForDoi = null;
-      viewer.toggleDetailBar({ barName: 'doi', barWantOpen: true });
-    }
 
     // Expand this annotation
     eventBus.$on('expand', (annoIdUrl) => {
@@ -193,18 +203,30 @@ module.exports = {
           return list;
         },
 
+
         currentLicense() {
           const licUrl = this.annotation.rights;
           const licInfo = orf(licensesByUrl.get(licUrl));
           return licInfo;
         },
 
-        currentVersionDoi() { return this.annotation.doi || ''; },
+
+        latestVersionDoiUri() {
+          const rgx = this.$store.state.doiVersionSuffixRgx;
+          if (!rgx) { return ''; }
+          const curDoiUri = this.currentVersionDoiUri;
+          if (!curDoiUri) { return ''; }
+          const latest = curDoiUri.replace(rgx, '');
+          if (latest === curDoiUri) { return ''; }
+          return latest;
+        },
+
 
         licenseTitleOrUnknown() {
           return (this.currentLicense.title
             || this.l10n('license_unknown'));
         },
+
 
         problemsWarningText() {
           const viewer = this;
@@ -297,6 +319,10 @@ module.exports = {
           if (!annoIdUrl) {
             return setDoiMsg('<missing_required_field> <annofield_id>');
           }
+          const annoDetails = orf(viewer.annotation);
+          if (annoDetails['_ubhd:doiAssign']) {
+            return window.alert(viewer.l10n('mint_doi.pending'));
+          }
           if (!viewer.approval.active) {
             // This is not a security check, just a reminder for users.
             return setDoiMsg('<error:> <mint_doi.nonpublic>');
@@ -312,7 +338,7 @@ module.exports = {
             if (resp) {
               await pDelay(5e3);
             } else {
-              resp = await simpleDateStamp(viewer, '_ubhd:doiWant');
+              resp = await simpleDateStamp(viewer, '_ubhd:doiAssign');
             }
           } catch (err) {
             return setDoiMsg('<error:> ', String(err));
@@ -382,8 +408,6 @@ module.exports = {
           const viewer = this;
           viewer.cachedIiifLink = xrxUtilsUtils.calcIiifLink(viewer);
         },
-
-        doi2url(doi) { return this.doiResolverBaseUrl + doi; },
 
         validateRelationLinkBody(rlb) {
           const viewer = this;

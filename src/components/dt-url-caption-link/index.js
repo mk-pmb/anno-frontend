@@ -11,5 +11,7 @@ module.exports = {
   props: {
     url:        { type: String },
     caption:    { type: String },
+    textBefore: { type: String },
+    textAfter:  { type: String },
   },
 };
