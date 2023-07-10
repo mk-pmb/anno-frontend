@@ -15,6 +15,13 @@
 
   cfg.annoListSearchPrefix = 'anno/by/subject_target;role=author/';
 
+  cfg.predictMintedDoiUrl = function factory() {
+    var s = /^\S+\//,     // Server base URL
+      r = /~(?=\d+$)/,    // Version separator
+      p = 'https://doi.org/10.82109/anno.frontend.';  // DOI URI prefix
+    return function doi(id) { return p + id.replace(s, '').replace(r, '_'); };
+  };
+
   (function compile() {
     var l = document.createElement('a');
     cfg.resolveURL = function resolveURL(url) {
