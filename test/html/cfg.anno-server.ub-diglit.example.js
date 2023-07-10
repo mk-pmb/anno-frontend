@@ -11,5 +11,12 @@ Example config-override file
 
   cfg.annoEndpoint = 'https://anno.ub.uni-heidelberg.de/anno/';
 
+  cfg.predictMintedDoiUrl = function factory() {
+    var s = /^\S+\//,     // Server base URL
+      r = /~(?=\d+$)/,    // Version separator
+      p = 'https://doi.org/10.11588/anno.diglit.';  // DOI URI prefix
+    return function doi(id) { return p + id.replace(s, '').replace(r, '_'); };
+  };
+
   window.annoCfgSetUbStyleAuthServer(cfg.annoEndpoint + 'auth/');
 }());
