@@ -82,7 +82,6 @@ module.exports = {
 
     targetSource() { return this.$store.state.targetSource; },
     token() { return this.$store.state.token; },
-    purlTemplate() { return this.$store.state.purlTemplate; },
     purlId() { return this.$store.state.purlId; },
     purlAnnoInitiallyOpen() { return this.$store.state.purlAnnoInitiallyOpen; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
