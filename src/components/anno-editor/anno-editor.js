@@ -9,7 +9,7 @@
  * Events:
  *
  * - `close-editor`: The editor was closed
- * - `removed(id)`: Annotation `id` was removed
+ * - `removed(annoIdUrl)`: Annotation was removed
  *
  */
 
@@ -23,8 +23,8 @@ function soon(f) { return setTimeout(f, 1); }
 
 const defaultSaveLegacyPreArgsFactories = {
   create() { return []; },
-  reply(anno) { return [anno.replyTo]; },
-  revise(anno) { return [anno.id]; },
+  reply(annoDetails) { return [annoDetails.replyTo]; },
+  revise(annoDetails) { return [annoDetails.id]; },
 };
 
 
@@ -93,7 +93,7 @@ module.exports = {
       }
     },
     computed: {
-        id()              {return this.$store.state.editing.id},
+        annoIdUrl()       {return this.$store.state.editing.id},
         targetImage()     {return this.$store.state.targetImage},
         targetThumbnail() {return this.$store.state.targetThumbnail},
         targetSource()    {return this.$store.state.targetSource},
@@ -187,13 +187,13 @@ module.exports = {
 
         remove(annoOrId) {
           if (!window.confirm(this.l10n('confirm_delete'))) { return; }
-          const annoId = (annoOrId.id || annoOrId);
+          const annoIdUrl = (annoOrId.id || annoOrId);
           const self = this;
           const { api, $store } = self;
-          api.delete(annoId, (err) => {
+          api.delete(annoIdUrl, (err) => {
             if (err) { return console.error(err); }
-            console.debug('API confirms anno as removed:', annoId);
-            eventBus.$emit('removed', annoId);
+            console.debug('API confirms anno as removed:', annoIdUrl);
+            eventBus.$emit('removed', annoIdUrl);
             $store.dispatch('fetchList');
             self.discard();
           });
