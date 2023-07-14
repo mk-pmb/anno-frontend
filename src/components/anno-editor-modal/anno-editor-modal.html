@@ -32,9 +32,9 @@
           v-if="editMode === 'revise'">
           {{ l10n(`annoeditor_mode_revise`) }}
           <a
-            @mouseenter="startHighlighting(id)"
-            @mouseleave="stopHighlighting(id)"
-            >{{ this.annoIdToPermaUrl(id) }}</a>
+            @mouseenter="startHighlighting(annoIdUrl)"
+            @mouseleave="stopHighlighting(annoIdUrl)"
+            >{{ this.annoIdToPermaUrl(annoIdUrl) }}</a>
         </component>
         <component :is="bootstrapOpts.tags.modalHeaderTitle"
           class="modal-title"
@@ -70,7 +70,7 @@
           <bootstrap-button @click="remove"
             btn-class="outline-danger"
             icon-fa="trash-o"
-            v-if="$auth('remove', id) && editMode === 'revise'">
+            v-if="$auth('remove', annoIdUrl) && editMode === 'revise'">
             {{ l10n('delete_anno') }}
           </bootstrap-button>
         </div>
