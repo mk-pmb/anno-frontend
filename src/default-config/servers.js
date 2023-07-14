@@ -38,7 +38,7 @@ const srvCfg = {
 
     '%ep', // annoEndpoint
     'anno/',
-    '%sl', // slug of the annotation
+    '%ri', // revision identifier
   ].join(''),
 
 };
