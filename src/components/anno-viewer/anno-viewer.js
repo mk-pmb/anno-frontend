@@ -116,12 +116,11 @@ module.exports = {
     // React to highlighting events startHighlighting / stopHighlighting / toggleHighlighting
     ;['start', 'stop', 'toggle'].forEach(state => {
       const methodName = `${state}Highlighting`;
-      // console.debug('reg $on', { methodName, ourId: viewer.id, elem: viewer.$el });
-      eventBus.$on(methodName, function manageHighlight(subjectId, expand) {
-        const ourId = viewer.id;
-        // console.debug('$on cb', { methodName, ourId, subjectId });
-        if (!ourId) { return; } // early init
-        if (subjectId !== ourId) { return; }
+      eventBus.$on(methodName, function manageHighlight(subjectIdUrl, expand) {
+        const ourIdUrl = viewer.annoIdUrl;
+        // console.debug('$on cb', { methodName, ourIdUrl, subjectIdUrl });
+        if (!ourIdUrl) { return; } // early init
+        if (subjectIdUrl !== ourIdUrl) { return; }
         viewer[methodName](expand);
       });
     });
@@ -134,7 +133,7 @@ module.exports = {
 
     // Expand this annotation
     eventBus.$on('expand', (annoIdUrl) => {
-      console.error('Expand Handler: Needs full rewrite.', { annoIdUrl });
+      console.error('Thread expand handler needs full rewrite!', { annoIdUrl });
     })
 
     viewer.toplevelCreated = viewer.annotation.modified;
@@ -142,7 +141,7 @@ module.exports = {
   },
 
     computed: {
-        id()                 {return this.annotation.id},
+        annoIdUrl()          {return this.annotation.id},
         title()              {return this.annotation.title},
         firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
         simpleTagBodies()    {return simpleTagBody.all(this.annotation)},
@@ -180,7 +179,7 @@ module.exports = {
           (function checkExpectedProps() {
             const expected = [
               'title',
-              (viewer.acceptEmptyAnnoId ? null : 'id'),
+              (viewer.acceptEmptyAnnoId ? null : 'id' /* Anno ID */),
             ];
             const miss = l10n('missing_required_field') + ' ';
             expected.forEach(function check(prop) {
@@ -193,9 +192,7 @@ module.exports = {
           return l10n('error:') + ' ' + probs.join('; ');
         },
 
-        purl() {
-          return this.annoIdToPermaUrl((this.annotation || false).id);
-        },
+        purl() { return this.annoIdToPermaUrl(this.annoIdUrl); },
 
         newestVersion() {
           const versions = this.annotation.hasVersion
@@ -217,7 +214,7 @@ module.exports = {
         makeEventContext() {
           const viewer = this;
           return {
-            annoId: viewer.id,
+            annoIdUrl: viewer.annoIdUrl,
             domElem: viewer.$el,
             dataApi: viewer.dataApi,
             getVueBoundAnno() { return viewer.annotation; },
@@ -251,12 +248,11 @@ module.exports = {
 
         async askConfirmationToMintDoi() {
           const viewer = this;
-          const { l10n, setDoiMsg } = viewer;
+          const { annoIdUrl, l10n, setDoiMsg } = viewer;
           console.debug('askConfirmationToMintDoi: viewer anno:',
             viewer.annotation);
           // window.viewerAnnotation = viewer.annotation;
-          const annoId = (this.annotation || false).id;
-          if (!annoId) {
+          if (!annoIdUrl) {
             return setDoiMsg(['missing_required_field', ' ', 'annofield_id']);
           }
           const askReally = (l10n('confirm_irrevocable_action')
@@ -271,7 +267,7 @@ module.exports = {
             if (resp) {
               await pDelay(5e3);
             } else {
-              resp = await pify(cb => viewer.api.mintDoi(annoId, cb))();
+              resp = await pify(cb => viewer.api.mintDoi(annoIdUrl, cb))();
             }
             updAnno = orf(orf(resp).minted)[0].minted;
           } catch (err) {
@@ -316,7 +312,7 @@ module.exports = {
             //    the list would hide the success message.
             return setDoiMsg('mint_doi.success');
           }
-          console.error('Unexpected mintDOI response', annoId, resp);
+          console.error('Unexpected mintDOI response', annoIdUrl, resp);
           viewer.$el.mintDoiResp = resp;
           return setDoiMsg('unexpected_error');
         },
@@ -332,7 +328,7 @@ module.exports = {
 
         startHighlighting(expand)  {
             this.highlighted = true
-            if (expand) eventBus.$emit('expand', this.id, true)
+            if (expand) eventBus.$emit('expand', this.annoIdUrl, true)
         },
         stopHighlighting()   {this.highlighted = false},
         toggleHighlighting() {this.highlighted = ! this.highlighted},
