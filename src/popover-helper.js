@@ -18,9 +18,9 @@ const shortEventNames = {
 
 
 
-function jqFirstOrFalse(id, sub) {
-  if (!id) { return false; }
-  const found = jQuery('#' + id + ' ' + (sub || ''));
+function jqFirstOrFalse(domElemId, sub) {
+  if (!domElemId) { return false; }
+  const found = jQuery('#' + domElemId + ' ' + (sub || ''));
   return (found[0] || false);
 }
 
