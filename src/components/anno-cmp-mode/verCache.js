@@ -79,7 +79,7 @@ Object.assign(EX, {
     const { reply } = ctx;
     const fail = EX.refuseFetchedAnno;
     const annoIdUrl = (reply || false).id; // Anno ID
-    if (!annoIdUrl) { fail(ctx, '<missing_required_field> <annofield_id>'); }
+    if (!annoIdUrl) { fail(ctx, '<missing_required_field><annofield_id>'); }
     if (!annoIdUrl.endsWith('/' + ctx.apiSubUrl)) { fail(ctx, 'annofield_id'); }
   },
 

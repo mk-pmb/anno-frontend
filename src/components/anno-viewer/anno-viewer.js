@@ -239,7 +239,7 @@ module.exports = {
               'dc:title',
               (viewer.acceptEmptyAnnoId ? null : 'id' /* Anno ID */),
             ];
-            const miss = l10n('missing_required_field') + ' ';
+            const miss = l10n('missing_required_field');
             expected.forEach(function check(prop) {
               if (!prop) { return; }
               if (anno[prop]) { return; }
@@ -317,7 +317,7 @@ module.exports = {
             viewer.annotation);
           // window.viewerAnnotation = viewer.annotation;
           if (!annoIdUrl) {
-            return setDoiMsg('<missing_required_field> <annofield_id>');
+            return setDoiMsg('<missing_required_field><annofield_id>');
           }
           const annoDetails = orf(viewer.annotation);
           if (annoDetails['_ubhd:doiAssign']) {
@@ -413,7 +413,7 @@ module.exports = {
           const viewer = this;
           const { l10n } = viewer;
           const errors = [];
-          const vocMiss = l10n('missing_required_field') + ' ';
+          const vocMiss = l10n('missing_required_field');
 
           (function requiredFields() {
             const missing = [

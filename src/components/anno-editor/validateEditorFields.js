@@ -20,7 +20,7 @@ const vali = function validateEditorFields(onBehalfOfVueComponent) {
     problems.push('Validation component should provide l10n');
   }
   function mf(x) { problems.push(mf.pre + l10n(x)); }
-  mf.pre = l10n('missing_required_field') + ' ';
+  mf.pre = l10n('missing_required_field');
 
   const anno = $store.state.editing;
   if (!anno.title) { mf('annofield_title'); }
