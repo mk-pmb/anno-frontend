@@ -1,6 +1,12 @@
+.annoeditor-editor {
+
+
 .annoeditor-html-editor > .panel-body {
   overflow-y: auto; /* Workaround for overly-tall HTML editor */
 }
+
+
+
 
 .annoeditor-svg-zones-editor {
 
@@ -49,6 +55,20 @@
 
     }
 
-  }
+  } /* <-- .xrx-toolbar */
 
-}
+} /* <-- .annoeditor-svg-zones-editor */
+
+
+
+
+
+
+
+
+
+
+
+
+
+} /* <-- .annoeditor-editor */
