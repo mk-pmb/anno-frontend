@@ -1,9 +1,9 @@
-<div class="row license-selection-row">
+<fragment>
   <div class="col-sm-1">
     <label class="license-label" for="annoeditor-license-select"
       >{{ l10n('License') }}:</label>
   </div>
-  <div class="license-selection-col col-md-11">
+  <div :class="'license-selection-col ' + iconsColumnCssClass">
     <div id="annoeditor-license-select"
       class="btn-group"
       data-toggle="buttons"
@@ -34,4 +34,4 @@
       </label>
     </div><!-- .btn-group -->
   </div><!-- .licInfo-selection-col -->
-</div>
+</fragment>

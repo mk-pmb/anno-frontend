@@ -39,7 +39,11 @@
           :initial-agent="initialAuthorAgent"
           :onchange="onSelectAuthorIdentity"
           />
-        <anno-editor-licenses />
+        <div class="row
+          license-selection-row
+          ">
+          <anno-editor-licenses iconsColumnCssClass="col-md-11" />
+        </div>
       </template>
       <template slot="extra-bodyparts-bottom">
       </template>
