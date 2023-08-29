@@ -1,7 +1,13 @@
+const fragment = require('vue-frag').Fragment;
+
 const licensesInfo = require('../../../license-config.js');
 const installPopOvers = require('../../popover-helper.js').install;
 
 module.exports = {
+
+  components: {
+    fragment,
+  },
 
   mixins: [
     require('../../mixin/l10n'),
@@ -9,6 +15,10 @@ module.exports = {
 
   template: require('./licenses.html'),
   style: require('./style.scss'),
+
+  props: {
+    iconsColumnCssClass: String,
+  },
 
   data() { return {
     licensesInfo,
