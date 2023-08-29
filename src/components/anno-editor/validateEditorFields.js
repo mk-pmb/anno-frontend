@@ -28,18 +28,12 @@ const vali = function validateEditorFields(onBehalfOfVueComponent) {
   if (!orf(anno.creator).id /* Agent ID */) { mf('author_identity'); }
 
   [].concat(anno.body || []).forEach(function verifyBody(body) {
-    const {
-      purpose,
-      value,
-    } = body;
-    if (purpose === 'classifying') {
-      const ok = (value
-        && (value === body.label)
-        && body.source);
-      if (ok) { return; }
-      problems.push(l10n('semtag_no_source_for')
-        + ' ' + JSON.stringify(body.value || ''));
+    let problem;
+    if (body.purpose === 'classifying') {
+      problem ||= vali.verifyClassifyingBody(body);
     }
+    if (!problem) { return; }
+    problems.push(l10n(problem) + ' ' + JSON.stringify(body.value || ''));
   });
 
   if (!problems.length) { return true; }
@@ -48,6 +42,20 @@ const vali = function validateEditorFields(onBehalfOfVueComponent) {
   window.alert(msg); // eslint-disable-line no-undef,no-alert
   return false;
 };
+
+
+
+Object.assign(vali, {
+
+  verifyClassifyingBody(body) {
+    if (!body.source) { return 'semtag_no_source_for'; }
+    const { label, value } = body;
+    if (label && (label !== value)) { return 'semtag_rogue_label'; }
+    return '';
+  },
+
+
+});
 
 
 module.exports = vali;
