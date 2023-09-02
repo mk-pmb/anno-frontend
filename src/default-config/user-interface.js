@@ -60,6 +60,37 @@ const uiCfg = {
   //    e.g. `de` for German or `en` for English.
 
   localizations: l10nConfig.localizations,
+
+  annoLanguageOptions: [
+    /*
+      For BCP 47 see: https://en.wikipedia.org/wiki/IETF_language_tag
+
+      For the labels, we use Unicode flags to save on graphics (page load
+      time) and because we can expect that accessibility software understands
+      them. You can copy and paste the flag codes from this list:
+      https://en.wikipedia.org/wiki/Regional_indicator_symbol
+
+      The default list is sorted alphabetically in an attempt to not convey
+      any cultural preference. In production you may want to re-order them
+      by how often they are used in your actual use case.
+    */
+    { bcp47: 'de-DE', label: '🇩🇪' },
+    { bcp47: 'en-GB', label: '🇬🇧' },
+    { bcp47: 'en-US', label: '🇺🇸' },
+  ],
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 

@@ -24,12 +24,15 @@ const EX = function getCleanAnno() {
   } = jsonDeepCopy(editor.$store.state.editing);
   Object.assign(anno, extraFields);
 
+  function setAnnoPropIf(k, v) { if (v) { anno[k] = v; } }
+
   EX.deleteNonEditableFieldsInplace(anno);
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   anno.type = ['Annotation'];
-  if (title) { anno['dc:title'] = title; }
-  if (versionOf) { anno['dc:isVersionOf'] = versionOf; }
+  setAnnoPropIf('dc:isVersionOf', versionOf);
+  setAnnoPropIf('dc:language', editor.annoLanguage.selected);
+  setAnnoPropIf('dc:title', title);
   if (anno['dc:dateAccepted'] === false) { delete anno['dc:dateAccepted']; }
 
   let bodies = [].concat(anno.body);

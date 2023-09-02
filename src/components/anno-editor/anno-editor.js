@@ -14,6 +14,29 @@ function orf(x) { return x || false; }
 
 const emptySvgTagRgx = /^<svg\s*>\s*<\/svg\s*>$/;
 
+const symbolForNoLanguage = '\u00A0\u2044';
+/*  Some candidates:
+    U+2043 hyphen bullet (⁃)
+    U+2044 fraction slash (⁄)
+    U+2425 symbol for delete form two (␥)
+    U+25CC dotted circle (◌)
+    U+29C4 squared rising diagonal slash (⧄)
+    U+2A02 n-ary circled times operator (⨂)
+    U+2A09 n-ary times operator (⨉)
+    U+2B1A dotted square (⬚)
+    U+2B55 heavy large circle (⭕)
+    U+2B58 heavy circle (⭘)
+    U+2B59 heavy circled saltire (⭙)
+    U+2BBE circled x (⮾)
+    U+2BBF circled bold x (⮿)
+    U+2BD1 uncertainty sign (⯑)
+    U+168EF bamum letter phase-c pen (𖣯)
+    U+1693A bamum letter phase-d kun (𖤺)
+    U+1D10D musical symbol repeated figure-1 (𝄍)
+    U+1D1AF musical symbol pedal up mark (𝆯)
+    U+1D23A greek instrumental notation symbol-47 (𝈺)
+*/
+
 
 module.exports = {
 
@@ -35,9 +58,14 @@ module.exports = {
   data() {
     return {
       forceUpdatePreviewTs: 0,
-      zoneEditorEventsSetupDone: false,
-      previousChosenAuthorIdUrl: '',
       initialAuthorAgent: {},
+      previousChosenAuthorIdUrl: '',
+      annoLanguage: {
+        keepOrigExtra: '',
+        selected: '',
+      },
+      symbolForNoLanguage,
+      zoneEditorEventsSetupDone: false,
     };
   },
 

@@ -24,6 +24,7 @@ function initialState() {
     target: null,
     title: '',
     versionOf: '',
+    // language: see not-a-bug-230902-001
   };
 }
 
