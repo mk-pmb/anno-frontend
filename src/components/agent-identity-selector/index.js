@@ -9,7 +9,7 @@ module.exports = {
   ],
 
   template: require('./asel.html'),
-  style: require('./style.scss'),
+  // style: require('./style.scss'),
 
   props: {
     dropdownId:       { type: [String], required: false, default: '' },

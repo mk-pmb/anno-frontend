@@ -1,9 +1,12 @@
 #annoeditor-license-select {
 
   label {
-
     del { display: none; }
-
   }
 
+}
+
+.annoeditor-html-editor .row.license-selection-row {
+  .col { margin-top: 0.5em; }
+  .col.license-selection-col { margin-top: 0; }
 }
