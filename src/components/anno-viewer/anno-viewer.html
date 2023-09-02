@@ -253,7 +253,7 @@
 
         <div class="well old_version" v-show="isOlderVersion()">
           {{ l10n('version_from') }} {{ dateFmt(annotation.created) }}
-          <br/>
+          <br>
           <a @click="setToVersion(newestVersion)">{{ l10n('newer_version') }}</a>
         </div>
 
