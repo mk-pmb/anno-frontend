@@ -40,9 +40,30 @@
           :onchange="onSelectAuthorIdentity"
           />
         <div class="row
+          text-body-language-selection-row
           license-selection-row
           ">
-          <anno-editor-licenses iconsColumnCssClass="col-md-11" />
+          <div class="col col-sm-1">
+            <label class="text-body-language-label"
+              for="annoeditor-text-body-language-select"
+              >{{ l10n('text_body_language') }}:</label>
+          </div>
+          <div class="col col-sm-2">
+            <select v-model="annoLanguage.selected" size="1"
+              class="form-control text-body-language-selection-dropdown">
+              <option class="lang-none" value=""
+                >{{ symbolForNoLanguage }}</option>
+              <option class="keep-unconfigured-origval"
+                v-if="annoLanguage.keepOrigExtra"
+                :value="annoLanguage.keepOrigExtra"
+                >{{ annoLanguage.keepOrigExtra }}</option>
+              <option v-for="lang in $store.state.annoLanguageOptions"
+                :key="lang.bcp47" :value="lang.bcp47"
+                class="lang-item"
+                >{{ lang.label }}</option>
+            </select>
+          </div>
+          <anno-editor-licenses iconsColumnCssClass="col-md-8" />
         </div>
       </template>
       <template slot="extra-bodyparts-bottom">
