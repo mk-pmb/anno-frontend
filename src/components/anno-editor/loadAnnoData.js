@@ -29,6 +29,7 @@ const EX = async function loadAnnoData(origAnno) {
   const anno = jsonDeepCopy(origAnno);
   getCleanAnno.deleteNonEditableFieldsInplace(anno);
   const popField = objPop.d(anno);
+  function popStr(k) { return String(popField(k) || ''); }
 
   const target = adjustMultiTarget(state, popField('target'));
   const tgtAdj = target.primaryTargetAdjustHint;
@@ -48,15 +49,30 @@ const EX = async function loadAnnoData(origAnno) {
     creator,
     target,
     replyTo,
-    versionOf: popField('dc:isVersionOf') || '',
+    versionOf: popStr('dc:isVersionOf'),
     body: arrayOfTruths(popField('body')),
     rights: '',
   };
 
-  function copyStr(k) { editorFields[k] = String(popField(k) || ''); }
+  function copyStr(k) { editorFields[k] = popStr(k); }
   copyStr('id');
   copyStr('rights');
   copyStr('created');
+
+  (function detectLanguage() {
+    /* not-a-bug-230902-001:
+      I tried making the language a regular property of editorFields, but
+      that way it would be updated with strange delays, like changes taking
+      effect only after you click "Discard", and then persisting after the
+      discard. We also cannot directly use tbe `dc:language` property of
+      `$store.state.editing.extraFields` b/c the latter is null initially.
+      */
+    const selected = popStr('dc:language');
+    const langsInConfig = state.annoLanguageOptions;
+    const isConfigured = langsInConfig.some(l => (l.bcp47 === selected));
+    const keepOrigExtra = (isConfigured ? '' : selected);
+    editor.annoLanguage = { keepOrigExtra, selected };
+  }());
 
   // console.debug('loadAnnoData: editorFields:', editorFields, 'extra:', anno);
   const model = {
