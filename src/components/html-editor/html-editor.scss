@@ -1,16 +1,11 @@
 .annoeditor-html-editor {
 
+  .btn.active { background-color: #900; }
+  .ql-editor { min-height: 200px; }
 
-    .btn.active {
-        background-color: #900;
-    }
+  & > .panel-body { overflow-y: auto; } /*
+    Workaround for overly-tall HTML editor */
 
-    .license-label {
-        margin-top: 10px;
-        margin-left: 5px;
-    }
+  .row .col label { margin-top: 0.5em; }
 
-    .ql-editor {
-        min-height: 200px;
-    }
 }
