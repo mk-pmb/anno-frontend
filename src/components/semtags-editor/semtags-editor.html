@@ -22,7 +22,7 @@
   </template>
 
   <div class="row semtag" v-for="(body, bodyIndex) in semanticTagBodies">
-    <div class="col-md-9">
+    <div class="col-md-10">
       <input
         class="form-control semtag-value"
         :data-body-index="bodyIndex"
@@ -33,11 +33,17 @@
         type="text"
         :value="body.value"
         :placeholder="l10n('semtag')"
-      />
+        />
+      <a class="semtag-weblink"
+        :v-show="body.source"
+        :href="body.source"
+        :title="body.source"
+        target="_blank"
+        ><i class="fa fa-link"></i></a>
       <div class="no-source text-danger"
         >&#x2191;&#x26A0; {{ l10n('semtag_no_source') }}</div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
       <bootstrap-button
         btn-class="danger"
         icon-fa="trash-o"

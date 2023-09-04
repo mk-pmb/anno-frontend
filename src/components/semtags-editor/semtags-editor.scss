@@ -1,6 +1,9 @@
 .annoeditor-semtags-editor {
   --bonanza-list-height: 20em;
 
+  .semtag-input-wrapper { position: relative; }
+  .semtag-weblink { position: absolute; top: 0.5em; right: 1.5em; }
+
   .bz-container {
     max-height: var(--bonanza-list-height);
   }
