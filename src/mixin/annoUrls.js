@@ -3,7 +3,9 @@
 const isStr = require('is-string');
 
 
-  function annoIdToPermaUrl(annoIdOrVersId) {
+const MT = {
+
+  annoIdToPermaUrl(annoIdOrVersId) {
     /*
       The "perma" here is meant to be the canonical URL that people can
       bookmark and share. Ideally it should tend to be short and also be
@@ -23,20 +25,21 @@ const isStr = require('is-string');
     url = url.replace('%ri', versionIdentifier);
 
     return url;
-  }
+  },
 
 
-  function findResourceUrl(res) {
+  findResourceUrl(res) {
     if (!res) { return ''; }
     if (isStr(res)) { return res; }
     return (res.id || res.source || '');
-  }
+  },
+
+
+};
+
 
 
 
 module.exports = {
-  methods: {
-    annoIdToPermaUrl,
-    findResourceUrl,
-  },
+  methods: MT,
 };
