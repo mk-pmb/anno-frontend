@@ -17,7 +17,6 @@ const components = {
     'anno-cmp-mode':     require('./anno-cmp-mode'),
     'anno-list':         require('./anno-list'),
     'anno-viewer-thumbnail-svg': require('./anno-viewer-thumbnail-svg'),
-    'anno-viewer-versions-dropdown': require('./anno-viewer-versions-dropdown'),
     'anno-viewer':       require('./anno-viewer'),
     'clipboard-copy-button': require('./clipboard-copy-button'),
     'dt-url-caption-link': require('./dt-url-caption-link'),
