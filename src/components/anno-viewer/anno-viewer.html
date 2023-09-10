@@ -4,11 +4,11 @@
     'panel',
     'panel-default',
     'annoeditor-viewer',
-    (this.highlighted && 'annoeditor-highlight'),
-    ((this.annotation.id === this.purlId
+    (highlighted && 'annoeditor-highlight'),
+    ((annotation.id === purlId
       // ^-- A legacy highlighting mechanism. See `anno-viewer.js`.
       ) && 'annoeditor-purl'),
-    (this.asReply && 'annoeditor-reply'),
+    (asReply && 'annoeditor-reply'),
   ].filter(Boolean)"
   v-on:mouseover.stop="mouseenter"
   v-on:mouseleave.stop="mouseleave"
@@ -19,7 +19,7 @@
   <div v-if="!asReply" class="panel-heading">
     <h4 class="panel-title" @click="collapse('toggle')">
       <anno-viewer-thumbnail-svg
-        :svgTarget="this.svgTarget"
+        :svgTarget="svgTarget"
         class="pull-right"
         />
       <a role="button">
@@ -28,12 +28,12 @@
         <span v-show="approval.iconCls"
           :class="'anno-approval-icon ' + approval.iconCls"
           :title="approval.explain"></span>
-        <span v-show="Boolean(this.problemsWarningText)" class="
+        <span v-show="Boolean(problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
           danger
           "
-          :title="this.problemsWarningText"
+          :title="problemsWarningText"
           >&#x26A0;</span>
         {{ title }}
       </a>
@@ -44,14 +44,14 @@
     class="card-body panel-body"
     v-show="!collapsed">
 
-    <div v-show="Boolean(this.problemsWarningText)" class="
+    <div v-show="Boolean(problemsWarningText)" class="
       anno-editor-error
       anno-error-annotation-problems
       danger
-      ">&#x26A0; {{ this.problemsWarningText }} &#x26A0;</div>
+      ">&#x26A0; {{ problemsWarningText }} &#x26A0;</div>
 
-    <div v-if="this.annotation['skos:note']" class="anno-skos-note">
-      <p>{{ this.annotation['skos:note'] }}</p>
+    <div v-if="annotation['skos:note']" class="anno-skos-note">
+      <p>{{ annotation['skos:note'] }}</p>
     </div>
 
     <div class="media" style="height: auto;">
@@ -167,7 +167,7 @@
               frag-sel-btn
               "
               v-if="targetFragment"
-              :title="this.$store.state.targetFragmentButtonTitle"
+              :title="$store.state.targetFragmentButtonTitle"
               ref="targetFragmentButton"
               @click.stop="targetFragmentButtonClicked"
               >
@@ -251,7 +251,7 @@
           </dl>
         </div><!-- .detailbars -->
 
-        <div v-if="this.annotation[':ANNO_FE:replyRefNum']" class="
+        <div v-if="annotation[':ANNO_FE:replyRefNum']" class="
           card-body panel-body
           anno-reply-refnum
           ">
