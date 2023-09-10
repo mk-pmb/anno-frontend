@@ -16,13 +16,9 @@
       " eventbus-emit="create" />
   </div>
 
-  <div class="
-    annocmp-side
-    annocmp-primary-side
-    border
-    border-secondary
-    ">
-    <div class="row header"><div class="col-lg">
+  <div :class="'annocmp-side annocmp-primary-side ' + sideBoxCls"
+    ><div :class="'annocmp-side-pad ' + sidePadCls">
+    <div class="row header"><div class="col col-lg">
       <select ref="layoutChooser" v-model="priSide">
         <option v-for="layout in ['only', 'left', 'top']"
           :value="layout">{{ l10n('cmp_layout_' + layout) }}</option>
@@ -32,23 +28,18 @@
         :choice="priVerChoice"
         :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
-    </div></div>
-    <div class="row content"><div class="col-lg"
+    </div></div><!-- /.col /.row -->
+    <div class="row content"><div class="col col-lg"
       v-for="cached in [getSideAnnoData('pri')]" :key="cached.vueKey">
       <anno-viewer v-if="cached.fetchedAt"
         :annotation="cached.anno || {}"></anno-viewer>
       <p class="loading" v-else>{{ l10n('anno_list:loading') }}</p>
-    </div></div>
-  </div>
+    </div></div><!-- /.col /.row -->
+  </div></div><!-- /.annocmp-side-pad /.annocmp-side-pad -->
 
-  <div class="
-    annocmp-side
-    annocmp-secondary-side
-    border
-    border-secondary
-    "
+  <div :class="'annocmp-side annocmp-secondary-side ' + sideBoxCls"
     v-if="priSide !== 'only'"
-    >
+    ><div :class="'annocmp-side-pad ' + sidePadCls">
     <div class="row header"><div class="col-lg">
       {{ l10n('cmp_layout_' + secSide) }}
       <anno-cmp-ver-chooser
@@ -56,14 +47,14 @@
         :choice="secVerChoice"
         :api="{ getVersions() { return reverseOrderKnownVersions; } }"
         />
-    </div></div>
+    </div></div><!-- /.col /.row -->
     <div class="row content"><div class="col-lg"
       v-for="cached in [getSideAnnoData('sec')]" :key="cached.vueKey">
       <anno-viewer v-if="cached.fetchedAt"
         :annotation="cached.anno || {}"></anno-viewer>
       <p class="loading" v-else>{{ l10n('anno_list:loading') }}</p>
-    </div></div>
-  </div>
+    </div></div><!-- /.col /.row -->
+  </div></div><!-- /.annocmp-side-pad /.annocmp-side-pad -->
 
   <div class="unfloat annocmp-clear-sides"></div>
 
