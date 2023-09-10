@@ -26,8 +26,6 @@
   cfg.targetSource = ('http://anno.test/' + location.pathname.replace(/^\S+\//,
     '').replace(/\.\S+$/, ''));
 
-  cfg.diglitBaseUrl = 'https://digi.ub.uni-heidelberg.de/diglit/';
-
   cfg.initCmpOnVersionSelected = cfg.makeDebugLogger('Version selected:');
 
   // cfg.events.appReady = function ready() {};

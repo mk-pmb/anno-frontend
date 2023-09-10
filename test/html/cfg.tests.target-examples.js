@@ -19,8 +19,10 @@
         'd/da/Universitaet_Heidelberg_%28Karl_Lange%29_1896.jpg');
     },
 
+    ubHdDigLitBaseUrl: 'https://digi.ub.uni-heidelberg.de/diglit/',
+
     ubHdDigLit: function (w, h, subUrl, origFileName, baseUrl) {
-      var src = (baseUrl || cfg.diglitBaseUrl) + subUrl;
+      var src = (baseUrl || cfg.setTarget.ubHdDigLitBaseUrl) + subUrl;
       cfg.targetSource = src;
       cfg.targetImage = src + '/_image';
       cfg.targetImageWidth = w;
