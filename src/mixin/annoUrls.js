@@ -2,6 +2,8 @@
 
 const isStr = require('is-string');
 
+const guessPrimaryTargetUriImpl = require('../guessPrimaryTargetUri.js');
+
 
 const MT = {
 
@@ -32,6 +34,11 @@ const MT = {
     if (!res) { return ''; }
     if (isStr(res)) { return res; }
     return (res.id || res.source || '');
+  },
+
+
+  guessPrimaryTargetUri(anno) {
+    return guessPrimaryTargetUriImpl(anno, this.$store.state);
   },
 
 

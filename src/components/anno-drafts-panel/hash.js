@@ -5,6 +5,9 @@
 const crc32 = require('lighter-crc32');
 const isStr = require('is-string');
 
+const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
+
+
 function padStart(pad, text) { return (pad + text).slice(-pad.length); }
 
 
@@ -15,22 +18,6 @@ const minusPartKeys = [
   'annoIdUrlHash',
   'contentHash',
 ];
-
-
-function guessPrimaryTargetUri(vueElem, anno) {
-  const targets = [].concat(anno.target).filter(Boolean);
-  const appCfg = vueElem.$store.state;
-  if (appCfg.targetScopeImpliesSource) {
-    const scopes = targets.map(t => t.scope).filter(Boolean);
-    // console.debug('drafts/hash/guessPrimaryTargetUri: scopes:', scopes);
-    const [scope0] = scopes;
-    if (scope0) { return scope0; }
-  }
-  const t0 = targets[0];
-  // console.debug('drafts/hash/guessPrimaryTargetUri:', { t0 });
-  if (!t0) { return ''; }
-  return (t0.source || t0.id /* Anno ID */ || t0 || '');
-}
 
 
 function weaklyHashAnnoDraft(text) {
@@ -96,7 +83,7 @@ function weaklyHashUri(uri) {
 
 function fileNameHashes(vueElem, anno) {
   return {
-    target: weaklyHashUri(guessPrimaryTargetUri(vueElem, anno)),
+    target: weaklyHashUri(guessPrimaryTargetUri(anno, vueElem.$store.state)),
     annoIdUrl: weaklyHashUri(anno.id),
   };
 }
@@ -104,7 +91,6 @@ function fileNameHashes(vueElem, anno) {
 
 module.exports = {
   fileNameHashes,
-  guessPrimaryTargetUri,
   minusPartKeys,
   weaklyHashAnnoDraft,
   weaklyHashUri,

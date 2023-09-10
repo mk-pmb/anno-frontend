@@ -9,6 +9,7 @@
       // ^-- A legacy highlighting mechanism. See `anno-viewer.js`.
       ) && 'annoeditor-purl'),
     (asReply && 'annoeditor-reply'),
+    (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
   ].filter(Boolean)"
   v-on:mouseover.stop="mouseenter"
   v-on:mouseleave.stop="mouseleave"
@@ -367,6 +368,22 @@
           icon-fa="reply"
           v-if="$auth('create', annoIdUrl)">
           {{ l10n('compose_reply') }}
+        </bootstrap-button
+
+        ><bootstrap-button
+          :btn-class="[
+            'default',
+            'btn-outline-secondary',
+            'version-history-button',
+            (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
+          ]"
+          icon-fa="history"
+          :linkUrl="assembleVersionRelatedUrl('versionsButton')"
+          linkTarget="_blank"
+          v-if="$store.state.initAppMode === 'list'"
+          >{{ otherVersionsExist()
+            ? l10n('versions_dropdown_more')
+            : l10n('versions_dropdown_only') }}
         </bootstrap-button
 
       ></div><!-- .btn-group -->
