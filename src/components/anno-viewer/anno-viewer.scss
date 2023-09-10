@@ -27,15 +27,8 @@
   }
 
   .btn-toolbar {
-    /* Don't! Would interfere with the versions dropdown. [ubhd:228]
-    max-width: 100%; overflow: auto;
-    */
-
     .btn-group {
       margin-top: 0.5ex;
-      /* Don't! Would interfere with the versions dropdown. [ubhd:228]
-      max-width: 100%; overflow: auto;
-      */
 
       .btn-group {
         margin-top: 0;
@@ -166,9 +159,6 @@
 
     }
 
-    .well.old_version {
-      background-color: #ddf;
-    }
   }
 
   .license-icon {

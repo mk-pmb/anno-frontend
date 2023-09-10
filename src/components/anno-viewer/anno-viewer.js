@@ -16,7 +16,6 @@ const licensesByUrl = require('../../license-helper.js').byUrl;
 const simpleDateStamp = require('./simpleDateStamp.js');
 const bindDataApi = require('./dataApi.js');
 const formatters = require('./formatters.js');
-const versionsProps = require('./versionsProps.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
 
@@ -45,7 +44,6 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  * - `stopHighlighting`: Stop highlighting this annotation
  * - `mouseenter`: The mouse cursor is now on this annotation
  * - `mouseleave`: The mouse cursor has left this annotation
- * - `setToVersion`: Reset the currently edited annotation to the version passed
  */
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
@@ -75,7 +73,6 @@ module.exports = {
       const initData = {
         cachedIiifLink: '',
         collapsed: el.collapseInitially,
-        currentVersion: el.initialAnnotation,
         detailBarClipCopyBtnCls: 'pull-right',
         highlighted: false,
         currentVersionDoiUri: String(anno['dc:identifier'] || ''),
@@ -146,7 +143,6 @@ module.exports = {
     })
 
     viewer.toplevelCreated = viewer.annotation.modified;
-    viewer.setToVersion(viewer.newestVersion);
   },
 
     computed: {
@@ -252,15 +248,6 @@ module.exports = {
         },
 
         purl() { return this.annoIdToPermaUrl(this.annoIdUrl); },
-
-        newestVersion() {
-          const versions = this.annotation.hasVersion
-          if (!versions || versions.length <= 1) {
-            return this.annotation
-          } else {
-            return versions[versions.length - 1]
-          }
-        },
     },
 
     methods: {
@@ -363,45 +350,6 @@ module.exports = {
         toggleHighlighting() {this.highlighted = ! this.highlighted},
         collapse(collapseState) {
             this.collapsed = collapseState === 'toggle' ? ! this.collapsed : collapseState === 'hide'
-        },
-
-        setToVersion(updates) {
-          const viewer = this;
-          /*
-            Usually we'd expect the function switchVersionInplace
-            below to have a "state" argument and modify data inside
-            that. Our annotation would be buried deeply somewhere in
-            there in the anno-list, and we'd have to find it by ID
-            or something.
-
-            Except when the viewer is used in the editor preview, of
-            course. So we'd have to track our viewer's pedigree, too.
-
-            The proper way would be to not modify the annotation in
-            place, but rather have a abstraction layer that shows data
-            from the selected version. That would require a major
-            rewrite though, and extensive testing for whether all
-            elements are updated properly.
-
-            Fortunately, in current vuex (v3.6.2), we can ignore the
-            mutation function's arguments and just use our shortcut,
-            because it points to the same object:
-          */
-          const deepStateAnnoShortcut = viewer.annotation;
-          function switchVersionInplace() {
-            versionsProps.forEach(function updateInplace(key) {
-              deepStateAnnoShortcut[key] = updates[key];
-            });
-          }
-          viewer.$store.commit('INJECTED_MUTATION', [switchVersionInplace]);
-        },
-
-        isOlderVersion() {
-          return this.newestVersion.created !== this.annotation.created
-        },
-
-        versionIsShown(version) {
-          return version.created === this.created
         },
 
         renderIiifLink() {
