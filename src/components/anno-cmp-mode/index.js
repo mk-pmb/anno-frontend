@@ -19,6 +19,8 @@ const oppoSides = {
   bottom: 'top',
 };
 
+const defaultSidePadCls = 'container container-mandatory-for-bootstrap-rows';
+
 
 const compoDef = {
 
@@ -31,6 +33,8 @@ const compoDef = {
   ],
 
   props: {
+    sideBoxCls:   { type: String, default: '' },
+    sidePadCls:   { type: String, default: defaultSidePadCls },
   },
 
   data() {
