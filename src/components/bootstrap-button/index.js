@@ -51,11 +51,6 @@ module.exports = {
         ...btn.popoverContentOpts,
       });
     }
-    if (btn.linkUrl) {
-      domElem.setAttribute('href', btn.linkUrl);
-      if (btn.linkTarget) { domElem.setAttribute('target', btn.linkTarget); }
-      if (btn.linkRel) { domElem.setAttribute('rel', btn.linkRel); }
-    }
   },
 
   methods: {
