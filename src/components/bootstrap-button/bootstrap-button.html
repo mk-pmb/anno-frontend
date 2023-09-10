@@ -8,6 +8,11 @@
     'btn-' + btnSize,
   ]"
   :title="title"
+
+  :href="linkUrl || undefined"
+  :target="(linkUrl && linkTarget) || undefined"
+  :rel="(linkUrl && linkRel) || undefined"
+
   @click="clicked"
   >
   <i v-if="iconFa" :class="'fa fa-' + iconFa"></i>
