@@ -13,9 +13,10 @@ const pDelay = require('delay');
 const eventBus = require('../../event-bus.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
 
-const simpleDateStamp = require('./simpleDateStamp.js');
+const assembleVersionRelatedUrl = require('./assembleVersionRelatedUrl.js');
 const bindDataApi = require('./dataApi.js');
 const formatters = require('./formatters.js');
+const simpleDateStamp = require('./simpleDateStamp.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
 
@@ -251,8 +252,9 @@ module.exports = {
     },
 
     methods: {
-        toggleDetailBar,
+        assembleVersionRelatedUrl: assembleVersionRelatedUrl.asVueMethod,
         formatters,
+        toggleDetailBar,
 
         revise() { return eventBus.$emit('revise', this.annotation) },
         reply()  { return eventBus.$emit('reply',  this.annotation) },
@@ -376,12 +378,18 @@ module.exports = {
           return errors;
         },
 
+
     replyRefNumText() {
       const anno = this.annotation;
       const ref = anno[':ANNO_FE:replyRefNum'];
       const tgt = anno[':ANNO_FE:inReplyToRefNum'];
       return this.l10n(tgt ? 'reply_refnum_deep' : 'reply_refnum_lv1'
         ).replace(/@@ref@@/g, ref).replace(/@@tgt@@/g, tgt);
+    },
+
+
+    otherVersionsExist() {
+      return !!this.annotation['dc:replaces'];
     },
 
 

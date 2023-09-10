@@ -12,6 +12,11 @@
     if (q.cmp1) {
       cfg.initAppMode = 'cmp';
       cfg.initCmpBaseId = q.cmp1;
+      if (q.cmp2) {
+        cfg.initCmpSecondarySideVersionNumber = (+q.cmp2 || 0);
+      } else {
+        cfg.initCmpLayout = 'only';
+      }
     }
     if (q.approval) {
       cfg.initCmpApprovalMode = true; // effective only with &cmp1=…

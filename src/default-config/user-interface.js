@@ -28,6 +28,9 @@ const uiCfg = {
 
   offerCreateNewAnnotationButton: true,
 
+  versionsButtonUrlTemplate: '?cmp1=%id',
+  // ^- For supported placeholders, see
+  //    src/components/anno-viewer/assembleVersionRelatedUrl.js
 
   purlAnnoInitiallyOpen: true,
   /* ^-- In case the app was loaded via a persistent URL of an annotation,
