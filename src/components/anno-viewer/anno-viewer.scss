@@ -40,7 +40,7 @@
     }
   }
 
-  .anno-editor-anno-body-buttonbar-top {
+  .anno-body-buttonbar-top {
 
     .btn {
       &.btn-secondary:not(.active) {
@@ -191,14 +191,6 @@
       margin-right: 0.5em;
       min-width: 6em;
     }
-  }
-
-  .anno-editor-anno-body-buttonbar-bottom {
-
-    & > .btn-group {
-      margin-top: 10px;
-    }
-
   }
 
 
