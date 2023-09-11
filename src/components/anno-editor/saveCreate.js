@@ -8,15 +8,14 @@ const validateEditorFields = require('./validateEditorFields.js');
 
 
 const EX = async function saveCreate(editor) {
-  if (!validateEditorFields(editor)) { return; }
+  const anno = editor.getCleanAnno();
+  EX.neverSubmitFields.forEach(k => delete anno[k]);
+  if (!validateEditorFields(editor, anno)) { return; }
 
   const { l10n } = editor;
   if (!window.confirm(l10n('confirm_publish'))) { return; }
 
   const { state, commit, dispatch } = editor.$store;
-  const anno = editor.getCleanAnno();
-  EX.neverSubmitFields.forEach(k => delete anno[k]);
-
   console.debug('POSTing annotation:', anno);
   let saveResp;
   try {
