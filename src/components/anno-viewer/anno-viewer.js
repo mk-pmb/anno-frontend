@@ -71,9 +71,10 @@ module.exports = {
       const el = this;
       const { state } = el.$store;
       const anno = orf(el.annotation);
+      // console.debug('initData el.isListViewItem', [el.isListViewItem]);
       const initData = {
         cachedIiifLink: '',
-        collapsed: el.collapseInitially,
+        collapsed: el.isListViewItem && el.collapseInitially,
         detailBarClipCopyBtnCls: 'pull-right',
         highlighted: false,
         currentVersionDoiUri: String(anno['dc:identifier'] || ''),
@@ -153,6 +154,8 @@ module.exports = {
         semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
         relationLinkBodies() {return relationLinkBody.all(this.annotation)},
         svgTarget()          {return svgSelectorResource.first(this.annotation)},
+
+        isListViewItem() { return this.$store.state.initAppMode === 'list'; },
 
         title() {
           const anno = this.annotation;
@@ -350,8 +353,16 @@ module.exports = {
         },
         stopHighlighting()   {this.highlighted = false},
         toggleHighlighting() {this.highlighted = ! this.highlighted},
-        collapse(collapseState) {
-            this.collapsed = collapseState === 'toggle' ? ! this.collapsed : collapseState === 'hide'
+
+        collapse(command) {
+          const el = this;
+          el.collapsed = (function decide() {
+            if (!el.isListViewItem) { return false; }
+            if (command === 'show') { return false; }
+            if (command === 'hide') { return true; }
+            if (command === 'toggle') { return !el.collapsed; }
+            throw new Error('anno-viewer: Invalid command for .collapse()');
+          }());
         },
 
         renderIiifLink() {
