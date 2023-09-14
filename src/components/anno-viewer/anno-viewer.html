@@ -24,8 +24,9 @@
         class="pull-right"
         />
       <a role="button">
-        <span v-show="collapsed" class="fa fa-caret-right"></span>
-        <span v-show="!collapsed" class="fa fa-caret-down"></span>
+        <span class="collapse-arrow" v-if="isListViewItem"
+          ><i :class="'fa fa-caret-' + (collapsed ? 'right' : 'down')"
+          ></i></span>
         <span v-show="approval.iconCls"
           :class="'anno-approval-icon ' + approval.iconCls"
           :title="approval.explain"></span>
