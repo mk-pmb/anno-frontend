@@ -45,13 +45,6 @@ module.exports = {
     };
   },
 
-  watch: {
-    // https://v3.vuejs.org/api/instance-methods.html#watch
-    list() {
-      this.collapseAll('apply');
-    },
-  },
-
   mounted() {
     const annoList = this;
 
