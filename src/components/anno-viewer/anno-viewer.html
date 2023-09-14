@@ -381,7 +381,7 @@
           icon-fa="history"
           :linkUrl="assembleVersionRelatedUrl('versionsButton')"
           linkTarget="_blank"
-          v-if="$store.state.initAppMode === 'list'"
+          v-if="isListViewItem"
           >{{ otherVersionsExist()
             ? l10n('versions_dropdown_more')
             : l10n('versions_dropdown_only') }}
