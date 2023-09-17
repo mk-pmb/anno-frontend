@@ -15,7 +15,7 @@ const bindDataApi = require('./dataApi.js');
 const eventBus = require('../../event-bus.js');
 const formatters = require('./formatters.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
-const revisionsProps = require('./revisionsProps.js');
+const versionsProps = require('./versionsProps.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
 
@@ -38,13 +38,13 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  *
  * #### Events
  *
- * - `revise`: This annotation should be opened in an editor for revision
+ * - `revise`: This annotation should be opened in an editor for editing
  * - `reply`: A new annotation as a reply to this annotation should be opened in an editor
  * - `startHighlighting`: Start highlighting this annotation
  * - `stopHighlighting`: Stop highlighting this annotation
  * - `mouseenter`: The mouse cursor is now on this annotation
  * - `mouseleave`: The mouse cursor has left this annotation
- * - `setToVersion`: Reset the currently edited annotation to the revision passed
+ * - `setToVersion`: Reset the currently edited annotation to the version passed
  */
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
@@ -81,7 +81,7 @@ module.exports = {
         detailBarClipCopyBtnCls: 'pull-right',
         doiResolverBaseUrl: 'https://doi.org/',
         highlighted: false,
-        latestRevisionDoi: anno.doi,
+        latestVersionDoi: anno.doi,
         mintDoiMsg: '',
       };
       return initData;
@@ -124,7 +124,7 @@ module.exports = {
       });
     });
 
-    const mainDoi = viewer.latestRevisionDoi;
+    const mainDoi = viewer.latestVersionDoi;
     if (mainDoi && (mainDoi === openDoiBarSoonForDoi)) {
       openDoiBarSoonForDoi = null;
       viewer.toggleDetailBar({ barName: 'doi', barWantOpen: true });
@@ -170,7 +170,7 @@ module.exports = {
           return licInfo;
         },
 
-        currentRevisionDoi() { return this.annotation.doi || ''; },
+        currentVersionDoi() { return this.annotation.doi || ''; },
 
         licenseTitleOrUnknown() {
           return (this.currentLicense.title
@@ -302,9 +302,9 @@ module.exports = {
               that no-one will produce DOI updates in rapid succession.
 
               2022-07-18: Re-opening the DOI box works, but the
-              doi.of.annotation.revision field shows the non-revision DOI.
+              doi.of.annotation.version field shows the non-version DOI.
               Also we currently don't have time to test whether the correct
-              revision will be shown after the mutation. Thus, for now,
+              version will be shown after the mutation. Thus, for now,
               we have to make our users jump hoops and reload the page.
             */
             openDoiBarSoonForDoi = updAnno.doi;
@@ -367,7 +367,7 @@ module.exports = {
           */
           const deepStateAnnoShortcut = viewer.annotation;
           function switchVersionInplace() {
-            revisionsProps.forEach(function updateInplace(key) {
+            versionsProps.forEach(function updateInplace(key) {
               deepStateAnnoShortcut[key] = updates[key];
             });
           }
