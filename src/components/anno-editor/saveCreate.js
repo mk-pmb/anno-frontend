@@ -10,13 +10,19 @@ const validateEditorFields = require('./validateEditorFields.js');
 const EX = async function saveCreate(editor) {
   const anno = editor.getCleanAnno();
   EX.neverSubmitFields.forEach(k => delete anno[k]);
+  const { state, commit, dispatch } = editor.$store;
+
+  if (state.authorIdentityOmitToPreserve) {
+    if (editor.checkPreserveAuthorIdentity()) { delete anno.creator; }
+  }
+
   if (!validateEditorFields(editor, anno)) { return; }
 
   const { l10n } = editor;
+  // console.debug('Annotation about to be POSTed:', anno);
   if (!window.confirm(l10n('confirm_publish'))) { return; }
+  console.debug('Confirmed. Gonna POST.');
 
-  const { state, commit, dispatch } = editor.$store;
-  console.debug('POSTing annotation:', anno);
   let saveResp;
   try {
     saveResp = await api22(state).aepPost('anno/', anno);
