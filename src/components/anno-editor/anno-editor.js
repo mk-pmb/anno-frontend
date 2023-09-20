@@ -269,11 +269,16 @@ module.exports = {
     },
 
     async onSelectAuthorIdentity(evt) {
-      const agent = evt.currentAgent;
       const editor = this;
+      const agent = evt.getAgent();
+      if (!agent) { return; }
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
-      editor.previousChosenAuthorIdUrl = agent.id;
+      editor.previousChosenAuthorIdUrl = evt.agentId;
       editor.forceUpdatePreview();
+    },
+
+    checkPreserveAuthorIdentity() {
+      return this.$refs.authorIdentitySelector.getSelection().isPreserve;
     },
 
     initializeZoneEditor() {
