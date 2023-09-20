@@ -37,6 +37,15 @@ const srvCfg = {
     '%ri', // version identifier
   ].join(''),
 
+  authorIdentityOmitToPreserve: false, /*
+    A 2023-09-19 draft version of `anno-server-22` interpreted omission of
+    the `creator` field as signal of intent to inherited the previous
+    version's `creator` field. (In regards to anno-protocol, this
+    would be equivalent to instantly `PATCH`-ing the new annotation.)
+    However, relying on this auto-`PATCH`ing behavior impedes compatibility
+    with other anno-protocol servers, and is thus discouraged.
+  */
+
 };
 
 
