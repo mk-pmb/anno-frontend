@@ -18,5 +18,4 @@ Example config-override file
     return function doi(id) { return p + id.replace(s, '').replace(r, '_'); };
   };
 
-  window.annoCfgSetUbStyleAuthServer(cfg.annoEndpoint + 'auth/');
 }());
