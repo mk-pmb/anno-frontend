@@ -23,6 +23,19 @@ const srvCfg = {
   annoEndpoint: '', /*
     URL of the Web Annotation Protocol server. Should end with a slash.
   */
+
+  annoListSearchPrefix: 'anno/by/subject_target/', /*
+    The sub URL inside `annoEndpoint` to use for search.
+    The default value is suitable for `anno-server-22`.
+    The `the targetSource` will be appended.
+  */
+
+  annoListSearchUrl: '', /*
+    An override to ignore `annoListSearchPrefix` and instead give the
+    exact sub URL (inside the `annoEndpoint`) to use for search,
+    independent of `the targetSource`.
+  */
+
   draftStoreEndpoint: '', /*
     URL of a WebDAV collection. Should end with a slash.
   */
