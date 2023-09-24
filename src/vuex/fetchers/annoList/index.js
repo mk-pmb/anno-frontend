@@ -18,9 +18,7 @@ const EX = async function fetchAnnoList(store) {
   });
   eventBus.$emit('fetching');
   const annoListSearchUrl = (state.annoListSearchUrl || (
-    (state.annoListSearchPrefix || 'anno/by/subject_target/')
-    + state.targetSource
-    ));
+    state.annoListSearchPrefix + state.targetSource));
   try {
     let annos = await api22(state).aepGet(annoListSearchUrl);
     annos = orf(orf(annos).first).items;
