@@ -26,7 +26,10 @@
   cfg.targetSource = ('http://anno.test/' + location.pathname.replace(/^\S+\//,
     '').replace(/\.\S+$/, ''));
 
-  cfg.initCmpOnVersionSelected = cfg.makeDebugLogger('Version selected:');
+  cfg.initCmpOnVersionSelected = function onVersionSelected(event) {
+    console.debug('Version selected:', event);
+    window.versionSelectedEvent = event;
+  };
 
   // cfg.events.appReady = function ready() {};
 

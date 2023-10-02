@@ -4,6 +4,8 @@
 const getOwn = require('getown');
 
 const eventBus = require('../../event-bus.js');
+// const findTargetUri = require('../../findTargetUri.js');
+const targetRelatedness = require('../anno-editor/targetRelatedness.js');
 
 const fetchVersionsList = require('./fetchVersionsList.js');
 const verCache = require('./verCache.js');
@@ -20,6 +22,21 @@ const oppoSides = {
 };
 
 const defaultSidePadCls = 'container container-mandatory-for-bootstrap-rows';
+
+
+function categorizeTargets(event) {
+  const { annoEndpoint, rawTarget } = event;
+  const editorCategs = targetRelatedness.categorizeTargets({
+    annoEndpoint,
+    checkTargetMatchesConfigTarget() { return false; },
+  }, rawTarget);
+  const report = {
+    localAnnos: editorCategs.localAnnos,
+    subjects: editorCategs.additional,
+  };
+  return report;
+}
+function categorizeTargetsMethod() { return categorizeTargets(this); }
 
 
 const compoDef = {
@@ -106,6 +123,7 @@ const compoDef = {
 
     async versionSelected(sideNum, origEvt) {
       const cmp = this;
+      const { annoEndpoint } = cmp.$store.state;
       const verNum = (origEvt.verNum || origEvt.latestVerNum
         // ^-- origEvt is constructed in anno-cmp-ver-chooser.
         || +cmp.knownVersions.latestVerNum);
@@ -117,12 +135,14 @@ const compoDef = {
       await rInfo.waitUntilLoaded();
       const anno = jsonDeepCopy(rInfo.anno);
       const evt = {
-        type: 'cmpViewVersionSelected',
-        sideNum,
-        verNum,
-        sideVisible: ((sideNum === 1) || (cmp.priSide !== 'only')),
+        annoEndpoint,
+        categorizeTargets: categorizeTargetsMethod,
         getFullAnno() { return anno; },
-        targets: [].concat(anno.target).filter(Boolean),
+        rawTarget: anno.target,
+        sideNum,
+        sideVisible: ((sideNum === 1) || (cmp.priSide !== 'only')),
+        type: 'cmpViewVersionSelected',
+        verNum,
       };
       // console.debug('Version selected', sideNum, verNum, { evt });
       setTimeout(() => hook(evt), 1);

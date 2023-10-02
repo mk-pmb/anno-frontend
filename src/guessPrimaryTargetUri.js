@@ -1,5 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
+const findTargetUri = require('./findTargetUri.js');
+
+
 const EX = function guessPrimaryTargetUri(anno, cfg) {
   const targets = [].concat(anno.target).filter(Boolean);
   if (cfg) {
@@ -10,9 +13,7 @@ const EX = function guessPrimaryTargetUri(anno, cfg) {
       if (cfg.findScope) { return ''; }
     }
   }
-  const t0 = targets[0];
-  if (!t0) { return ''; }
-  return (t0.source || t0.id /* Anno ID */ || t0 || '');
+  return findTargetUri(targets[0]);
 };
 
 

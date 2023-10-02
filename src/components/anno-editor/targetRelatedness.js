@@ -56,19 +56,21 @@ const EX = {
     const { annoEndpoint } = appCfg;
     if (!annoEndpoint) { throw new Error('Empty annoEndpoint?'); }
 
-    const cfgTgt = decideTargetForNewAnno(appCfg);
-    const matchesConfigTarget = EX.sameAsConfigTarget(cfgTgt);
-
     const report = {
       subjTgt: false,
       subjOrigIdx: -1,
       localAnnos: [],
       additional: [],
       ...EX.IMPL.categorizeTargetsApi,
-      aux: {
-        matchesConfigTarget,
-      },
+      aux: {},
     };
+
+    let matchesConfigTarget = appCfg.checkTargetMatchesConfigTarget;
+    if (!matchesConfigTarget) {
+      const cfgTgt = decideTargetForNewAnno(appCfg);
+      matchesConfigTarget = EX.sameAsConfigTarget(cfgTgt);
+      report.aux.matchesConfigTarget = matchesConfigTarget;
+    }
 
     let plainOrigTgt = [].concat(origTgt);
     try {
