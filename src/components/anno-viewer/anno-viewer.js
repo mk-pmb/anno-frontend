@@ -179,11 +179,10 @@ module.exports = {
             st.delta = st.jsTs - Date.now();
             st.future = (st.delta > 0);
             st.active = !st.future;
+            st.explain = (this.l10n(st.active ? 'anno_approval_active'
+              : 'anno_approval_future') + ' ' + this.dateFmt(st.jsTs));
             if (st.active) {
               if (!this.uiModeApproval) { return { active: true }; }
-            } else {
-              st.explain = (this.l10n('anno_approval_future')
-                + ' ' + this.dateFmt(st.jsTs));
             }
           } else {
             st.active = false;
