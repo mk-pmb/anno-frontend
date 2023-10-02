@@ -66,17 +66,21 @@
           <div role="group"
             class="btn-group btn-group-sm">
 
-            <span v-if="approval.iconCls" :title="approval.explain"
+            <button ref="approvalStatusButton"
+              v-if="approval.iconCls" :title="approval.explain"
               class="btn btn-sm btn-secondary anno-approval-btn">
-              <span :class="'anno-approval-icon ' + approval.iconCls"></span>
-              <span v-if="approval.jsTs">
-                <span v-if="approval.future"
-                  title="scheduled" class="fa fa-clock-o"></span>
-                {{ dateFmt(approval.jsTs) }}
-              </span>
-              <span v-if="uiModeApproval && (!approval.jsTs)"
-                :title="l10n('date_time_unknown')">⛶</span>
-            </span>
+              <span class="button-caption">
+                <span :class="'anno-approval-icon ' + approval.iconCls"></span>
+                <span v-if="approval.jsTs">
+                  <span v-if="approval.future"
+                    title="scheduled" class="fa fa-clock-o"></span>
+                  <time class="approved-at" :datetime="approval.jsTs"
+                    >{{ dateFmt(approval.jsTs) }}</time>
+                </span>
+                <span v-if="uiModeApproval && (!approval.jsTs)"
+                  :title="l10n('date_time_unknown')">⛶</span>
+              </span><!-- /.button-caption -->
+            </button><!-- /ref="approvalStatusButton" -->
 
             <button class="btn btn-sm btn-secondary
               anno-creators
