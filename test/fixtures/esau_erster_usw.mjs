@@ -100,4 +100,101 @@
   ],
   "type": ["Annotation"]
 },
-];
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>#1</p>"
+  },
+  "created": "2023-09-22T16:02:01Z",
+  "creator": {
+    "id": "urn:uuid:455e5f04-22f9-49b8-95be-dcaea3065654",
+    "name": "R. Sterr",
+    "type": "Person"
+  },
+  "dc:language": "en-GB",
+  "dc:title": "Erster!!!1! 💯",
+  "as:deleted": "Fri, 22 Sep 2023 22:02:01 GMT",
+  "id": "test-esau-spam-rsterr~2",
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "target": { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" },
+  "type": ["Annotation"]
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>#1</p>"
+  },
+  "created": "2023-09-22T16:02:01Z",
+  "creator": {
+    "id": "urn:uuid:455e5f04-22f9-49b8-95be-dcaea3065654",
+    "name": "R. Sterr",
+    "type": "Person"
+  },
+  "dc:language": "de-DE",
+  "dc:title": "Erster!!!1! 💯",
+  "id": "test-esau-spam-rsterr~3",
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "target": { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" },
+  "type": ["Annotation"]
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-rsterr",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>✅ (Edit: Jetzt britisch-englisch.)</p>"
+  },
+  "created": "2023-06-22T17:15:00Z",
+  "creator": {
+    "id": "urn:uuid:f85219f1-c280-5c6f-9099-31e4d4ec645f",
+    "name": "A. Nym",
+    "type": "Person"
+  },
+  "dc:isVersionOf": "test-esau-spam-warhier",
+  "dc:language": "en-GB",
+  "dc:title": "Ich war hier.",
+  "id": "test-esau-spam-warhier~2",
+  "motivation": ["replying"],
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": [
+    {
+      "id": "test-esau-spam-rsterr",
+      "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    },
+    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+  ],
+  "type": ["Annotation"]
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-rsterr",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>✅ (Edit: Jetzt deutsch.)</p>"
+  },
+  "created": "2023-06-22T17:25:00Z",
+  "creator": {
+    "id": "urn:uuid:f85219f1-c280-5c6f-9099-31e4d4ec645f",
+    "name": "A. Nym",
+    "type": "Person"
+  },
+  "dc:isVersionOf": "test-esau-spam-warhier",
+  "dc:language": "de-DE",
+  "dc:title": "Ich war hier.",
+  "id": "test-esau-spam-warhier~3",
+  "motivation": ["replying"],
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": [
+    {
+      "id": "test-esau-spam-rsterr",
+      "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    },
+    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+  ],
+  "type": ["Annotation"]
+},
+null];
