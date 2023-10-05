@@ -6,7 +6,7 @@ const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const getCleanAnno = require('./getCleanAnno.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
-const targetRelatedness = require('./targetRelatedness.js');
+const categorizeTargets = require('./categorizeTargets.js');
 
 // function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
@@ -254,7 +254,7 @@ module.exports = {
       if (newSvg === oldSvg) { return; }
       const { state } = editor.$store;
       const origTgt = state.editing.target;
-      const tgtCateg = targetRelatedness.categorizeTargets(state, origTgt);
+      const tgtCateg = categorizeTargets(state, origTgt);
       tgtCateg.subjTgt = (optimizedSvg ? {
         // ^-- Do not preserve any previous selectors because we'd have to
         // ensure they are conceptually equivalent, and we cannot do that

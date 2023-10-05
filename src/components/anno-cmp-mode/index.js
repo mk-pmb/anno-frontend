@@ -5,7 +5,7 @@ const getOwn = require('getown');
 
 const eventBus = require('../../event-bus.js');
 // const findTargetUri = require('../../findTargetUri.js');
-const targetRelatedness = require('../anno-editor/targetRelatedness.js');
+const categorizeTargets = require('../anno-editor/categorizeTargets.js');
 
 const fetchVersionsList = require('./fetchVersionsList.js');
 const verCache = require('./verCache.js');
@@ -24,19 +24,11 @@ const oppoSides = {
 const defaultSidePadCls = 'container container-mandatory-for-bootstrap-rows';
 
 
-function categorizeTargets(event) {
+function categorizeTargetsEventMethod() {
+  const event = this;
   const { annoEndpoint, rawTarget } = event;
-  const editorCategs = targetRelatedness.categorizeTargets({
-    annoEndpoint,
-    checkTargetMatchesConfigTarget() { return false; },
-  }, rawTarget);
-  const report = {
-    localAnnos: editorCategs.localAnnos,
-    subjects: editorCategs.additional,
-  };
-  return report;
+  return categorizeTargets.unranked({ annoEndpoint }, rawTarget);
 }
-function categorizeTargetsMethod() { return categorizeTargets(this); }
 
 
 const compoDef = {
@@ -136,7 +128,7 @@ const compoDef = {
       const anno = jsonDeepCopy(rInfo.anno);
       const evt = {
         annoEndpoint,
-        categorizeTargets: categorizeTargetsMethod,
+        categorizeTargets: categorizeTargetsEventMethod,
         getFullAnno() { return anno; },
         rawTarget: anno.target,
         sideNum,

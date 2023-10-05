@@ -3,15 +3,6 @@
 
 const sortedJson = require('safe-sortedjson');
 
-const annoUrlsMixin = require('../../mixin/annoUrls.js');
-
-const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
-
-
-const { findResourceUrl } = annoUrlsMixin.methods;
-
-function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
-
 
 function jsonifyTarget(tgt) {
   try {
@@ -52,78 +43,6 @@ const EX = {
     return cmp;
   },
 
-  categorizeTargets(appCfg, origTgt) {
-    const { annoEndpoint } = appCfg;
-    if (!annoEndpoint) { throw new Error('Empty annoEndpoint?'); }
-
-    const report = {
-      subjTgt: false,
-      subjOrigIdx: -1,
-      localAnnos: [],
-      additional: [],
-      ...EX.IMPL.categorizeTargetsApi,
-      aux: {},
-    };
-
-    let matchesConfigTarget = appCfg.checkTargetMatchesConfigTarget;
-    if (!matchesConfigTarget) {
-      const cfgTgt = decideTargetForNewAnno(appCfg);
-      matchesConfigTarget = EX.sameAsConfigTarget(cfgTgt);
-      report.aux.matchesConfigTarget = matchesConfigTarget;
-    }
-
-    let plainOrigTgt = [].concat(origTgt);
-    try {
-      plainOrigTgt = jsonDeepCopy(plainOrigTgt);
-    } catch (jsonErr) {
-      throw new Error('Original targets list is not JSON-able');
-    }
-    plainOrigTgt.forEach(function scan(tgt, idx) {
-      if (!tgt) { return; }
-      const url = findResourceUrl(tgt);
-      // console.debug('categorizeTargets', { idx, url, annoEndpoint });
-      if (url) {
-        if (url.startsWith(annoEndpoint)) {
-          return report.localAnnos.push(tgt);
-        }
-      }
-      if ((!report.subjTgt) && matchesConfigTarget(tgt)) {
-        report.subjTgt = tgt;
-        report.subjOrigIdx = idx;
-        return;
-      }
-      report.additional.push(tgt);
-    });
-    return report;
-  },
-
-};
-
-
-EX.IMPL = {
-
-  categorizeTargetsApi: {
-
-    guessSubjTgtIfMissing() {
-      const report = this;
-      if (report.subjTgt) { return false; }
-      const st = report.aux.matchesConfigTarget.getConfiguredTarget();
-      // console.debug('guessSubjTgtIfMissing:', st);
-      report.subjTgt = st;
-      return true;
-    },
-
-    recombine() {
-      const report = this;
-      const targets = [
-        ...report.localAnnos,
-        report.subjTgt,
-        ...report.additional,
-      ].filter(Boolean);
-      return targets;
-    },
-
-  },
 
 };
 
