@@ -3,6 +3,8 @@ const Vue = require('vuejs-debug-traverse-210506-pmb/vue.esm.js').default;
 const Vuex = require('vuex/dist/vuex.esm.js').default;
 
 const mergeOptions = require('merge-options');
+const objFromKeysList = require('obj-from-keys-list').default;
+
 
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true;
@@ -97,23 +99,22 @@ module.exports = function displayAnnotations(customOptions) {
     //
     // NOTE This will break reactivity if the properties are unknown so make sure
     // you define defaults, even null or empty strings
-    const storeProps = require('./vuex/store')
-    Object.assign(storeProps.state, options)
-    const store = new Vuex.Store(storeProps)
-
+    const storeProps = require('./vuex/store');
+    Object.assign(storeProps.state, options);
+    const store = new Vuex.Store(storeProps);
     const annoapp = new Vue(Object.assign({store, el: appDiv}, SidebarApp))
+    appDiv.getAnnoAppRef = Object.bind(annoapp);
 
-    //
-    // Store reference to the eventBus
-    //
-    annoapp.eventBus = eventBus
-
-    //
-    // Convenience methods for startHighlighting / stopHighlighting event emission
-    //
-    annoapp.startHighlighting = function(...args) {eventBus.$emit('startHighlighting', ...args)}
-    annoapp.stopHighlighting = function(...args) {eventBus.$emit('stopHighlighting', ...args)}
-    annoapp.expand = function(...args) {eventBus.$emit('expand', ...args)}
+    Object.assign(annoapp, {
+      getEventBus() { return eventBus; },
+      ...objFromKeysList(function makeEventBusProxy(evName) {
+        return function proxy(...args) { eventBus.$emit(evName, ...args); };
+      }, [
+        'expand',
+        'startHighlighting',
+        'stopHighlighting',
+      ]),
+    });
 
     // Initialize store state
     setTimeout(() => annoapp.$store.dispatch('retrieveInitialState'), 1);
