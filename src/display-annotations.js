@@ -13,12 +13,12 @@ if (process.env.NODE_ENV !== 'production') {
 Vue.use(Vuex);
 require('./components/index.js').registerAll(Vue);
 
-const SidebarApp = require('./components/sidebar-app')
-const eventBus = require('./event-bus')
+const {localizations} = require('../l10n-config.json')
 const bootstrapCompat = require('./bootstrap-compat')
 const decideDefaultOptions = require('./default-config');
-const {localizations} = require('../l10n-config.json')
+const eventBus = require('./event-bus')
 const externalRequest = require('./xrq/externalRequest.js')
+const SidebarApp = require('./components/sidebar-app')
 
 // For docs see display-annotations.md
 
@@ -60,9 +60,6 @@ module.exports = function displayAnnotations(customOptions) {
         container.setAttribute('id', options.prefix + 'container')
         document.body.appendChild(container);
     }
-    const appDiv = document.createElement('div')
-    appDiv.setAttribute('id', options.prefix + 'app')
-    container.appendChild(appDiv);
 
     //
     // Event listeners
@@ -94,16 +91,15 @@ module.exports = function displayAnnotations(customOptions) {
       });
     }());
 
-    //
-    // Set up the store
-    //
-    // NOTE This will break reactivity if the properties are unknown so make sure
-    // you define defaults, even null or empty strings
-    const storeProps = require('./vuex/store');
-    Object.assign(storeProps.state, options);
-    const store = new Vuex.Store(storeProps);
-    const annoapp = new Vue(Object.assign({store, el: appDiv}, SidebarApp))
-    appDiv.getAnnoAppRef = Object.bind(annoapp);
+    const storeBlueprint = require('./vuex/store');
+    Object.assign(storeBlueprint.state, options);
+    const annoapp = new Vue({
+      ...SidebarApp,
+      el: document.createElement('div'),
+      store: new Vuex.Store(storeBlueprint),
+    });
+    container.appendChild(annoapp.$el);
+    annoapp.$el.getAnnoAppRef = () => annoapp;
 
     Object.assign(annoapp, {
       getEventBus() { return eventBus; },
