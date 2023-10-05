@@ -15,7 +15,7 @@
   "dc:title": "Erster!!!1! 💯",
   "id": "test-esau-spam-rsterr~1",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "target": { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" },
+  "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -37,8 +37,7 @@
   "motivation": ["replying"],
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": [
-    {
-      "id": "test-esau-spam-rsterr",
+    { "id": "test-esau-spam-rsterr",
       "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
@@ -64,11 +63,10 @@
   "motivation": ["replying"],
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": [
-    {
-      "id": "test-esau-spam-zweiter",
+    { "id": "test-esau-spam-zweiter",
       "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
     },
-    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
   "type": ["Annotation"]
 },
@@ -92,11 +90,10 @@
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "ubhd:anno-user": "arno",
   "target": [
-    {
-      "id": "test-esau-spam-rsterr",
+    { "id": "test-esau-spam-rsterr",
       "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
     },
-    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
   "type": ["Annotation"]
 },
@@ -117,7 +114,7 @@
   "as:deleted": "Fri, 22 Sep 2023 22:02:01 GMT",
   "id": "test-esau-spam-rsterr~2",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "target": { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" },
+  "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -136,7 +133,7 @@
   "dc:title": "Erster!!!1! 💯",
   "id": "test-esau-spam-rsterr~3",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "target": { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" },
+  "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
   "type": ["Annotation"]
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -160,11 +157,10 @@
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "ubhd:anno-user": "arno",
   "target": [
-    {
-      "id": "test-esau-spam-rsterr",
+    { "id": "test-esau-spam-rsterr",
       "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
     },
-    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
   "type": ["Annotation"]
 },
@@ -189,11 +185,10 @@
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "ubhd:anno-user": "arno",
   "target": [
-    {
-      "id": "test-esau-spam-rsterr",
+    { "id": "test-esau-spam-rsterr",
       "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
     },
-    { "id": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074" }
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
   "type": ["Annotation"]
 },
