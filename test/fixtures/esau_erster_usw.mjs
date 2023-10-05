@@ -37,10 +37,26 @@
   "motivation": ["replying"],
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": [
-    { "id": "test-esau-spam-rsterr",
-      "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    "test-esau-spam-rsterr",
+    { "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0040",
+      "dc:title": "Vogel",
+      "selector": {
+        "type": "SvgSelector",
+        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n  width=\"1258\">\n  <rect x=\"774.5940795650839\" y=\"433.5423868001317\" width=\"66.32386600083214\" height=\"45.53578859758636\" />\n</svg>"
+      },
+      "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0040/_image"
     },
-    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    { "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
+      "dc:title": "Schlangenkopf",
+      "selector": {
+        "type": "SvgSelector",
+        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n  width=\"1233\">\n  <ellipse cx=\"531.8641431628625\" cy=\"328.241202386446\" rx=\"22.306388526727517\" ry=\"27.676445023902687\"/>\n</svg>"
+      },
+      "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074/_image"
+    },
+    { "id": "https://journals.ub.uni-heidelberg.de/index.php/arch-inf/article/view/69356",
+      "dc:title": "„Jenseits von Palmyra – Kulturgüterschutz in der Lehre“: Tagungsbilanz der Organisatoren"
+    }
   ],
   "type": ["Annotation"]
 },
