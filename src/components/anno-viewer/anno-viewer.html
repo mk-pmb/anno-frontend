@@ -175,6 +175,13 @@
               </span><!-- .button-caption -->
             </button>
 
+            <bootstrap-button icon-fa="print"
+              v-if="$store.state.printViewButtonUrlTemplate"
+              btn-class="default btn-secondary print-view-button"
+              :linkUrl="assembleVersionRelatedUrl('printViewButton')"
+              linkTarget="_blank"
+              ></bootstrap-button>
+
             <button class="btn btn-sm btn-secondary
               frag-sel-btn
               "
