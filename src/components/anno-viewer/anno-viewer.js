@@ -403,6 +403,13 @@ module.exports = {
     },
 
 
+    decideShowPurlButton() {
+      const st = this.$store.state;
+      if (st.doiHidesPurlButton && this.currentVersionDoiUri) { return false; }
+      return true;
+    },
+
+
 
 
 
