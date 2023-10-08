@@ -145,6 +145,16 @@
             </button>
 
             <button class="btn btn-sm btn-secondary"
+              v-if="currentVersionDoiUri || $auth('mintDoi', annoIdUrl)"
+              @click="toggleDetailBar"
+              data-detailbar="doi"
+              :title="l10n('doi')"
+              >
+              <i class="fa fa-link"></i>
+              {{ l10n('doi') }}
+            </button>
+
+            <button class="btn btn-sm btn-secondary"
               @click="toggleDetailBar"
               data-detailbar="license"
               :title="l10n('License') + ': ' + licenseTitleOrUnknown"
@@ -156,16 +166,6 @@
                   >
               </template>
               <template v-else>?§?</template>
-            </button>
-
-            <button class="btn btn-sm btn-secondary"
-              v-if="currentVersionDoiUri || $auth('mintDoi', annoIdUrl)"
-              @click="toggleDetailBar"
-              data-detailbar="doi"
-              :title="l10n('doi')"
-              >
-              <i class="fa fa-link"></i>
-              {{ l10n('doi') }}
             </button>
 
             <button class="btn btn-sm btn-secondary
