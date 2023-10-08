@@ -32,6 +32,10 @@ const uiCfg = {
   // ^- For supported placeholders, see
   //    src/components/anno-viewer/assembleVersionRelatedUrl.js
 
+  printViewButtonUrlTemplate: '?viewMode=print&cmp1=%id',
+  // ^- Same placeholders as for `versionsButtonUrlTemplate`.
+  //    Set to empty string to hide the button.
+
   doiHidesPurlButton: true,
   purlAnnoInitiallyOpen: true,
   /* ^-- In case the app was loaded via a persistent URL of an annotation,
