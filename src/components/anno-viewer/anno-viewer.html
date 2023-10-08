@@ -140,6 +140,7 @@
               @click="toggleDetailBar"
               data-detailbar="purl"
               :title="l10n('purl')"
+              v-if="decideShowPurlButton()"
               >
               <span class="button-caption">
                 <i class="fa fa-link"></i>

@@ -32,6 +32,7 @@ const uiCfg = {
   // ^- For supported placeholders, see
   //    src/components/anno-viewer/assembleVersionRelatedUrl.js
 
+  doiHidesPurlButton: true,
   purlAnnoInitiallyOpen: true,
   /* ^-- In case the app was loaded via a persistent URL of an annotation,
       whether that annotation shall be visible initially, potentially by

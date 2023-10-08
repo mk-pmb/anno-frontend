@@ -32,6 +32,7 @@
     "type": "Person"
   },
   "dc:dateAccepted": "2023-06-22T16:07:30Z",
+  "dc:identifier": "https://doi.org/10.82109/anno.frontend.test-esau-spam-zweiter_1",
   "dc:title": "Zweiter! 🏆",
   "id": "test-esau-spam-zweiter~1",
   "motivation": ["replying"],
