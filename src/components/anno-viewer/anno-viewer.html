@@ -141,7 +141,9 @@
               data-detailbar="purl"
               :title="l10n('purl')"
               >
-              <i class="fa fa-link"></i>
+              <span class="button-caption">
+                <i class="fa fa-link"></i>
+              </span><!-- .button-caption -->
             </button>
 
             <button class="btn btn-sm btn-secondary"
@@ -150,8 +152,10 @@
               data-detailbar="doi"
               :title="l10n('doi')"
               >
-              <i class="fa fa-link"></i>
-              {{ l10n('doi') }}
+              <span class="button-caption">
+                <i class="fa fa-link"></i>
+                {{ l10n('doi') }}
+              </span><!-- .button-caption -->
             </button>
 
             <button class="btn btn-sm btn-secondary"
@@ -159,13 +163,15 @@
               data-detailbar="license"
               :title="l10n('License') + ': ' + licenseTitleOrUnknown"
               >
-              <template v-if="currentLicense.img_64x64">
-                <img class="license-icon"
-                  :src="currentLicense.img_64x64"
-                  :alt="licenseTitleOrUnknown"
-                  >
-              </template>
-              <template v-else>?§?</template>
+              <span class="button-caption">
+                <template v-if="currentLicense.img_64x64">
+                  <img class="license-icon"
+                    :src="currentLicense.img_64x64"
+                    :alt="licenseTitleOrUnknown"
+                    >
+                </template>
+                <template v-else>?§?</template>
+              </span><!-- .button-caption -->
             </button>
 
             <button class="btn btn-sm btn-secondary
@@ -176,8 +182,10 @@
               ref="targetFragmentButton"
               @click.stop="targetFragmentButtonClicked"
               >
-              <i class="fa fa-indent"></i>
-              {{ targetFragment }}
+              <span class="button-caption">
+                <i class="fa fa-indent"></i>
+                {{ targetFragment }}
+              </span><!-- .button-caption -->
             </button>
 
           </div><!-- .btn-group -->
