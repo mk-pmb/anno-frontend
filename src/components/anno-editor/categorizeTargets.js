@@ -21,6 +21,7 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
   const report = {
     subjTgt: false,
     subjOrigIdx: -1,
+    replyingTo: [],
     localAnnos: [],
     additional: [],
     ...EX.apiImpl,
@@ -79,6 +80,7 @@ Object.assign(EX, {
     recombine() {
       const report = this;
       const targets = [
+        ...report.replyingTo,
         ...report.localAnnos,
         report.subjTgt,
         ...report.additional,
@@ -95,6 +97,7 @@ Object.assign(EX, {
     // are guaranteed to be resource objects.
     const editorCategs = EX({ ...appCfg, ...optUnrank }, rawTarget);
     const report = {
+      replyingTo: editorCategs.replyingTo,
       localAnnos: editorCategs.localAnnos,
       subjects: editorCategs.additional,
     };

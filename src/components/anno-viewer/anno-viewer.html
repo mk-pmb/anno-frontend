@@ -281,6 +281,19 @@
 
         <h4 class="media-heading" v-if="asReply">{{ title }}</h4>
 
+        <div v-if="metaContextHints.length"
+          class="border border-info text-default meta-context-hints-box">
+          <div v-for="mch in metaContextHints"
+            :class="'position-relative meta-context-hint ' + mch.cls"
+            >
+            <i :class="'fa fa-' + mch.faIcon"></i>
+            <div class="pad">
+              <span class="intro">{{ mch.introText }}</span>
+              <a :href="mch.linkUrl" target="_blank">{{ mch.linkText }}</a>
+            </div><!-- /.pad -->
+          </div>
+        </div><!-- /.border -->
+
         <div v-if="firstHtmlBody"
           class="first-html-body"
           v-html="firstHtmlBody.value"></div>

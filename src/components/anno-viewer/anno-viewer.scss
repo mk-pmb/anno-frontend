@@ -24,6 +24,15 @@
   .annoeditor-iiif-link { font-size: smaller; }
   .annoeditor-iiif-link strong { font-weight: inherit; }
 
+  .meta-context-hints-box {
+    font-size: small;
+    line-height: 1.2;
+    padding: 0.2em 0.5em;
+    margin-bottom: 1em;
+  }
+  .meta-context-hints-box i.fa { position: absolute; margin-top: 0.2em; }
+  .meta-context-hints-box .pad { padding-left: 1.5em; }
+
   span.relation-predicate { font-size: smaller; }
   span.relation-predicate:after { content: ":"; }
 
