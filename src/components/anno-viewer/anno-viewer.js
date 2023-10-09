@@ -11,7 +11,10 @@ const {
 const pDelay = require('delay');
 
 const eventBus = require('../../event-bus.js');
+const findTargetUri = require('../../findTargetUri.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
+
+const categorizeTargets = require('../anno-editor/categorizeTargets.js');
 
 const assembleVersionRelatedUrl = require('./assembleVersionRelatedUrl.js');
 const bindDataApi = require('./dataApi.js');
@@ -47,6 +50,7 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  * - `mouseleave`: The mouse cursor has left this annotation
  */
 
+function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
@@ -72,14 +76,17 @@ module.exports = {
       const { state } = el.$store;
       const anno = orf(el.annotation);
       // console.debug('initData el.isListViewItem', [el.isListViewItem]);
+
       const initData = {
         cachedIiifLink: '',
         collapsed: el.isListViewItem && el.collapseInitially,
-        detailBarClipCopyBtnCls: 'pull-right',
-        highlighted: false,
         currentVersionDoiUri: String(anno['dc:identifier'] || ''),
-        mintDoiMsg: '',
+        detailBarClipCopyBtnCls: 'pull-right',
         doiLinkPreviewWarning: '',
+        metaContextHints: [],
+        highlighted: false,
+        mintDoiMsg: '',
+        replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
       };
 
       if (anno['_ubhd:doiAssign']) {
@@ -97,6 +104,36 @@ module.exports = {
         if (!cur) { return; }
         initData.doiLinkPreviewWarning = el.l10n('doi_url_preview_warning');
         initData.currentVersionDoiUri = cur;
+      }());
+
+      (function maybeAddHint() {
+        if (!initData.replyingTo) { return; }
+        if (state.initAppMode === 'list') { return; }
+        const introText = el.l10n('inReplyTo_hint_intro');
+        if (!introText) { return; }
+        initData.metaContextHints.push({
+          cls: 'inreplyto',
+          faIcon: 'reply',
+          introText,
+          linkText: el.l10n('inReplyTo_hint_link'),
+          linkUrl: initData.replyingTo,
+        });
+      }());
+
+      const editorTgtCategs = categorizeTargets(state, anno.target);
+      (function maybeAddHint() {
+        const nAdd = editorTgtCategs.additional.length;
+        if (!nAdd) { return; }
+        let introText = el.l10n('additional_subjects_hint');
+        if (!introText) { return; }
+        introText = introText.replace(/@@nAdd@@/g, nAdd);
+        initData.metaContextHints.push({
+          cls: 'multi-target-hint',
+          faIcon: 'share-alt',
+          introText,
+          linkText: '[' + el.l10n('additional_subjects_show') + ']',
+          linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
+        });
       }());
 
       return initData;
