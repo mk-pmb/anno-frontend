@@ -151,11 +151,16 @@
               v-if="currentVersionDoiUri || $auth('mintDoi', annoIdUrl)"
               @click="toggleDetailBar"
               data-detailbar="doi"
-              :title="l10n('doi')"
               >
               <span class="button-caption">
-                <i class="fa fa-link"></i>
-                {{ l10n('doi') }}
+                <template v-if="hasRealPublicDoi">
+                  <i class="fa fa-link"></i>
+                  {{ l10n('doi') }}
+                </template>
+                <template v-else>
+                  <i class="fa fa-cart-plus"></i>
+                  {{ l10n('toggle_doi_request_detailbar') }}
+                </template>
               </span><!-- .button-caption -->
             </button>
 
