@@ -77,9 +77,11 @@ module.exports = {
       const anno = orf(el.annotation);
       // console.debug('initData el.isListViewItem', [el.isListViewItem]);
 
+      const hasRealPublicDoi = Boolean(anno['dc:identifier']);
       const initData = {
         cachedIiifLink: '',
         collapsed: el.isListViewItem && el.collapseInitially,
+        hasRealPublicDoi,
         currentVersionDoiUri: String(anno['dc:identifier'] || ''),
         detailBarClipCopyBtnCls: 'pull-right',
         doiLinkPreviewWarning: '',
@@ -95,7 +97,7 @@ module.exports = {
       }
 
       (function maybePredictDoi() {
-        if (initData.currentVersionDoiUri) { return; }
+        if (hasRealPublicDoi) { return; }
         const predict = state.predictMintedDoiUrl;
         if (!predict) { return; }
         const annoIdUrl = anno.id;
@@ -442,7 +444,7 @@ module.exports = {
 
     decideShowPurlButton() {
       const st = this.$store.state;
-      if (st.doiHidesPurlButton && this.currentVersionDoiUri) { return false; }
+      if (st.doiHidesPurlButton && this.hasRealPublicDoi) { return false; }
       return true;
     },
 
