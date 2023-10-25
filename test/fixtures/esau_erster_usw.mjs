@@ -100,6 +100,7 @@
     "name": "A. Nym",
     "type": "Person"
   },
+  "dc:dateAccepted": false,
   "dc:isVersionOf": "test-esau-spam-warhier",
   "dc:title": "Ich war hier.",
   "id": "test-esau-spam-warhier~1",
@@ -166,6 +167,7 @@
     "name": "A. Nym",
     "type": "Person"
   },
+  "dc:dateAccepted": false,
   "dc:isVersionOf": "test-esau-spam-warhier",
   "dc:language": "en-GB",
   "dc:title": "Ich war hier.",
@@ -194,6 +196,7 @@
     "name": "A. Nym",
     "type": "Person"
   },
+  "dc:dateAccepted": false,
   "dc:isVersionOf": "test-esau-spam-warhier",
   "dc:language": "de-DE",
   "dc:title": "Ich war hier.",
