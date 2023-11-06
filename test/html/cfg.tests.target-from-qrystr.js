@@ -20,6 +20,7 @@
     }
     if (q.approval) {
       cfg.initCmpApprovalMode = true; // effective only with &cmp1=…
+      cfg.annoByIdUrlPrefix = 'as/approver/anno/';
     }
 
     switch (q.t) {

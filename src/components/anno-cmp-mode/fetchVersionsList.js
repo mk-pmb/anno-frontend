@@ -32,7 +32,7 @@ Object.assign(fvl, {
 
   async fallibleCore(cmpVueElem) {
     const api = api22(cmpVueElem.$store.state);
-    const latestVerData = await api.aepGet('anno/' + cmpVueElem.baseId);
+    const latestVerData = await api.getAnnoById(cmpVueElem.baseId);
     const lavStr = mustBe.tProp('Latest anno version ',
       latestVerData, 'nonEmpty str');
     const latestVerNum = fvl.guessVerNum(lavStr('id' /* Anno ID URL */));

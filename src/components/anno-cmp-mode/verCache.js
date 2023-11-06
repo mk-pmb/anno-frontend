@@ -40,11 +40,11 @@ Object.assign(vueMtd, {
     if (rInfo.fetchedAt) { return rInfo; }
 
     const now = Date.now();
-    const apiSubUrl = 'anno/' + cmpVueElem.baseId + '~' + verNum;
+    const versId = cmpVueElem.baseId + '~' + verNum;
     const earliest = (+rInfo.fetchRetryNotBefore || 0);
 
     function dbg(msg, info) {
-      console.debug('lookupCachedVerAnno:', msg, { apiSubUrl, ...info });
+      console.debug('lookupCachedVerAnno:', msg, { versId, ...info });
     }
 
     if (now < earliest) {
@@ -54,9 +54,9 @@ Object.assign(vueMtd, {
     rInfo.fetchRetryNotBefore = now + (cmpVueElem.fetchRetryCooldownSec * 1e3);
     const fetchPr = (async function downloadVer() {
       dbg('fetch!');
-      const reply = await api22(cmpVueElem.$store.state).aepGet(apiSubUrl);
+      const reply = await api22(cmpVueElem.$store.state).getAnnoById(versId);
       if (rInfo.fetchedAt) { return dbg('redundant late reply'); }
-      EX.verifyFetchedAnno({ cmpVueElem, reply, apiSubUrl });
+      EX.verifyFetchedAnno({ cmpVueElem, reply, versId });
       dbg('reply looks acceptable.', { reply });
       const dest = rInfo.anno;
       if (!dest) { throw new Error('Bad destination in versions cache'); }
@@ -80,7 +80,9 @@ Object.assign(EX, {
     const fail = EX.refuseFetchedAnno;
     const annoIdUrl = (reply || false).id; // Anno ID
     if (!annoIdUrl) { fail(ctx, '<missing_required_field><annofield_id>'); }
-    if (!annoIdUrl.endsWith('/' + ctx.apiSubUrl)) { fail(ctx, 'annofield_id'); }
+    if (!annoIdUrl.endsWith('/anno/' + ctx.versId)) {
+      fail(ctx, 'annofield_id');
+    }
   },
 
   refuseFetchedAnno(ctx, why) {
