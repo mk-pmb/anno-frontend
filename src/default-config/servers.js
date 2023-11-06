@@ -36,6 +36,8 @@ const srvCfg = {
     independent of `the targetSource`.
   */
 
+  annoByIdUrlPrefix: 'anno/',
+
   draftStoreEndpoint: '', /*
     URL of a WebDAV collection. Should end with a slash.
   */
