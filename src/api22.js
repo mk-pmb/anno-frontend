@@ -27,12 +27,12 @@ function resolveRelativeUrl(url) {
 }
 
 
-const EX = function apiFactory(vueStoreState) {
+const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
   function constructRequestUri(endpointName, subUrl) {
     if ((!subUrl) && (subUrl !== '')) {
       throw new Error('No endpoint sub URL given');
     }
-    let epBaseUrl = getOwn(vueStoreState, endpointName + 'Endpoint');
+    let epBaseUrl = getOwn(cfg, endpointName + 'Endpoint');
     if (!epBaseUrl) {
       throw new Error('Endpoint URL not configured for ' + endpointName);
     }
@@ -73,6 +73,7 @@ const EX = function apiFactory(vueStoreState) {
   const api = {
     constructRequestUri,
     endpointRequest,
+    getAnnoById(id) { return api.aepGet(cfg.annoByIdUrlPrefix + id); },
   };
 
   supportedHttpMethods.forEach(function add(method) {
