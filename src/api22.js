@@ -4,8 +4,11 @@
 
 const axios = require('axios');
 const getOwn = require('getown');
+const parseLinkRelationHeaders = require('li').parse;
 
 function ucFirst(s) { return s.slice(0, 1).toUpperCase() + s.slice(1); }
+function orf(x) { return x || false; }
+
 
 const supportedHttpMethods = [
   'get',
@@ -57,8 +60,11 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
       const result = await axios({ ...defaultAxiosOpts, method, url, data });
       return result.data;
     } catch (err) {
-      const rsp = (err.response || false);
-      if (rsp.status && rsp.statusText && rsp.data) {
+      const rsp = orf(err.response);
+      err.headers = orf(rsp.headers);
+      err.finalUrl = orf(rsp.request).responseURL || '';
+      err.linkRels = orf(parseLinkRelationHeaders(err.headers.link));
+      if (rsp && rsp.status && rsp.statusText && rsp.data) {
         const msg = (rsp.status + ' ' + rsp.statusText + '\n' + rsp.data);
         const aug = new Error(msg);
         Object.assign(aug, err);
