@@ -38,6 +38,7 @@ Object.assign(fvl, {
     const {
       latestVerNum,
       latestVerData,
+      latestVerErr,
       verHistUrl,
     } = await fvl.discoverInitialFacts({ api, baseId });
     if (!verHistUrl) { throw new Error('Cannot detect version history URL'); }
@@ -69,12 +70,19 @@ Object.assign(fvl, {
       versList[verNum - 1] = rInfo;
     });
 
-    const missing = { 'skos:note': cmpVueElem.l10n('no_data') };
+    const vocNoData = cmpVueElem.l10n('no_data');
+    const missing = { 'skos:note': vocNoData };
     versList = versList.map((r, i) => (r
       || { verNum: i + 1, anno: { ...missing } }));
 
     const [lastSlot] = versList.slice(-1);
-    Object.assign(lastSlot.anno, latestVerData);
+    if (!latestVerData) {
+      const { anno } = lastSlot;
+      let err = String(latestVerErr.message || latestVerErr);
+      err = err.trim().replace(/\n\s*/g, '¶ ').trim();
+      err = cmpVueElem.l10n('error:') + ' ' + err;
+      anno['dc:title'] = err;
+    }
     lastSlot.internalPlumbing().receiveAnnoData(latestVerData);
     const meta = { latestVerNum, fetchedAt: lastSlot.fetchedAt };
     Object.assign(versList, meta);
@@ -94,14 +102,15 @@ Object.assign(fvl, {
       const { finalUrl, linkRels } = apiErr;
       const latestVerNum = (fvl.guessVerNum(linkRels['latest-version'])
         || fvl.guessVerNum(linkRels['original'])
-        || fvl.guessVerNum(finalUrl));
+        || fvl.mustGuessVerNum(finalUrl));
       let verHistUrl = (linkRels['version-history'] || '');
       if (finalUrl && (!verHistUrl.includes('://'))) {
         verHistUrl = (new URL(verHistUrl, finalUrl)).href;
       }
       return {
+        latestVerData,
+        latestVerErr: apiErr,
         latestVerNum,
-        latestVerData: false,
         verHistUrl,
       };
     }
@@ -111,6 +120,7 @@ Object.assign(fvl, {
     const latestVerNum = fvl.mustGuessVerNum(latestVerUrl);
     return {
       latestVerData,
+      latestVerErr: false,
       latestVerNum,
       verHistUrl: lavStr('iana:version-history'),
     };
