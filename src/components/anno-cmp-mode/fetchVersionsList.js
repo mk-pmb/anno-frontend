@@ -7,7 +7,7 @@ const mustBe = require('typechecks-pmb/must-be.js');
 
 const api22 = require('../../api22.js');
 
-// function orf(x) { return x || false; }
+function orf(x) { return x || false; }
 
 
 const fvl = async function fetchVersionsList(cmpVueElem) {
@@ -22,9 +22,11 @@ const fvl = async function fetchVersionsList(cmpVueElem) {
 
 Object.assign(fvl, {
 
-  guessVerNum(url) {
-    const m = /\~(\d+)$/.exec(url);
-    const n = +(m && m[1]);
+  guessVerNum(url) { return +orf(url && /\~(\d+)$/.exec(url))[1] || 0; },
+
+
+  mustGuessVerNum(url) {
+    const n = fvl.guessVerNum(url);
     if (n >= 1) { return n; }
     throw new Error('Cannot guess version number from URL: ' + url);
   },
@@ -32,20 +34,22 @@ Object.assign(fvl, {
 
   async fallibleCore(cmpVueElem) {
     const api = api22(cmpVueElem.$store.state);
-    const latestVerData = await api.getAnnoById(cmpVueElem.baseId);
-    const lavStr = mustBe.tProp('Latest anno version ',
-      latestVerData, 'nonEmpty str');
-    const latestVerNum = fvl.guessVerNum(lavStr('id' /* Anno ID URL */));
-    const verHistUrl = lavStr('iana:version-history');
+    const { baseId } = cmpVueElem;
+    const {
+      latestVerNum,
+      latestVerData,
+      verHistUrl,
+    } = await fvl.discoverInitialFacts({ api, baseId });
+    if (!verHistUrl) { throw new Error('Cannot detect version history URL'); }
     const verHistRsp = await api.aepGet('://' + verHistUrl);
-    const verHistItems = (verHistRsp.first || false).items;
+    const verHistItems = orf(verHistRsp.first).items;
     if (!Array.isArray(verHistItems)) {
       throw new Error('Received version history in unexpected data format.');
     }
     let versList = Array.from({ length: latestVerNum });
     verHistItems.forEach(function learnVer(orig) {
       if (!orig) { return; }
-      const verNum = fvl.guessVerNum(orig.id /* Anno ID URL */);
+      const verNum = fvl.mustGuessVerNum(orig.id /* Anno ID URL */);
       // if (verNum % 2) { return; }
       const nowLoaded = makeDeferred();
       const rInfo = {
@@ -79,6 +83,37 @@ Object.assign(fvl, {
     const reversed = Object.assign(versList.slice().reverse(), meta);
     cmpVueElem.reverseOrderKnownVersions = reversed;
     cmpVueElem.forceRerenderAnnos();
+  },
+
+
+  async discoverInitialFacts(ctx) {
+    let latestVerData = false;
+    try {
+      latestVerData = await ctx.api.getAnnoById(ctx.baseId);
+    } catch (apiErr) {
+      const { finalUrl, linkRels } = apiErr;
+      const latestVerNum = (fvl.guessVerNum(linkRels['latest-version'])
+        || fvl.guessVerNum(linkRels['original'])
+        || fvl.guessVerNum(finalUrl));
+      let verHistUrl = (linkRels['version-history'] || '');
+      if (finalUrl && (!verHistUrl.includes('://'))) {
+        verHistUrl = (new URL(verHistUrl, finalUrl)).href;
+      }
+      return {
+        latestVerNum,
+        latestVerData: false,
+        verHistUrl,
+      };
+    }
+    const lavStr = mustBe.tProp('Latest anno version ',
+      latestVerData, 'nonEmpty str');
+    const latestVerUrl = lavStr('id' /* Anno ID URL */);
+    const latestVerNum = fvl.mustGuessVerNum(latestVerUrl);
+    return {
+      latestVerData,
+      latestVerNum,
+      verHistUrl: lavStr('iana:version-history'),
+    };
   },
 
 
