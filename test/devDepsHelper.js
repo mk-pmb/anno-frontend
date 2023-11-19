@@ -5,6 +5,9 @@
 require('font-awesome');
 require('vuejs-debug-traverse-210506-pmb');
 
+require('browserslist-lint');
+require('update-browserslist-db');
+
 
 // css-loader for Vue components
 require('css-loader');
