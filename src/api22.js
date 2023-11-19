@@ -42,12 +42,10 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
       // ^- Internal notation for: We expect the remainder to be an
       //    absolute URI within the endpoint namespace.
       const url = subUrl.slice(3);
-      if (!url.startsWith(epBaseUrl)) {
-        const msg = ('API boundary error: The URI is not inside the '
-          + endpointName + ' endpoint namespace:\n' + url + '\n' + epBaseUrl);
-        throw new Error(msg);
-      }
-      return url;
+      if (url.startsWith(epBaseUrl)) { return url; }
+      const msg = ('API boundary error: The URI is not inside the '
+        + endpointName + ' endpoint namespace:\n' + url + '\n' + epBaseUrl);
+      throw new Error(msg);
     }
 
     return epBaseUrl + subUrl;
