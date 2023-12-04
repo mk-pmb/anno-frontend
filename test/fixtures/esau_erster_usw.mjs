@@ -121,7 +121,7 @@
     "type": "TextualBody",
     "value": "<p>#1</p>"
   },
-  "created": "2023-09-22T16:02:01Z",
+  "created": "2023-06-22T17:01:05Z",
   "creator": {
     "id": "urn:uuid:455e5f04-22f9-49b8-95be-dcaea3065654",
     "name": "R. Sterr",
@@ -141,7 +141,7 @@
     "type": "TextualBody",
     "value": "<p>#1</p>"
   },
-  "created": "2023-09-22T16:02:01Z",
+  "created": "2023-06-22T17:01:10Z",
   "creator": {
     "id": "urn:uuid:455e5f04-22f9-49b8-95be-dcaea3065654",
     "name": "R. Sterr",
@@ -210,6 +210,26 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
+  "type": ["Annotation"]
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>Herzlichen Glückwunsch! Sie sind der 1.000.000ste Leser dieser Annotation und haben somit eine gratis Waschmaschine gewonnen! <a href='https://spam.test/'>[Jetzt Gewinn einzulösen!]</a></p>"
+  },
+  "created": "2023-06-22T17:01:24Z",
+  "creator": {
+    "id": "urn:uuid:455e5f04-22f9-49b8-95be-dcaea3065654",
+    "name": "R. Sterr",
+    "type": "Person"
+  },
+  "dc:dateAccepted": false,
+  "dc:language": "de-DE",
+  "dc:title": "Sie haben gewonnen!",
+  "id": "test-esau-spam-rsterr~4",
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
   "type": ["Annotation"]
 },
 null];
