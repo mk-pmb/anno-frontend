@@ -85,6 +85,9 @@ const compoDef = {
       cmp.versionSelected(1, { verNum: cmp.priVerChoice.verNum });
       cmp.versionSelected(2, { verNum: cmp.secVerChoice.verNum });
     });
+    Object.assign(cmp.$el, {
+      getKnownVersions() { return jsonDeepCopy(cmp.knownVersions); },
+    });
     eventBus.$emit('trackPromise', rllPr);
   },
 
