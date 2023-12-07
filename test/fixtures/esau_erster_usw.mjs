@@ -232,4 +232,60 @@
   "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
   "type": ["Annotation"]
 },
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-rsterr",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p align=\"right\">Ḩ̷͖͓̪̠̲̘̬͉̿͛̅̔͘͟͠ė̴̬̯̪̻̞̃̉̃́͗̆͗̚͜͞ c̷̨̘̜͉͙̳͇̆͒̎̃̄̌̽̉̚͞o̶̡̱̝̱̩̓̓͐͐̈́͋͜m̴̛͔̮̯͔̥̗̟̀͗́̈͂͛͟͞ę̸̡̞̭̦͕̥̺̎͗̆̀͆̐͝s̵̛̞̫̬̫̦̯̲͇̳͛͒̒́̃.̨̲̱͕͔̼̓̅̽̄̋̈</p>"
+  },
+  "created": "2023-06-22T18:42:23Z",
+  "creator": {
+    "id": "urn:uuid:5743e023-fc0c-4ca7-bb43-7982361f83fe",
+    "name": "Z. Algo",
+    "type": "Person"
+  },
+  "dc:dateAccepted": false,
+  "dc:isVersionOf": "test-esau-spam-hecomes",
+  "dc:title": "H̡̪̘͕̞̱̬̀̉͂͊̽̀̏̚͝e͕̱͈̲̯̙̽̽͌͂̅͘͜͡ c̢̧̰͓̣͍̩͑̽̄̊̉̑̃̏o͎̹̱̤̞̾̀͌̉̀͗͘m̥̩̮̱̩͇̙̑̒̔̏͂́̋̾͘͢e̸̗̗̝̞̗͓̜̣̪̐͐̋̆̃́̂̉͑͠s͙̙̦͚̠̻̣̼͛̽̈́͛̾̋̾̓.̹͇̝͙̈́̒̊̊̍͟͡",
+  "id": "test-esau-spam-hecomes~1",
+  "motivation": ["replying"],
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": [
+    { "id": "test-esau-spam-rsterr",
+      "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    },
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+  ],
+  "type": ["Annotation"]
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "as:inReplyTo": "test-esau-spam-hecomes",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p align=\"right\">Ḩ̨̰͈̙̯͉͚̐̔̐́̈̄e̸̲̫͕̬̫͇͓͚̫͌͂̂̽͂̽̀͊̕̚ w̖̼̹̜̙̼͇̫̽͆́́̾͊͘ͅä͓̫̪̖̦̯̮̥̺́̾́̀̃̕̚ͅī̵̧͔̭̝͍̱̣̬͈̾̅̉͟͡t̙͉̱̲̠͇͇́̀́͑͘͠s̸̨̜̹͍͚͚͇̪̅͑̓͌͢͜͞͡͡͡ b̡̧̰̬̗̪́̆̊͊̾̇̚͠e̷̛͍̗̫͉̣͎̺̋̇͊̍̊͛͘͘h̡̬̞̱̥̽͗̾̔̀͑̂̑͞͡i̧̹̥̣̯̬̊͗̈́͆͐̾͆̆̄͂ņ̵̻̦̭̞̠̭͚̫̔͆̏̍̈̚̚͢d̢̩̥̟̙͍̜͎͙̾̎͌̀́̀̽̌͡ͅ ţ̴͙͉͕̩̩̭̺̠̊̋̉̀̾́̎̑̅̚͟ḥ̸̢̭̗̯̌͐̂͗̒̑̐e̴̡̢̠̣͖̜̰͇̽͑̏́̆̒̽͌ ẉ̵͉̹̳̏̊͊͌͂̈̒̑̏͜ą̵̨̡̛͕̥̦̠̤̻̟̋̈̇́̚͞l̵͕̲̗̱̿̉͊̓̀̉͛̈̀͢l̷̨̛̘̖̤̤̠͎̀̑̾̃͒̆̐̇͟͜͜͠.̶͈̼̳̻̩͎̍́̂̾̚̕͜͞͝ͅ</p>"
+  },
+  "created": "2023-06-22T18:42:42Z",
+  "creator": {
+    "id": "urn:uuid:5743e023-fc0c-4ca7-bb43-7982361f83fe",
+    "name": "Z. Algo",
+    "type": "Person"
+  },
+  "dc:dateAccepted": false,
+  "dc:isVersionOf": "test-esau-spam-hewaits",
+  "dc:title": "H͓͚̼̙̼͍̺̗̝̑͌̾̍́̉e̡̛̗̯̪̋́̌͐̍͐̏̚͜͠ ŵ͚̳̝̭͈̗̬̅̈́͒͠a̷̲̻̗͍͎̻͍̯̐͐̓̄͋i̸̡̱̦͖̬̹̓̎̔̒̾͌̚t̼̭̬͔̓̋̅̀͢͟͝͠ş̡̭̟̝̹̠̥͖̂̀͆͛͘͢ b̷̧̨̛͖̟͕͇̤̲͇͆͛͑͐͗̑͟͞e̡̢͕̯͇̗͋̎̔͒̂͜͞͡h̡̬̗͙͙̱̜̜̦͂̈́̎̍̆̉̅̄͞į̹̖̪̥͎̹̦̔̐̈̎̑̍͋̓͒͟ņ͇̬̝̆̀̂͑̔͐͜͜ḏ̴̞̤̟̟͔͛̀͑̆̌̂͒̈̚͞ t̷͙̖͕͍̝̍̌̌͂́́̒̀͜͢͡ḩ̸̨̨̛̛̬̥̮̝̿͊͒͘͝͞é̡̨̖̼͂̈́͜͟͝͞ ẇ̢̧̻̟͎̼̹͋͑̾͐̍͂̀͢͟ȁ̢̧̺̼͓͎͐̔̑͢͝ļ̢͉͖̫̮̮̗͚͂̈́̈͑͒ľ̠̪̱̠̜̩̻͖̓̒̄̆̀͟͜.̷͙̗̤̠̫̓͊͒͡͝",
+  "id": "test-esau-spam-hewaits~1",
+  "motivation": ["replying"],
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": [
+    { "id": "test-esau-spam-hecomes",
+      "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+    },
+    "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
+  ],
+  "type": ["Annotation"]
+},
 null];
