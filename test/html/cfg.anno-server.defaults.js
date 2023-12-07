@@ -7,13 +7,14 @@
   if ((port === 80) || (port === 443)) { port = 0; }
 
   cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
+  cfg.annoByIdUrlPrefix    = 'as/author/anno/';
+  cfg.annoListSearchPrefix = cfg.annoByIdUrlPrefix + 'by/subject_target/';
+
   testDirBaseUrl = (window.document.URL.split(/\?|\#/
     )[0].replace(/\/html\/[\w\.]+$/, '') + '/');
   cfg.draftStoreEndpoint = testDirBaseUrl + 'fixtures/drafts/';
   cfg.loginFormUrl = () => (cfg.annoEndpoint.replace(/\w+\/$/, '')
     + 'session/login');
-
-  cfg.annoListSearchPrefix = 'anno/by/subject_target;role=author/';
 
   cfg.predictMintedDoiUrl = function factory() {
     var s = /^\S+\//,     // Server base URL
