@@ -7,6 +7,8 @@ const mustBe = require('typechecks-pmb/must-be.js');
 
 const api22 = require('../../api22.js');
 
+const decideAuxMeta = require('./decideAuxiliaryMetaData.js');
+
 function orf(x) { return x || false; }
 
 
@@ -47,6 +49,7 @@ Object.assign(fvl, {
     if (!Array.isArray(verHistItems)) {
       throw new Error('Received version history in unexpected data format.');
     }
+    // console.debug('Obtained version history:', verHistItems);
     let versList = Array.from({ length: latestVerNum });
     verHistItems.forEach(function learnVer(orig) {
       if (!orig) { return; }
@@ -57,12 +60,14 @@ Object.assign(fvl, {
         verNum,
         anno: orig,
         waitUntilLoaded() { return nowLoaded.promise; },
+        ...decideAuxMeta(orig),
       };
       const plumbing = {
         receiveAnnoData(data) {
           delete plumbing.receiveAnnoData;
           rInfo.fetchedAt = Date.now();
           Object.assign(rInfo.anno, data);
+          Object.assign(rInfo, decideAuxMeta(rInfo.anno));
           nowLoaded.resolve(rInfo);
         },
       };
@@ -96,10 +101,12 @@ Object.assign(fvl, {
 
   async discoverInitialFacts(ctx) {
     let latestVerData = false;
+    // console.debug('discoverInitialFacts: baseId:', ctx.baseId);
     try {
       latestVerData = await ctx.api.getAnnoById(ctx.baseId);
     } catch (apiErr) {
       const { finalUrl, linkRels } = apiErr;
+      // console.debug('discoverInitialFacts:', { apiErr, finalUrl, linkRels });
       const latestVerNum = (fvl.guessVerNum(linkRels['latest-version'])
         || fvl.guessVerNum(linkRels['original'])
         || fvl.mustGuessVerNum(finalUrl));
