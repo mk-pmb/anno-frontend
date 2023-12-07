@@ -10,6 +10,9 @@
         >#</span>{{ ver.verNum }}</span>
       <span class="versdate"><span class="sep">&nbsp; </span>{{
         dateFmt(ver.anno.created) || l10n('date_time_unknown') }}</span>
+      <span class="verssunset" v-if="ver.sunsetVoc"
+        ><span class="sep">&nbsp; </span>&#x26D4; {{ l10n(ver.sunsetVoc) }}
+        {{ dateFmt(ver.sunsetDate) || l10n('date_time_unknown') }}</span>
       <span class="vershint" v-if="ver.anno['skos:note']"><span class="sep"
         >&nbsp; </span>{{ ver.anno['skos:note'] }}</span>
     </option>
