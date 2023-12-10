@@ -11,11 +11,13 @@
 const getOwn = require('getown');
 
 const knownConditions = [
+  'approve',
   'create',
   'mintDoi',
   'read',
   'remove',
   'revise',
+  'unpublish',
 ];
 
 

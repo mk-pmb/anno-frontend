@@ -205,6 +205,8 @@ module.exports = {
         targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
         uiModeApproval() { return this.$store.state.initCmpApprovalMode; },
+        uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
+        uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
         approval() {
           const val = this.annotation['dc:dateAccepted'];
@@ -302,6 +304,11 @@ module.exports = {
 
         async approve() {
           await simpleDateStamp(this, 'dc:dateAccepted');
+          window.location.reload();
+        },
+
+        async unpublish() {
+          await simpleDateStamp(this, 'as:deleted');
           window.location.reload();
         },
 
