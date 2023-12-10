@@ -389,7 +389,7 @@
           @click="approve"
           btn-class="default btn-outline-secondary"
           icon-fa="unlock"
-          v-if="uiModeApproval"
+          v-if="uiModeApproval && $auth('approve', annoIdUrl)"
           :disabled="approval.active"
           >
           {{ l10n('approve_anno') }}
@@ -408,6 +408,15 @@
           icon-fa="reply"
           v-if="approval.active && $auth('create', annoIdUrl)">
           {{ l10n('compose_reply') }}
+        </bootstrap-button
+
+        ><bootstrap-button
+          @click="unpublish"
+          btn-class="default btn-outline-danger btn-outline-secondary"
+          :icon-fa="approval.active ? 'trash-o' : 'gavel'"
+          irrevocable-confirm
+          v-if="uiModeApproval && $auth('unpublish', annoIdUrl)">
+          {{ l10n(approval.active ? 'unpublish_anno' : 'disapprove_anno') }}
         </bootstrap-button
 
         ><bootstrap-button
