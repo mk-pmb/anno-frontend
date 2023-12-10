@@ -406,7 +406,7 @@
           @click="reply"
           btn-class="default btn-outline-secondary"
           icon-fa="reply"
-          v-if="$auth('create', annoIdUrl)">
+          v-if="approval.active && $auth('create', annoIdUrl)">
           {{ l10n('compose_reply') }}
         </bootstrap-button
 
