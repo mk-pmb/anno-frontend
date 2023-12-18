@@ -3,25 +3,33 @@
 
 const api22 = require('../../api22.js');
 
+const stampApiPathPrefix = require('./stampApiPathPrefix.js');
 
-const EX = async function simpleDateStamp(viewer, origStampSpec, annoIdUrl) {
-  if (!annoIdUrl) {
-    const url = viewer.annoIdUrl;
-    if (url) { return EX(viewer, origStampSpec, url); }
-    throw new Error('No anno ID given!');
+
+const EX = async function simpleDateStamp(viewer, origStampSpec, annoIdSpec) {
+  if (!origStampSpec.type) {
+    return EX(viewer, { type: origStampSpec }, annoIdSpec);
   }
+  const versId = (annoIdSpec || viewer.annoIdUrl
+    || '').replace(/^\S*\//, '');
+  if (!versId) { throw new Error('No anno version ID or URL given!'); }
   const patchData = {
-    action: 'add_stamp',
+    action: 'addStamp',
     // In case of a string primitive, use that as type:
     type: origStampSpec,
     // Otherwise, we expect an object with a type attribute. In that case,
     // the previous type assignment was wrong and we immediately amend it:
     ...(origStampSpec.type && origStampSpec),
   };
-  const debugTrace = { simpleDateStamp: patchData.type, annoIdUrl };
+
+  const { state } = viewer.$store;
+  const pathPrefix = stampApiPathPrefix.find(state, patchData);
+  const patchUrl = state.annoByIdUrlPrefix + pathPrefix + versId;
+
+  const debugTrace = { simpleDateStamp: patchData.type, versId, patchUrl };
   console.log(debugTrace, 'querying.');
   try {
-    await api22(viewer.$store.state).aepPatch('://' + annoIdUrl, patchData);
+    await api22(state).aepPatch(patchUrl, patchData);
   } catch (err) {
     console.error(debugTrace, 'failed:', err);
     window.alert(viewer.l10n('error:') + '\n' + err);
