@@ -30,6 +30,8 @@
         <span v-show="approval.iconCls"
           :class="'anno-approval-icon ' + approval.iconCls"
           :title="approval.explain"></span>
+        <span v-show="auxMeta.sunsetDescr" class="anno-sunset-icon"
+          :title="auxMeta.sunsetDescr">&#x26D4;</span>
         <span v-show="Boolean(problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
@@ -65,6 +67,12 @@
           ">
           <div role="group"
             class="btn-group btn-group-sm">
+
+            <button ref="sunsetWarningButton"
+              v-if="auxMeta.sunsetDescr" :title="auxMeta.sunsetDescr"
+              class="btn btn-sm btn-secondary anno-sunset-btn">
+              <span class="button-caption">&#x26D4;</span>
+            </button><!-- /ref="sunsetWarningButton" -->
 
             <button ref="approvalStatusButton"
               v-if="approval.iconCls" :title="approval.explain"
