@@ -15,6 +15,7 @@ const findTargetUri = require('../../findTargetUri.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
 
 const categorizeTargets = require('../anno-editor/categorizeTargets.js');
+const decideAuxMeta = require('../anno-cmp-mode/decideAuxiliaryMetaData.js');
 
 const assembleVersionRelatedUrl = require('./assembleVersionRelatedUrl.js');
 const bindDataApi = require('./dataApi.js');
@@ -89,6 +90,7 @@ module.exports = {
         highlighted: false,
         mintDoiMsg: '',
         replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
+        auxMeta: decideAuxMeta(anno, el),
       };
 
       if (anno['_ubhd:doiAssign']) {
@@ -210,10 +212,9 @@ module.exports = {
 
         approval() {
           const val = this.annotation['dc:dateAccepted'];
-          if ((val === undefined) && (!this.uiModeApproval)) {
-            return { active: true };
-          }
-          const st = { val, explain: '' };
+          const st = { val, active: true, explain: '' };
+          if (val === undefined) { return st; } // i.e. no approval required
+          let icon = '';
           let colorCls = '';
           if (val) {
             st.jsTs = (new Date(val)).getTime();
@@ -222,15 +223,21 @@ module.exports = {
             st.active = !st.future;
             st.explain = (this.l10n(st.active ? 'anno_approval_active'
               : 'anno_approval_future') + ' ' + this.dateFmt(st.jsTs));
-            if (st.active) {
-              if (!this.uiModeApproval) { return { active: true }; }
-            }
           } else {
             st.active = false;
             st.explain = this.l10n('anno_approval_pending');
             colorCls = ' text-danger'; // No decision yet => Attention needed.
           }
-          st.iconCls = 'fa fa-' + (st.active ? 'unlock' : 'lock') + colorCls;
+          if (this.auxMeta.sunny) {
+            if (st.active) {
+              icon = (this.uiModeApproval ? 'unlock' : '');
+            } else {
+              icon = 'lock';
+            }
+          } else {
+            st.icon = (st.active ? 'gavel' : 'trash-o');
+          }
+          st.iconCls = (icon && ('fa fa-' + icon + colorCls));
           return st;
         },
 

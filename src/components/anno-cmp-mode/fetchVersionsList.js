@@ -60,14 +60,14 @@ Object.assign(fvl, {
         verNum,
         anno: orig,
         waitUntilLoaded() { return nowLoaded.promise; },
-        ...decideAuxMeta(orig),
+        ...decideAuxMeta(orig, cmpVueElem),
       };
       const plumbing = {
         receiveAnnoData(data) {
           delete plumbing.receiveAnnoData;
           rInfo.fetchedAt = Date.now();
           Object.assign(rInfo.anno, data);
-          Object.assign(rInfo, decideAuxMeta(rInfo.anno));
+          Object.assign(rInfo, decideAuxMeta(rInfo.anno, cmpVueElem));
           nowLoaded.resolve(rInfo);
         },
       };
@@ -87,6 +87,8 @@ Object.assign(fvl, {
       err = err.trim().replace(/\n\s*/g, '¶ ').trim();
       err = cmpVueElem.l10n('error:') + ' ' + err;
       anno['dc:title'] = err;
+      const hdr = orf(latestVerErr.headers);
+      if (hdr.sunset) { anno['as:deleted'] = hdr.sunset; }
     }
     lastSlot.internalPlumbing().receiveAnnoData(latestVerData);
     const meta = { latestVerNum, fetchedAt: lastSlot.fetchedAt };
