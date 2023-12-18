@@ -38,6 +38,13 @@ const srvCfg = {
 
   annoByIdUrlPrefix: 'anno/',
 
+  stampActionPathPrefixesByStampName: {
+    // For same prefix for all stamp actions:
+    // 'as:deleted': 'as/approver/',
+    // Or just for adding the stamp:
+    // 'dc:dateAccepted': { addStamp: 'as/approver/' },
+  },
+
   draftStoreEndpoint: '', /*
     URL of a WebDAV collection. Should end with a slash.
   */

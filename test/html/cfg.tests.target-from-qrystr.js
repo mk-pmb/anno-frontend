@@ -21,6 +21,11 @@
     if (q.approval) {
       cfg.initCmpApprovalMode = true; // effective only with &cmp1=…
       cfg.annoByIdUrlPrefix = 'as/approver/anno/';
+    } else {
+      cfg.stampActionPathPrefixesByStampName = {
+        'as:deleted': 'as/approver/',
+        'dc:dateAccepted': 'as/approver/',
+      };
     }
 
     switch (q.t) {
