@@ -16,12 +16,15 @@ const omitFieldsIfFalsey = [
 
 const EX = function getCleanAnno() {
   const editor = this;
+  const vueAnno = jsonDeepCopy(editor.$store.state.editing);
+  // console.debug('getCleanAnno: vueAnno:', vueAnno);
+  // window.getCleanAnnoDebug = { vueAnno };
   const {
     title,
     versionOf,
     extraFields,
     ...anno
-  } = jsonDeepCopy(editor.$store.state.editing);
+  } = vueAnno;
   Object.assign(anno, extraFields);
 
   function setAnnoPropIf(k, v) { if (v) { anno[k] = v; } }
