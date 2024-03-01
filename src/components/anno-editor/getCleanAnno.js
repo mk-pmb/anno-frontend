@@ -61,6 +61,7 @@ Object.assign(EX, {
     Object.keys(a).forEach(k => deleteIf(a, k,
       k.startsWith(':ANNO_FE:')
       || k.startsWith('_')
+      || k.startsWith('ubhd:')
       ));
   },
 
