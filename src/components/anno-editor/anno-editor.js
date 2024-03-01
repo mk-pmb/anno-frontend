@@ -109,8 +109,6 @@ module.exports = {
     targetImage()     { return this.$store.state.targetImage; },
     targetThumbnail() { return this.$store.state.targetThumbnail; },
     targetSource()    { return this.$store.state.targetSource; },
-    svgTarget()       { return orf(this.$store.getters.svgTarget); },
-    zoneSelectorSvg() { return orf(this.svgTarget.selector).value || ''; },
     zoneEditor()      { return this.$refs.zoneEditor; },
 
     knownAuthorIdentities() {
@@ -161,6 +159,21 @@ module.exports = {
     switchTabByRefName(refName) {
       const refs = this.$refs;
       refs.tablist.switchToTabPaneByVueElem(refs[refName]);
+    },
+
+    getPrimarySubjectTarget() {
+      const { state } = this.$store;
+      const tgtCateg = categorizeTargets(state, state.editing.target);
+      // console.debug('getPrimarySubjectTarget: tgtCateg:', tgtCateg);
+      return orf(tgtCateg.subjTgt);
+    },
+
+    getZoneSelectorSvg() {
+      const sel = this.getPrimarySubjectTarget().selector;
+      // console.debug('getZoneSelectorSvg', { sel }, orf(sel).value);
+      if (!sel) { return false; }
+      if (sel.type !== 'SvgSelector') { return false; }
+      return (sel.value || '');
     },
 
     save() {
@@ -250,7 +263,7 @@ module.exports = {
         window.prompt(editor.l10n('please_report_error:'),
           'Error: numberless SVG selector: ' + encodeURI(optimizedSvg));
       }
-      const oldSvg = editor.zoneSelectorSvg;
+      const oldSvg = editor.getZoneSelectorSvg();
       if (newSvg === oldSvg) { return; }
       const { state } = editor.$store;
       const origTgt = state.editing.target;
@@ -315,7 +328,7 @@ module.exports = {
       const editor = this;
       const { zoneEditor } = editor;
       zoneEditor.reset();
-      const svg = editor.zoneSelectorSvg;
+      const svg = editor.getZoneSelectorSvg();
       if (svg) { zoneEditor.loadSvg(svg); }
     },
 
@@ -324,7 +337,7 @@ module.exports = {
       const tn = editor.$refs.preview.$refs.thumbnail;
       if (!tn) { return; }
       tn.reset();
-      const svg = editor.zoneSelectorSvg;
+      const svg = editor.getZoneSelectorSvg();
       if (svg) { tn.loadSvg(svg); }
     },
 
