@@ -65,6 +65,23 @@ displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
   initCmpPrimarySideVersionNumber: 1,
   // initCmpOnVersionSelected(evt) { Hook set in `cfg.tests.defaults.js` }
 
+  events: {
+
+    startExternalTargetEditing(target) {
+      let descr = JSON.stringify(target, null, 2);
+      if ((target.selector || false).type === 'SvgSelector') {
+        const svg = target.selector.value;
+        descr = 'these SVG zones:\n' + svg;
+      }
+      window.alert('AnnoApp wants the external target editor to edit ' + descr);
+    },
+
+    abortExternalTargetEditing() {
+      window.alert('AnnoApp wants the external target editor to abort editing.');
+    },
+
+  },
+
 }));
 </script>
 
