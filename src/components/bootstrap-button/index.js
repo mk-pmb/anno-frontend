@@ -29,6 +29,7 @@ module.exports = {
     caption:      String,
     title:        String,
     eventbusEmit: String,
+    eventbusArgs: [Array, Function],
     prefix:       { type: String, default: 'ubhdannoprefix_zoneeditor' },
     iconText:     String,    // for using Unicode as icons
     iconFa:       String,
@@ -91,7 +92,11 @@ module.exports = {
         if (!window.confirm(q)) { return false; }
       }
       btn.$emit('click', ev);
-      if (btn.eventbusEmit) { eventBus.$emit(btn.eventbusEmit); }
+      if (btn.eventbusEmit) {
+        let args = btn.eventbusArgs || [];
+        if (args.call) { args = [].concat(args()); }
+        eventBus.$emit(btn.eventbusEmit, ...args);
+      }
       if (btn.$slots.balloon) { btn.$el.classList.toggle('balloon-open'); }
     },
 
