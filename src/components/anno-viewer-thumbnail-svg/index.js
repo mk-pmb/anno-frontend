@@ -4,8 +4,8 @@
 const getOwn = require('getown');
 
 const xrxStyleProps = {
-  thumbStrokeColor:   { type: [String] },
-  thumbFillColor:     { type: [String] },
+  thumbStrokeColor:   { type: String },
+  thumbFillColor:     { type: String },
 };
 
 
@@ -15,10 +15,10 @@ module.exports = {
   /* eslint-enable global-require */
 
   props: {
-    svgTarget:    { type: [Object] },
-    sizePx:       { type: [Number], default: 36 },
-    widthPx:      { type: [Number] },
-    heightPx:     { type: [Number] },
+    svgTarget:    { type: Object },
+    sizePx:       { type: Number, default: 36 },
+    widthPx:      { type: Number },
+    heightPx:     { type: Number },
 
     ...xrxStyleProps,
 
