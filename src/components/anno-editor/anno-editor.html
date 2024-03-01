@@ -39,6 +39,8 @@
           :initial-agent="initialAuthorAgent"
           :onchange="onSelectAuthorIdentity"
           />
+      </template>
+      <template slot="extra-bodyparts-bottom">
         <div class="row
           text-body-language-selection-row
           license-selection-row
@@ -65,8 +67,6 @@
           </div>
           <anno-editor-licenses iconsColumnCssClass="col-md-8" />
         </div>
-      </template>
-      <template slot="extra-bodyparts-bottom">
       </template>
     </html-editor>
   </bootstrap-tab>
