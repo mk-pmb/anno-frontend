@@ -94,6 +94,8 @@ module.exports = {
       document.body.classList.add(editorOpenCssClass);
       editor.setStatusMsg(); // reset = dismiss
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
+      console.debug('Anno-Editor: Initial zone selector:',
+        [editor.getZoneSelectorSvg()]);
       editor.initializeZoneEditor();
     });
   },
@@ -264,6 +266,8 @@ module.exports = {
           'Error: numberless SVG selector: ' + encodeURI(optimizedSvg));
       }
       const oldSvg = editor.getZoneSelectorSvg();
+      console.debug('Anno-Editor: setZoneSelector:',
+        { oldSvg, newSvg: (newSvg === oldSvg ? '(same)' : newSvg) });
       if (newSvg === oldSvg) { return; }
       const { state } = editor.$store;
       const origTgt = state.editing.target;
@@ -278,7 +282,7 @@ module.exports = {
       } : decideTargetForNewAnno(state));
       const newTgtList = tgtCateg.recombine();
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['target', newTgtList]);
-      editor.redisplayPreviewThumbnail();
+      editor.redisplayZoneEditorSvg();
     },
 
     async onSelectAuthorIdentity(evt) {
@@ -327,18 +331,14 @@ module.exports = {
     redisplayZoneEditorSvg() {
       const editor = this;
       const { zoneEditor } = editor;
-      zoneEditor.reset();
       const svg = editor.getZoneSelectorSvg();
-      if (svg) { zoneEditor.loadSvg(svg); }
-    },
-
-    redisplayPreviewThumbnail() {
-      const editor = this;
       const tn = editor.$refs.preview.$refs.thumbnail;
-      if (!tn) { return; }
-      tn.reset();
-      const svg = editor.getZoneSelectorSvg();
-      if (svg) { tn.loadSvg(svg); }
+      zoneEditor.reset();
+      if (tn) { tn.reset(); }
+      if (svg) {
+        zoneEditor.loadSvg(svg);
+        if (tn) { tn.loadSvg(svg); }
+      }
     },
 
     compileTargetsListForTemplating() {
