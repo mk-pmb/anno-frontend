@@ -91,6 +91,20 @@ module.exports = function displayAnnotations(customOptions) {
       });
     }());
 
+    (function resolveConfigURLs() {
+      const maybeUrl = /^target|endpoint$|url$/i;
+      const isExplicitlyRelative = /^\.{0,2}\//; /*
+        Only resolve explicitly relative URLs because our maybeUrl regexp
+        matches lots of false positives that are not supposed to be URLs. */
+      Object.keys(options).forEach(function resolve(key) {
+        if (!maybeUrl.test(key)) { return; }
+        const val = options[key];
+        if (!isExplicitlyRelative.test(val)) { return; }
+        options[key] = (new URL(val, window.location)).href;
+      });
+    }());
+
+
     const storeBlueprint = require('./vuex/store');
     Object.assign(storeBlueprint.state, options);
     const annoapp = new Vue({
