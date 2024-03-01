@@ -5,7 +5,6 @@ const {
     relationLinkBody,
     semanticTagBody,
     simpleTagBody,
-    svgSelectorResource,
     textualHtmlBody,
 } = require('@kba/anno-queries')
 
@@ -37,7 +36,6 @@ const getters = {
     simpleTagBodies(a)    {return simpleTagBody.all(a)},
     semanticTagBodies(a)  {return semanticTagBody.all(a)},
     relationLinkBodies(a) {return relationLinkBody.all(a)},
-    svgTarget(a)          {return svgSelectorResource.first(a)},
 }
 
 //
