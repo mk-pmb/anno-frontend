@@ -9,6 +9,7 @@ const mixins = [
   require('./configureTargetAndComposeAnnotation.js'),
   require('./highlightByTargetSelector.js'),
   require('./importAnnosFromCeson.js'),
+  require('./updateEditorTarget.js'),
 
   /* eslint-enable global-require */
 ];
