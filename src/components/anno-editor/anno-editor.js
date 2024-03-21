@@ -109,7 +109,6 @@ module.exports = {
 
     annoIdUrl()       { return this.$store.state.editing.id; },
     targetImage()     { return this.$store.state.targetImage; },
-    targetThumbnail() { return this.$store.state.targetThumbnail; },
     targetSource()    { return this.$store.state.targetSource; },
     zoneEditor()      { return this.$refs.zoneEditor; },
 
@@ -332,13 +331,8 @@ module.exports = {
       const editor = this;
       const { zoneEditor } = editor;
       const svg = editor.getZoneSelectorSvg();
-      const tn = editor.$refs.preview.$refs.thumbnail;
       zoneEditor.reset();
-      if (tn) { tn.reset(); }
-      if (svg) {
-        zoneEditor.loadSvg(svg);
-        if (tn) { tn.loadSvg(svg); }
-      }
+      if (svg) { zoneEditor.loadSvg(svg); }
     },
 
     compileTargetsListForTemplating() {
