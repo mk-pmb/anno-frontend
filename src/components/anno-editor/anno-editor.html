@@ -80,7 +80,6 @@
     <xrx-vue
       ref="zoneEditor"
       class="card panel panel-default annoeditor-svg-zones-editor"
-      :target-thumbnail="$store.state.targetThumbnail"
       :grouped="false"
       initial-image=""
       :show-toolbar-file="false"
@@ -137,8 +136,6 @@
       ref="preview"
       :annotation="stubbedAnnotationForPreview"
       :forceUpdatePreviewTs="forceUpdatePreviewTs"
-      :thumb-stroke-color="$store.state.thumbStrokeColor"
-      :thumb-fill-color="$store.state.thumbStrokeColor"
       purl="http://example.net/purl/dummy"
       :accept-empty-anno-id="true"
       :show-edit-preview-warnings="true"

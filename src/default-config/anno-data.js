@@ -20,7 +20,6 @@ const annoDataCfg = {
   */
   targetImageHeight: -1,
   targetImageWidth: -1,
-  targetThumbnail: null,
 
   targetScopeImpliesSource: true, /*
     Whether the targetImage can be unambiguously inferred from targetSource.

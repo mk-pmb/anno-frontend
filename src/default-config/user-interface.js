@@ -46,12 +46,6 @@ const uiCfg = {
       that annotation's ID. Should begin with the URL of `annoEndpoint`. */
 
 
-  thumbFillColor:   'rgba(160,0,0,0.4)',
-  thumbStrokeColor: 'rgba(160,0,0,0.9)',
-  /* ^-- In case of a targetImage, thumbnails display the targeted area(s)
-      using these Should be SVG colors. "Stroke" is the outline, "fill" is
-      the inside of the area. */
-
   targetFragmentButtonTitle: null, /*
     Hover title (not caption) of the Fragment Identifier button.
     Usually, this should be a description of what the
