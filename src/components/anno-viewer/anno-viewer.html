@@ -19,10 +19,6 @@
 
   <div v-if="!asReply" class="panel-heading">
     <h4 class="panel-title" @click="collapse('toggle')">
-      <anno-viewer-thumbnail-svg
-        :svgTarget="svgTarget"
-        class="pull-right"
-        />
       <a role="button">
         <span class="collapse-arrow" v-if="isListViewItem"
           ><i :class="'fa fa-caret-' + (collapsed ? 'right' : 'down')"
