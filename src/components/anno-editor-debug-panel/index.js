@@ -36,7 +36,7 @@ module.exports = {
     }, contextAsFirstArg),
 
     updateAcl(btn) {
-      this.$store.commit((btn.a ? 'CHANGE_ACL' : 'EMPTY_ACL'), btn.a);
+      this.$store.commit((btn.a ? 'UPDATE_ACL' : 'EMPTY_ACL'), btn.a);
     },
 
     dumpAppConfig() {
