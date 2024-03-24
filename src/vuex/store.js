@@ -35,7 +35,7 @@ module.exports = {
     getters: {
 
       isLoggedIn(state) {
-        const fake = orf(state.acl)['debug:override:isLoggedIn'];
+        const fake = state.debugPretendIsLoggedIn;
         if (fake || (fake === false)) { return fake; }
         const { userId } = orf(state.userSessionInfo);
         return Boolean(userId);
