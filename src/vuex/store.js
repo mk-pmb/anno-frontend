@@ -50,7 +50,7 @@ module.exports = {
     },
     mutations: {
 
-        CHANGE_ACL(state, rules) {
+        UPDATE_ACL(state, rules) {
             state.acl = Object.assign({}, state.acl, rules);
             eventBus.$emit('updatedPermissions');
         },

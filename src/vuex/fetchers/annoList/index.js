@@ -21,6 +21,10 @@ const EX = async function fetchAnnoList(store) {
     state.annoListSearchPrefix + state.targetSource));
   try {
     let annos = await api22(state).aepGet(annoListSearchUrl);
+
+    const aclUpd = annos['ubhd:aclPreviewBySubjectTargetUrl'];
+    if (aclUpd) { commit('UPDATE_ACL', aclUpd); }
+
     annos = orf(orf(annos).first).items;
     if (!Array.isArray(annos)) {
       throw new TypeError('Received an invalid annotations list');

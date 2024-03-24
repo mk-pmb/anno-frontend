@@ -68,6 +68,8 @@ Object.assign(fvl, {
           rInfo.fetchedAt = Date.now();
           Object.assign(rInfo.anno, data);
           Object.assign(rInfo, decideAuxMeta(rInfo.anno, cmpVueElem));
+          const aclUpd = data['ubhd:aclPreviewBySubjectTargetUrl'];
+          if (aclUpd) { cmpVueElem.$store.commit('UPDATE_ACL', aclUpd); }
           nowLoaded.resolve(rInfo);
         },
       };
