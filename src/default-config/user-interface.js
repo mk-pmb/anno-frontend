@@ -11,8 +11,6 @@ const uiCfg = {
   // ^- 'list' = annotation list (default)
   //    'cmp' = comparison view / print view
 
-  uiDebugMode: false,
-
   loginRegistrationFormUrl: null,
   loginFormUrl: null,
 
