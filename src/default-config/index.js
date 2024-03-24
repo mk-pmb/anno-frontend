@@ -5,6 +5,7 @@
 
 const staticDefaults = {
   ...require('./anno-data.js'),
+  ...require('./debug.js'),
   ...require('./html-dom.js'),
   ...require('./servers.js'),
   ...require('./user-interface.js'),
