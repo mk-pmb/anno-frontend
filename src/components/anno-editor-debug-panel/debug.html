@@ -38,16 +38,25 @@
 
 
 <div class="topic" data-topic="annot">
-  <h3>ACL / Login override</h3>
+  <h3>ACL (accumulated)</h3>
   <json-export-import-field class="jsondump-acl" path="acl"
     :extraButtons="[
       { c: '🚫', n: 'Clear ACL', f: updateAcl, a: null },
       { c: '✨', n: 'Grant all', f: updateAcl,
-        a: { '*': { '*': true } } },
-      { c: '📛', n: 'Force logged-in', f: updateAcl,
-        a: { ['debug:override:isLoggedIn']: true } },
-      { c: '👽', n: 'Force logged-out', f: updateAcl,
-        a: { ['debug:override:isLoggedIn']: false } },
+        a: { '*': { '*': 'allow' } } },
+    ]"
+    />
+</div>
+
+
+<div class="topic" data-topic="annot">
+  <h3>ACL overrides / Login override</h3>
+  <json-export-import-field class="jsondump-acl" path="aclOverrides"
+    :extraButtons="[
+      { c: '📛', n: 'Force logged-in', f: configureApp,
+        a: { debugPretendIsLoggedIn: true } },
+      { c: '👽', n: 'Force logged-out', f: configureApp,
+        a: { debugPretendIsLoggedIn: false } },
     ]"
     />
 </div>
