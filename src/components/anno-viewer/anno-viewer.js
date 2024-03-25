@@ -54,6 +54,14 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
 function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
+function isStr(x) { return typeof x === 'string'; }
+
+function resourceIdStr(res) {
+  if (!res) { return ''; }
+  if (isStr(res)) { return res; }
+  if (isStr(res.id)) { return res.id; }
+  return '';
+}
 
 
 module.exports = {
@@ -210,6 +218,17 @@ module.exports = {
     uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
     uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
+
+    isOwnAnno() {
+      const viewer = this;
+      const { authorIdentities } = orf(viewer.$store.state.userSessionInfo);
+      if (!authorIdentities) { return false; }
+      const crea = resourceIdStr(orf(viewer.annotation).creator);
+      if (!crea) { return false; }
+      return authorIdentities.some(ai => (crea === ai.id));
+    },
+
+
     approval() {
       const val = this.annotation['dc:dateAccepted'];
       const st = { val, active: true, explain: '' };
@@ -318,6 +337,7 @@ module.exports = {
       await simpleDateStamp(this, 'as:deleted');
       window.location.reload();
     },
+
 
     makeEventContext() {
       const viewer = this;
@@ -476,4 +496,5 @@ module.exports = {
 
 
   },
+
 };
