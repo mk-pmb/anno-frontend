@@ -10,7 +10,7 @@
     " role="group">
 
     <template v-if="$store.state.offerCreateNewAnnotationButton">
-      <template v-if="$auth('create', targetSource)">
+      <template v-if="checkAclAuth('create')">
         <bootstrap-button eventbus-emit="create"
           btn-class="success create-new-annotation-button"
           :caption="l10n('compose_new_annot')" />

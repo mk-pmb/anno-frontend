@@ -71,8 +71,8 @@ module.exports = {
     style:    require('./anno-viewer.scss'),
 
     mixins: [
+      require('../../checkAclAuth.js').vueMixin,
       require('../../mixin/annoUrls.js'),
-      require('../../mixin/auth.js'),
       require('../../mixin/bootstrap-compat.js'),
       require('../../mixin/dateFmt.js'),
       require('../../mixin/l10n.js'),
