@@ -39,6 +39,8 @@ module.exports = {
       this.$store.commit((btn.a ? 'UPDATE_ACL' : 'EMPTY_ACL'), btn.a);
     },
 
+    configureApp(btn) { this.$store.commit('FLAT_UPDATE_APP_STATE', btn.a); },
+
     dumpAppConfig() {
       const u = undefined;
       const cfg = {
