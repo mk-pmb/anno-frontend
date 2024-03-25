@@ -1,11 +1,11 @@
 'use strict';
 
 const {
-    relationLinkBody,
-    textualHtmlBody,
-    simpleTagBody,
-    semanticTagBody,
-    svgSelectorResource
+  relationLinkBody,
+  textualHtmlBody,
+  simpleTagBody,
+  semanticTagBody,
+  svgSelectorResource
 } = require('@kba/anno-queries')
 
 const pDelay = require('delay');
@@ -188,258 +188,258 @@ module.exports = {
     viewer.toplevelCreated = viewer.annotation.modified;
   },
 
-    computed: {
-        annoIdUrl()          {return this.annotation.id},
-        firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
-        simpleTagBodies()    {return simpleTagBody.all(this.annotation)},
-        semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
-        relationLinkBodies() {return relationLinkBody.all(this.annotation)},
-        svgTarget()          {return svgSelectorResource.first(this.annotation)},
+  computed: {
+    annoIdUrl()          {return this.annotation.id},
+    firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
+    simpleTagBodies()    {return simpleTagBody.all(this.annotation)},
+    semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
+    relationLinkBodies() {return relationLinkBody.all(this.annotation)},
+    svgTarget()          {return svgSelectorResource.first(this.annotation)},
 
-        isListViewItem() { return this.$store.state.initAppMode === 'list'; },
+    isListViewItem() { return this.$store.state.initAppMode === 'list'; },
 
-        title() {
-          const anno = this.annotation;
-          if (!anno) { return ''; }
-          return String(anno['dc:title'] || anno.title || '');
-        },
-
-        targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
-
-        uiModeApproval() { return this.$store.state.initCmpApprovalMode; },
-        uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
-        uiModeList() { return this.$store.state.initAppMode === 'list'; },
-
-        approval() {
-          const val = this.annotation['dc:dateAccepted'];
-          const st = { val, active: true, explain: '' };
-          if (val === undefined) { return st; } // i.e. no approval required
-          let icon = '';
-          let colorCls = '';
-          if (val) {
-            st.jsTs = (new Date(val)).getTime();
-            st.delta = st.jsTs - Date.now();
-            st.future = (st.delta > 0);
-            st.active = !st.future;
-            st.explain = (this.l10n(st.active ? 'anno_approval_active'
-              : 'anno_approval_future') + ' ' + this.dateFmt(st.jsTs));
-          } else {
-            st.active = false;
-            st.explain = this.l10n('anno_approval_pending');
-            colorCls = ' text-danger'; // No decision yet => Attention needed.
-          }
-          if (this.auxMeta.sunny) {
-            if (st.active) {
-              icon = (this.uiModeApproval ? 'unlock' : '');
-            } else {
-              icon = 'lock';
-            }
-          } else {
-            st.icon = (st.active ? 'gavel' : 'trash-o');
-          }
-          st.iconCls = (icon && ('fa fa-' + icon + colorCls));
-          return st;
-        },
-
-        creatorsList() {
-          const { creator } = this.annotation;
-          if (!creator) { return []; }
-          const list = jsonDeepCopy([].concat(creator).filter(Boolean));
-          const lastItem = list.slice(-1);
-          if (lastItem) { lastItem['x-is-last-in-list'] = true; }
-          return list;
-        },
-
-
-        currentLicense() {
-          const licUrl = this.annotation.rights;
-          const licInfo = orf(licensesByUrl.get(licUrl));
-          return licInfo;
-        },
-
-
-        latestVersionDoiUri() {
-          const rgx = this.$store.state.doiVersionSuffixRgx;
-          if (!rgx) { return ''; }
-          const curDoiUri = this.currentVersionDoiUri;
-          if (!curDoiUri) { return ''; }
-          const latest = curDoiUri.replace(rgx, '');
-          if (latest === curDoiUri) { return ''; }
-          return latest;
-        },
-
-
-        licenseTitleOrUnknown() {
-          return (this.currentLicense.title
-            || this.l10n('license_unknown'));
-        },
-
-
-        problemsWarningText() {
-          const viewer = this;
-          const anno = orf(viewer.annotation);
-          const { l10n } = viewer;
-          const probs = [];
-
-          (function checkExpectedProps() {
-            const expected = [
-              'dc:title',
-              (viewer.acceptEmptyAnnoId ? null : 'id' /* Anno ID */),
-            ];
-            const miss = l10n('missing_required_field');
-            expected.forEach(function check(prop) {
-              if (!prop) { return; }
-              if (anno[prop]) { return; }
-              probs.push(miss + l10n('annofield_' + prop, prop));
-            });
-          }());
-
-          if (!probs.length) { return ''; }
-          return l10n('error:') + ' ' + probs.join('; ');
-        },
-
-        purl() { return this.annoIdToPermaUrl(this.annoIdUrl); },
+    title() {
+      const anno = this.annotation;
+      if (!anno) { return ''; }
+      return String(anno['dc:title'] || anno.title || '');
     },
 
-    methods: {
-        assembleVersionRelatedUrl: assembleVersionRelatedUrl.asVueMethod,
-        formatters,
-        toggleDetailBar,
+    targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
-        revise() { return eventBus.$emit('revise', this.annotation) },
-        reply()  { return eventBus.$emit('reply',  this.annotation) },
+    uiModeApproval() { return this.$store.state.initCmpApprovalMode; },
+    uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
+    uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
-        async approve() {
-          await simpleDateStamp(this, 'dc:dateAccepted');
-          window.location.reload();
-        },
+    approval() {
+      const val = this.annotation['dc:dateAccepted'];
+      const st = { val, active: true, explain: '' };
+      if (val === undefined) { return st; } // i.e. no approval required
+      let icon = '';
+      let colorCls = '';
+      if (val) {
+        st.jsTs = (new Date(val)).getTime();
+        st.delta = st.jsTs - Date.now();
+        st.future = (st.delta > 0);
+        st.active = !st.future;
+        st.explain = (this.l10n(st.active ? 'anno_approval_active'
+          : 'anno_approval_future') + ' ' + this.dateFmt(st.jsTs));
+      } else {
+        st.active = false;
+        st.explain = this.l10n('anno_approval_pending');
+        colorCls = ' text-danger'; // No decision yet => Attention needed.
+      }
+      if (this.auxMeta.sunny) {
+        if (st.active) {
+          icon = (this.uiModeApproval ? 'unlock' : '');
+        } else {
+          icon = 'lock';
+        }
+      } else {
+        st.icon = (st.active ? 'gavel' : 'trash-o');
+      }
+      st.iconCls = (icon && ('fa fa-' + icon + colorCls));
+      return st;
+    },
 
-        async unpublish() {
-          await simpleDateStamp(this, 'as:deleted');
-          window.location.reload();
-        },
+    creatorsList() {
+      const { creator } = this.annotation;
+      if (!creator) { return []; }
+      const list = jsonDeepCopy([].concat(creator).filter(Boolean));
+      const lastItem = list.slice(-1);
+      if (lastItem) { lastItem['x-is-last-in-list'] = true; }
+      return list;
+    },
 
-        makeEventContext() {
-          const viewer = this;
-          return {
-            annoIdUrl: viewer.annoIdUrl,
-            domElem: viewer.$el,
-            dataApi: viewer.dataApi,
-            getVueBoundAnno() { return viewer.annotation; },
-            getAnnoJson() { return jsonDeepCopy(viewer.annotation); },
-          };
-        },
 
-        targetFragmentButtonClicked() {
-          const viewer = this;
-          const ev = {
-            ...viewer.makeEventContext(),
-            fragment: viewer.targetFragment,
-            button: viewer.$refs.targetFragmentButton,
-          };
-          // console.debug('emit fragmentButtonClicked:', ev);
-          eventBus.$emit('targetFragmentButtonClicked', ev);
-        },
+    currentLicense() {
+      const licUrl = this.annotation.rights;
+      const licInfo = orf(licensesByUrl.get(licUrl));
+      return licInfo;
+    },
 
-        setDoiMsg(voc, ...details) {
-          const viewer = this;
-          if (!voc) {
-            viewer.mintDoiMsg = '';
-            return;
-          }
-          viewer.mintDoiMsg = [
-            ('[' + (new Date()).toLocaleTimeString() + ']'),
-            viewer.l10n(voc),
-            ...details,
-          ].join(' ');
-        },
 
-        async askConfirmationToMintDoi() {
-          const viewer = this;
-          const { annoIdUrl, l10n, setDoiMsg } = viewer;
-          console.debug('askConfirmationToMintDoi: viewer anno:',
-            viewer.annotation);
-          // window.viewerAnnotation = viewer.annotation;
-          if (!annoIdUrl) {
-            return setDoiMsg('<missing_required_field><annofield_id>');
-          }
-          const annoDetails = orf(viewer.annotation);
-          if (annoDetails['_ubhd:doiAssign']) {
-            return window.alert(viewer.l10n('mint_doi.pending'));
-          }
-          if (!viewer.approval.active) {
-            // This is not a security check, just a reminder for users.
-            return setDoiMsg('<error:> <mint_doi.nonpublic>');
-          }
-          const askReally = (l10n('confirm_irrevocable_action')
-            + '\n' + l10n('mint_doi'));
-          if (!window.confirm(askReally)) {
-            return setDoiMsg('confirm_flinched');
-          }
-          setDoiMsg('request_sent_waiting');
-          let resp = viewer.$store.state.debugStubMintDoiResponse;
-          try {
-            if (resp) {
-              await pDelay(5e3);
-            } else {
-              resp = await simpleDateStamp(viewer, '_ubhd:doiAssign');
-            }
-          } catch (err) {
-            return setDoiMsg('<error:> ', String(err));
-          }
-          return setDoiMsg('mint_doi.success');
-        },
+    latestVersionDoiUri() {
+      const rgx = this.$store.state.doiVersionSuffixRgx;
+      if (!rgx) { return ''; }
+      const curDoiUri = this.currentVersionDoiUri;
+      if (!curDoiUri) { return ''; }
+      const latest = curDoiUri.replace(rgx, '');
+      if (latest === curDoiUri) { return ''; }
+      return latest;
+    },
 
-        mouseenter() {
-            this.startHighlighting();
-            eventBus.$emit('mouseenter', this.makeEventContext());
-        },
-        mouseleave() {
-            this.stopHighlighting();
-            eventBus.$emit('mouseleave', this.makeEventContext());
-        },
 
-        startHighlighting(expand)  {
-            this.highlighted = true
-            if (expand) eventBus.$emit('expand', this.annoIdUrl, true)
-        },
-        stopHighlighting()   {this.highlighted = false},
-        toggleHighlighting() {this.highlighted = ! this.highlighted},
+    licenseTitleOrUnknown() {
+      return (this.currentLicense.title
+        || this.l10n('license_unknown'));
+    },
 
-        collapse(command) {
-          const el = this;
-          el.collapsed = (function decide() {
-            if (!el.isListViewItem) { return false; }
-            if (command === 'show') { return false; }
-            if (command === 'hide') { return true; }
-            if (command === 'toggle') { return !el.collapsed; }
-            throw new Error('anno-viewer: Invalid command for .collapse()');
-          }());
-        },
 
-        renderIiifLink() {
-          const viewer = this;
-          viewer.cachedIiifLink = xrxUtilsUtils.calcIiifLink(viewer);
-        },
+    problemsWarningText() {
+      const viewer = this;
+      const anno = orf(viewer.annotation);
+      const { l10n } = viewer;
+      const probs = [];
 
-        validateRelationLinkBody(rlb) {
-          const viewer = this;
-          const { l10n } = viewer;
-          const errors = [];
-          const vocMiss = l10n('missing_required_field');
+      (function checkExpectedProps() {
+        const expected = [
+          'dc:title',
+          (viewer.acceptEmptyAnnoId ? null : 'id' /* Anno ID */),
+        ];
+        const miss = l10n('missing_required_field');
+        expected.forEach(function check(prop) {
+          if (!prop) { return; }
+          if (anno[prop]) { return; }
+          probs.push(miss + l10n('annofield_' + prop, prop));
+        });
+      }());
 
-          (function requiredFields() {
-            const missing = [
-              'predicate',
-              'purpose',
-            ].filter(k => !rlb[k]);
-            if (!missing.length) { return; }
-            const uiNames = missing.map(k => l10n('relationlink_' + k));
-            errors.push(vocMiss + uiNames.join(', '));
-          }());
+      if (!probs.length) { return ''; }
+      return l10n('error:') + ' ' + probs.join('; ');
+    },
 
-          return errors;
-        },
+    purl() { return this.annoIdToPermaUrl(this.annoIdUrl); },
+  },
+
+  methods: {
+    assembleVersionRelatedUrl: assembleVersionRelatedUrl.asVueMethod,
+    formatters,
+    toggleDetailBar,
+
+    revise() { return eventBus.$emit('revise', this.annotation) },
+    reply()  { return eventBus.$emit('reply',  this.annotation) },
+
+    async approve() {
+      await simpleDateStamp(this, 'dc:dateAccepted');
+      window.location.reload();
+    },
+
+    async unpublish() {
+      await simpleDateStamp(this, 'as:deleted');
+      window.location.reload();
+    },
+
+    makeEventContext() {
+      const viewer = this;
+      return {
+        annoIdUrl: viewer.annoIdUrl,
+        domElem: viewer.$el,
+        dataApi: viewer.dataApi,
+        getVueBoundAnno() { return viewer.annotation; },
+        getAnnoJson() { return jsonDeepCopy(viewer.annotation); },
+      };
+    },
+
+    targetFragmentButtonClicked() {
+      const viewer = this;
+      const ev = {
+        ...viewer.makeEventContext(),
+        fragment: viewer.targetFragment,
+        button: viewer.$refs.targetFragmentButton,
+      };
+      // console.debug('emit fragmentButtonClicked:', ev);
+      eventBus.$emit('targetFragmentButtonClicked', ev);
+    },
+
+    setDoiMsg(voc, ...details) {
+      const viewer = this;
+      if (!voc) {
+        viewer.mintDoiMsg = '';
+        return;
+      }
+      viewer.mintDoiMsg = [
+        ('[' + (new Date()).toLocaleTimeString() + ']'),
+        viewer.l10n(voc),
+        ...details,
+      ].join(' ');
+    },
+
+    async askConfirmationToMintDoi() {
+      const viewer = this;
+      const { annoIdUrl, l10n, setDoiMsg } = viewer;
+      console.debug('askConfirmationToMintDoi: viewer anno:',
+        viewer.annotation);
+      // window.viewerAnnotation = viewer.annotation;
+      if (!annoIdUrl) {
+        return setDoiMsg('<missing_required_field><annofield_id>');
+      }
+      const annoDetails = orf(viewer.annotation);
+      if (annoDetails['_ubhd:doiAssign']) {
+        return window.alert(viewer.l10n('mint_doi.pending'));
+      }
+      if (!viewer.approval.active) {
+        // This is not a security check, just a reminder for users.
+        return setDoiMsg('<error:> <mint_doi.nonpublic>');
+      }
+      const askReally = (l10n('confirm_irrevocable_action')
+        + '\n' + l10n('mint_doi'));
+      if (!window.confirm(askReally)) {
+        return setDoiMsg('confirm_flinched');
+      }
+      setDoiMsg('request_sent_waiting');
+      let resp = viewer.$store.state.debugStubMintDoiResponse;
+      try {
+        if (resp) {
+          await pDelay(5e3);
+        } else {
+          resp = await simpleDateStamp(viewer, '_ubhd:doiAssign');
+        }
+      } catch (err) {
+        return setDoiMsg('<error:> ', String(err));
+      }
+      return setDoiMsg('mint_doi.success');
+    },
+
+    mouseenter() {
+        this.startHighlighting();
+        eventBus.$emit('mouseenter', this.makeEventContext());
+    },
+    mouseleave() {
+        this.stopHighlighting();
+        eventBus.$emit('mouseleave', this.makeEventContext());
+    },
+
+    startHighlighting(expand)  {
+        this.highlighted = true
+        if (expand) eventBus.$emit('expand', this.annoIdUrl, true)
+    },
+    stopHighlighting()   {this.highlighted = false},
+    toggleHighlighting() {this.highlighted = ! this.highlighted},
+
+    collapse(command) {
+      const el = this;
+      el.collapsed = (function decide() {
+        if (!el.isListViewItem) { return false; }
+        if (command === 'show') { return false; }
+        if (command === 'hide') { return true; }
+        if (command === 'toggle') { return !el.collapsed; }
+        throw new Error('anno-viewer: Invalid command for .collapse()');
+      }());
+    },
+
+    renderIiifLink() {
+      const viewer = this;
+      viewer.cachedIiifLink = xrxUtilsUtils.calcIiifLink(viewer);
+    },
+
+    validateRelationLinkBody(rlb) {
+      const viewer = this;
+      const { l10n } = viewer;
+      const errors = [];
+      const vocMiss = l10n('missing_required_field');
+
+      (function requiredFields() {
+        const missing = [
+          'predicate',
+          'purpose',
+        ].filter(k => !rlb[k]);
+        if (!missing.length) { return; }
+        const uiNames = missing.map(k => l10n('relationlink_' + k));
+        errors.push(vocMiss + uiNames.join(', '));
+      }());
+
+      return errors;
+    },
 
 
     replyRefNumText() {
