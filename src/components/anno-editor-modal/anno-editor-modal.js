@@ -22,7 +22,6 @@ const simpleEmitButtonHandlers = {
 module.exports = {
     mixins: [
         require('../../mixin/annoUrls.js'),
-        require('../../mixin/auth.js'),
         require('../../mixin/bootstrap-compat.js'),
         require('../../mixin/l10n.js'),
         require('../../mixin/prefix.js'),
@@ -46,7 +45,6 @@ module.exports = {
 
     methods: {
         ...simpleEmitButtonHandlers,
-        remove() {eventBus.$emit('remove', this.annoIdUrl)},
 
         startHighlighting(...args) {eventBus.$emit('startHighlighting', ...args)},
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},

@@ -57,14 +57,6 @@
 
       <div class="modal-footer">
 
-        <div class="pull-left">
-          <bootstrap-button eventbus-emit="remove"
-            icon-fa="trash-o"
-            btn-class="outline-danger"
-            v-if="$auth('remove', annoIdUrl) && (editMode === 'revise')"
-            :caption="l10n('delete_anno')" />
-        </div>
-
         <bootstrap-button eventbus-emit="discard"
           icon-fa="close"
           btn-class="close btn-outline-secondary"
