@@ -14,6 +14,16 @@ const annoDebugCfg = {
     */
 
 
+  aclOverrides: { // <- This MUST always be an object, even if empty.
+
+    // Override permissions for a selected subject target:
+    // 'https://example.net/': { create: 'allow' },
+
+    // Override permissions for ALL subject targets:
+    // '*': { '*': 'allow' },
+  },
+
+
 };
 
 
