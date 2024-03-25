@@ -31,6 +31,14 @@ function categorizeTargetsEventMethod() {
 }
 
 
+function cfgRetarget(vueStore, anno) {
+  const subjTgtUrl = categorizeTargets(vueStore.state, anno.target).subjTgt.id;
+  const cfgUpd = { targetSource: subjTgtUrl };
+  console.debug('AnnoApp: Version selection changed => reconfigure', cfgUpd);
+  vueStore.commit('FLAT_UPDATE_APP_STATE', cfgUpd);
+}
+
+
 const compoDef = {
 
   template: require('./cmp.html'),
@@ -130,6 +138,7 @@ const compoDef = {
       await rInfo.waitUntilLoaded();
       const anno = jsonDeepCopy(rInfo.anno);
       const evt = {
+        adjustConfiguredTargetSource() { cfgRetarget(cmp.$store, anno); },
         annoEndpoint,
         categorizeTargets: categorizeTargetsEventMethod,
         getFullAnno() { return anno; },

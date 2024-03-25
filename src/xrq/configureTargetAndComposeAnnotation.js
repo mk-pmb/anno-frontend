@@ -1,8 +1,8 @@
 ﻿/* -*- tab-width: 2 -*- */
 'use strict';
 
+const checkAclAuth = require('../checkAclAuth.js');
 const eventBus = require('../event-bus.js');
-const checkAuth = require('../mixin/auth.js').methods.$auth;
 
 
 const hasOwn = Function.call.bind(Object.prototype.hasOwnProperty);
@@ -21,8 +21,6 @@ async function composeAnno(store, origParam) {
   */
   delete param.authorized;
 
-  const { targetSource } = state;
-
   const updCfg = {
     targetFragment: null,
     targetImage: null,
@@ -35,8 +33,7 @@ async function composeAnno(store, origParam) {
     }
   });
 
-  const stubApp = { $store: { state } };
-  const authAccept = await checkAuth.call(stubApp, 'create', targetSource);
+  const authAccept = checkAclAuth(state, 'create');
   if (authMode === 'check') { return Boolean(authAccept); }
   if (!authAccept) {
     if (authMode === 'silent') { return false; }

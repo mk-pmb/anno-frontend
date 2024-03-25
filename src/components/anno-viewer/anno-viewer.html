@@ -153,7 +153,8 @@
             </button>
 
             <button class="btn btn-sm btn-secondary"
-              v-if="currentVersionDoiUri || $auth('mintDoi', annoIdUrl)"
+              v-if="currentVersionDoiUri || checkAclAuth({ isOwnAnno,
+                privName: 'stamp_‹own›_add__ubhd_doiAssign' })"
               @click="toggleDetailBar"
               data-detailbar="doi"
               >
@@ -394,7 +395,8 @@
           @click="approve"
           btn-class="default btn-outline-secondary"
           icon-fa="unlock"
-          v-if="uiModeApproval && $auth('approve', annoIdUrl)"
+          v-if="uiModeApproval && checkAclAuth({ isOwnAnno,
+            privName: 'stamp_‹own›_add_dc_dateAccepted' })"
           :disabled="approval.active"
           >
           {{ l10n('approve_anno') }}
@@ -402,16 +404,23 @@
 
         ><bootstrap-button @click="revise"
           btn-class="default btn-outline-secondary"
-          icon-fa="pencil"
-          v-if="$auth('revise', annoIdUrl)">
-          {{ l10n('edit') }}
+          :icon-fa="isOwnAnno ? 'pencil' : 'medkit'"
+          v-if="checkAclAuth({ isOwnAnno, privName: 'revise_‹own›' })"
+          >
+          {{ l10n(isOwnAnno ? 'edit' : 'edit_as_moderator') }}
+        </bootstrap-button
+
+        ><bootstrap-button v-else @click="revise" caption="⚙" btn-class="
+          default btn-outline-secondary
+          debug-feature debug-button-force-edit
+          ">
         </bootstrap-button
 
         ><bootstrap-button
           @click="reply"
           btn-class="default btn-outline-secondary"
           icon-fa="reply"
-          v-if="approval.active && $auth('create', annoIdUrl)">
+          v-if="approval.active && checkAclAuth('reply')">
           {{ l10n('compose_reply') }}
         </bootstrap-button
 
@@ -420,7 +429,8 @@
           btn-class="default btn-outline-danger btn-outline-secondary"
           :icon-fa="approval.active ? 'trash-o' : 'gavel'"
           irrevocable-confirm
-          v-if="uiModeApproval && $auth('unpublish', annoIdUrl)">
+          v-if="uiModeApproval && checkAclAuth({ isOwnAnno,
+            privName: 'stamp_‹own›_add_as_deleted' })">
           {{ l10n(approval.active ? 'unpublish_anno' : 'disapprove_anno') }}
         </bootstrap-button
 

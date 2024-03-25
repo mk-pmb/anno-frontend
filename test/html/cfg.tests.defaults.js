@@ -14,11 +14,6 @@
     debugIiifBounds: true,
 
     uiDebugMode: true,
-    acl: {
-      '*': { '*': true },
-      // 'debug:skipFetchAcl': true,
-      // 'debug:override:isLoggedIn': true,
-    },
 
     events: {},
   };
@@ -29,6 +24,7 @@
   cfg.initCmpOnVersionSelected = function onVersionSelected(event) {
     console.debug('Version selected:', event);
     window.versionSelectedEvent = event;
+    event.adjustConfiguredTargetSource();
   };
 
   // cfg.events.appReady = function ready() {};

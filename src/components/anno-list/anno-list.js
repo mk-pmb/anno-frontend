@@ -28,8 +28,8 @@ module.exports = {
   style: require('./anno-list.scss'),
 
   mixins: [
+    require('../../checkAclAuth.js').vueMixin,
     require('../../mixin/api.js'),
-    require('../../mixin/auth.js'),
     require('../../mixin/bootstrap-compat.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
@@ -75,7 +75,6 @@ module.exports = {
     annos() { return this.$store.state.annotationList.list; },
     sortedBy() { return this.$store.state.annotationList.sortedBy; },
 
-    targetSource() { return this.$store.state.targetSource; },
     purlId() { return this.$store.state.purlId; },
     purlAnnoInitiallyOpen() { return this.$store.state.purlAnnoInitiallyOpen; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
