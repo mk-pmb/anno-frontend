@@ -49,6 +49,9 @@ const annoDataCfg = {
   // ^- Optional factory function for a function that predicts DOIs
   //    from their anno ID or version identifier.
 
+  versionSuffixRgx: /[~_](\d+)$/,
+  // ^- For guessing the version number from anno ID URLs.
+
   doiVersionSuffixRgx: /[~_]\d+$/,
   // ^- In case the latest version's DOI can be predicted by omitting
   //    a suffix, this is a RegExp that matches the suffix.

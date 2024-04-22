@@ -15,6 +15,7 @@
   v-on:mouseover.stop="mouseenter"
   v-on:mouseleave.stop="mouseleave"
   :data-w3-anno-id="annoIdUrl"
+  :data-iana-working-copy="annotation['iana:working-copy']"
   :data-target-fragment="targetFragment"
   >
 
@@ -404,10 +405,8 @@
 
         ><bootstrap-button @click="revise"
           btn-class="default btn-outline-secondary"
-          :icon-fa="isOwnAnno ? 'pencil' : 'medkit'"
-          v-if="checkAclAuth({ isOwnAnno, privName: 'revise_‹own›' })"
-          >
-          {{ l10n(isOwnAnno ? 'edit' : 'edit_as_moderator') }}
+          v-if="editable" :icon-fa="editable.icon"
+          >{{ l10n(editable.voc) }}
         </bootstrap-button
 
         ><bootstrap-button v-else @click="revise" caption="⚙" btn-class="
