@@ -260,6 +260,31 @@ module.exports = {
       return st;
     },
 
+
+    editable() {
+      const viewer = this;
+      const anno = viewer.annotation;
+      const nonDebugEditable = (function decide() {
+        const { isOwnAnno } = viewer;
+        const auth = viewer.checkAclAuth({ isOwnAnno,
+          privName: 'revise_‹own›' });
+        if (!auth) { return false; }
+        const wCopy = viewer.findVersNumFromAnnoUrl(anno['iana:working-copy']);
+        if (wCopy) {
+          /* Number parsing is necessary: In version history mode, id uses
+            the standards compliant endpoint while working-copy uses the
+            author mode endpoint. */
+          const curVer = viewer.findVersNumFromAnnoUrl(anno.id);
+          if (curVer !== wCopy) { return false; }
+        }
+        return (isOwnAnno ? { icon: 'pencil', voc: 'edit' }
+          : { icon: 'medkit', voc: 'edit_as_moderator' });
+      }());
+      return orf(nonDebugEditable
+        || (viewer.$store.state.uiDebugMode && { icon: 'cog', voc: '' }));
+    },
+
+
     creatorsList() {
       const { creator } = this.annotation;
       if (!creator) { return []; }
@@ -336,6 +361,12 @@ module.exports = {
     async unpublish() {
       await simpleDateStamp(this, 'as:deleted');
       window.location.reload();
+    },
+
+
+    findVersNumFromAnnoUrl(url) {
+      if (!url) { return 0; }
+      return (+orf(this.$store.state.versionSuffixRgx.exec(url))[1] || 0);
     },
 
 
