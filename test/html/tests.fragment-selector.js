@@ -48,7 +48,7 @@ window.jQuery().ready(function installLate() {
     const caption = htmlUrl.split(/\//).slice(-1)[0].replace(/^\d+px-/, '');
     return ('\n      <label><input type="radio" name="image" value="'
       + htmlUrl + (idx ? '' : '" checked="checked') + '"> '
-      + (caption || '(keines)') + '</label>');
+      + (caption || '(ohne)') + '</label>');
   }).join('');
 
 
