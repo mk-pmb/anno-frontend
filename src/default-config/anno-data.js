@@ -50,7 +50,7 @@ const annoDataCfg = {
   //    from their anno ID or version identifier.
 
   doiVersionSuffixRgx: /[~_]\d+$/,
-  // ^- In case where the latest version's DOI can be predicted by omitting
+  // ^- In case the latest version's DOI can be predicted by omitting
   //    a suffix, this is a RegExp that matches the suffix.
 
 
