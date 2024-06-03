@@ -3,9 +3,9 @@
 
 const getOwn = require('getown');
 
-const eventBus = require('../../event-bus.js');
-// const findTargetUri = require('../../findTargetUri.js');
 const categorizeTargets = require('../anno-editor/categorizeTargets.js');
+const eventBus = require('../../event-bus.js');
+const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 
 const fetchVersionsList = require('./fetchVersionsList.js');
 const verCache = require('./verCache.js');
@@ -32,7 +32,14 @@ function categorizeTargetsEventMethod() {
 
 
 function cfgRetarget(vueStore, anno) {
-  const subjTgtUrl = categorizeTargets(vueStore.state, anno.target).subjTgt.id;
+  const tgtCateg = categorizeTargets(vueStore.state, anno.target);
+  tgtCateg.guessSubjTgtIfMissing();
+  const subjTgtUrl = guessPrimaryTargetUri({ target: tgtCateg.subjTgt },
+    vueStore.state);
+  if (!subjTgtUrl) {
+    window.cfgRetargetErrorDetails = { anno, tgtCateg };
+    throw new Error('cfgRetarget: Unable to find subject target!');
+  }
   const cfgUpd = { targetSource: subjTgtUrl };
   console.debug('AnnoApp: Version selection changed => reconfigure', cfgUpd);
   vueStore.commit('FLAT_UPDATE_APP_STATE', cfgUpd);
