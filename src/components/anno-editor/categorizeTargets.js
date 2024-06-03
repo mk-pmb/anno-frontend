@@ -71,7 +71,8 @@ Object.assign(EX, {
     guessSubjTgtIfMissing() {
       const report = this;
       if (report.subjTgt) { return false; }
-      const st = report.aux.matchesConfigTarget.getConfiguredTarget();
+      const st = (report.additional[0]
+        || report.aux.matchesConfigTarget.getConfiguredTarget());
       // console.debug('guessSubjTgtIfMissing:', st);
       report.subjTgt = st;
       return true;
