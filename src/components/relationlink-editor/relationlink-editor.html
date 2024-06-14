@@ -5,7 +5,7 @@
   <div class="card-body panel-body">
     <div class="row relationlink-entry"
       v-for="(body, bodyIndex) in relationLinkBodies">
-      <div class="col-md-3">
+      <div class="col col-md-3">
         <input
           :data-body-index="bodyIndex"
           required
@@ -16,7 +16,7 @@
           :placeholder="l10n('relationlink_url')"
         />
       </div><!-- /.col -->
-      <div class="col-md-3">
+      <div class="col col-md-3">
         <input
           :data-body-index="bodyIndex"
           required
@@ -27,7 +27,7 @@
           :placeholder="l10n('relationlink_title')"
         />
       </div><!-- /.col -->
-      <div class="col-md-3">
+      <div class="col col-md-3">
         <select name="predicate" class="form-control"
           @change="onSelectPurpose(bodyIndex, $event)">
           <option value="">{{
@@ -40,7 +40,7 @@
             >{{ determinePredicateCaption(predi) }}</option>
         </select>
       </div><!-- /.col -->
-      <div class="col-md-3">
+      <div class="col col-md-3">
         <bootstrap-button
           btn-class="danger"
           icon-fa="trash-o"
@@ -53,7 +53,7 @@
       relationlink-actions
       relationlink-actions-bottom
       ">
-      <div class="col-md-9">
+      <div class="col col-md-9">
         <bootstrap-button
           btn-class="success"
           icon-fa="plus"
