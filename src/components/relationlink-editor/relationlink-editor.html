@@ -3,7 +3,8 @@
     {{ l10n('relationlinks') }}
   </div -->
   <div class="card-body panel-body">
-    <div class="row" v-for="(body, bodyIndex) in relationLinkBodies">
+    <div class="row relationlink-entry"
+      v-for="(body, bodyIndex) in relationLinkBodies">
       <div class="col-md-3">
         <input
           :data-body-index="bodyIndex"
@@ -47,13 +48,20 @@
           {{ l10n('delete_relationlink') }}
         </bootstrap-button>
       </div><!-- /.col -->
-    </div><!-- /.row -->
-    <bootstrap-button
-      btn-class="success"
-      icon-fa="plus"
-      @click="addRelationLink"
-      >
-      {{ l10n('add_relationlink') }}
-    </bootstrap-button>
+    </div><!-- /.row.relationlink-entry -->
+    <div class="row
+      relationlink-actions
+      relationlink-actions-bottom
+      ">
+      <div class="col-md-9">
+        <bootstrap-button
+          btn-class="success"
+          icon-fa="plus"
+          @click="addRelationLink"
+          >
+          {{ l10n('add_relationlink') }}
+        </bootstrap-button>
+      </div><!-- /.col -->
+    </div><!-- /.row.relationlink-actions -->
   </div><!-- /.panel-body -->
 </div>
