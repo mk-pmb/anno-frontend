@@ -3,50 +3,50 @@
     {{ l10n('relationlinks') }}
   </div -->
   <div class="card-body panel-body">
-      <div class="row" v-for="(body, bodyIndex) in relationLinkBodies">
-        <div class="col-md-3">
-          <input
-            :data-body-index="bodyIndex"
-            required
-            autocomplete
-            type="url"
-            class="form-control relationlink-source"
-            v-model="body.source"
-            :placeholder="l10n('relationlink_url')"
-          />
-        </div>
-        <div class="col-md-3">
-          <input
-            :data-body-index="bodyIndex"
-            required
-            autocomplete
-            type="text"
-            class="form-control relationlink-value"
-            v-model="body.value"
-            :placeholder="l10n('relationlink_title')"
-          />
-        </div>
-        <div class="col-md-3">
-          <select name="predicate" class="form-control"
-            @change="onSelectPurpose(bodyIndex, $event)">
-            <option value="">{{
-              l10n('dropdown_please_select_an_option')
-              + ' ' + l10n('relationlink_predicate')
-              }}</option>
-            <option v-for="predi in knownPredicates"
-              :value="predi"
-              :selected="body.predicate === predi"
-              >{{ determinePredicateCaption(predi) }}</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <bootstrap-button
-            btn-class="danger"
-            icon-fa="trash-o"
-            @click="removeBody(body)">
-            {{ l10n('delete_relationlink') }}
-          </bootstrap-button>
-        </div>
+    <div class="row" v-for="(body, bodyIndex) in relationLinkBodies">
+      <div class="col-md-3">
+        <input
+          :data-body-index="bodyIndex"
+          required
+          autocomplete
+          type="url"
+          class="form-control relationlink-source"
+          v-model="body.source"
+          :placeholder="l10n('relationlink_url')"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          :data-body-index="bodyIndex"
+          required
+          autocomplete
+          type="text"
+          class="form-control relationlink-value"
+          v-model="body.value"
+          :placeholder="l10n('relationlink_title')"
+        />
+      </div>
+      <div class="col-md-3">
+        <select name="predicate" class="form-control"
+          @change="onSelectPurpose(bodyIndex, $event)">
+          <option value="">{{
+            l10n('dropdown_please_select_an_option')
+            + ' ' + l10n('relationlink_predicate')
+            }}</option>
+          <option v-for="predi in knownPredicates"
+            :value="predi"
+            :selected="body.predicate === predi"
+            >{{ determinePredicateCaption(predi) }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <bootstrap-button
+          btn-class="danger"
+          icon-fa="trash-o"
+          @click="removeBody(body)">
+          {{ l10n('delete_relationlink') }}
+        </bootstrap-button>
+      </div>
     </div>
     <bootstrap-button
       btn-class="success"
