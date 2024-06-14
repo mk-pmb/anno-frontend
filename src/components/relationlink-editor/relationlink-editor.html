@@ -14,7 +14,7 @@
           v-model="body.source"
           :placeholder="l10n('relationlink_url')"
         />
-      </div>
+      </div><!-- /.col -->
       <div class="col-md-3">
         <input
           :data-body-index="bodyIndex"
@@ -25,7 +25,7 @@
           v-model="body.value"
           :placeholder="l10n('relationlink_title')"
         />
-      </div>
+      </div><!-- /.col -->
       <div class="col-md-3">
         <select name="predicate" class="form-control"
           @change="onSelectPurpose(bodyIndex, $event)">
@@ -38,7 +38,7 @@
             :selected="body.predicate === predi"
             >{{ determinePredicateCaption(predi) }}</option>
         </select>
-      </div>
+      </div><!-- /.col -->
       <div class="col-md-3">
         <bootstrap-button
           btn-class="danger"
@@ -46,8 +46,8 @@
           @click="removeBody(body)">
           {{ l10n('delete_relationlink') }}
         </bootstrap-button>
-      </div>
-    </div>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
     <bootstrap-button
       btn-class="success"
       icon-fa="plus"
@@ -55,5 +55,5 @@
       >
       {{ l10n('add_relationlink') }}
     </bootstrap-button>
-  </div>
+  </div><!-- /.panel-body -->
 </div>
