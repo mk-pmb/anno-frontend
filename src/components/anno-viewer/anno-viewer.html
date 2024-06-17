@@ -266,7 +266,7 @@
             <template v-if="(!currentVersionDoiUri) || doiLinkPreviewWarning">
               <!-- We have mintDoi permission, because with neither that nor
                    a DOI, the detailbar would be hidden. -->
-                <dt>
+              <dt>
                 <div role="group" class="btn-group btn-group-sm">
                   <button @click="askConfirmationToMintDoi" :class="[
                       'btn btn-default btn-outline-secondary btn-sm',
@@ -277,7 +277,7 @@
                     <i class="fa fa-link"></i>
                     {{ l10n('mint_doi') }}
                   </button>
-                </div>
+                </div><!-- /.btn-group -->
               </dt>
               <dd>{{ mintDoiMsg }}</dd>
             </template>
