@@ -44,18 +44,24 @@ const EX = async function saveCreate(editor) {
 };
 
 
-EX.neverSubmitFields = [
-  'as:deleted',
-  'collection', // <- non-standard legacy prop used by ancient anno-fe
-  'created',
-  'dc:dateAccepted',
-  'doi',
-  'iana:latest-version',
-  'iana:version-history',
-  'iana:working-copy',
-  'replyTo',
-  'ubhd:aclPreviewBySubjectTargetUrl',
-];
+
+Object.assign(EX, {
+
+  neverSubmitFields: [
+    'as:deleted',
+    'collection', // <- non-standard legacy prop used by ancient anno-fe
+    'created',
+    'dc:dateAccepted',
+    'doi',
+    'iana:latest-version',
+    'iana:version-history',
+    'iana:working-copy',
+    'replyTo',
+    'ubhd:aclPreviewBySubjectTargetUrl',
+  ],
+
+
+});
 
 
 module.exports = EX;
