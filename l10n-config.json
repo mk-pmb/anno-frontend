@@ -51,6 +51,7 @@
             "editor_placeholder":  "Annotieren Sie hier",
             "edit_zones":          "Zonen editieren",
             "Annotations":         "Annotationen",
+            "toggle_extended_options": "Erweitert …",
             "License":             "Lizenz",
             "license_unknown":     "Lizenz unbekannt oder proprietär",
             "license_no_descr":    "Keine Beschreibung vorhanden.",
@@ -133,6 +134,8 @@
             "version_from":        "Version vom",
             "active_version":      "Angezeigte Version",
             "zones":               "Zonen",
+            "relationlink_custom_attributes_headline": "Benutzerdefinierte Attribute",
+            "relationlink_custom_attributes_descr": "Zusätzliche Eigenschaften auf oberster Ebene der Annotation. Dient nur zur Einreichung.",
 
             "annoeditor_mode_create": "Neue Annotation anlegen",
             "annoeditor_mode_revise": "Bearbeiten der Annotation",
@@ -293,6 +296,7 @@
             "edit_headline":       "Annotation Editor",
             "editor_placeholder":  "Annotate here",
             "edit_zones":          "Edit zones",
+            "toggle_extended_options": "Extended …",
             "text_body_language":  "Language",
             "login":               "Log in",
             "logout":              "Log out",
@@ -375,6 +379,8 @@
             "version_from":        "Version as of",
             "active_version":      "Active version",
             "zones":               "Zones",
+            "relationlink_custom_attributes_headline": "User-defined Attributes",
+            "relationlink_custom_attributes_descr": "Additional properties on the top level of the annotation, for submission only.",
 
             "annoeditor_mode_create": "Create a new annotation",
             "annoeditor_mode_revise": "Edit annotation",
