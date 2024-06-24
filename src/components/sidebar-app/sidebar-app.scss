@@ -6,13 +6,23 @@
   .modal-backdrop {
     z-index: 99 !important;
   }
+
+  .row h4 { margin-top: 1em; }
+  .pos-abs-top-right { position: absolute; top: 0; right: 0; z-index: 9002; }
+  .fullwidth { width: 100%; }
+
+  textarea.resize-height {
+    resize: vertical; min-height: 2em;
+    overflow: scroll; overflow-x: auto;
+  }
+
+
+
 }
 
 .annoeditor-global-css.annoeditor-sidebar {
 
   position: relative;
-
-  .pos-abs-top-right { position: absolute; top: 0; right: 0; z-index: 9002; }
 
   &.annoeditor-sidebar-standalone {
     position: fixed;
@@ -70,4 +80,23 @@
     border-color: red;
     background-color: mistyrose;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

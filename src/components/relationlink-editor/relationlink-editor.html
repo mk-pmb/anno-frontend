@@ -62,6 +62,33 @@
           {{ l10n('add_relationlink') }}
         </bootstrap-button>
       </div><!-- /.col -->
+      <div class="col col-md-3 text-right">
+        <bootstrap-button
+          btn-class="outline-secondary"
+          icon-fa="wrench"
+          @click="toggleVisibility('extended_options_row')"
+          :title="l10n('toggle_extended_options')"
+          ></bootstrap-button>
+      </div><!-- /.col -->
     </div><!-- /.row.relationlink-actions -->
+    <div class="row relationlink-extended-options initially-hidden"
+      ref="extended_options_row" style="display: none;">
+      <div class="col col-md-12">
+        <h4>{{ l10n('relationlink_custom_attributes_headline') }}</h4>
+        <p>{{ l10n('relationlink_custom_attributes_descr') }}</p>
+        <textarea id="relationlink-custom-attributes"
+          class="form-control fullwidth resize-height"
+          cols="40" rows="5"
+          wrap="off" autocorrect="off" autocapitalize="none" autocomplete="off"
+          spellcheck="true"
+          v-model="customToplevelAttributes"
+          :placeholder="[
+            'as:attributedTo = https://d-nb.info/gnd/10140798-1',
+            'dc:rightsHolder = https://www.ub.uni-heidelberg.de/',
+            'dc:type = dcmitype:Dataset',
+            ].join('\n')"
+          ></textarea>
+      </div><!-- /.col -->
+    </div><!-- /.row.relationlink-extended-options -->
   </div><!-- /.panel-body -->
 </div>
