@@ -1,5 +1,7 @@
 'use strict';
 
+const eventBus = require('../../event-bus.js');
+
 const dfPredicates = require('./predi.default.js');
 
 /*
@@ -19,6 +21,19 @@ module.exports = {
 
     props: {
       knownPredicates: { type: Array, default: dfPredicates.allUrls.boundSlice },
+    },
+
+    data() {
+      return {
+        customToplevelAttributes: '',
+      };
+    },
+
+    mounted() {
+      const relEd = this;
+      eventBus.$on('open-editor', function onEditorOpen() {
+        relEd.customToplevelAttributes = '';
+      });
     },
 
     computed: {

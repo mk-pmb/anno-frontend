@@ -1,4 +1,5 @@
 const isStr = require('is-string');
+const jQuery = require('jquery');
 
 const eventBus = require('../../event-bus.js');
 
@@ -92,6 +93,7 @@ module.exports = {
     eventBus.$on('open-editor', function onOpenEditor(opt) {
       if (!opt) { return onOpenEditor(true); }
       document.body.classList.add(editorOpenCssClass);
+      jQuery(editor.$el).find('.initially-hidden').hide();
       editor.setStatusMsg(); // reset = dismiss
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
       console.debug('Anno-Editor: Initial zone selector:',

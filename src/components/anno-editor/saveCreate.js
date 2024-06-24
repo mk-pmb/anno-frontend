@@ -1,6 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+const getOwn = require('getown');
+
 const api22 = require('../../api22.js');
 const eventBus = require('../../event-bus.js');
 
@@ -11,6 +13,10 @@ const EX = async function saveCreate(editor) {
   const anno = editor.getCleanAnno();
   EX.neverSubmitFields.forEach(k => delete anno[k]);
   const { state, commit, dispatch } = editor.$store;
+
+  window.relaEd = editor.$refs.relationLinkEditor;
+  Object.assign(anno, EX.parseCustomToplevelAttributes(anno,
+    editor.$refs.relationLinkEditor.customToplevelAttributes));
 
   if (state.authorIdentityOmitToPreserve) {
     if (editor.checkPreserveAuthorIdentity()) { delete anno.creator; }
@@ -60,6 +66,20 @@ Object.assign(EX, {
     'ubhd:aclPreviewBySubjectTargetUrl',
   ],
 
+  parseCustomToplevelAttributes(anno, ctaText) {
+    const ctaDict = {};
+    let key;
+    ctaText.split(/\n/).forEach(function each(origLn) {
+      const parts = origLn.trim().split(/^([\w:\-]*)\s*=\s*/);
+      if (parts[1]) { key = parts[1]; }
+      const val = (parts[0] + (parts[2] || '')).trim();
+      if (!val) { return; }
+      if (!key) { return; }
+      const old = getOwn(ctaDict, key) || '';
+      ctaDict[key] = (old && []).concat(old, val);
+    });
+    return ctaDict;
+  },
 
 });
 
