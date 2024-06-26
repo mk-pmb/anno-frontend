@@ -1,6 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+const arrayOfTruths = require('array-of-truths');
 const objPop = require('objpop');
 
 const editorModelDef = require('../../vuex/module/editing.js');
@@ -9,7 +10,6 @@ const adjustMultiTarget = require('./adjustMultiTarget.js');
 const legacyFieldsMustAgree = require('./legacyFieldsMustAgree.js');
 
 
-function arrayOfTruths(...x) { return [].concat(...x).filter(Boolean); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function keys2str(x) { return String(Object.keys(x).sort()); }
 
