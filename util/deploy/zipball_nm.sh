@@ -7,12 +7,19 @@ function zipball_nm () {
   local SELFPATH="$(readlink -m -- "$BASH_SOURCE"/..)"
   cd -- "$SELFPATH"/../.. || return $?
 
+  local DEPLOY_DEST_DIR='.git/@/htdocs'
+  local DEPLOY_CHECK_FILE='.htaccess'
   local ZIP_FN='tests.nm.snapshot.zip'
   local TESTS_DIR='test/html'
 
   case " $* " in
     *' PD '* | \
+    *' PU '* | \
+    *' reex '* | \
     *' pack '* ) npm run build || return $?;;
+  esac
+  case " $* " in
+    *' reex '* ) deploy --redist-inplace; return $?;;
   esac
 
   local NM_HTML=(
@@ -43,36 +50,48 @@ function zipball_nm () {
 
   case " $* " in
     *' PD '* | \
-    *' deploy '* ) deploy_to '.git/@/htdocs' .htaccess || return $?;;
+    *' deploy '* ) deploy || return $?;;
+    *' PU '* ) deploy --no-unzip || return $?;;
   esac
 }
 
 
-function deploy_to () {
-  local DEST_DIR="$1"; shift
-  local CHECK_FILE="$1"; shift
-  [ -z "$CHECK_FILE" ] || CHECK_FILE="$DEST_DIR/$CHECK_FILE"
-
+function deploy () {
+  local UNZIP_OPTS=()
+  local DEPLOY_CHECK_FILE="$DEPLOY_DEST_DIR/$DEPLOY_CHECK_FILE"
   local ZIP_ABS="$PWD/$TESTS_DIR/$ZIP_FN"
   local HASH="$(sha1sum --binary -- "$ZIP_ABS")"
   HASH="${HASH:0:8}"
   [ -n "$HASH" ] || return 4$(echo "E: failed to checksum $ZIP_ABS" >&2)
-  local SUBDIR="$DEST_DIR/$(date +%y%m%d-%H%M)-$HASH"
+  local SUBDIR="$DEPLOY_DEST_DIR/$(date +%y%m%d-%H%M)-$HASH"
   echo "Gonna deploy to: $SUBDIR"
-  [ -z "$CHECK_FILE" ] || [ -f "$CHECK_FILE" ] || return 4$(
+  [ -z "$DEPLOY_CHECK_FILE" ] || [ -f "$DEPLOY_CHECK_FILE" ] || return 4$(
     echo 'E: check file missing! Is the webspace mounted?' >&2)
 
-  local UNZIP_OPTS=(
-    -o    # overwrite existing files
-    )
+  case "$1" in
+    '' ) ;;
+    --no-unzip ) UNZIP_OPTS+=( SKIP ); shift;;
+    --redist-inplace )
+      cp --verbose --target-directory="$DEPLOY_DEST_DIR"/experimental/dist \
+        -- dist/*.js || return $?
+      return 0;;
+    * ) echo E: $FUNCNAME: "Unsupported option: $1" >&2; return 2;;
+  esac
+
   [ -d "$SUBDIR" ] || mkdir -- "$SUBDIR" || return $?$(
     echo "E: failed to mkdir $SUBDIR" >&2)
   echo -n 'Upload zipball: '
   cp --verbose --no-target-directory \
     -- "$ZIP_ABS" "$SUBDIR"/pack.zip || return $?$(
     echo "E: failed to upload zipball to $SUBDIR" >&2)
-  ( cd "$SUBDIR" && unzip "${UNZIP_OPTS[@]}" -- "$ZIP_ABS" ) || return $?$(
-    echo "E: failed to deploy to $SUBDIR" >&2)
+
+  UNZIP_OPTS+=(
+    -o    # overwrite existing files
+    -d "${SUBDIR:-/dev/null/ERR/empty_unzip_subdir}"
+    )
+  [ "${UNZIP_OPTS[0]}" == SKIP ] \
+    || unzip "${UNZIP_OPTS[@]}" -- "$ZIP_ABS" \
+    || return $?$(echo "E: failed to deploy to $SUBDIR" >&2)
   echo "Deployed to: $SUBDIR"
 }
 
