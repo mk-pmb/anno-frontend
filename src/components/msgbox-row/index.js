@@ -105,7 +105,6 @@ const compoDef = {
       Object.assign(m, severity, text, ...opt);
       m.timestamp = (box.addTimestamp && humanTimeNow());
       box.msg = m;
-      // console.debug('msgbox upd:', { ...m });
       boxStateByUniqId.set(box.effectiveUniqId, m);
       if (m.text && box.autoscroll) {
         const domEl = box.$refs.scrollOffset;
