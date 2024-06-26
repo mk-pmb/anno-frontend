@@ -155,7 +155,7 @@
             "relationlink_predicate#hint": "Nicht 'Link-Typ': Könnte leicht missverstanden werden als auf die URL selbst bezogen, statt auf den damit adressierten Inhalt.",
 
             "add_semtag":          "Schlagwort hinzufügen",
-            "delete_semtag":       "Schlagwort löschen",
+            "delete_semtag":       "Löschen",
             "semtag":              "Schlagwort",
             "semtags":             "Schlagworte",
             "semtag_no_source": "Bitte wählen Sie einen Katalog-Eintrag aus der Vorschlagliste.",
@@ -387,7 +387,7 @@
             "annoeditor_mode_reply": "Reply to annotation",
 
             "add_semtag":          "Add Semantic Tag",
-            "delete_semtag":       "Delete Semantic Tag",
+            "delete_semtag":       "Delete",
             "semtag":              "Semantic Tag",
             "semtags":             "Semantic Tags",
             "semtag_no_source": "Please choose a catalog entry from the suggestion list.",

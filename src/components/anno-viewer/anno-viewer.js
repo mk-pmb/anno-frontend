@@ -1,9 +1,7 @@
 'use strict';
 
 const {
-  relationLinkBody,
   textualHtmlBody,
-  semanticTagBody,
   svgSelectorResource
 } = require('@kba/anno-queries')
 
@@ -68,6 +66,9 @@ function resourceIdStr(res) {
   if (isStr(res.id)) { return res.id; }
   return '';
 }
+
+
+const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
 
 
 module.exports = {
@@ -174,13 +175,12 @@ module.exports = {
 
   mounted() {
     const viewer = this;
-    const anno = viewer.annotation;
-    const initialAnnoId = orf(anno).id;
+    const initialAnnoId = viewer.annoIdUrl;
     Object.assign(viewer.$el, {
       getVueElem() { return viewer; },
       initialAnnoId,
     });
-    // cdbg('viewer mounted:', { initialAnnoId, anno });
+    // cdbg('viewer mounted:', { initialAnnoId }, viewer.annotation);
 
     // React to highlighting events startHighlighting / stopHighlighting / toggleHighlighting
     ;['start', 'stop', 'toggle'].forEach(state => {
@@ -203,10 +203,9 @@ module.exports = {
   },
 
   computed: {
-    annoIdUrl()          {return this.annotation.id},
+    annoIdUrl()          { return this.annotation.id || ''; },
+
     firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
-    semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
-    relationLinkBodies() {return relationLinkBody.all(this.annotation)},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
 
     isListViewItem() { return this.$store.state.initAppMode === 'list'; },
@@ -326,7 +325,7 @@ module.exports = {
 
     problemsWarningText() {
       const viewer = this;
-      const anno = orf(viewer.annotation);
+      const anno = viewer.annotation;
       const { l10n } = viewer;
       const probs = [];
 
@@ -418,8 +417,7 @@ module.exports = {
       if (!annoIdUrl) {
         return setDoiMsg('<missing_required_field><annofield_id>');
       }
-      const annoDetails = orf(viewer.annotation);
-      if (annoDetails['_ubhd:doiAssign']) {
+      if (viewer.annotation['_ubhd:doiAssign']) {
         return window.alert(viewer.l10n('mint_doi.pending'));
       }
       if (!viewer.approval.active) {
@@ -477,25 +475,6 @@ module.exports = {
       viewer.cachedIiifLink = xrxUtilsUtils.calcIiifLink(viewer);
     },
 
-    validateRelationLinkBody(rlb) {
-      const viewer = this;
-      const { l10n } = viewer;
-      const errors = [];
-      const vocMiss = l10n('missing_required_field');
-
-      (function requiredFields() {
-        const missing = [
-          'predicate',
-          'purpose',
-        ].filter(k => !rlb[k]);
-        if (!missing.length) { return; }
-        const uiNames = missing.map(k => l10n('relationlink_' + k));
-        errors.push(vocMiss + uiNames.join(', '));
-      }());
-
-      return errors;
-    },
-
 
     replyRefNumText() {
       const anno = this.annotation;
@@ -515,6 +494,33 @@ module.exports = {
       const st = this.$store.state;
       if (st.doiHidesPurlButton && this.hasRealPublicDoi) { return false; }
       return true;
+    },
+
+
+    preparsePurposeTagBodies(purpose) {
+      const viewer = this;
+      const preparsed = viewer.dataApi('mapBodies', function preparse(body) {
+        if (body.purpose !== purpose) { return; }
+        const url = viewer.findResourceUrl(body);
+        const caption = (body['dc:title'] || body.value || body.label || url);
+        return { ...body, caption, url };
+      });
+      if (!preparsed) { return preparsed; }
+
+      if (purpose === 'linking') {
+        const vocMiss = viewer.l10n('missing_required_field');
+        preparsed.forEach(function validate(body) {
+          // eslint-disable-next-line no-param-reassign
+          body.predicate = (body['rdf:predicate'] || body.predicate);
+          const miss = relationlinkRequiredFields.map(
+            f => (body[f] ? '' : viewer.l10n('relationlink_' + f))
+          ).filter(Boolean);
+          // eslint-disable-next-line no-param-reassign
+          if (miss.length) { body.error = vocMiss + ' ' + miss.join(', '); }
+        });
+      }
+
+      return preparsed;
     },
 
 

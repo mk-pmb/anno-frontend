@@ -1,16 +1,21 @@
-{ "name": "annoDataApi",
+{ "name": "anno-data-api",
   "type": "module",
   "exports": "ada.mjs",
   "main": "ada.mjs",
   "eslintConfig": { "extends": "nodejs-pmb" },
 
   "dependencies": {
+    "array-of-truths": "^1.0.1",
+    "getown": "^1.0.0"
   },
   "browser": {
   },
   "devDependencies": {
+    "eslint-config-nodejs-pmb": "^0.3.5",
+    "eslint-plugin-json-light-pmb": "^1.0.7",
+    "eslint-plugin-n": "^15.2.4"
   },
 
 
-  "npm vs. BOM = Unexpected token": "-*- coding: UTF-8 -*-"
+  "engines": { "npm": ">=7.0.0", "node": ">=16.0.0" }
 }

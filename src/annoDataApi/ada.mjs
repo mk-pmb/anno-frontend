@@ -1,4 +1,16 @@
+import arrayOfTruths from 'array-of-truths';
+import getOwn from 'getown';
+
+
 const ada = {
+
+  mapListField(anno, field, mapper) {
+    return arrayOfTruths.ifAnyMap(getOwn(anno, field), mapper);
+  },
+
+  mapTargets(anno, mapper) { return ada.mapListField(anno, 'target', mapper); },
+  mapBodies(anno, mapper) { return ada.mapListField(anno, 'body', mapper); },
+
 
   findTargetSelectors(anno, opt) {
     const tgt = anno.target;
