@@ -345,13 +345,6 @@
           </ul>
         </template>
 
-        <div class="annoeditor-tags simple-tags">
-          <span class="annoeditor-tag label label-default badge badge-secondary" v-for="tagBody in simpleTagBodies">
-            <i class="fa fa-tag"></i>
-            {{ tagBody.value || tagBody.label }}
-          </span>
-        </div>
-
         <div class="annoeditor-tags semantic-tags">
           <a :href="findResourceUrl(semtagBody)" v-for="semtagBody in semanticTagBodies">
             <span class="annoeditor-tag label label-primary">

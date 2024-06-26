@@ -3,7 +3,6 @@
 const {
   relationLinkBody,
   textualHtmlBody,
-  simpleTagBody,
   semanticTagBody,
   svgSelectorResource
 } = require('@kba/anno-queries')
@@ -199,7 +198,6 @@ module.exports = {
   computed: {
     annoIdUrl()          {return this.annotation.id},
     firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
-    simpleTagBodies()    {return simpleTagBody.all(this.annotation)},
     semanticTagBodies()  {return semanticTagBody.all(this.annotation)},
     relationLinkBodies() {return relationLinkBody.all(this.annotation)},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
