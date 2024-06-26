@@ -1,5 +1,7 @@
 'use strict';
 
+const arrayOfTruths = require('array-of-truths');
+
 const eventBus = require('../../event-bus.js');
 
 const dfPredicates = require('./predi.default.js');
@@ -11,6 +13,15 @@ const dfPredicates = require('./predi.default.js');
  *
  */
 
+
+const purpose = 'linking';
+
+
+function mapRelationLinkBody(body, idx) {
+  return (body.purpose === purpose) && { ...body, '#': idx };
+}
+
+
 module.exports = {
     mixins: [
       require('../../mixin/l10n'),
@@ -20,7 +31,7 @@ module.exports = {
     // style:    require('./bonanza.sass'),
 
     props: {
-      knownPredicates: { type: Array, default: dfPredicates.allUrls.boundSlice },
+      knownPredicates: { type: Array, default: dfPredicates.allUrls.copy },
     },
 
     data() {
@@ -36,32 +47,32 @@ module.exports = {
       });
     },
 
-    computed: {
-      relationLinkBodies() { return this.$store.getters.relationLinkBodies },
-    },
-
     methods: {
 
+      getRelationLinkBodies() {
+        const allBodies = this.$store.state.editing.body;
+        if (!allBodies) { return []; }
+        return arrayOfTruths(allBodies.map(mapRelationLinkBody));
+      },
+
       addRelationLink() {
-        this.$store.commit('ADD_RELATIONLINK', {
-          predicate: dfPredicates.allUrls[0],
+        this.$store.commit('ADD_BODY', {
+          type: 'SpecificResource',
+          'dc:title': '',
+          purpose,
+          'rdf:predicate': this.knownPredicates[0] || '',
+          source: '',
         });
       },
 
-      removeBody(body) {this.$store.commit('REMOVE_BODY', body)},
+      removeBody(bodyIdx) { this.$store.commit('REMOVE_BODY', bodyIdx); },
 
-      includes(maybeArray, val) {
-        return Array.isArray(maybeArray) && maybeArray.includes(val)
-      },
-
-      onSelectPurpose(bodyIndex, event) {
-        const { value } = event.target;
-          console.debug('onSelectPurpose', { ctx: this, bodyIndex, value });
-          this.$store.commit("SET_RELATIONLINK_PROP", {
-            n: bodyIndex,
-            prop: 'predicate',
-            value,
-          });
+      storeUserInput(event, prop) {
+        const formField = event.target;
+        const rowElem = formField.parentElement.parentElement;
+        const upd = { '#': +rowElem.dataset.bodyIndex };
+        upd[prop] = formField.value;
+        this.$store.commit('UPDATE_BODY', upd);
       },
 
       toggleVisibility(refName) {
