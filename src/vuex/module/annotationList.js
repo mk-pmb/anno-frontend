@@ -31,6 +31,9 @@ const sorters = {
 }
 
 
+function jsonDeepCopy(x) { return x && JSON.parse(JSON.stringify(x)); }
+
+
 const ERR_NO_FETCH_ATTEMPT = ('Fetching has not been triggered'
   + ', probably because some earlier initialization failed.');
 
@@ -60,11 +63,31 @@ const annoList = {
     },
     mutations: {
 
-        SORT_LIST(state, sortBy) {
-            if (!sortBy) sortBy = state.sortedBy
-            state.list.sort(sorters[sortBy])
-            state.sortedBy = sortBy
-        },
+      SORT_LIST(state, setNewSortOrder) {
+        const nAnnos = state.list.length;
+        const cdbg = (console.debugX || Boolean);
+        if (!(setNewSortOrder || (nAnnos >= 2))) {
+          cdbg('Vue mutation SORT_LIST: nothing to do.');
+          return;
+        }
+        const sortBy = (setNewSortOrder || state.sortedBy);
+        const plainList = nAnnos && jsonDeepCopy(state.list);
+        cdbg('Vue mutation SORT_LIST: start', {
+          nAnnos,
+          configSort: state.sortedBy,
+          setNewSortOrder,
+          sortBy,
+        });
+        if (nAnnos >= 2) {
+          plainList.sort(sorters[sortBy]);
+          state.list = plainList;
+        }
+        if (setNewSortOrder) {
+          cdbg('Vue mutation SORT_LIST: saving new sort order.');
+          state.sortedBy = setNewSortOrder;
+        }
+        cdbg('Vue mutation SORT_LIST: done');
+      },
 
         // TODO
         // REPLACE_ANNOTATION_IN_LIST(state, {annotation, newState}) {
