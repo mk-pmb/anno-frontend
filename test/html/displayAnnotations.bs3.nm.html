@@ -35,8 +35,11 @@
   @import url("../../.git/@/config-override/tests.css");
   @import url("../../../anno-local/config-override/tests.css");
 </style>
-
-<script src="../../node_modules/bootstrap3/dist/js/bootstrap.min.js"></script>
+<!-- [2021-04-16] Do not load popper.js separately. It fails with
+  "TypeError: Popper__default.default is not a constructor".
+  Instead, use the bundled version of bootstrap, baked with popper inside.
+  -->
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../node_modules/quill/dist/quill.hotfix-issue-1768.min.js"></script>
 <script src="../../node_modules/axios/dist/axios.js"></script>
 <script src="../../node_modules/semtonotes-client/xrx.api.drawing.min.js"></script>
@@ -50,6 +53,7 @@
             it run deferred, after displayAnnotations(). -->
 <script src="tests.util.js"></script>
 <script src="tests.xhr-get-anno.js"></script>
+<script src="tests.fragment-selector.js"></script>
 <script src="tests.css-overrides.js"></script>
 
 <script>
