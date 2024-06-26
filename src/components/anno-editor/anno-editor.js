@@ -56,7 +56,8 @@ module.exports = {
   style: require('./anno-editor.scss'),
 
   props: {
-    editorId: {type: String, default: 'anno-editor'},
+    editorId: { type: String, default: 'anno-editor' },
+    svgUpdateMinimumRepeatDelaySec: { type: Number, default: 0.1 },
   },
 
   data() {
@@ -69,6 +70,7 @@ module.exports = {
         selected: '',
       },
       symbolForNoLanguage,
+      svgUpdateBlockedUntil: 0,
       zoneEditorEventsSetupDone: false,
     };
   },
@@ -261,6 +263,14 @@ module.exports = {
 
     setZoneSelector(unoptimizedNewSvg) {
       const editor = this;
+      const refuse = 'Anno-Editor: Refusing setZoneSelector(): ';
+      const now = Date.now();
+      if (now < editor.svgUpdateBlockedUntil) {
+        return console.warn(refuse + 'Cooldown from previous update.');
+      }
+      editor.svgUpdateBlockedUntil = now + (1e3
+        * editor.svgUpdateMinimumRepeatDelaySec);
+
       let newSvg = String(unoptimizedNewSvg || '').trim();
       const discardedSvgParts = [];
       function discardSvg(part) {
