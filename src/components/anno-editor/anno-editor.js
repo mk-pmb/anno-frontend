@@ -102,8 +102,6 @@ module.exports = {
   },
 
   mounted() {
-    const editor = this;
-    editor.initializeZoneEditor();
   },
 
   computed: {
