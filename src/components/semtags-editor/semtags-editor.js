@@ -1,7 +1,9 @@
-const bonanza = require('bonanza')
-const authorities = require('@ubhd/authorities-client')
+const arrayOfTruths = require('array-of-truths');
+const authorities = require('@ubhd/authorities-client');
+const bonanza = require('bonanza');
+
 const authHelpers = authorities.utils.handlebars.helpers;
-const gndClient = authorities.plugin('ubhd/gnd')
+const gndClient = authorities.plugin('ubhd/gnd');
 
 /*
  * ### semtags-editor
@@ -11,18 +13,23 @@ const gndClient = authorities.plugin('ubhd/gnd')
  */
 
 
+const purpose = 'classifying';
+
+function mapSemanticTag(body, idx) {
+  return (body.purpose === purpose) && { ...body, '#': idx };
+}
+
+
 function preserveUserInput(commit, ev) {
   const el = ev.target;
-  const n = +el.dataset.bodyIndex;
   const userInputValue = el.value;
-  const oldBodyValue = el.dataset.annoBodyValue;
-  if (userInputValue === oldBodyValue) { return; }
-  console.debug('SemTag input changed',
-    { n, oldBodyValue, userInputValue, el, ev });
+  const oldSemTitle = el.dataset.semTitle;
+  if (userInputValue === oldSemTitle) { return; }
   el.dataset.semSource = '';
-  commit("SET_SEMTAG_PROP", { n, prop: 'value', value: userInputValue });
-  commit("SET_SEMTAG_PROP", { n, prop: 'label', value: '' });
-  commit("SET_SEMTAG_PROP", { n, prop: 'source', value: '' });
+  const idx = +el.dataset.bodyIndex;
+  console.debug('SemTag input changed',
+    { idx, oldSemTitle, userInputValue, el, ev });
+  commit('UPDATE_BODY', { '#': idx, source: '', 'dc:title': userInputValue });
 }
 
 
@@ -36,10 +43,7 @@ module.exports = {
         require('./semtags-editor.scss'),
     ],
     computed: {
-        semanticTagBodies() {
-          return (this.$store.getters.semanticTagBodies || [])
-        },
-        language() {return this.$store.state.language},
+        language() { return this.$store.state.language },
     },
     mounted() {
       this.ensureCompletion()
@@ -50,8 +54,26 @@ module.exports = {
       this.ensureCompletion()
     },
     methods: {
-      addSemanticTag() {this.$store.commit('ADD_SEMTAG_BODY')},
-      removeBody(body) {this.$store.commit('REMOVE_BODY', body)},
+
+      getSemanticTagBodies() {
+        const allBodies = this.$store.state.editing.body;
+        if (!allBodies) { return []; }
+        return arrayOfTruths(allBodies.map(mapSemanticTag));
+      },
+
+
+
+      addSemanticTag() {
+        this.$store.commit('ADD_BODY', {
+          type: 'SpecificResource',
+          'dc:title': '',
+          purpose,
+          source: '',
+        });
+      },
+
+
+      removeBody(bodyIndex) { this.$store.commit('REMOVE_BODY', bodyIndex); },
 
         ensureCompletion() {
             const editor = this;
@@ -62,7 +84,7 @@ module.exports = {
                 .filter(el => !el.classList.contains('has-completion'))
                 .forEach(el => {
                     el.classList.add('has-completion')
-                    const n = el.dataset.bodyIndex
+                    const bodyIndex = +el.dataset.bodyIndex;
                     bonanza(
                         el,
                         {
@@ -100,22 +122,14 @@ module.exports = {
                         const label = getLabel(value);
                         const source = getSource(value);
                         console.debug('SemTag label selected',
-                          { n, value, label, source, el });
-                        if (n === undefined) {
-                          Object.assign(el.dataset, {
-                            value,
-                            label,
-                            source,
-                          });
-                        } else {
-                          el.dataset.annoBodyValue = label;
-                          el.dataset.semSource = source;
-                          // old @kba style semtags legacy compat
-                          editor.$store.commit("SET_SEMTAG_PROP", {n, prop:'value', value: label})
-                          editor.$store.commit("SET_SEMTAG_PROP", {n, prop:'label', value: label})
-                          editor.$store.commit("SET_SEMTAG_PROP", {n, prop:'source', value: source})
+                          { bodyIndex, value, label, source, el });
+                        el.dataset.semTitle = label;
+                        el.dataset.semSource = source;
+                        if (bodyIndex !== undefined) {
+                          editor.$store.commit('UPDATE_BODY',
+                            { '#': bodyIndex, 'dc:title': label, source });
                         }
-                    })
+                    });
 
                     const pui = preserveUserInput.bind(null,
                       editor.$store.commit);

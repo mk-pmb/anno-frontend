@@ -1,6 +1,8 @@
 import arrayOfTruths from 'array-of-truths';
 import getOwn from 'getown';
 
+// function orf(x) { return x || false; }
+
 
 const ada = {
 
