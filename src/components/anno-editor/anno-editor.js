@@ -13,7 +13,11 @@ const categorizeTargets = require('./categorizeTargets.js');
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
-const emptySvgTagRgx = /^<svg\s*>\s*<\/svg\s*>$/;
+const svgRgx = {
+  emptySvgTag: /^<svg\s*>\s*<\/svg\s*>$/,
+  tinyShape: /<\w+(?=\s)[^<>]*\s(?:width|height)="\d{0,2}e\-\d{2,}"[^<>]>\s*/g,
+};
+
 
 const symbolForNoLanguage = '\u00A0\u2044';
 /*  Some candidates:
@@ -258,7 +262,19 @@ module.exports = {
     setZoneSelector(unoptimizedNewSvg) {
       const editor = this;
       let newSvg = String(unoptimizedNewSvg || '').trim();
-      if (emptySvgTagRgx.test(newSvg)) { newSvg = ''; }
+      const discardedSvgParts = [];
+      function discardSvg(part) {
+        discardedSvgParts.push(part);
+        return '';
+      }
+      newSvg = newSvg.replace(svgRgx.tinyShape, discardSvg);
+      newSvg = newSvg.replace(/\s*(?=<\w)/g, '\n');
+      if (svgRgx.emptySvgTag.test(newSvg)) { newSvg = discardSvg(newSvg); }
+      if (discardedSvgParts.length) {
+        console.warn('Anno-Editor: Discarded degenerate SVG part(s):',
+          discardedSvgParts);
+      }
+
       if (newSvg && (!/\d/.test(newSvg))) {
         window.prompt(editor.l10n('please_report_error:'),
           'Error: numberless SVG selector: ' + encodeURI(newSvg));
