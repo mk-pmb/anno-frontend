@@ -255,13 +255,13 @@ module.exports = {
       await this.startCompose('revise', () => anno);
     },
 
-    setZoneSelector(newSvg) {
+    setZoneSelector(unoptimizedNewSvg) {
       const editor = this;
-      let optimizedSvg = String(newSvg || '').trim();
-      if (emptySvgTagRgx.test(optimizedSvg)) { optimizedSvg = ''; }
-      if (optimizedSvg && (!/\d/.test(optimizedSvg))) {
+      let newSvg = String(unoptimizedNewSvg || '').trim();
+      if (emptySvgTagRgx.test(newSvg)) { newSvg = ''; }
+      if (newSvg && (!/\d/.test(newSvg))) {
         window.prompt(editor.l10n('please_report_error:'),
-          'Error: numberless SVG selector: ' + encodeURI(optimizedSvg));
+          'Error: numberless SVG selector: ' + encodeURI(newSvg));
       }
       const oldSvg = editor.getZoneSelectorSvg();
       console.debug('Anno-Editor: setZoneSelector:',
@@ -270,7 +270,7 @@ module.exports = {
       const { state } = editor.$store;
       const origTgt = state.editing.target;
       const tgtCateg = categorizeTargets(state, origTgt);
-      tgtCateg.subjTgt = (optimizedSvg ? {
+      tgtCateg.subjTgt = (newSvg ? {
         // ^-- Do not preserve any previous selectors because we'd have to
         // ensure they are conceptually equivalent, and we cannot do that
         // in software.
