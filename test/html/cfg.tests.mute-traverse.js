@@ -19,6 +19,7 @@
     if (parentPathVals.includes(val)) { return; }
     var tmp = (chkIsGlobal(val, 'window')
       || chkIsGlobal(val, 'document'));
+    if (tmp) { return; }
     if (tmp) {
       tmp = {
         blockedGlobal: tmp,
