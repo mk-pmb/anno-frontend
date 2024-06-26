@@ -53,7 +53,6 @@ module.exports = {
 
   props: {
     editorId: {type: String, default: 'anno-editor'},
-    enableTabTags: {type: Boolean, default: false},
   },
 
   data() {
