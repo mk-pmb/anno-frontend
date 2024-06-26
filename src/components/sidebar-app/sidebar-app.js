@@ -44,6 +44,7 @@ module.exports = {
   computed: {
     appMode() { return this.$store.state.initAppMode; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
+    editor() { return this.$refs.modalEditor.$refs.editor; },
 
     isLoggedIn() { return this.$store.getters.isLoggedIn; },
 
