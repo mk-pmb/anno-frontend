@@ -44,7 +44,6 @@ const EX = async function genericSimpleApiCall(how) {
     setMsg('fail', l10n('generic_api_call_failed') + spad + ': ' + apiFail);
     throw apiFail;
   }
-
 };
 
 

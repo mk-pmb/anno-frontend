@@ -56,6 +56,8 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
 
   async function endpointRequest(endpointName, method, subUrl, data) {
     const url = constructRequestUri(endpointName, subUrl);
+    // console.debug('Anno-Viewer api22 endpointRequest:',
+    //   { endpointName, method, subUrl, dataLength: data && data.length });
     try {
       const result = await axios({ ...defaultAxiosOpts, method, url, data });
       return result.data;
