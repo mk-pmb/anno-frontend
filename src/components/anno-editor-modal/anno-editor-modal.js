@@ -58,9 +58,7 @@ module.exports = {
         },
 
         updateModal(opt) {
-          const vueDialog = this;
-          const dialogDomElem = vueDialog.$refs.annoEditorDialog;
-          jq(dialogDomElem).modal(opt);
+          jq(this.$refs.editorDialog).modal(opt);
         },
 
         show(/* annotation */) {
