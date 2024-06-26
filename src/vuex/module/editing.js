@@ -49,9 +49,6 @@ const mutations = {
         textualHtmlBody.first(state).value = v
     },
 
-    REMOVE_TARGET(state, v) {
-        remove(state, 'target', v)
-    },
 
     REMOVE_BODY(state, v) {
         remove(state, 'body', v)
