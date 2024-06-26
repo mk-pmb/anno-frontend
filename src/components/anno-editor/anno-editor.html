@@ -74,11 +74,11 @@
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-zones`"
     :title="l10n('zones')"
-    :visible="Boolean(targetImage)"
+    :visible="Boolean($store.state.targetImage)"
     topic="zones"
     >
     <xrx-vue
-      ref="zoneEditor"
+      ref="zoneEditorRef"
       class="card panel panel-default annoeditor-svg-zones-editor"
       :grouped="false"
       initial-image=""

@@ -113,9 +113,6 @@ module.exports = {
   computed: {
 
     annoIdUrl()       { return this.$store.state.editing.id; },
-    targetImage()     { return this.$store.state.targetImage; },
-    targetSource()    { return this.$store.state.targetSource; },
-    zoneEditor()      { return this.$refs.zoneEditor; },
 
     knownAuthorIdentities() {
       const sess = this.$store.state.userSessionInfo;
@@ -230,7 +227,8 @@ module.exports = {
         refAnno['dc:isVersionOf']
         || refAnno.id
         );
-      const replyTgt = { id: replyToUrl, scope: editor.targetSource };
+      const { targetSource } = editor.$store.state;
+      const replyTgt = { id: replyToUrl, scope: targetSource };
       const { l10n } = editor;
       const title = (l10n('reply_title_prefix')
         + (refAnno['dc:title'] || refAnno.title));
@@ -324,24 +322,25 @@ module.exports = {
 
     initializeZoneEditor() {
       const editor = this;
-      const { targetImage, zoneEditor } = editor;
-      if (!zoneEditor) { return; } // no yet loaded.
+      const { zoneEditorRef } = editor.$refs;
+      if (!zoneEditorRef) { return; } // no yet loaded.
+      const { targetImage } = editor.$store.state;
       try {
         if (!editor.zoneEditorEventsSetupDone) {
-          zoneEditor.$on('load-image', editor.redisplayZoneEditorSvg);
-          zoneEditor.$on('svg-changed', editor.setZoneSelector);
+          zoneEditorRef.$on('load-image', editor.redisplayZoneEditorSvg);
+          zoneEditorRef.$on('svg-changed', editor.setZoneSelector);
           editor.zoneEditorEventsSetupDone = Date.now();
         }
-        if (zoneEditor.shouldHaveHadAnyImageEverBefore) {
+        if (editor.zoneEditorShouldHaveHadAnyImageEverBefore) {
           // Without an image loaded, the first reset() call would
           // log a confusing error message about the image not having
           // been loaded yet.
           // :TODO: Fix upstream.
-          zoneEditor.reset();
+          zoneEditorRef.reset();
         }
         if (targetImage) {
-          zoneEditor.shouldHaveHadAnyImageEverBefore = true;
-          zoneEditor.loadImage(targetImage);
+          editor.zoneEditorShouldHaveHadAnyImageEverBefore = true;
+          zoneEditorRef.loadImage(targetImage);
         }
       } catch (zoneEditErr) {
         console.error('Zone editor init failure:', zoneEditErr);
@@ -354,10 +353,11 @@ module.exports = {
 
     redisplayZoneEditorSvg() {
       const editor = this;
-      const { zoneEditor } = editor;
+      const { zoneEditorRef } = editor.$refs;
+      if (!zoneEditorRef) { return; }
+      zoneEditorRef.reset();
       const svg = editor.getZoneSelectorSvg();
-      zoneEditor.reset();
-      if (svg) { zoneEditor.loadSvg(svg); }
+      if (svg) { zoneEditorRef.loadSvg(svg); }
     },
 
     compileTargetsListForTemplating() {
