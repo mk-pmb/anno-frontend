@@ -1,5 +1,6 @@
 const {
-    ensureArray, add, remove,
+    add,
+    ensureArray,
 } = require('@kba/anno-util')
 const {
     relationLinkBody,
@@ -43,16 +44,20 @@ const getters = {
 const mutations = {
 
     SET_HTML_BODY_VALUE(state, v) {
+        ensureArray(state, 'body');
         if (!textualHtmlBody.first(state)) {
-            add(state, 'body', textualHtmlBody.create())
+            if (!v) { return; }
+            add(state, 'body', textualHtmlBody.create());
         }
-        textualHtmlBody.first(state).value = v
+        ensureArray(state, 'body');
+        textualHtmlBody.first(state).value = v;
     },
 
 
-    REMOVE_BODY(state, v) {
-        remove(state, 'body', v)
-    },
+    ADD_BODY(state, bodyData) { state.body.push(bodyData); },
+    REMOVE_BODY(state, idx) { state.body.splice(idx, 1); },
+    UPDATE_BODY(st, { '#': idx, ...upd }) { Object.assign(st.body[idx], upd); },
+
 
     RESET_ANNOTATION(state) {
       Object.keys(state).forEach(function reset(key) {
@@ -69,43 +74,6 @@ const mutations = {
 
     SET_EDITOR_ANNO_PROP: vuexUtil.typesafeSetStateProp,
     FLAT_UPDATE_EDITOR_ANNO: vuexUtil.typesafeFlatUpdateState,
-
-    ADD_MOTIVATION(state, v) {
-        ensureArray(state, 'motivation')
-        add(state, 'motivation', v)
-    },
-
-    ADD_RELATIONLINK(state, v) {
-        ensureArray(state, 'body')
-        add(state, 'body', relationLinkBody.create(v))
-    },
-
-    SET_RELATIONLINK_PROP(state, {n, prop, value}) {
-        if (!Array.isArray(value)) value = [value]
-        const addTo = relationLinkBody.all(state)[n]
-        ensureArray(addTo, prop)
-        addTo[prop].splice(0, addTo[prop].length)
-        value.forEach(v => {
-            // console.debug('SET_RELATIONLINK_PROP: addTo:', addTo)
-            add(addTo, prop, v)
-        })
-    },
-
-    ADD_SEMTAG_BODY(state, v) {
-        ensureArray(state, 'body')
-        add(state, 'body', semanticTagBody.create(v))
-    },
-
-    SET_SEMTAG_PROP(state, {n, prop, value}) {
-        if (!Array.isArray(value)) value = [value]
-        const addTo = semanticTagBody.all(state)[n]
-        ensureArray(addTo, prop)
-        addTo[prop].splice(0, addTo[prop].length)
-        value.forEach(v => {
-            // console.debug('SET_SEMTAG_PROP: addTo:', addTo)
-            add(addTo, prop, v)
-        })
-    },
 
 }
 

@@ -2,7 +2,7 @@
 
 const EX = function makePredicatesCollection() {
   const allUrls = [];
-  allUrls.boundSlice = allUrls.slice.bind(allUrls);
+  allUrls.copy = function copy() { return allUrls.slice(); };
   const preds = {
     allUrls,
     groups: new Map(),

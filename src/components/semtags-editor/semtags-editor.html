@@ -1,8 +1,7 @@
 <anno-editor-rows-addable
   class="annoeditor-semtags-editor"
-  :number-of-rows="semanticTagBodies.length"
+  :number-of-rows="getSemanticTagBodies().length"
   >
-
   <template slot="buttons">
     <!-- input
       required
@@ -21,17 +20,17 @@
       }}</bootstrap-button>
   </template>
 
-  <div class="row semtag" v-for="(body, bodyIndex) in semanticTagBodies">
+  <div class="row semtag" v-for="body in getSemanticTagBodies()">
     <div class="col-md-10">
       <input
         class="form-control semtag-value"
-        :data-body-index="bodyIndex"
-        :data-anno-body-value="body.value"
+        :data-body-index="body['#']"
+        :data-sem-title="body['dc:title']"
         :data-sem-source="body.source"
         required
         autocomplete
         type="text"
-        :value="body.value"
+        :value="body['dc:title']"
         :placeholder="l10n('semtag')"
         />
       <a class="semtag-weblink"
@@ -47,7 +46,7 @@
       <bootstrap-button
         btn-class="danger"
         icon-fa="trash-o"
-        @click="removeBody(body)">
+        @click="removeBody(body['#'])">
         {{ l10n('delete_semtag') }}
       </bootstrap-button>
     </div>
