@@ -14,15 +14,20 @@ const EX = async function reloadDraftsList(opt) {
   } = (opt || false);
   const panel = this;
   panel.refreshDraftsHintVoc = '';
-  panel.allDrafts = await genericSimpleApiCall({
+  const apiRequest = {
     panel,
     actionDescrVoc: 'scan_draftslist',
     apiVerb: 'GET',
     filename: '',
     refine: EX.dirIndexHtmlToFilesList,
     silent,
-  });
-
+  };
+  try {
+    panel.allDrafts = await genericSimpleApiCall(apiRequest);
+  } catch (scanErr) {
+    // genericSimpleApiCall should already have notified the user.
+    console.error(EX.name, 'failed', { scanErr });
+  }
 };
 
 
