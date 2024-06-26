@@ -50,10 +50,17 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  * - `mouseleave`: The mouse cursor has left this annotation
  */
 
+
+const cdbg = console.debug.bind(console, 'anno-viewer:');
+const cerr = console.error.bind(console, 'anno-viewer:');
+Boolean(cdbg, cerr); // Linter: Ignore whether they're all commented-out.
+
+
 function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 function isStr(x) { return typeof x === 'string'; }
+
 
 function resourceIdStr(res) {
   if (!res) { return ''; }
@@ -83,7 +90,7 @@ module.exports = {
       const el = this;
       const { state } = el.$store;
       const anno = orf(el.annotation);
-      // console.debug('initData el.isListViewItem', [el.isListViewItem]);
+      // cdbg('initData el.isListViewItem', [el.isListViewItem]);
 
       const hasRealPublicDoi = Boolean(anno['dc:identifier']);
       const initData = {
@@ -173,14 +180,14 @@ module.exports = {
       getVueElem() { return viewer; },
       initialAnnoId,
     });
-    // console.debug('viewer mounted:', { initialAnnoId, anno });
+    // cdbg('viewer mounted:', { initialAnnoId, anno });
 
     // React to highlighting events startHighlighting / stopHighlighting / toggleHighlighting
     ;['start', 'stop', 'toggle'].forEach(state => {
       const methodName = `${state}Highlighting`;
       eventBus.$on(methodName, function manageHighlight(subjectIdUrl, expand) {
         const ourIdUrl = viewer.annoIdUrl;
-        // console.debug('$on cb', { methodName, ourIdUrl, subjectIdUrl });
+        // cdbg('$on cb', { methodName, ourIdUrl, subjectIdUrl });
         if (!ourIdUrl) { return; } // early init
         if (subjectIdUrl !== ourIdUrl) { return; }
         viewer[methodName](expand);
@@ -189,7 +196,7 @@ module.exports = {
 
     // Expand this annotation
     eventBus.$on('expand', (annoIdUrl) => {
-      console.error('Thread expand handler needs full rewrite!', { annoIdUrl });
+      cerr('Thread expand handler needs full rewrite!', { annoIdUrl });
     })
 
     viewer.toplevelCreated = viewer.annotation.modified;
@@ -386,7 +393,7 @@ module.exports = {
         fragment: viewer.targetFragment,
         button: viewer.$refs.targetFragmentButton,
       };
-      // console.debug('emit fragmentButtonClicked:', ev);
+      // cdbg('emit fragmentButtonClicked:', ev);
       eventBus.$emit('targetFragmentButtonClicked', ev);
     },
 
@@ -406,8 +413,7 @@ module.exports = {
     async askConfirmationToMintDoi() {
       const viewer = this;
       const { annoIdUrl, l10n, setDoiMsg } = viewer;
-      console.debug('askConfirmationToMintDoi: viewer anno:',
-        viewer.annotation);
+      cdbg('askConfirmationToMintDoi: viewer anno:', viewer.annotation);
       // window.viewerAnnotation = viewer.annotation;
       if (!annoIdUrl) {
         return setDoiMsg('<missing_required_field><annofield_id>');
