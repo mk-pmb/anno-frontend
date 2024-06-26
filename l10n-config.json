@@ -146,7 +146,7 @@
             "dropdown_keep_old_value": "beibehalten:",
 
             "add_relationlink":          "Link hinzufügen",
-            "delete_relationlink":       "Link löschen",
+            "delete_relationlink":       "Löschen",
             "relationlink":              "Link",
             "relationlinks":             "Links",
             "relationlink_url":          "Link (URL)",
@@ -398,7 +398,7 @@
             "dropdown_keep_old_value": "keep as is:",
 
             "add_relationlink":          "Add Link",
-            "delete_relationlink":       "Delete Link",
+            "delete_relationlink":       "Delete",
             "relationlink":              "Link",
             "relationlinks":             "Links",
             "relationlink_url":          "Link (URL)",

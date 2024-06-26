@@ -30,7 +30,8 @@ const vali = function validateEditorFields(onBehalfOfVueComponent, anno) {
       problem ||= vali.verifyClassifyingBody(body);
     }
     if (!problem) { return; }
-    problems.push(l10n(problem) + ' ' + JSON.stringify(body.value || ''));
+    const descr = (body['dc:title'] || body.value || '');
+    problems.push(l10n(problem) + ' ' + JSON.stringify(descr));
   });
 
   if (firstTextualBody.value) {
@@ -50,8 +51,6 @@ Object.assign(vali, {
 
   verifyClassifyingBody(body) {
     if (!body.source) { return 'semtag_no_source_for'; }
-    const { label, value } = body;
-    if (label && (label !== value)) { return 'semtag_rogue_label'; }
     return '';
   },
 
