@@ -4,7 +4,6 @@ const {
 const {
     relationLinkBody,
     semanticTagBody,
-    simpleTagBody,
     textualHtmlBody,
 } = require('@kba/anno-queries')
 
@@ -33,7 +32,6 @@ function initialState() {
 
 const getters = {
     firstHtmlBody(a)      {return textualHtmlBody.first(a)},
-    simpleTagBodies(a)    {return simpleTagBody.all(a)},
     semanticTagBodies(a)  {return semanticTagBody.all(a)},
     relationLinkBodies(a) {return relationLinkBody.all(a)},
 }
@@ -43,12 +41,6 @@ const getters = {
 //
 
 const mutations = {
-
-    ADD_TAG_BODY(state, v) {
-        ensureArray(state, 'body')
-        add(state, 'body', simpleTagBody.create(v))
-    },
-
 
     SET_HTML_BODY_VALUE(state, v) {
         if (!textualHtmlBody.first(state)) {

@@ -31,7 +31,6 @@ const components = {
     'html-editor':         require('./html-editor'),
     'relationlink-editor': require('./relationlink-editor'),
     'semtags-editor':      require('./semtags-editor'),
-    'tags-editor':         require('./tags-editor'),
     'xrx-vue':             require('@kba/xrx-vue').XrxVue,
 
     // debugging
