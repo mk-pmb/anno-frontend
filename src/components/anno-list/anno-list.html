@@ -57,13 +57,6 @@
     hidden-print
     " role="group">
 
-    <bootstrap-button caption="⚙" btn-class="
-      outline-secondary
-      pull-right
-      debug-feature
-      debug-button-force-compose
-      " eventbus-emit="create" />
-
     <bootstrap-button ref="btnCollapseAll"
       @click="collapseAll('toggle')"
       v-if="numberOfAnnotations"
@@ -181,6 +174,19 @@
       </template><!-- guest session -->
     </bootstrap-btnbar-dropdown>
 
+  </div><!-- .anno-list-buttonbar-top.pull-right -->
+
+  <div class="btn-group
+    anno-list-buttonbar-top
+    pull-right
+    debug-feature
+    debug-btngrp-anno-list-top
+    hidden-print
+    " role="group">
+    <bootstrap-button caption="⚙" btn-class="
+      outline-secondary
+      debug-button-force-compose
+      " eventbus-emit="create" />
   </div><!-- .anno-list-buttonbar-top.pull-right -->
 
   <div style="clear: both;"></div>
