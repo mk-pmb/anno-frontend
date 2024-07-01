@@ -24,6 +24,20 @@ const uiCfg = {
   permissionsRequestFormUrl: null,
   permissionsRequestAllowGuest: false,
 
+  helpUrlTemplate: [
+    /* Template for generating help URLs. For details, see
+      `../components/help-button/help-url.js`.
+    */
+
+    'https://anno.ub.uni-heidelberg.de/anno/dist/help/digi/',
+    '%hl',      // hl = <h>elp <l>anguage
+    '/.well-known/',
+    '%nv',      // nv = topic <n>aming scheme <v>ersion identifier
+    '/help_button_topics/',
+    '%ht',      // ht = <h>elp <t>opic
+    '.html',
+  ].join(''),
+
   offerCreateNewAnnotationButton: true,
 
   versionsButtonUrlTemplate: '?cmp1=%id',
