@@ -13,7 +13,6 @@ if (process.env.NODE_ENV !== 'production') {
 Vue.use(Vuex);
 require('./components/index.js').registerAll(Vue);
 
-const {localizations} = require('../l10n-config.json')
 const bootstrapCompat = require('./bootstrap-compat')
 const decideDefaultOptions = require('./default-config');
 const eventBus = require('./event-bus')
@@ -27,24 +26,27 @@ module.exports = function displayAnnotations(customOptions) {
     const options = mergeOptions(decideDefaultOptions(), customOptions);
     bootstrapCompat.initialize(options.bootstrap);
     delete options.bootstrap;
+    const apiExtras = {};
+
+    (function checkDeprecatedOpts() {
+      const optNames = [
+        'l10n',
+      ];
+      let had;
+      optNames.forEach(k => {
+        const v = options[k];
+        if (v === undefined) { return; }
+        console.error('AnnoApp: Ignoring deprecated option:', k, '=', v);
+        had = { ...had, [k]: v };
+        delete options[k];
+      });
+      apiExtras.getDeprecatedOpts = (had && (() => had));
+    }());
 
     Object.assign(SidebarApp.props, {
       standalone: { default: !options.container },
       collapseInitially: { default: Boolean(options.collapseInitially) },
     });
-
-    //
-    // Override l10n
-    //
-    if (options.l10n) {
-      console.log("Overriding l10n")
-        Object.keys(localizations).forEach(lang => {
-            if (lang in options.l10n) {
-                Object.assign(localizations[lang], options.l10n[lang])
-            }
-        })
-        delete options.l10n
-    }
 
     //
     // Create a container element if none was given
@@ -124,6 +126,8 @@ module.exports = function displayAnnotations(customOptions) {
         'startHighlighting',
         'stopHighlighting',
       ]),
+
+      ...apiExtras,
     });
 
     // Initialize store state
