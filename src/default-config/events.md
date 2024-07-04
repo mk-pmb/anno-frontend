@@ -17,9 +17,13 @@ For details, see the anno-viewer component documentation.
 Fired when the Fragment Identifier button is clicked.
 For details, see the anno-viewer component documentation.
 
-### `fetched`
-Deprecated.
+### `annoListFetchedRaw`
 Fired when the list of annotations has been fetched from the server.
+
+### `annoListFetchedOptimized`
+Fired after `annoListFetchedRaw` when additionally, the list of annotations
+has been optimized, which usually means related annos have been interlinked
+and potentially re-arranged into a nested tree.
 
 ### `updatedPermissions`
 Fires when the user's permissions have been modified.
