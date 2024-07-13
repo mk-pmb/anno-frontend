@@ -12,8 +12,8 @@
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
     (isOwnAnno && 'own-anno'),
   ].filter(Boolean)"
-  v-on:mouseover.stop="mouseenter"
-  v-on:mouseleave.stop="mouseleave"
+  @mouseenter="onMouseEnter"
+  @mouseleave="onMouseLeave"
   :data-w3-anno-id="annoIdUrl"
   :data-iana-working-copy="annotation['iana:working-copy']"
   :data-target-fragment="targetFragment"
