@@ -44,8 +44,8 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  * - `reply`: A new annotation as a reply to this annotation should be opened in an editor
  * - `startHighlighting`: Start highlighting this annotation
  * - `stopHighlighting`: Stop highlighting this annotation
- * - `mouseenter`: The mouse cursor is now on this annotation
- * - `mouseleave`: The mouse cursor has left this annotation
+ * - `mouseEnter`: The mouse cursor is now on this annotation
+ * - `mouseLeave`: The mouse cursor has left this annotation
  */
 
 
@@ -443,21 +443,21 @@ module.exports = {
       return setDoiMsg('mint_doi.success');
     },
 
-    mouseenter() {
-        this.startHighlighting();
-        eventBus.$emit('mouseenter', this.makeEventContext());
+    onMouseEnter() {
+      this.startHighlighting();
+      eventBus.$emit('mouseEnter', this.makeEventContext());
     },
-    mouseleave() {
-        this.stopHighlighting();
-        eventBus.$emit('mouseleave', this.makeEventContext());
+    onMouseLeave() {
+      this.stopHighlighting();
+      eventBus.$emit('mouseLeave', this.makeEventContext());
     },
 
-    startHighlighting(expand)  {
-        this.highlighted = true
-        if (expand) eventBus.$emit('expand', this.annoIdUrl, true)
+    startHighlighting(expand) {
+      this.highlighted = true;
+      if (expand) { eventBus.$emit('expand', this.annoIdUrl, true); }
     },
-    stopHighlighting()   {this.highlighted = false},
-    toggleHighlighting() {this.highlighted = ! this.highlighted},
+    stopHighlighting() { this.highlighted = false; },
+    toggleHighlighting() { this.highlighted = !this.highlighted; },
 
     collapse(command) {
       const el = this;
