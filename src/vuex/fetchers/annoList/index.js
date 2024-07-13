@@ -30,7 +30,9 @@ const EX = async function fetchAnnoList(store) {
       throw new TypeError('Received an invalid annotations list');
     }
     eventBus.$emit('annoListFetchedRaw', annos);
+    const nOrigAnnos = annos.length;
     annos = await optimizeAnnoList(annos, state);
+    annos.nTotalAnnosIncludingNested = nOrigAnnos;
     eventBus.$emit('annoListFetchedOptimized', annos);
     await commit('ANNOLIST_REPLACE', annos);
   } catch (fetchFailed) {
