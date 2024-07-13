@@ -73,8 +73,8 @@ module.exports = function displayAnnotations(customOptions) {
       if (!events) { return; }
       onAppReady = events.appReady;
       delete events.appReady;
-      Object.entries(events).forEach(function install([evName, evHandler]) {
-        eventBus.$on(evName, evHandler);
+      Object.entries(events).forEach(function install([evName, evHandlers]) {
+        [].concat(evHandlers).forEach(hnd => hnd && eventBus.$on(evName, hnd));
       });
     }());
 
