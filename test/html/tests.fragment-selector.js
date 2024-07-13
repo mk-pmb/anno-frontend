@@ -22,11 +22,11 @@
       window.location.hash = '#' + fragId;
     },
 
-    mouseenter(ev) {
+    mouseEnter(ev) {
       const fragId = ev.dataApi('findTargetFragment');
       setUniqueCssClassByDomId('hovering', fragId);
     },
-    mouseleave() { setUniqueCssClassByDomId('hovering'); },
+    mouseLeave() { setUniqueCssClassByDomId('hovering'); },
 
   });
 }());
