@@ -34,6 +34,10 @@ const EX = async function fetchAnnoList(store) {
     annos = await optimizeAnnoList(annos, state);
     annos.nTotalAnnosIncludingNested = nOrigAnnos;
     eventBus.$emit('annoListFetchedOptimized', annos);
+    eventBus.$emit('annoListFetchedCounts', {
+      nTopLevelAnnos: annos.length,
+      nTotalAnnosIncludingNested: nOrigAnnos,
+    });
     await commit('ANNOLIST_REPLACE', annos);
   } catch (fetchFailed) {
     await commit('ANNOLIST_UPDATE_STATE', {

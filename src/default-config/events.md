@@ -25,6 +25,11 @@ Fired after `annoListFetchedRaw` when additionally, the list of annotations
 has been optimized, which usually means related annos have been interlinked
 and potentially re-arranged into a nested tree.
 
+### `annoListFetchedCounts`
+Fired after `annoListFetchedOptimized`. The argument is an object with some
+non-negative numbers measuring the amount of annotations. Currently, it has
+`nTopLevelAnnos` and `nTotalAnnosIncludingNested`.
+
 ### `updatedPermissions`
 Fires when the user's permissions have been modified.
 
