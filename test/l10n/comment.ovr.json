@@ -1,0 +1,110 @@
+{ "l10nOverrides": {
+  "additional_subjects_hint": {
+    "de": "Dieser Kommentar bezieht sich auf @@nAdd@@ weitere Unter\u00ADsuchungs\u00ADgegen\u00ADstände.",
+    "en": "This comment concerns @@nAdd@@ more subject matter item(s)."
+  },
+  "anno_created_by": {
+    "de": "Kommentar erstellt von",
+    "en": "Comment created by"
+  },
+  "anno_list:empty": {
+    "de": "Noch keine Kommentare",
+    "en": "No comments yet"
+  },
+  "anno_list:loadfail": {
+    "de": "Kommentare konnten nicht geladen werden:",
+    "en": "Failed to load comments:"
+  },
+  "anno_list:loading": {
+    "de": "Kommentare werden geladen…",
+    "en": "Loading comments…"
+  },
+  "annoeditor_mode_create": {
+    "de": "Neuen Kommentar anlegen",
+    "en": "Create a new comment"
+  },
+  "annoeditor_mode_reply": {
+    "de": "Antworten aufr Kommentar",
+    "en": "Reply to comment"
+  },
+  "annoeditor_mode_revise": {
+    "de": "Bearbeiten des Kommentars",
+    "en": "Edit comment"
+  },
+  "compose_new_annot": {
+    "de": "Neuen Kommentar",
+    "en": "New comment"
+  },
+  "delete_anno_confirm": {
+    "de": "Dieser Kommentar wirklich endgültig löschen?",
+    "en": "Are you sure you want to delete this comment?"
+  },
+  "doi.of.annotation": {
+    "de": "DOI des Kommentars",
+    "en": "DOI of the comment"
+  },
+  "doi.of.annotation.version": {
+    "de": "DOI des Kommentars in dieser Version",
+    "en": "DOI of this version of the comment"
+  },
+  "draft_filename_rules": {
+    "de": "Wenn leer, wird der Titel des Kommentars verwendet. Die Eingabe wird bei Bedarf automatisch in die Beschränkungen eingepasst: Darf nur aus Kleinbuchstaben (a-z), Ziffern (0-9), Unterstrich (_) und/oder Minuszeichen (-) bestehen und höchstens @@maxlen@@ Zeichen lang sein.",
+    "en": "If empty, the comment's title will be used. Your input will be automatically adjusted to meet the restrictions: Must consist of only lowercase letters (a-z), digits (0-9), low lone (_) and/or hyphen-minus (-) and must be at most @@maxlen@@ characters long."
+  },
+  "draft_group_same_anno": {
+    "de": "Entwürfe zum aktuellen Kommentar",
+    "en": "Drafts for this comment"
+  },
+  "editor_placeholder": {
+    "de": "Kommentieren Sie hier",
+    "en": "Comment here"
+  },
+  "inReplyTo_hint_intro": {
+    "de": "Dieser Kommentar ist eine Antwort auf",
+    "en": "This comment is a reply to"
+  },
+  "license_cc0_author": {
+    "de": "Kommentar wird unter CC0-Lizenz (Public Domain) veröffentlicht.",
+    "en": "Your comment will be released to the public domain"
+  },
+  "license_cc0_user": {
+    "de": "Kommentar ist gemeinfrei und kann beliebig genutzt und weiterverbreitet werden.",
+    "en": "This comment is in the public domain"
+  },
+  "license_ccby_author": {
+    "de": "Kommentar kann frei genutzt werden, Sie müssen als Urheberin/Urheber genannt werden.",
+    "en": "Comment may be reused freely but must be cited"
+  },
+  "license_ccby_user": {
+    "de": "Kommentar kann frei genutzt und weiterverbreitet werden, solange Sie die/den Autor*in nennen und auf diese Seite verweisen.",
+    "en": "You may freely build upon or distribute this comment, provided you cite its creator"
+  },
+  "mint_doi.nonpublic": {
+    "de": "Der Kommentar scheint derzeit nicht öffentlich sichtbar zu sein.",
+    "en": "This comment seems to currently not be visible to the public."
+  },
+  "popover-logged-in": {
+    "de": "Kommentieren!",
+    "en": "Comment!"
+  },
+  "popover-not-logged-in": {
+    "de": "Zum Kommentieren bitte einloggen!",
+    "en": "Please login to comment"
+  },
+  "purl": {
+    "de": "URL dieses Kommentars",
+    "en": "URL of this comment"
+  },
+  "relationlink_custom_attributes_descr": {
+    "de": "Zusätzliche Eigenschaften auf oberster Ebene des Kommentars. Dient nur zur Einreichung.",
+    "en": "Additional properties on the top level of the comment, for submission only."
+  },
+  "reply_refnum_lv1": {
+    "de": "Antwort #@@ref@@ bezogen auf originalen Kommentar",
+    "en": "Reply #@@ref@@ referring to the original comment"
+  },
+  "targets_list_explain": {
+    "de": "Der Kommentar bezieht sich auf diese @@count@@ Unter\u00ADsuchungs\u00ADgegen\u00ADstände (\"target\"):",
+    "en": "The comment concerns these @@count@@ subject-matter item(s) (\"target\"):"
+  }
+}}
