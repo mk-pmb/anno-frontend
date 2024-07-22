@@ -7,9 +7,6 @@
  * #### Props
  *
  * - `collapseInitially`: Whether the annotation list should be collapsed after loading
- * - `standalone`: Whether the sidebar should inject it's own
- *   toggleing/container elements or reuse existing DOM elements. If the
- *   latter, `el` must be set. See [`displayAnnotations`](#displayannotations)
  *
  *
  */
@@ -21,7 +18,6 @@ module.exports = {
 
   props: {
       collapseInitially: {type: Boolean, default: false},
-      standalone: {type: Boolean, default: false},
   },
 
   mixins: [
@@ -66,8 +62,6 @@ module.exports = {
   },
 
   methods: {
-
-    toggle() { this.collapsed = !this.collapsed; },
 
     updateMsgBox(add, discard) {
       const sba = this;
