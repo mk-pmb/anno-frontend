@@ -1,13 +1,13 @@
 ﻿/*jslint indent: 2, maxlen: 80, continue: false, unparam: false, browser: true */
 /* -*- tab-width: 2 -*- */
-(function () {
+(function decideTargetByQueryString() {
   'use strict';
   var cfg = window.annoTestCfg;
 
   (function setTargetFromUrl() {
     var s = cfg.setTarget, q = {};
     location.search.replace(/[\?&](\w+)=([\w\.\-\~]*)/g,
-      function (m, k, v) { q[k] = m && v; });
+      function r(m, k, v) { q[k] = m && v; });
 
     if (q.cmp1) {
       cfg.initAppMode = 'cmp';
