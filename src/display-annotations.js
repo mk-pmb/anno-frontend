@@ -57,9 +57,9 @@ module.exports = function displayAnnotations(customOptions) {
       container = document.getElementById(container);
     }
     if (!container) {
-        container = document.createElement('div')
-        container.setAttribute('id', options.prefix + 'container')
-        document.body.appendChild(container);
+      container = document.createElement('div')
+      container.setAttribute('id', options.prefix + 'container')
+      document.body.appendChild(container);
     }
 
     //
