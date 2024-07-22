@@ -17,13 +17,13 @@ const eventBus = require('../../event-bus.js');
 module.exports = {
 
   props: {
-      collapseInitially: {type: Boolean, default: false},
+    collapseInitially: {type: Boolean, default: false},
   },
 
   mixins: [
-      require('../../mixin/l10n.js'),
-      require('../../mixin/prefix.js'),
-      require('../../mixin/toplevel-css.js'),
+    require('../../mixin/l10n.js'),
+    require('../../mixin/prefix.js'),
+    require('../../mixin/toplevel-css.js'),
   ],
 
   template: require('./sidebar-app.html'),
@@ -33,8 +33,8 @@ module.exports = {
   ],
 
   data() {return {
-      collapsed: this.collapseInitially,
-      msgBoxes: [],
+    collapsed: this.collapseInitially,
+    msgBoxes: [],
   }},
 
   computed: {
