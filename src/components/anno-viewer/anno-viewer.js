@@ -91,21 +91,28 @@ module.exports = {
       const el = this;
       const { state } = el.$store;
       const anno = orf(el.annotation);
+      const hasRealPublicDoi = Boolean(anno['dc:identifier']);
       // cdbg('initData el.isListViewItem', [el.isListViewItem]);
 
-      const hasRealPublicDoi = Boolean(anno['dc:identifier']);
+      const isListViewItem = (state.initAppMode === 'list');
+
+      const collapsed = Boolean(isListViewItem && el.collapseInitially
+        // ^-- This will likely be overruled by anno-list's mounted() event.
+        && (!el.asReply));
+
       const initData = {
+        auxMeta: decideAuxMeta(anno, el),
         cachedIiifLink: '',
-        collapsed: el.isListViewItem && el.collapseInitially,
-        hasRealPublicDoi,
+        collapsed,
         currentVersionDoiUri: String(anno['dc:identifier'] || ''),
         detailBarClipCopyBtnCls: 'pull-right',
         doiLinkPreviewWarning: '',
-        metaContextHints: [],
+        hasRealPublicDoi,
         highlighted: false,
+        isListViewItem,
+        metaContextHints: [],
         mintDoiMsg: '',
         replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
-        auxMeta: decideAuxMeta(anno, el),
       };
 
       if (anno['_ubhd:doiAssign']) {
@@ -164,7 +171,7 @@ module.exports = {
     showEditPreviewWarnings: { type: Boolean, default: false },
     asReply: { type: Boolean, default: false },
     // ^-- Controls whether comment is collapsible or not
-    collapseInitially: { type: Boolean, default: false },
+    collapseInitially: { type: Boolean, default: true },
     acceptEmptyAnnoId: { type: Boolean, default: false },
   },
 
@@ -207,8 +214,6 @@ module.exports = {
 
     firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
-
-    isListViewItem() { return this.$store.state.initAppMode === 'list'; },
 
     title() {
       const anno = this.annotation;
@@ -463,6 +468,7 @@ module.exports = {
       const el = this;
       el.collapsed = (function decide() {
         if (!el.isListViewItem) { return false; }
+        if (el.asReply) { return false; }
         if (command === 'show') { return false; }
         if (command === 'hide') { return true; }
         if (command === 'toggle') { return !el.collapsed; }
