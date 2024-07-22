@@ -43,14 +43,10 @@ module.exports = function displayAnnotations(customOptions) {
       apiExtras.getDeprecatedOpts = (had && (() => had));
     }());
 
-    Object.assign(SidebarApp.props, {
-      collapseInitially: { default: (options.collapseInitially !== false) },
-    });
-
     //
     // Create a container element if none was given
     //
-    let container = options.container;
+    let { container } = options;
     delete options.container;
     if (typeof container === 'string') {
       container = container.replace(/^…/, options.prefix);
