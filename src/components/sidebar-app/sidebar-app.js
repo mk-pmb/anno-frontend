@@ -4,21 +4,12 @@
  * Container for the list of annotations for a target and a modal editor to
  * edit/create new annotations.
  *
- * #### Props
- *
- * - `collapseInitially`: Whether the annotation list should be collapsed after loading
- *
- *
  */
 
 const eventBus = require('../../event-bus.js');
 
 
 module.exports = {
-
-  props: {
-    collapseInitially: {type: Boolean, default: false},
-  },
 
   mixins: [
     require('../../mixin/l10n.js'),
@@ -32,10 +23,13 @@ module.exports = {
     require('./bootstrap-tweaks.scss'),
   ],
 
-  data() {return {
-    collapsed: this.collapseInitially,
-    msgBoxes: [],
-  }},
+  data() {
+    // const sba = this;
+    // const { state } = sba.$store;
+    return {
+      msgBoxes: [],
+    };
+  },
 
   computed: {
     appMode() { return this.$store.state.initAppMode; },
