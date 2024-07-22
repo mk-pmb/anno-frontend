@@ -45,7 +45,7 @@ module.exports = function displayAnnotations(customOptions) {
 
     Object.assign(SidebarApp.props, {
       standalone: { default: !options.container },
-      collapseInitially: { default: Boolean(options.collapseInitially) },
+      collapseInitially: { default: (options.collapseInitially !== false) },
     });
 
     //
