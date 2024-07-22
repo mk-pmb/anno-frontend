@@ -41,17 +41,12 @@ module.exports = {
 
   data() {
     return {
-      collapsed: true,
+      collapsed: (sessionStore.get('anno-list:collapsed') !== false),
     };
   },
 
   mounted() {
     const annoList = this;
-
-    (function restoreSessionSetting() {
-      const ca = sessionStore.get('anno-list:collapsed');
-      if (typeof ca === 'boolean') { annoList.collapsed = ca; }
-    }());
     annoList.collapseAll('apply');
 
     // Sort the list initially and after every fetch
