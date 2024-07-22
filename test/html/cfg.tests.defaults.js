@@ -1,6 +1,6 @@
 ﻿/*jslint indent: 2, maxlen: 80, continue: false, unparam: false, browser: true */
 /* -*- tab-width: 2 -*- */
-(function () {
+(function setDefaultTestConfig() {
   'use strict';
   var cfg = {
 

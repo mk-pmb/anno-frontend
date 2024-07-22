@@ -5,7 +5,7 @@
 Example config-override file
 
 */
-(function () {
+(function ubhdDiglitServerConfig() {
   'use strict';
   var cfg = window.annoServerCfg;
 

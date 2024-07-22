@@ -268,7 +268,7 @@
     makeSlotTplFunc(tpl) {
       return function t(...slots) {
         let i = 0;
-        return tpl.replace(/¤/g, function () {
+        return tpl.replace(/¤/g, function r() {
           const v = slots[i];
           i += 1;
           return ifUndef(v, '');
