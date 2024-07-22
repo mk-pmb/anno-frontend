@@ -1,6 +1,6 @@
 ﻿/*jslint indent: 2, maxlen: 80, continue: false, unparam: false, browser: true */
 /* -*- tab-width: 2 -*- */
-(function () {
+(function setDefaultAnnoServers() {
   'use strict';
   var cfg = {}, host = location.hostname, port = (+location.port || 0),
     protoHost = location.protocol + '//' + host, testDirBaseUrl;
@@ -13,10 +13,11 @@
   testDirBaseUrl = (window.document.URL.split(/\?|\#/
     )[0].replace(/\/html\/[\w\.]+$/, '') + '/');
   cfg.draftStoreEndpoint = testDirBaseUrl + 'fixtures/drafts/';
-  cfg.loginFormUrl = () => (cfg.annoEndpoint.replace(/\w+\/$/, '')
-    + 'session/login');
+  cfg.loginFormUrl = function guessLoginFormUrl() {
+    return cfg.annoEndpoint.replace(/\w+\/$/, '') + 'session/login';
+  };
 
-  cfg.predictMintedDoiUrl = function factory() {
+  cfg.predictMintedDoiUrl = function doiOracleFactory() {
     var s = /^\S+\//,     // Server base URL
       r = /~(?=\d+$)/,    // Version separator
       p = 'https://doi.org/10.82109/anno.frontend.';  // DOI URI prefix
