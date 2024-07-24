@@ -332,7 +332,13 @@
                   target="_blank" rel="noopener noreferrer"
                   >{{ determinePredicateCaption(rlb.predicate)
                   }}</a></span>
-              <a :href="rlb.url" :title="rlb.caption"
+              <span class="
+                anno-editor-error
+                anno-error-no-link-url
+                danger
+                " v-if="!rlb.url">&#x26A0; {{ l10n('missing_required_field')
+                  }}{{ l10n('relationlink_url') }} &#x26A0;</span>
+              <a :href="rlb.url || 'about:blank'" :title="rlb.caption"
                 target="_blank" rel="noopener noreferrer">
                 <!-- i class="fa fa-tag"></i -->
                 {{ rlb.caption || rlb.url
