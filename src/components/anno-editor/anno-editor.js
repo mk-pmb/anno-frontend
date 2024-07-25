@@ -47,7 +47,6 @@ module.exports = {
 
   mixins: [
     require('../../mixin/annoUrls.js'),
-    require('../../mixin/api.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
   ],
