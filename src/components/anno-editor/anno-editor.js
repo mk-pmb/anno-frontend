@@ -62,15 +62,12 @@ module.exports = {
 
   data() {
     return {
+      annoLanguage: { keepOrigExtra: '', selected: '' },
       forceUpdatePreviewTs: 0,
       initialAuthorAgent: {},
       previousChosenAuthorIdUrl: '',
-      annoLanguage: {
-        keepOrigExtra: '',
-        selected: '',
-      },
-      symbolForNoLanguage,
       svgUpdateBlockedUntil: 0,
+      symbolForNoLanguage,
       zoneEditorEventsSetupDone: false,
     };
   },
