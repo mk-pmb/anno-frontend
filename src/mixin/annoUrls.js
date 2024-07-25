@@ -4,6 +4,8 @@ const isStr = require('is-string');
 
 const guessPrimaryTargetUriImpl = require('../guessPrimaryTargetUri.js');
 
+function orf(x) { return x || false; }
+
 
 const MT = {
 
@@ -39,6 +41,12 @@ const MT = {
 
   guessPrimaryTargetUri(anno) {
     return guessPrimaryTargetUriImpl(anno, this.$store.state);
+  },
+
+
+  findVersNumFromAnnoUrl(url) {
+    if (!url) { return 0; }
+    return (+orf(this.$store.state.versionSuffixRgx.exec(url))[1] || 0);
   },
 
 
