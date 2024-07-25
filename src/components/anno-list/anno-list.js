@@ -29,7 +29,6 @@ module.exports = {
 
   mixins: [
     require('../../checkAclAuth.js').vueMixin,
-    require('../../mixin/api.js'),
     require('../../mixin/bootstrap-compat.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
