@@ -96,6 +96,7 @@ const EX = async function loadAnnoData(origAnno) {
   editor.$refs.targetAdjustedMsg.setMsg(null,
     (tgtAdj && l10n('target_adjusted_' + tgtAdj)));
 
+  editor.sanitizeHtmlNow();
   editor.redisplayZoneEditorSvg();
   editor.reloadAnnoHtml();
 };

@@ -10,6 +10,7 @@ const validateEditorFields = require('./validateEditorFields.js');
 
 
 const EX = async function saveCreate(editor) {
+  if (editor.sanitizeHtmlNow()) { return; }
   const anno = editor.getCleanAnno();
   EX.neverSubmitFields.forEach(k => delete anno[k]);
   const { state, commit, dispatch } = editor.$store;
