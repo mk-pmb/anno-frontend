@@ -40,7 +40,7 @@ const EX = function displayAnnotations(customOptions) {
       optNames.forEach(k => {
         const v = options[k];
         if (v === undefined) { return; }
-        console.error('AnnoApp: Ignoring deprecated option:', k, '=', v);
+        console.error('annoApp: Ignoring deprecated option:', k, '=', v);
         had = { ...had, [k]: v };
         delete options[k];
       });
@@ -108,13 +108,13 @@ const EX = function displayAnnotations(customOptions) {
     const storeBlueprint = require('./vuex/store');
     Object.assign(storeBlueprint.state, options);
     const store = new Vuex.Store(storeBlueprint);
-    const annoapp = new Vue({ ...SidebarApp, store, el: makeDiv() });
-    container.appendChild(annoapp.$el);
+    const annoApp = new Vue({ ...SidebarApp, store, el: makeDiv() });
+    container.appendChild(annoApp.$el);
 
-    function getAnnoAppRef() { return annoapp; }
-    annoapp.$el.getAnnoAppRef = getAnnoAppRef;
+    function getAnnoAppRef() { return annoApp; }
+    annoApp.$el.getAnnoAppRef = getAnnoAppRef;
 
-    Object.assign(annoapp, {
+    Object.assign(annoApp, {
       getEventBus() { return eventBus; },
       ...objFromKeysList(function makeEventBusProxy(evName) {
         return function proxy(...args) { eventBus.$emit(evName, ...args); };
@@ -128,17 +128,17 @@ const EX = function displayAnnotations(customOptions) {
     });
 
     // Initialize store state
-    setTimeout(() => annoapp.$store.dispatch('retrieveInitialState'), 1);
+    setTimeout(() => annoApp.$store.dispatch('retrieveInitialState'), 1);
 
     //
     // Return the app for event emitting
     //
     if (options.exportAppAsWindowProp) {
-      window[options.exportAppAsWindowProp] = annoapp;
+      window[options.exportAppAsWindowProp] = annoApp;
     }
-    if (onAppReady) { onAppReady(annoapp); }
-    annoapp.externalRequest = externalRequest.bind(null, annoapp);
-    return annoapp;
+    if (onAppReady) { onAppReady(annoApp); }
+    annoApp.externalRequest = externalRequest.bind(null, annoApp);
+    return annoApp;
 };
 
 
