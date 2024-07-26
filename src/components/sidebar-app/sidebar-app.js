@@ -59,14 +59,14 @@ module.exports = {
 
     updateMsgBox(add, discard) {
       const sba = this;
-      console.debug('updateMsgBox', { add, discard });
+      // console.debug('updateMsgBox', { add, discard });
       if (add) {
         Object.freeze(add);
-        window.added = add;
+        // window.added = add;
       }
       const { grp } = (add || false);
       let dis = discard;
-      window.discarded = dis;
+      // window.discarded = dis;
       if (grp) {
         if (dis) {
           throw new Error('Discard invalid when adding box with group');
@@ -79,7 +79,7 @@ module.exports = {
         && box
         )).filter(Boolean);
       if (add) { boxes.push(add); }
-      window.boxes = boxes;
+      // window.boxes = boxes;
       sba.msgBoxes = boxes;
     },
 
