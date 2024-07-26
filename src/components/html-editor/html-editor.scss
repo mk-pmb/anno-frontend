@@ -1,5 +1,9 @@
 .annoeditor-html-editor {
 
+  .ql-picker.ql-size .ql-picker-item[data-value="large"],
+  .ql-picker.ql-size .ql-picker-item[data-value="huge"],
+  fx#disabled-editor-features { display: none; }
+
   .btn.active { background-color: #900; }
   .ql-editor { min-height: 200px; }
 
