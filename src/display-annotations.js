@@ -2,6 +2,7 @@
 const Vue = require('vuejs-debug-traverse-210506-pmb/vue.esm.js').default;
 const Vuex = require('vuex/dist/vuex.esm.js').default;
 
+const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
 const objFromKeysList = require('obj-from-keys-list').default;
 
@@ -21,7 +22,10 @@ const SidebarApp = require('./components/sidebar-app')
 
 // For docs see display-annotations.md
 
-module.exports = function displayAnnotations(customOptions) {
+
+function makeDiv() { return document.createElement('div'); }
+
+const EX = function displayAnnotations(customOptions) {
     // console.debug('displayAnnotations: customOptions =', customOptions);
     const options = mergeOptions(decideDefaultOptions(), customOptions);
     bootstrapCompat.initialize(options.bootstrap);
@@ -53,7 +57,7 @@ module.exports = function displayAnnotations(customOptions) {
       container = document.getElementById(container);
     }
     if (!container) {
-      container = document.createElement('div')
+      container = makeDiv();
       container.setAttribute('id', options.prefix + 'container')
       document.body.appendChild(container);
     }
@@ -68,7 +72,7 @@ module.exports = function displayAnnotations(customOptions) {
       if (!events) { return; }
       onAppReady = events.appReady;
       delete events.appReady;
-      Object.entries(events).forEach(function install([evName, evHandlers]) {
+      loMapValues(events, function install(evHandlers, evName) {
         [].concat(evHandlers).forEach(hnd => hnd && eventBus.$on(evName, hnd));
       });
     }());
@@ -76,8 +80,7 @@ module.exports = function displayAnnotations(customOptions) {
     (function evaluateFactoryOptions() {
       // Some options can also be functions to be called to produce
       // the value now.
-      Object.entries(options).forEach(function check(pair) {
-        const [key, oldValue] = pair;
+      loMapValues(options, function check(oldValue, key) {
         if (typeof oldValue !== 'function') { return; }
         const qualified = (key.endsWith('Url')
           || (key === 'purlTemplate')
@@ -104,13 +107,12 @@ module.exports = function displayAnnotations(customOptions) {
 
     const storeBlueprint = require('./vuex/store');
     Object.assign(storeBlueprint.state, options);
-    const annoapp = new Vue({
-      ...SidebarApp,
-      el: document.createElement('div'),
-      store: new Vuex.Store(storeBlueprint),
-    });
+    const store = new Vuex.Store(storeBlueprint);
+    const annoapp = new Vue({ ...SidebarApp, store, el: makeDiv() });
     container.appendChild(annoapp.$el);
-    annoapp.$el.getAnnoAppRef = () => annoapp;
+
+    function getAnnoAppRef() { return annoapp; }
+    annoapp.$el.getAnnoAppRef = getAnnoAppRef;
 
     Object.assign(annoapp, {
       getEventBus() { return eventBus; },
@@ -137,4 +139,9 @@ module.exports = function displayAnnotations(customOptions) {
     if (onAppReady) { onAppReady(annoapp); }
     annoapp.externalRequest = externalRequest.bind(null, annoapp);
     return annoapp;
-}
+};
+
+
+
+
+module.exports = EX;
