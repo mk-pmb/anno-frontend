@@ -11,6 +11,13 @@ const eventBus = require('@/event-bus')
  *
  */
 
+function replaceClassSpan(orig, cls, inner) {
+  // console.debug('replaceClassSpan:', { orig, cls, inner });
+  if (cls === 'ql-size-normal') { return inner; }
+  if (cls === 'ql-size-small') { return '<small>' + inner + '</small>'; }
+  return orig;
+}
+
 module.exports = {
     mixins: [
         require('@/mixin/l10n'),
@@ -51,24 +58,29 @@ module.exports = {
         })
         this.quill.on('text-change', (/* delta, oldDelta, source */) => {
             // console.debug('HTML editor text change in:', this.$refs.editor);
-            let html = this.$refs.editor.children[0].innerHTML
-            if (html === '<p><br></p>') html = ''
-            this.value = html
+            this.value = this.$refs.editor.children[0].innerHTML;
         })
         eventBus.$on('html-editor-reload-html', () => this.quill.pasteHTML(this.value))
         eventBus.$on('open-editor', () => this.quill.pasteHTML(this.value))
         eventBus.$on('close-editor', () => this.quill.pasteHTML(''))
     },
     computed: {
-        firstHtmlBody() {return this.$store.getters.firstHtmlBody},
-        value: {
-            get () {
-                const {firstHtmlBody} = this
-                // console.log({firstHtmlBody})
-                return firstHtmlBody && firstHtmlBody.value ? firstHtmlBody.value : ''
-            },
-            set (content) {this.$store.commit('SET_HTML_BODY_VALUE', content)},
+      value: {
+        get() {
+          return (this.$store.getters.firstHtmlBody || false).value || '';
         },
+        set(orig) {
+          let h = orig;
+          h = h.replace(/<span class="(ql-[^<>]*)">((?:[^<>]|<\/?(?:br|img|a|i|u)(?:\/| [^<>]*|)>)+)<\/span>/g, replaceClassSpan);
+          h = h.replace(/\s*<br[\/\s]*>/g, '<br>');
+          h = h.replace(/<img [^<>]+/g, s => s.replace(/\s*\/?$/, ''));
+          h = h.replace(/(<\/p>\s*<p>)((?:<br>)*)/g, '$2$1');
+          h = h.replace(/^(<p>(?:\s|<br>)*<\/p>)+/g, '');
+          h = h.replace(/<p><br ?\/?><\/p>/g, '<p>&nbsp;</p>');
+          h = h.replace(/<p>\s*<\/p>/g, '');
+          this.$store.commit('SET_HTML_BODY_VALUE', h)
+        },
+      },
     },
 
-}
+};
