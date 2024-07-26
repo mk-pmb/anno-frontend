@@ -33,7 +33,7 @@ const EX = function listDraftsGrouped() {
     byVoc[grpCfg.voc] = gr;
     return gr;
   });
-  window.groups = groups;
+  // window.groups = groups;
   groups.byVoc = byVoc;
   panel.allDrafts.forEach(function add(draftMeta) {
     const grVoc = decideVocGroup(draftMeta, eaHashes);
