@@ -1,12 +1,16 @@
 /* -*- coding: UTF-8, tab-width: 2 -*- */
 'use strict';
 (function setup() {
-  /* global define */
+  /* global define, window */
 
   function noClosingSlash(s) { return s.replace(/\s*\/?$/, ''); }
 
   const EX = function preparePluginSanitizeHtml(pluginCtx) {
     const { sani } = pluginCtx.injected;
+    if (typeof sani !== 'function') {
+      console.debug('preparePluginSanitizeHtml: injected:', pluginCtx.injected);
+      throw new TypeError('preparePluginSanitizeHtml: Bad Injection.');
+    }
     const s = function sanitizeHtml(dirtyHTML) {
       let h = sani(dirtyHTML, s.rules);
       h = h.replace(/<(?:img|br)[^<>]+/g, noClosingSlash);
@@ -84,5 +88,8 @@
     if (d && d.amd) { d(function f() { return e; }); }
     const m = ((typeof module === 'object') && module);
     if (m && m.exports) { m.exports = e; }
+    const w = ((typeof window === 'object') && window);
+    const a = w && w.displayAnnotations;
+    if (a && a.getPluginFactories) { a.getPluginFactories().sanitizeHtml = e; }
   }(EX));
 }());
