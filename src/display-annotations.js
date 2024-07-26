@@ -2,6 +2,7 @@
 const Vue = require('vuejs-debug-traverse-210506-pmb/vue.esm.js').default;
 const Vuex = require('vuex/dist/vuex.esm.js').default;
 
+const getOwn = require('getown');
 const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
 const objFromKeysList = require('obj-from-keys-list').default;
@@ -24,6 +25,13 @@ const SidebarApp = require('./components/sidebar-app')
 
 
 function makeDiv() { return document.createElement('div'); }
+
+
+const pluginInjectableModules = {
+  'sanitize-html': require('sanitize-html'),
+};
+
+
 
 const EX = function displayAnnotations(customOptions) {
     // console.debug('displayAnnotations: customOptions =', customOptions);
@@ -117,6 +125,7 @@ const EX = function displayAnnotations(customOptions) {
 
     Object.assign(annoApp, {
       getEventBus() { return eventBus; },
+      getPluginByName(p) { return getOwn(annoApp.plugins, p, false); },
       ...objFromKeysList(function makeEventBusProxy(evName) {
         return function proxy(...args) { eventBus.$emit(evName, ...args); };
       }, [
@@ -139,8 +148,32 @@ const EX = function displayAnnotations(customOptions) {
     }
     if (onAppReady) { onAppReady(annoApp); }
     annoApp.externalRequest = externalRequest.bind(null, annoApp);
+
+    annoApp.plugins = {};
+    function installPlugin(plName, factory) {
+      const injected = loMapValues(factory.injectModules, function inj(what) {
+        const found = getOwn(pluginInjectableModules, what);
+        if (found !== undefined) { return found; }
+        throw new Error('Cannot inject plugin ' + plName + ' with ' + what);
+      });
+      const plCtx = { pluginName: plName, annoApp, injected };
+      try {
+        annoApp.plugins[plName] = factory(plCtx);
+      } catch (plErr) {
+        console.error('AnnoApp: Prepare plugin ' + plName + ':', plErr);
+        throw plErr;
+      }
+    }
+    loMapValues(EX.getPluginFactories(),
+      (how, plName) => setTimeout(() => installPlugin(plName, how), 1));
+
     return annoApp;
 };
+
+
+Object.assign(EX, {
+  getPluginFactories: Object.bind(null, {}),
+});
 
 
 
