@@ -1,3 +1,4 @@
+const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
 const jQuery = require('jquery');
 
@@ -376,6 +377,31 @@ module.exports = {
       const { target } = editor.$store.state.editing;
       const list = [].concat(target).map(fmt).filter(Boolean);
       return list;
+    },
+
+
+    sanitizeHtmlNow() {
+      const editor = this;
+      const store = editor.$store;
+      const sani = store.getAnnoAppRef().getPluginByName('sanitizeHtml');
+      if (!sani) { return false; }
+      let nModified = 0;
+
+      function checkBody(body, idx) {
+        const { format, value } = body;
+        if (format !== 'text/html') { return; }
+        if (!value) { return; }
+        const clean = sani(value);
+        if (clean === value) { return; }
+        store.commit('UPDATE_BODY', { '#': idx, value: clean });
+        nModified += 1;
+      }
+
+      arrayOfTruths.ifAnyMap(store.state.editing.body, checkBody);
+      if (!nModified) { return false; }
+      setTimeout(() => window.alert(editor.l10n('sanitize_html_modified')), 1);
+      editor.reloadAnnoHtml();
+      return true;
     },
 
   },
