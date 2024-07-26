@@ -113,6 +113,7 @@ const EX = function displayAnnotations(customOptions) {
 
     function getAnnoAppRef() { return annoApp; }
     annoApp.$el.getAnnoAppRef = getAnnoAppRef;
+    store.getAnnoAppRef = getAnnoAppRef;
 
     Object.assign(annoApp, {
       getEventBus() { return eventBus; },
