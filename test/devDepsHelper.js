@@ -2,6 +2,7 @@
 // somewhat hidden.
 'use strict';
 
+require('bootstrap3');
 require('font-awesome');
 require('vuejs-debug-traverse-210506-pmb');
 
