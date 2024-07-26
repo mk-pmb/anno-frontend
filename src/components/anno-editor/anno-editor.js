@@ -157,7 +157,9 @@ module.exports = {
 
     switchTabByRefName(refName) {
       const refs = this.$refs;
-      refs.tablist.switchToTabPaneByVueElem(refs[refName]);
+      const tab = refs[refName];
+      // console.debug('switchTabByRefName:', refName, tab);
+      refs.tablist.switchToTabPaneByVueElem(tab);
     },
 
     getPrimarySubjectTarget() {

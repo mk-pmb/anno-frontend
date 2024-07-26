@@ -1,7 +1,7 @@
 <div :id="name" role="tabpanel"
   :class="[
     'tab-pane',
-    'tab-topic-' + topic,
+    (topic ? 'tab-topic-' + topic : ''),
     paneCls,
   ].filter(Boolean)"
   :data-topic="topic"

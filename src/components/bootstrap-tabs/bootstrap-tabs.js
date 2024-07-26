@@ -32,6 +32,7 @@ module.exports = {
     switchToNthTab(n) {
       const refs = this.$refs;
       const idx = (+n || 0) - 1;
+      // console.debug({ switchToNthTab: n });
       const activate = jqSetSingularClass.bind(null, 'active', idx);
       // Highlight the correct tab in BS3:
       activate(refs.tabs.children);
@@ -42,15 +43,23 @@ module.exports = {
     },
 
     switchToTabPaneByVueElem(elem) {
-      const panes = this.tabPanesAsVueElements();
+      const tabs = this;
+      const panes = tabs.tabPanesAsVueElements();
       let n = 0;
+      // console.debug('switchToTabPaneByVueElem:', elem);
       if (elem) {
-        n = panes.findIndex(p => (
-          (p === elem)
-          || (p === elem.$parent)
-        )) + 1;
+        panes.some(function compare(p, i) {
+          const same = ((p === elem)
+            || (p === elem.$parent)
+            || (p.$el === elem)
+            || (p.$el === elem.parentNode)
+            );
+          if (same) { n = i + 1; }
+          // console.debug('compare:', [same, p, p.$el, elem.$parent]);
+          return same;
+        });
       }
-      this.switchToNthTab(n);
+      tabs.switchToNthTab(n);
     },
 
   },
