@@ -37,7 +37,7 @@ function cfgRetarget(vueStore, anno) {
   const subjTgtUrl = guessPrimaryTargetUri({ target: tgtCateg.subjTgt },
     vueStore.state);
   if (!subjTgtUrl) {
-    window.cfgRetargetErrorDetails = { anno, tgtCateg };
+    // window.cfgRetargetErrorDetails = { anno, tgtCateg };
     throw new Error('cfgRetarget: Unable to find subject target!');
   }
   const cfgUpd = { targetSource: subjTgtUrl };
