@@ -373,12 +373,6 @@ module.exports = {
     },
 
 
-    findVersNumFromAnnoUrl(url) {
-      if (!url) { return 0; }
-      return (+orf(this.$store.state.versionSuffixRgx.exec(url))[1] || 0);
-    },
-
-
     makeEventContext() {
       const viewer = this;
       return {
