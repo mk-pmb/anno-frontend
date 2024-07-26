@@ -14,7 +14,7 @@ const EX = async function saveCreate(editor) {
   EX.neverSubmitFields.forEach(k => delete anno[k]);
   const { state, commit, dispatch } = editor.$store;
 
-  window.relaEd = editor.$refs.relationLinkEditor;
+  // window.relaEd = editor.$refs.relationLinkEditor;
   Object.assign(anno, EX.parseCustomToplevelAttributes(anno,
     editor.$refs.relationLinkEditor.customToplevelAttributes));
 
@@ -34,7 +34,7 @@ const EX = async function saveCreate(editor) {
     saveResp = await api22(state).aepPost('anno/', anno);
   } catch (saveFailed) {
     console.error('saveCreate API fail:', saveFailed);
-    window.errSaveFailed = saveFailed;
+    // window.errSaveFailed = saveFailed;
     window.alert(l10n('error:') + '\n' + saveFailed);
     return;
   }
