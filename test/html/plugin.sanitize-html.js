@@ -1,7 +1,7 @@
 /* -*- coding: UTF-8, tab-width: 2 -*- */
 'use strict';
 (function setup() {
-  /* global define, window */
+  /* global define */
 
   function noClosingSlash(s) { return s.replace(/\s*\/?$/, ''); }
 
@@ -88,6 +88,7 @@
     if (d && d.amd) { d(function f() { return e; }); }
     const m = ((typeof module === 'object') && module);
     if (m && m.exports) { m.exports = e; }
+    // eslint-disable-next-line no-undef
     const w = ((typeof window === 'object') && window);
     const a = w && w.displayAnnotations;
     if (a && a.getPluginFactories) { a.getPluginFactories().sanitizeHtml = e; }

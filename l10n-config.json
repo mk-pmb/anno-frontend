@@ -181,6 +181,7 @@
             "annoeditor":          "Annotations-Editor",
 
             "preview":             "Vorschau",
+            "sanitize_html_modified": "Der Text enthielt eine oder mehrere ungültige Formatierung/en. Diese wurde/n in Text umgewandelt. Bitte prüfen Sie die Vorschau erneut auf Korrektheit.",
 
             "generic_api_call_in_progress":   "Wird verarbeitet:",
             "generic_api_call_failed":        "Fehlgeschlagen:",
@@ -481,6 +482,7 @@
             "additional_subjects_show": "Show all",
 
             "preview":             "Preview",
+            "sanitize_html_modified": "The Text contained one or more invalid formats. They were converted to plain text. Please re-check the preview for potential remnants.",
 
             "generic_api_call_in_progress":   "Waiting for result:",
             "generic_api_call_failed":        "Failed:",
