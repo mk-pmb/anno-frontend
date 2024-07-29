@@ -27,6 +27,7 @@ const EX = async function saveCreate(editor) {
 
   const { l10n } = editor;
   // console.debug('Annotation about to be POSTed:', anno);
+  // console.debug('  ^-- keys:', Object.keys(anno).sort().join(', '));
   if (!window.confirm(l10n('confirm_publish'))) { return; }
   console.debug('Confirmed. Gonna POST.');
 
