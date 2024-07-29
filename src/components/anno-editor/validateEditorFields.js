@@ -5,7 +5,7 @@ function orf(x) { return x || false; }
 
 
 const vali = function validateEditorFields(onBehalfOfVueComponent, anno) {
-  console.debug('validateEditorFields', onBehalfOfVueComponent, anno);
+  // console.debug('validateEditorFields', anno, { onBehalfOfVueComponent });
   // onBehalfOfVueComponent.$el.debugValidate = () => onBehalfOfVueComponent;
   const problems = [];
   let { l10n } = onBehalfOfVueComponent;
