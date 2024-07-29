@@ -1,16 +1,29 @@
 ﻿/* -*- tab-width: 2 -*- */
 'use strict';
 
+
+const annoEndpoint = ''; /*
+  URL of the Web Annotation Protocol server. Should end with a slash.
+  For use with `anno-server-22`'s extended features, omit the `anno/`
+  part of its namespace and instead use `annoByIdUrlPrefix`.
+*/
+
+const annoByIdUrlPrefix = '';
+// ^-- For strictly standards-compliant servers, this should be empty.
+// v-- For use with `anno-server-22`'s extended features, instead use one of:
+// const annoByIdUrlPrefix = 'as/author/anno/';
+// const annoByIdUrlPrefix = 'as/approver/anno/';
+
+
 const srvCfg = {
 
   // For URLs that are used only as button targets but not for automated
   //  requests, see `user-interface.js`.
 
-  annoEndpoint: '', /*
-    URL of the Web Annotation Protocol server. Should end with a slash.
-  */
+  annoEndpoint,
+  annoByIdUrlPrefix,
 
-  annoListSearchPrefix: 'anno/by/subject_target/', /*
+  annoListSearchPrefix: annoByIdUrlPrefix + 'by/subject_target/', /*
     The sub URL inside `annoEndpoint` to use for search.
     The default value is suitable for `anno-server-22`.
     The `the targetSource` will be appended.
@@ -21,15 +34,6 @@ const srvCfg = {
     exact sub URL (inside the `annoEndpoint`) to use for search,
     independent of `the targetSource`.
   */
-
-  annoByIdUrlPrefix: 'anno/',
-
-  stampActionPathPrefixesByStampName: {
-    // For same prefix for all stamp actions:
-    // 'as:deleted': 'as/approver/',
-    // Or just for adding the stamp:
-    // 'dc:dateAccepted': { addStamp: 'as/approver/' },
-  },
 
   draftStoreEndpoint: '', /*
     URL of a WebDAV collection. Should end with a slash.
