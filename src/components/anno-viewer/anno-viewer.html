@@ -5,9 +5,7 @@
     'panel-default',
     'annoeditor-viewer',
     (highlighted && 'annoeditor-highlight'),
-    ((annotation.id === purlId
-      // ^-- A legacy highlighting mechanism. See `anno-viewer.js`.
-      ) && 'annoeditor-purl'),
+    (legacyPurlHighlight && 'annoeditor-purl'),
     (asReply && 'annoeditor-reply'),
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
     (isOwnAnno && 'own-anno'),
