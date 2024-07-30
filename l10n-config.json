@@ -47,10 +47,7 @@
             "edit_as_moderator":   "Fremdbearb.",
             "edit_draft":          "Laden/Bearbeiten",
             "edit_draft_labeled":  "Laden/bearbeite Entwurf \"@@draftName@@\" vom @@draftDate@@ um @@draftTime@@",
-            "edit_headline":       "Annotationen-Editor",
             "editor_placeholder":  "Annotieren Sie hier",
-            "edit_zones":          "Zonen editieren",
-            "Annotations":         "Annotationen",
             "toggle_extended_options": "Erweitert …",
             "License":             "Lizenz",
             "license_unknown_short": "§ ?",
@@ -178,8 +175,6 @@
             "mint_doi.success":    "DOI wurde soeben angefordert.",
 
             "discard":             "Verwerfen",
-            "annoeditor":          "Annotations-Editor",
-
             "preview":             "Vorschau",
             "sanitize_html_modified": "Der Text enthielt eine oder mehrere ungültige Formatierung/en. Diese wurde/n in Text umgewandelt. Bitte prüfen Sie die Vorschau erneut auf Korrektheit.",
 
@@ -296,9 +291,7 @@
             "edit_as_moderator":   "Edit (mod)",
             "edit_draft":          "Load/edit",
             "edit_draft_labeled":  "Load/edit draft \"@@draftName@@\" saved @@draftDate@@ at @@draftTime@@",
-            "edit_headline":       "Annotation Editor",
             "editor_placeholder":  "Annotate here",
-            "edit_zones":          "Edit zones",
             "toggle_extended_options": "Extended …",
             "text_body_language":  "Language",
             "login":               "Log in",
@@ -426,7 +419,6 @@
             "mint_doi.success":    "DOI allocation has been requested.",
 
             "discard":             "Discard",
-            "annoeditor":          "Annotation editor",
 
             "relationlink_predicate=http://www.w3.org/2000/01/rdf-schema#seeAlso": "see also",
             "relationlink_predicate=http://purl.org/dc/terms/references": "references",
