@@ -83,7 +83,7 @@ module.exports = {
     data() {
       const el = this;
       const { state } = el.$store;
-      const anno = orf(el.annotation);
+      const anno = orf(el.annotation); // .annoData isn't available yet
       const hasRealPublicDoi = Boolean(anno['dc:identifier']);
       // console.debug('initData el.isListViewItem', [el.isListViewItem]);
 
@@ -203,14 +203,14 @@ module.exports = {
   },
 
   computed: {
-    annoIdUrl()          { return this.annotation.id || ''; },
+    annoData() { return orf(this.annotation); },
+    annoIdUrl() { return this.annoData.id || ''; },
 
     firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
 
     title() {
-      const anno = this.annotation;
-      if (!anno) { return ''; }
+      const anno = this.annoData;
       return String(anno['dc:title'] || anno.title || '');
     },
 
@@ -232,7 +232,7 @@ module.exports = {
 
 
     approval() {
-      const val = this.annotation['dc:dateAccepted'];
+      const val = this.annoData['dc:dateAccepted'];
       const st = { val, active: true, explain: '' };
       if (val === undefined) { return st; } // i.e. no approval required
       let icon = '';
@@ -288,7 +288,7 @@ module.exports = {
 
 
     creatorsList() {
-      const { creator } = this.annotation;
+      const { creator } = this.annoData;
       if (!creator) { return []; }
       const list = jsonDeepCopy([].concat(creator).filter(Boolean));
       const lastItem = list.slice(-1);
@@ -298,7 +298,7 @@ module.exports = {
 
 
     currentLicense() {
-      const licUrl = this.annotation.rights;
+      const licUrl = this.annoData.rights;
       const licInfo = orf(licensesByUrl.get(licUrl));
       return licInfo;
     },
@@ -352,8 +352,8 @@ module.exports = {
     formatters,
     toggleDetailBar,
 
-    revise() { return eventBus.$emit('revise', this.annotation) },
-    reply()  { return eventBus.$emit('reply',  this.annotation) },
+    revise() { return eventBus.$emit('revise', this.annoData) },
+    reply()  { return eventBus.$emit('reply',  this.annoData) },
 
     async approve() {
       await simpleDateStamp(this, 'dc:dateAccepted');
@@ -471,7 +471,7 @@ module.exports = {
 
 
     replyRefNumText() {
-      const anno = this.annotation;
+      const anno = this.annoData;
       const ref = anno[':ANNO_FE:replyRefNum'];
       const tgt = anno[':ANNO_FE:inReplyToRefNum'];
       return this.l10n(tgt ? 'reply_refnum_deep' : 'reply_refnum_lv1'
@@ -479,9 +479,7 @@ module.exports = {
     },
 
 
-    otherVersionsExist() {
-      return !!this.annotation['dc:replaces'];
-    },
+    otherVersionsExist() { return !!this.annoData['dc:replaces']; },
 
 
     decideShowPurlButton() {
