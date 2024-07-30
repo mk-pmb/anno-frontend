@@ -227,6 +227,11 @@ module.exports = {
     uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
     uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
+    legacyPurlHighlight() {
+      const { purlId, annoData } = this;
+      return Boolean(purlId && annoData && ((purlId === annoData.id)
+        || (purlId === annoData['iana:latest-version'])));
+    },
 
     isOwnAnno() {
       const viewer = this;
