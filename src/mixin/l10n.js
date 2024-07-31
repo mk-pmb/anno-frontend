@@ -8,8 +8,10 @@ const l10nCfg = require('../../l10n-config.json');
 const langCodesMap = l10nCfg.langcode;
 const dfLangCode = l10nCfg.defaultlang;
 
+function ifDef(x, d) { return (x === undefined ? d : x); }
 
 function l10n(cfg, vocKey, fallback) {
+  if (!vocKey) { return ifDef(fallback, vocKey); }
   if (vocKey && vocKey.startsWith('<')) {
     return vocKey.replace(/<([ -;=@-~]+)\s*>/g,
       (m, k) => m && l10n(cfg, k, fallback));
@@ -34,8 +36,7 @@ function l10n(cfg, vocKey, fallback) {
   const dfLangDict = getOwn(localizations, dfLangCode);
   const dfLangVoc = getOwn(dfLangDict, vocKey);
   if (dfLangVoc) { return dfLangVoc; }
-  if (fallback !== undefined) { return fallback; }
-  return vocKey;
+  return ifDef(fallback, vocKey);
 }
 
 
