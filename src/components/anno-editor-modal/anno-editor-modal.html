@@ -2,7 +2,8 @@
    ref="teleporter">
 <div role="dialog"
   :class="[
-    'modal fade',
+    'modal',
+    // DO NOT ENABLE ANIMATION! (The 'fade' class. See .js for details.)
     ...decideTopLevelCssClasses(),
     'anno-editor-modal-dialog',
   ]"
