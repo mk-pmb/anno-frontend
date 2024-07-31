@@ -23,13 +23,6 @@ const defaultAxiosOpts = {
 };
 
 
-function resolveRelativeUrl(url) {
-  const lnk = document.createElement('a');
-  lnk.href = url;
-  return lnk.href;
-}
-
-
 const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
   function constructRequestUri(endpointName, subUrl) {
     if ((!subUrl) && (subUrl !== '')) {
@@ -39,7 +32,7 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
     if (!epBaseUrl) {
       throw new Error('Endpoint URL not configured for ' + endpointName);
     }
-    epBaseUrl = resolveRelativeUrl(epBaseUrl);
+    epBaseUrl = (new URL(epBaseUrl, document.URL)).href;
 
     if (subUrl.startsWith('://')) {
       // ^- Internal notation for: We expect the remainder to be an
