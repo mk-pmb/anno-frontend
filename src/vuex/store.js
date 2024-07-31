@@ -26,6 +26,7 @@ module.exports = {
       acl: null,
       cacheBusterEnabled: false,
       editMode: null,
+      lurkMode: false,
       userSessionInfo: false,
     },
     modules: {
