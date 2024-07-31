@@ -35,16 +35,6 @@
 
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 
-<script src="cfg.anno-server.defaults.js"></script>
-<script src="cfg.tests.defaults.js"></script>
-<script src="cfg.tests.mute-traverse.js"></script>
-<script src="cfg.tests.target-examples.js"></script>
-<script src="cfg.tests.target-from-qrystr.js"></script>
-<script src="../../.git/@/config-override/cfg.anno-server.js"></script>
-<script src="../../.git/@/config-override/cfg.tests.js"></script>
-<script src="../../../anno-local/config-override/cfg.anno-server.js"></script>
-<script src="../../../anno-local/config-override/cfg.tests.js"></script>
-
 <style>
   @import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
   @import url("../../node_modules/font-awesome/css/font-awesome.min.css");
@@ -67,6 +57,16 @@
 <script src="../../node_modules/@/anno-common/anno-webpack/dist/anno-common.dev.js"></script>
 <script src="../../dist/anno-frontend.dev.js"></script>
 
+<script src="cfg.anno-server.defaults.js"></script>
+<script src="cfg.tests.defaults.js"></script>
+<script src="cfg.tests.mute-traverse.js"></script>
+<script src="cfg.tests.target-examples.js"></script>
+<script src="cfg.tests.target-from-qrystr.js"></script>
+<script src="../../.git/@/config-override/cfg.anno-server.js"></script>
+<script src="../../.git/@/config-override/cfg.tests.js"></script>
+<script src="../../../anno-local/config-override/cfg.anno-server.js"></script>
+<script src="../../../anno-local/config-override/cfg.tests.js"></script>
+
 <script src="plugin.sanitize-html.js"></script>
 
 <!--  ATTN: Don't load test code with type="module", as this would make
@@ -76,11 +76,6 @@
 <script src="tests.fragment-selector.js"></script>
 <script src="tests.css-overrides.js"></script>
 
-<script>
-displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
-  // default: // bootstrap: { version: { major: 4 } },
-  // targetImage: null,
-}));
-</script>
+<script>window.ubhdAnnoApp.start();</script>
 
 </body></html>
