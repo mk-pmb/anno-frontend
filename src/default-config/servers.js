@@ -49,6 +49,9 @@ const srvCfg = {
     '%ri', // version identifier
   ].join(''),
 
+  myIdentitiesEndpoint: '%aesession/whoami?author_identities=full',
+  // ^-- "%ae" = annoEndpoint, only valid at start of string.
+
   authorIdentityOmitToPreserve: false, /*
     A 2023-09-19 draft version of `anno-server-22` interpreted omission
     of the `creator` field as signal of intent to inherit the previous

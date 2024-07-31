@@ -16,20 +16,28 @@ function updateStoredUsi(state, replace, updates) {
 
 const EX = async function fetchUserSessionInfo(store) {
   const { state, commit } = store;
+  let url = state.myIdentitiesEndpoint;
+  if (!url) { return; }
+  if (url.startsWith('%ae')) {
+    url = url.slice(3);
+  } else {
+    console.error('Anno-Frontend: myIdentitiesEndpoint:',
+      'Currently, only URLs within the annoEndpoint are supported.');
+    return;
+  }
+
   let { fetching } = orf(state[usiKey]);
   if (fetching) {
     console.warn('fetchUserSessionInfo: Another request is already pending.',
       ':TODO: Abort the other request.');
   }
-
   fetching = {};
   await commit('INJECTED_MUTATION', [updateStoredUsi, false, { fetching }]);
   const mutateUpdate = {
     fetchQueryTs: Date.now(),
     // ^-- Using a number in order to reduce Vue store proxification.
   };
-  const fetchPr = api22(state).aepGet('session/whoami'
-    + '?author_identities=full');
+  const fetchPr = api22(state).aepGet(url);
   fetching.getPr = Object.bind(null, fetchPr);
   // ^- Wrapping the PR in a getter function will protect it from
   //    the vue store's proxification.
