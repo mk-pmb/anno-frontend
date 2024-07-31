@@ -1,2 +1,2 @@
 'use strict';
-window.displayAnnotations = require('./src/display-annotations.js');
+window.displayAnnotations = require('./src/main.js');
