@@ -109,7 +109,8 @@ Object.assign(fvl, {
     try {
       latestVerData = await ctx.api.getAnnoById(ctx.baseId);
     } catch (apiErr) {
-      const { finalUrl, linkRels } = apiErr;
+      const { finalUrl } = apiErr;
+      const linkRels = orf(apiErr.linkRels);
       // console.debug('discoverInitialFacts:', { apiErr, finalUrl, linkRels });
       const latestVerNum = (fvl.guessVerNum(linkRels['latest-version'])
         || fvl.guessVerNum(linkRels['original'])
