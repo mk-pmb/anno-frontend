@@ -85,16 +85,24 @@
       :show-toolbar-file="false"
       />
     <div class="debug-feature external-zoneeditor-toolbar"
-      style="position: absolute; top: 2px; right: 2px;">
-      <bootstrap-button
+      style="position: absolute; top: 2px; right: 2px;"
+      ><bootstrap-button
+        @click="hideEditorAndStartExternalTargetEditing"
+        title="hideEditorAndStartExternalTargetEditing"
+        icon-fa="arrows-alt"
+        ></bootstrap-button
+      ><bootstrap-button
         eventbus-emit="startExternalTargetEditing"
         :eventbus-args="getPrimarySubjectTarget"
         title="startExternalTargetEditing"
-        icon-fa="rocket" />
-      <bootstrap-button
+        icon-fa="rocket"
+        ></bootstrap-button
+      ><bootstrap-button
         eventbus-emit="abortExternalTargetEditing"
         title="abortExternalTargetEditing"
-        icon-fa="bomb" />
+        icon-fa="bomb"
+        ></bootstrap-button
+      >
     </div>
   </bootstrap-tab>
 

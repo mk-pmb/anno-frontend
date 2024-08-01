@@ -35,6 +35,8 @@ module.exports = {
         doi()          {return this.$store.state.editing.doi},
         editMode()     {return this.$store.state.editMode},
         editor()       {return this.$refs['editor']},
+
+        isOpen() { return this.$el.classList.contains('open'); },
     },
 
     created() {
@@ -61,14 +63,23 @@ module.exports = {
           jq(this.$refs.editorDialog).modal(opt);
         },
 
-        show(/* annotation */) {
+        show() {
+          this.$el.classList.add('open');
           this.updateModal({
             keyboard: false,
             backdrop: 'static',
-          });
+          }); /*
+            NB: If the modal popup gets stuck with the background already
+            fully transparent but still blocking access to the page beneath,
+            it's probably because of a race condition with the fade animation.
+            Solution: Don't use the "fade" class.
+          */
         },
 
-        hide() { this.updateModal('hide'); },
+        hide() {
+          this.updateModal('hide');
+          this.$el.classList.remove('open');
+        },
 
     },
 
