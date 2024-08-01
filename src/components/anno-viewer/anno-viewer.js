@@ -187,7 +187,6 @@ module.exports = {
       const methodName = `${state}Highlighting`;
       eventBus.$on(methodName, function manageHighlight(subjectIdUrl, expand) {
         const ourIdUrl = viewer.annoIdUrl;
-        // console.debug('$on cb', { methodName, ourIdUrl, subjectIdUrl });
         if (!ourIdUrl) { return; } // early init
         if (subjectIdUrl !== ourIdUrl) { return; }
         viewer[methodName](expand);

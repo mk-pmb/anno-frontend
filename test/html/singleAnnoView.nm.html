@@ -20,14 +20,6 @@
 
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 
-<script src="cfg.anno-server.defaults.js"></script>
-<script src="cfg.tests.defaults.js"></script>
-<script src="cfg.tests.mute-traverse.js"></script>
-<script src="../../.git/@/config-override/cfg.anno-server.js"></script>
-<script src="../../.git/@/config-override/cfg.tests.js"></script>
-<script src="../../../anno-local/config-override/cfg.anno-server.js"></script>
-<script src="../../../anno-local/config-override/cfg.tests.js"></script>
-
 <style>
   @import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
   @import url("../../node_modules/font-awesome/css/font-awesome.min.css");
@@ -50,9 +42,19 @@
 <script src="../../node_modules/@/anno-common/anno-webpack/dist/anno-common.dev.js"></script>
 <script src="../../dist/anno-frontend.dev.js"></script>
 
-<script>
-displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
+<script src="cfg.anno-server.defaults.js"></script>
+<script src="cfg.tests.defaults.js"></script>
+<script src="cfg.tests.mute-traverse.js"></script>
+<script src="../../.git/@/config-override/cfg.anno-server.js"></script>
+<script src="../../.git/@/config-override/cfg.tests.js"></script>
+<script src="../../../anno-local/config-override/cfg.anno-server.js"></script>
+<script src="../../../anno-local/config-override/cfg.tests.js"></script>
 
+<script src="plugin.sanitize-html.js"></script>
+
+
+<script>
+window.ubhdAnnoApp.configure({
   targetSource:       'https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074',
   targetImage:        'https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074/_image',
   targetImageWidth:   1901,
@@ -66,7 +68,11 @@ displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
   initCmpBaseId:  '09a70a00f6719', // ?t=esau
   initCmpPrimarySideVersionNumber: 1,
   // initCmpOnVersionSelected(evt) { Hook set in `cfg.tests.defaults.js` }
+});
+</script>
 
+<script>
+window.ubhdAnnoApp.configure({
   events: {
 
     startExternalTargetEditing(target) {
@@ -83,8 +89,9 @@ displayAnnotations(Object.assign({}, window.annoServerCfg, window.annoTestCfg, {
     },
 
   },
-
-}));
+});
 </script>
+
+<script>window.ubhdAnnoApp.start();</script>
 
 </body></html>

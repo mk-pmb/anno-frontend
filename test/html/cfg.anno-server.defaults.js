@@ -2,19 +2,23 @@
 /* -*- tab-width: 2 -*- */
 (function setDefaultAnnoServers() {
   'use strict';
-  var cfg = {}, host = location.hostname, port = (+location.port || 0),
-    protoHost = location.protocol + '//' + host, testDirBaseUrl;
-  if ((port === 80) || (port === 443)) { port = 0; }
-
-  cfg.annoEndpoint = protoHost + (port ? ':33321/' : '/anno/');
-  cfg.annoByIdUrlPrefix    = 'as/author/anno/';
-  cfg.annoListSearchPrefix = cfg.annoByIdUrlPrefix + 'by/subject_target/';
-
-  testDirBaseUrl = (window.document.URL.split(/\?|\#/
+  var cfg = window.ubhdAnnoApp.configure(), aux = {};
+  aux.testDirBaseUrl = (window.document.URL.split(/\?|\#/
     )[0].replace(/\/html\/[\w\.]+$/, '') + '/');
-  cfg.draftStoreEndpoint = testDirBaseUrl + 'fixtures/drafts/';
-  cfg.loginFormUrl = function guessLoginFormUrl() {
-    return cfg.annoEndpoint.replace(/\w+\/$/, '') + 'session/login';
+
+  cfg.annoEndpoint = (function decide() {
+    var host = location.hostname, port = (+location.port || 0),
+      protoHost = location.protocol + '//' + host;
+    if ((port === 80) || (port === 443)) { port = 0; }
+    return protoHost + (port ? ':33321/' : '/anno/');
+  }());
+
+  cfg.annoByIdUrlPrefix = 'as/author/anno/';
+  cfg.annoListSearchPrefix = cfg.annoByIdUrlPrefix + 'by/subject_target/';
+  cfg.draftStoreEndpoint = aux.testDirBaseUrl + 'fixtures/drafts/';
+
+  cfg.loginFormUrl = function guessLoginFormUrl(lateCfg) {
+    return lateCfg.annoEndpoint.replace(/\w+\/$/, '') + 'session/login';
   };
 
   cfg.predictMintedDoiUrl = function doiOracleFactory() {
@@ -24,23 +28,4 @@
     return function doi(id) { return p + id.replace(s, '').replace(r, '_'); };
   };
 
-  (function compile() {
-    var l = document.createElement('a');
-    cfg.resolveURL = function resolveURL(url) {
-      l.href = url;
-      return l.href;
-    };
-  }());
-
-  cfg.fixBogusRemoteAnnoEndpoint = function (badEndpointRgx) {
-    if (!badEndpointRgx) { badEndpointRgx = /^\S+?\/anno\//; }
-    var r = cfg.resolveURL;
-    function fix(u) { return u.replace(badEndpointRgx, r(cfg.annoEndpoint)); }
-    cfg.customSaveLegacyPreArgsFactories = {
-      reply: function reply(anno) { return [fix(anno.replyTo)]; },
-      revise: function revise(anno) { return [fix(anno.id)]; },
-    };
-  };
-
-  window.annoServerCfg = cfg;
 }());
