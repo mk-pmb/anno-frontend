@@ -1,2 +1,2 @@
 'use strict';
-window.displayAnnotations = require('./src/main.js');
+window.ubhdAnnoApp = require('./src/main.js');

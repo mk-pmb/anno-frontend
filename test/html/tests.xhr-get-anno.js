@@ -22,7 +22,7 @@ const ldr = {
 
   async fromCeson(input, opt) {
     try {
-      await window.annoApp.externalRequest('ImportAnnosFromCeson',
+      await window.ubhdAnnoApp.externalRequest('ImportAnnosFromCeson',
         { data: input, ...opt });
     } catch (err) {
       console.error('Failed to import ceson:', { input }, err);
@@ -55,7 +55,7 @@ const ldr = {
 jq().ready(function installLate() {
   const { testUtil } = window;
   const panel = testUtil.addTestsPanel('Import annotations');
-  const store = window.annoApp.$store;
+  const store = window.ubhdAnnoApp.getVueRootElem().$store;
 
   const defaultImportSpecs = (function findAndClean() {
     let dis = jq('meta#test-xhr-get-anno-default-imports').attr('value');
