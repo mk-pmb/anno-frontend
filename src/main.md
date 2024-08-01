@@ -22,14 +22,27 @@ See default config options and comments in
 Methods
 -------
 
-### `startHighlighting(annoId, open)`
-Deprecated. Use `.externalRequest('HighlightByTargetSelector', …)` instead.
+### `configure(update)`
+The `update` parameter should be an object, false-y, or omitted.
+Merge the settings from `update` into the config.
+Invokable only before the anno app is `start()`ed.
+Returns the current accumulated config object.
 
-### `stopHighlighting(annoId)`
-Deprecated. Use `.externalRequest('HighlightByTargetSelector', …)` instead.
+The returned object is only valid until `configure` is called again or the
+app is started. To be safe, consider it stale as soon as the function that
+obtained it loses control flow.
 
-### `expand(annoId)`
-Open thread tree to reveal anno with id `annoId`.
+
+### `start()`
+Start the anno app.
+Invokable only before the anno app is `start()`ed.
+
+
+### `startHighlighting(annoIdUrl)`
+Start highlighting one annotation.
+
+### `stopHighlighting(annoIdUrl)`
+Stop highlighting one annotation.
 
 
 

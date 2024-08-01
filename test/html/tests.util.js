@@ -73,7 +73,7 @@
     async verboseXrq(action, params, descr) {
       const logPrefix = 'vxrq:' + (descr || action || 'nondescript');
       console.debug(logPrefix, params);
-      const xrqPr = window.annoApp.externalRequest(action, params);
+      const xrqPr = window.ubhdAnnoApp.externalRequest(action, params);
       const report = await tu.logPromise(logPrefix, xrqPr);
       window.vxrqReport = report;
       // tu.alert(logPrefix + ' success: ' + tu.jsonDump(report));

@@ -10,7 +10,7 @@ const objFromKeysList = require('obj-from-keys-list').default;
 
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true;
-  console.log('anno-frontend: Enabled Vue devtools.');
+  // console.log('anno-frontend: Enabled Vue devtools.');
 }
 Vue.use(Vuex);
 require('./components/index.js').registerAll(Vue);
@@ -21,9 +21,9 @@ const eventBus = require('./event-bus')
 const externalRequest = require('./xrq/externalRequest.js')
 const SidebarApp = require('./components/sidebar-app')
 
-// For docs see display-annotations.md
 
-
+function fail(e) { throw new Error(e); }
+function ifFun(x, d) { return (typeof x === 'function' ? x : d); }
 function makeDiv() { return document.createElement('div'); }
 
 
@@ -31,29 +31,61 @@ const pluginInjectableModules = {
   'sanitize-html': require('sanitize-html'),
 };
 
+const plugins = {};
 
+const eventBusProxies = objFromKeysList(function makeEventBusProxy(evName) {
+  return function proxy(...args) { eventBus.$emit(evName, ...args); };
+}, [
+  'startHighlighting',
+  'stopHighlighting',
+]);
 
-const EX = function displayAnnotations(customOptions) {
-    // console.debug('displayAnnotations: customOptions =', customOptions);
-    const options = mergeOptions(decideDefaultOptions(), customOptions);
+let vueRootElem;
+let configAccum = decideDefaultOptions();
+
+const EX = {
+
+  defaultConfig: configAccum,
+
+  configure(update) {
+    if (vueRootElem) {
+      fail('Cannot configure annoApp that has already been started.');
+    }
+    if (update) {
+      if (ifFun(update)) { return EX.configure(update(configAccum)); }
+      configAccum = mergeOptions(configAccum, update);
+    }
+    return configAccum;
+  },
+
+  externalRequest(...args) {
+    if (vueRootElem) { return externalRequest(vueRootElem, ...args); }
+    console.error('W: AnnoApp: externalRequest before start():', args);
+  },
+
+  debugReconfigure: (function compile() {
+    const r = Object.assign(function debugRreconfigure(u) {
+      vueRootElem.$store.commit('FLAT_UPDATE_APP_STATE', u);
+    }, {
+      ui(enable = true) { r({ uiDebugMode: enable }); },
+    });
+    return r;
+  }()),
+
+  ...eventBusProxies,
+  getAnnoAppRef() { return EX; },
+  getEventBus() { return eventBus; },
+  getPluginByName(p) { return getOwn(plugins, p, false); },
+  getPluginFactories: Object.bind(null, {}),
+  getVueRootElem() { return vueRootElem; },
+
+  start() {
+    if (vueRootElem) { fail('Cannot re-start annoApp!'); }
+    const options = configAccum;
+    configAccum = null;
     bootstrapCompat.initialize(options.bootstrap);
     delete options.bootstrap;
-    const apiExtras = {};
-
-    (function checkDeprecatedOpts() {
-      const optNames = [
-        'l10n',
-      ];
-      let had;
-      optNames.forEach(k => {
-        const v = options[k];
-        if (v === undefined) { return; }
-        console.error('annoApp: Ignoring deprecated option:', k, '=', v);
-        had = { ...had, [k]: v };
-        delete options[k];
-      });
-      apiExtras.getDeprecatedOpts = (had && (() => had));
-    }());
+    // console.debug('ubhdAnnoApp starting with config:');
 
     //
     // Create a container element if none was given
@@ -73,13 +105,10 @@ const EX = function displayAnnotations(customOptions) {
     //
     // Event listeners
     //
-    let onAppReady;
     (function installEvents() {
       const { events } = options;
       delete options.events;
       if (!events) { return; }
-      onAppReady = events.appReady;
-      delete events.appReady;
       loMapValues(events, function install(evHandlers, evName) {
         [].concat(evHandlers).forEach(hnd => hnd && eventBus.$on(evName, hnd));
       });
@@ -89,7 +118,7 @@ const EX = function displayAnnotations(customOptions) {
       // Some options can also be functions to be called to produce
       // the value now.
       loMapValues(options, function check(oldValue, key) {
-        if (typeof oldValue !== 'function') { return; }
+        if (!ifFun(oldValue)) { return; }
         const qualified = (key.endsWith('Url')
           || (key === 'purlTemplate')
           || (key === 'targetSource')
@@ -98,6 +127,7 @@ const EX = function displayAnnotations(customOptions) {
         options[key] = oldValue(options);
       });
     }());
+
 
     (function resolveConfigURLs() {
       const maybeUrl = /^target|endpoint$|url$/i;
@@ -116,49 +146,24 @@ const EX = function displayAnnotations(customOptions) {
     const storeBlueprint = require('./vuex/store');
     Object.assign(storeBlueprint.state, options);
     const store = new Vuex.Store(storeBlueprint);
-    const annoApp = new Vue({ ...SidebarApp, store, el: makeDiv() });
-    container.appendChild(annoApp.$el);
+    vueRootElem = new Vue({ ...SidebarApp, store, el: makeDiv() });
+    container.appendChild(vueRootElem.$el);
 
-    function getAnnoAppRef() { return annoApp; }
-    annoApp.$el.getAnnoAppRef = getAnnoAppRef;
-    store.getAnnoAppRef = getAnnoAppRef;
-
-    Object.assign(annoApp, {
-      getEventBus() { return eventBus; },
-      getPluginByName(p) { return getOwn(annoApp.plugins, p, false); },
-      ...objFromKeysList(function makeEventBusProxy(evName) {
-        return function proxy(...args) { eventBus.$emit(evName, ...args); };
-      }, [
-        'expand',
-        'startHighlighting',
-        'stopHighlighting',
-      ]),
-
-      ...apiExtras,
-    });
+    vueRootElem.$el.getAnnoAppRef = EX.getAnnoAppRef;
+    store.getAnnoAppRef = EX.getAnnoAppRef;
 
     // Initialize store state
-    setTimeout(() => annoApp.$store.dispatch('retrieveInitialState'), 1);
+    setTimeout(() => vueRootElem.$store.dispatch('retrieveInitialState'), 1);
 
-    //
-    // Return the app for event emitting
-    //
-    if (options.exportAppAsWindowProp) {
-      window[options.exportAppAsWindowProp] = annoApp;
-    }
-    if (onAppReady) { onAppReady(annoApp); }
-    annoApp.externalRequest = externalRequest.bind(null, annoApp);
-
-    annoApp.plugins = {};
     function installPlugin(plName, factory) {
       const injected = loMapValues(factory.injectModules, function inj(what) {
         const found = getOwn(pluginInjectableModules, what);
         if (found !== undefined) { return found; }
         throw new Error('Cannot inject plugin ' + plName + ' with ' + what);
       });
-      const plCtx = { pluginName: plName, annoApp, injected };
+      const plCtx = { pluginName: plName, vueRootElem, injected };
       try {
-        annoApp.plugins[plName] = factory(plCtx);
+        plugins[plName] = factory(plCtx);
       } catch (plErr) {
         console.error('AnnoApp: Prepare plugin ' + plName + ':', plErr);
         throw plErr;
@@ -167,13 +172,14 @@ const EX = function displayAnnotations(customOptions) {
     loMapValues(EX.getPluginFactories(),
       (how, plName) => setTimeout(() => installPlugin(plName, how), 1));
 
-    return annoApp;
+    return vueRootElem;
+  },
+
+
 };
 
 
-Object.assign(EX, {
-  getPluginFactories: Object.bind(null, {}),
-});
+
 
 
 
