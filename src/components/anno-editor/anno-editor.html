@@ -78,12 +78,17 @@
     topic="zones"
     >
     <xrx-vue
+      v-if="!$store.state.disableXrxVueEditor"
       ref="zoneEditorRef"
       class="card panel panel-default annoeditor-svg-zones-editor"
       :grouped="false"
       initial-image=""
       :show-toolbar-file="false"
       />
+    <p v-else class="m-4">
+      <bootstrap-button @click="hideEditorAndStartExternalTargetEditing"
+        >{{ l10n('edit') }}</bootstrap-button
+    </p>
     <div class="debug-feature external-zoneeditor-toolbar"
       style="position: absolute; top: 2px; right: 2px;"
       ><bootstrap-button

@@ -93,6 +93,8 @@ const uiCfg = {
   ],
 
 
+  disableXrxVueEditor: false, /*
+    Disable the legacy zone editor in case it causes too severe problems. */
 
 
 
