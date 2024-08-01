@@ -35,9 +35,32 @@
       </div>
     </div><!-- .msgboxes -->
 
-    <anno-list ref="annoList"
-      v-if="appMode === 'list'"
-      >
+    <div class="lurk-mode-wrapper"
+      v-for="lm in [compileLurkModeDetails()]">
+      <div class="m-3 lurk-mode-lurking" v-if="lm">
+        <div class="row lurk-hourglass lurk-explained">
+          <div class="col col-sm-1 lurk-hourglass"
+            ><p class="mt-1">&#x231B;</p></div>
+          <div class="col col-xl lurk-explained"
+            ><p>{{ lm.explained }}</p></div>
+        </div>
+        <div class="row lurk-waiting">
+          <div class="col col-xl lurk-waiting"
+            ><p>{{ lm.waiting }}</p></div>
+        </div>
+        <div class="row lurk-offer-abort">
+          <div class="col col-xl text-center lurk-offer-abort">
+            <bootstrap-button icon-fa="close"
+              @click="abortLurkMode('FORCE_ABORT_ANY')"
+              >{{ lm.abortButtonCaption }}
+            </bootstrap-button>
+          </div>
+        </div>
+      </div><!-- .lurk-mode-lurking -->
+    </div><!-- .lurk-mode-wrapper -->
+
+    <anno-list ref="annoList" v-if="appMode === 'list'"
+      v-show="!$store.state.lurkMode">
       <div v-if="noAnnotsReason"
         slot="annot-list-empty"
         :class="[
@@ -51,9 +74,8 @@
       </div>
     </anno-list>
 
-    <anno-cmp-mode
-      v-if="appMode === 'cmp'"
-      >
+    <anno-cmp-mode ref="annoCmp" v-if="appMode === 'cmp'"
+      v-show="!$store.state.lurkMode">
     </anno-cmp-mode>
   </div>
 

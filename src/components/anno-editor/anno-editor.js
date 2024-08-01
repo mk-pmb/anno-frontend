@@ -107,6 +107,12 @@ module.exports = {
   },
 
   mounted() {
+    const editor = this;
+    const { state } = editor.$store;
+    if (state.disableXrxVueEditor) {
+      eventBus.$on('editorTabNowShowing:zones',
+        editor.hideEditorAndStartExternalTargetEditing);
+    }
   },
 
   computed: {
@@ -419,6 +425,16 @@ module.exports = {
       setTimeout(() => window.alert(editor.l10n('sanitize_html_modified')), 1);
       editor.reloadAnnoHtml();
       return true;
+    },
+
+
+    hideEditorAndStartExternalTargetEditing() {
+      const pst = this.getPrimarySubjectTarget();
+      console.debug('hideEditorAndStartExternalTargetEditing', pst);
+      eventBus.$emit('startLurkMode', {
+        reason: 'externalTargetEditor',
+      });
+      setTimeout(() => eventBus.$emit('startExternalTargetEditing', pst), 50);
     },
 
   },

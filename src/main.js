@@ -33,9 +33,12 @@ const pluginInjectableModules = {
 
 const plugins = {};
 
-const eventBusProxies = objFromKeysList(function makeEventBusProxy(evName) {
-  return function proxy(...args) { eventBus.$emit(evName, ...args); };
+const eventBusProxies = objFromKeysList(function makeEventBusProxy(ev) {
+  return function eventBusProxy(...args) {
+    setTimeout(function delayedEmit() { eventBus.$emit(ev, ...args); }, 10);
+  };
 }, [
+  'abortLurkMode',
   'startHighlighting',
   'stopHighlighting',
 ]);

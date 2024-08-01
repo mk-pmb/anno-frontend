@@ -31,6 +31,7 @@ module.exports = {
     };
   },
 
+
   computed: {
     appMode() { return this.$store.state.initAppMode; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
@@ -54,6 +55,7 @@ module.exports = {
       return reason;
     },
   },
+
 
   methods: {
 
@@ -95,7 +97,47 @@ module.exports = {
       });
     },
 
+    abortLurkMode(reason) {
+      const sba = this;
+      const { state, commit } = sba.$store;
+      if (!state.lurkMode) {
+        return console.warn('AnnoApp: abortLurkMode request: unexpected',
+          { reasonGiven: reason });
+      }
+      if (reason !== 'FORCE_ABORT_ANY') {
+        const currentLurkReason = state.lurkMode.reason;
+        if (currentLurkReason !== reason) {
+          return console.warn('AnnoApp: abortLurkMode request: wrong reason:',
+            { reasonGiven: reason, currentLurkReason });
+        }
+      }
+      commit('SET_APP_STATE_PROP', ['lurkMode', false]);
+      sba.$refs.modalEditor.show();
+    },
+
+    compileLurkModeDetails() {
+      const { lurkMode } = this.$store.state;
+      if (!lurkMode) { return false; }
+      const { l10n } = this;
+      const reason = lurkMode.reason || '';
+
+      function voc(v, d) {
+        return (l10n(lurkMode[v + 'Voc'])
+          || (reason && l10n('lurk:' + v + ':' + reason, ''))
+          || l10n('lurk:' + v + ':generic', l10n(d)));
+      }
+
+      const det = {
+        explained: voc('explain').replace(/@@module@@/g, voc('module')),
+        waiting: voc('waiting'),
+        abortButtonCaption: voc('abort', 'cancel'),
+      };
+      return det;
+    },
+
+
   },
+
 
   created() {
     const sba = this;
@@ -106,9 +148,18 @@ module.exports = {
       pr => Promise.resolve(pr).then(null, sba.reportError));
   },
 
+
   mounted() {
     const sba = this;
     document.body.setAttribute('anno-app-mode', sba.appMode);
+
+    eventBus.$on('startLurkMode', function setLurkMode(how) {
+      if (!how) { return; }
+      sba.$store.commit('SET_APP_STATE_PROP', ['lurkMode', { ...how }]);
+      sba.$refs.modalEditor.hide();
+    });
+    eventBus.$on('abortLurkMode', (...args) => sba.abortLurkMode(...args));
   },
+
 
 };
