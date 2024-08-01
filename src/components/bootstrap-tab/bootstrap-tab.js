@@ -16,4 +16,14 @@ module.exports = {
     visible:  { type: Boolean, default: true },
   },
 
+  data() {
+    return {
+      tabIndex: -1,
+    };
+  },
+
+  mounted() {
+    this.$el.getVueRef = Object.bind(null, this);
+  },
+
 };

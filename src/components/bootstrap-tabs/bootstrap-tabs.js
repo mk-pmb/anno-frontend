@@ -4,6 +4,7 @@
 
 const jQuery = require('jquery');
 
+const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
 
 
@@ -22,29 +23,79 @@ module.exports = {
     HelpButton,
   },
 
+  data() {
+    return {
+      currentActiveTabIndex: -1,
+    };
+  },
+
+  props: {
+    helpUrlTemplate:  { type: String, required: true },
+    helpUrlManual:    { type: String, required: false },
+  },
+
+
+  mounted() {
+    const tabMgr = this;
+    const tabEventApi = {
+      tabMgr: Object.bind(null, tabMgr),
+      tabPaneVue() { return tabMgr.tabPanesAsVueElements(this.tabIndex); },
+    };
+    const jqTabs = jQuery(tabMgr.$refs.tabs);
+    function installTabEvent(bsName, evBusName) {
+      function bsTabEventProxy(domEvent) {
+        const ds = domEvent.target.dataset;
+        const tabIndex = ds.index;
+        const topic = (ds.topic || '');
+        if (bsName === 'shown') { tabMgr.currentActiveTabIndex = tabIndex; }
+        const evBusEvent = {
+          annoAppEventName: evBusName,
+          bootstrapEventName: bsName,
+          tabIndex,
+          tabName: ds.name,
+          domEvent() { return domEvent; },
+          tabTopic: topic,
+          ...tabEventApi,
+        };
+        // console.debug('Anno-Editor tab event:', evBusEvent);
+        eventBus.$emit(evBusName, evBusEvent);
+        if (topic) { eventBus.$emit(evBusName + ':' + topic, evBusEvent); }
+      }
+      jqTabs.on(bsName + '.bs.tab', 'a[data-toggle="tab"]', bsTabEventProxy);
+    }
+    installTabEvent('show', 'editorTabAboutToShow');
+    installTabEvent('shown', 'editorTabNowShowing');
+    installTabEvent('hide', 'editorTabAboutToHide');
+    installTabEvent('hidden', 'editorTabNowHidden');
+  },
+
+
   methods: {
 
     tabPanesAsVueElements() {
-      const { panesContainer } = this.$refs;
-      return this.$children.filter(c => (c.$el.parentNode === panesContainer));
+      const ctnr = this.$refs.panesContainer;
+      const r = this.$children.filter(c => (c.$el.parentNode === ctnr));
+      r.forEach(function updateIndex(c, i) { c.tabIndex = i; });
+      return r;
     },
 
     switchToNthTab(n) {
-      const refs = this.$refs;
+      const tabMgr = this;
       const idx = (+n || 0) - 1;
       // console.debug({ switchToNthTab: n });
       const activate = jqSetSingularClass.bind(null, 'active', idx);
       // Highlight the correct tab in BS3:
-      activate(refs.tabs.children);
+      activate(tabMgr.$refs.tabs.children);
       // Highlight the correct tab in BS4:
-      activate(refs.tabs.querySelectorAll('.nav-link'));
+      activate(tabMgr.$refs.tabs.querySelectorAll('.nav-link'));
       // Show only the relevant pane:
-      activate(refs.panesContainer.children);
+      activate(tabMgr.$refs.panesContainer.children);
+      tabMgr.currentActiveTabIndex = idx;
     },
 
     switchToTabPaneByVueElem(elem) {
-      const tabs = this;
-      const panes = tabs.tabPanesAsVueElements();
+      const tabMgr = this;
+      const panes = tabMgr.tabPanesAsVueElements();
       let n = 0;
       // console.debug('switchToTabPaneByVueElem:', elem);
       if (elem) {
@@ -59,14 +110,9 @@ module.exports = {
           return same;
         });
       }
-      tabs.switchToNthTab(n);
+      tabMgr.switchToNthTab(n);
     },
 
-  },
-
-  props: {
-    helpUrlTemplate:  {type: String, required: true},
-    helpUrlManual:    {type: String, required: false},
   },
 
 };

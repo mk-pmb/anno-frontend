@@ -4,6 +4,8 @@
     (topic ? 'tab-topic-' + topic : ''),
     paneCls,
   ].filter(Boolean)"
+  :data-index="tabIndex"
+  :data-name="name"
   :data-topic="topic"
   v-show="visible"
   >

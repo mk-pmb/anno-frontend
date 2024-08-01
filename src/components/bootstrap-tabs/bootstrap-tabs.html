@@ -9,12 +9,14 @@
         tab.tabCls,
       ].filter(Boolean)"
       >
-
         <a :href="'#' + tab.name"
           class="nav-link"
           :aria-controls="tab.name"
           role="tab"
           data-toggle="tab"
+          :data-index="tab.tabIndex"
+          :data-name="tab.name"
+          :data-topic="tab.topic"
           >
           {{tab.title}}
 
