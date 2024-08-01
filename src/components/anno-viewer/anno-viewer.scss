@@ -1,3 +1,22 @@
+.annoeditor-global-css.ui-debug-mode-on {
+
+  .media-body .first-html-body {
+    overflow-y: auto;
+    resize: vertical;
+    min-height: 5em;
+  }
+  .media-body .first-html-body:before {
+    display: block; float: right;
+    font-size: smaller; margin-left: 0.5em; margin-bottom: 0.25em;
+    content: "[UI Debug Mode: +max-height +scroll]"; max-width: 50%;
+    text-align: center; color: darkgreen; background-color: lightgreen;
+  }
+  .media-body .first-html-body:not([style]) { max-height: 10em; }
+  .media-body .first-html-body[style] { overflow-y: scroll; }
+
+}
+
+
 .annoeditor-viewer.panel.panel-default {
   .fade-enter-active, .fade-leave-active {
     transition: opacity .4s;
