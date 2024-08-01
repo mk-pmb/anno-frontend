@@ -131,7 +131,12 @@
             "Modified":            "Geändert",
             "version_from":        "Version vom",
             "active_version":      "Angezeigte Version",
+
             "zones":               "Zonen",
+            "lurk:explain:generic": "Die Bearbeitung wurde an @@module@@ übergeben.",
+            "lurk:waiting:generic": "Schließem Sie ihre Bearbeitung dort ab, um zum Annotationen-Editor zurückzukehren.",
+            "lurk:module:generic": "ein anderes Moduls auf dieser Seite",
+            "lurk:module:externalTargetEditor": "einen spezialisierten Bezug-Editor",
             "relationlink_custom_attributes_headline": "Benutzerdefinierte Attribute",
             "relationlink_custom_attributes_descr": "Zusätzliche Eigenschaften auf oberster Ebene der Annotation. Dient nur zur Einreichung.",
 
@@ -375,7 +380,13 @@
             "Modified":            "Modified",
             "version_from":        "Version as of",
             "active_version":      "Active version",
+
             "zones":               "Zones",
+            "lurk:explain:generic": "Editing has been delegated to @@module@@.",
+            "lurk:waiting:generic": "Once you finish your editing there, you will be returned to the annotation editor.",
+            "lurk:module:generic": "a separate module on this page",
+            "lurk:module:externalTargetEditor": "a specialized target editor",
+
             "relationlink_custom_attributes_headline": "User-defined Attributes",
             "relationlink_custom_attributes_descr": "Additional properties on the top level of the annotation, for submission only.",
 
