@@ -90,7 +90,7 @@
     if (m && m.exports) { m.exports = e; }
     // eslint-disable-next-line no-undef
     const w = ((typeof window === 'object') && window);
-    const a = w && w.displayAnnotations;
+    const a = w && w.ubhdAnnoApp;
     if (a && a.getPluginFactories) { a.getPluginFactories().sanitizeHtml = e; }
   }(EX));
 }());

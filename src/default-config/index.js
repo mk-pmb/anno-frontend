@@ -4,6 +4,8 @@
 /* eslint-disable global-require */
 
 const staticDefaults = {
+  events: {},
+
   ...require('./anno-data.js'),
   ...require('./debug.js'),
   ...require('./html-dom.js'),

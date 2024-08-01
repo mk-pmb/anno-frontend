@@ -19,6 +19,8 @@ const svgRgx = {
   tinyShape: /<\w+(?=\s)[^<>]*\s(?:width|height)="\d{0,2}e\-\d{2,}"[^<>]>\s*/g,
 };
 
+const maxSvgSelBytes = 32 * 1024;
+
 
 const symbolForNoLanguage = '\u00A0\u2044';
 /*  Some candidates:
@@ -173,8 +175,8 @@ module.exports = {
     getZoneSelectorSvg() {
       const sel = this.getPrimarySubjectTarget().selector;
       // console.debug('getZoneSelectorSvg', { sel }, orf(sel).value);
-      if (!sel) { return false; }
-      if (sel.type !== 'SvgSelector') { return false; }
+      if (!sel) { return ''; }
+      if (sel.type !== 'SvgSelector') { return ''; }
       return (sel.value || '');
     },
 
@@ -282,11 +284,26 @@ module.exports = {
           discardedSvgParts);
       }
 
-      if (newSvg && (!/\d/.test(newSvg))) {
-        window.prompt(editor.l10n('please_report_error:'),
-          'Error: numberless SVG selector: ' + encodeURI(newSvg));
-      }
+      const badFail = newSvg && (function checkBadFail() {
+        if (newSvg.length > maxSvgSelBytes) {
+          return 'is too huge: ' + newSvg.length + ' bytes';
+        }
+        if (!/\d/.test(newSvg)) { return 'contains no digits at all.'; }
+        if (!/[1-9]/.test(newSvg)) { return 'contains no non-zero digits.'; }
+        const m = /<\w+ [^<>1-9]+>/.exec(newSvg);
+        if (m) {
+          newSvg = m[0];
+          return 'contains a shape with no non-zero digits.';
+        }
+      }());
       const oldSvg = editor.getZoneSelectorSvg();
+      if (badFail) {
+        const e = refuse + 'SVG selector ' + badFail;
+        const n = '\n' + encodeURI(newSvg).replace(/%20/g, decodeURI);
+        console.error(e || n, { oldSvg, newSvg });
+        // window.prompt(editor.l10n('please_report_error:'), e + n);
+        return;
+      }
       console.debug('Anno-Editor: setZoneSelector:',
         { oldSvg, newSvg: (newSvg === oldSvg ? '(same)' : newSvg) });
       if (newSvg === oldSvg) { return; }

@@ -3,7 +3,7 @@
 'use strict';
 
 (function installEarly() {
-  const cfg = window.annoTestCfg;
+  const cfg = window.ubhdAnnoApp.configure();
 
   function setUniqueCssClassByDomId(cls, domElemId) {
     const olds = Array.from(document.getElementsByClassName(cls));
@@ -34,15 +34,13 @@
 
 window.jQuery().ready(function installLate() {
   const {
-    annoApp,
     testUtil,
+    jQuery,
   } = window;
-  const jq = window.jQuery;
-  // ^- see exportAppAsWindowProp in cfg.tests.defaults.js
   const panel = testUtil.addTestsPanel('Fragment Selector Test');
 
   const imgRadios = [
-    annoApp.$store.state.targetImage,
+    window.ubhdAnnoApp.getVueRootElem().$store.state.targetImage,
   ].filter(Boolean).concat('').map(function imgFmt(url, idx) {
     const htmlUrl = url.replace(/[<>"']/g, encodeURI).replace(/&/g, '&amp;');
     const caption = htmlUrl.split(/\//).slice(-1)[0].replace(/^\d+px-/, '');
@@ -96,7 +94,7 @@ window.jQuery().ready(function installLate() {
     }
 
     form.find('.fragment-examples span').click(function onClick(ev) {
-      const spanElem = jq(ev.target).closest('span')[0];
+      const spanElem = jQuery(ev.target).closest('span')[0];
       setHighlightByFragment(spanElem.id);
     });
   });

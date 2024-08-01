@@ -7,6 +7,5 @@ Example config-override file
 */
 (function ubhdConfigOverrideExample() {
   'use strict';
-  var cfg = window.annoTestCfg;
-  cfg.setTarget.ubHdDigLit(1494, 2348, 'cpg389/0055');
+  window.annoTestSetTarget.ubHdDigLit(1494, 2348, 'cpg389/0055');
 }());

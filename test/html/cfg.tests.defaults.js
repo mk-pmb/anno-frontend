@@ -2,12 +2,9 @@
 /* -*- tab-width: 2 -*- */
 (function setDefaultTestConfig() {
   'use strict';
-  var cfg = {
+  window.ubhdAnnoApp.configure({
 
     makeDebugLogger: Function.bind.bind(console.debug, console),
-
-    exportAppAsWindowProp: 'annoApp',
-    // ^- In production, rather save the result of displayAnnotations.
 
     iiifUrlTemplate: ('http://iiif.anno.test/someProjectName'
       + ':_image/%ir/full/0/default.jpeg'),
@@ -15,13 +12,12 @@
 
     uiDebugMode: true,
 
-    events: {},
-  };
+    targetSource: ('http://anno.test/' + location.pathname.replace(/^\S+\//,
+      '').replace(/\.\S+$/, '')),
 
-  cfg.targetSource = ('http://anno.test/' + location.pathname.replace(/^\S+\//,
-    '').replace(/\.\S+$/, ''));
+  });
 
-  cfg.initCmpOnVersionSelected = function onVersionSelected(event) {
+  function onVersionSelected(event) {
     console.debug('Version selected:', event);
 
     /* For debugging, it may be helpful to export the event so you can
@@ -53,10 +49,10 @@
       preview components for the new targets. */
     // const subjectTargets = evt.categorizeTargets().subjects;
     // subjectTargets.forEach(window.mainApp.addTargetPreview);
-  };
+  }
 
-  // cfg.events.appReady = function ready() {};
+  window.ubhdAnnoApp.configure({
+    initCmpOnVersionSelected: onVersionSelected,
+  });
 
-
-  window.annoTestCfg = cfg;
 }());

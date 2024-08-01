@@ -5,9 +5,9 @@
 window.jQuery().ready(function installLate() {
   const { testUtil } = window;
   // const jq = window.jQuery;
-  const cfg = window.annoServerCfg;
+  const cfg = window.ubhdAnnoApp.configure();
   const { annoEndpoint } = cfg;
-  const annoEndpointAbs = cfg.resolveURL(annoEndpoint);
+  const annoEndpointAbs = (new URL(annoEndpoint, document.URL)).href;
 
   const panel = testUtil.addTestsPanel('Custom Request');
   const tpl = testUtil.makeSlotTplFuncs({
