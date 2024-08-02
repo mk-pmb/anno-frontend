@@ -7,6 +7,7 @@ const {
 
 const pDelay = require('delay');
 
+const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const findTargetUri = require('../../findTargetUri.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
@@ -466,6 +467,7 @@ module.exports = {
         if (command === 'toggle') { return !el.collapsed; }
         throw new Error('anno-viewer: Invalid command for .collapse()');
       }());
+      applyDebugCheats();
     },
 
     renderIiifLink() {
