@@ -3,8 +3,6 @@
 
 // const getOwn = require('getown');
 const makeDeferred = require('promise-deferred');
-const mustBe = require('typechecks-pmb/must-be.js');
-
 const api22 = require('../../api22.js');
 
 const decideAuxMeta = require('./decideAuxiliaryMetaData.js');
@@ -126,9 +124,16 @@ Object.assign(fvl, {
         verHistUrl,
       };
     }
-    const lavStr = mustBe.tProp('Latest anno version ',
-      latestVerData, 'nonEmpty str');
-    const latestVerUrl = lavStr('id' /* Anno ID URL */);
+
+    function lavStr(k) {
+      const v = latestVerData[k];
+      if ((v && typeof v) === 'string') { return v; }
+      const msg = 'Latest anno version lacks the ' + k + ' field!';
+      console.error(msg, { latestVerData });
+      throw new Error(msg);
+    }
+
+    const latestVerUrl = lavStr('id');
     const latestVerNum = fvl.mustGuessVerNum(latestVerUrl);
     return {
       latestVerData,
