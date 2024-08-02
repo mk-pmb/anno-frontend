@@ -15,7 +15,9 @@ if (process.env.NODE_ENV !== 'production') {
 Vue.use(Vuex);
 require('./components/index.js').registerAll(Vue);
 
+const applyCheats = require('./cheats.js');
 const bootstrapCompat = require('./bootstrap-compat')
+const browserStorage = require('./browserStorage.js');
 const decideDefaultOptions = require('./default-config');
 const eventBus = require('./event-bus')
 const externalRequest = require('./xrq/externalRequest.js')
@@ -48,6 +50,8 @@ let configAccum = decideDefaultOptions();
 
 const EX = {
 
+  browserStorage,
+
   defaultConfig: configAccum,
 
   configure(update) {
@@ -70,7 +74,9 @@ const EX = {
     const r = Object.assign(function debugRreconfigure(u) {
       vueRootElem.$store.commit('FLAT_UPDATE_APP_STATE', u);
     }, {
+      acl() { r({ aclOverrides: { '*': { '*': 'allow' } } }); },
       ui(enable = true) { r({ uiDebugMode: enable }); },
+      xrx(enable = true) { r({ disableXrxVueEditor: !enable }); },
     });
     return r;
   }()),
@@ -175,6 +181,11 @@ const EX = {
     loMapValues(EX.getPluginFactories(),
       (how, plName) => setTimeout(() => installPlugin(plName, how), 1));
 
+    Object.assign(EX.debugReconfigure, {
+      preimg() { vueRootElem.editor.initializeZoneEditor(); },
+    });
+
+    applyCheats();
     return vueRootElem;
   },
 
