@@ -13,6 +13,7 @@
  */
 'use strict';
 
+const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
 const sessionStore = require('../../browserStorage.js').session;
@@ -34,6 +35,8 @@ module.exports = {
     require('../../mixin/prefix.js'),
   ],
 
+  debugCheatsReport() { return applyDebugCheats.report; },
+
   components: {
     HelpButton,
   },
@@ -41,6 +44,7 @@ module.exports = {
   data() {
     return {
       collapsed: (sessionStore.get('anno-list:collapsed') !== false),
+      debugCheatsReportCache: '',
     };
   },
 
@@ -118,6 +122,11 @@ module.exports = {
 
     tryRenewSession() {
       console.debug('tryRenewSession: stub!');
+    },
+
+    userSessionDropDownToggled() {
+      applyDebugCheats();
+      this.debugCheatsReportCache = applyDebugCheats.report;
     },
 
   },
