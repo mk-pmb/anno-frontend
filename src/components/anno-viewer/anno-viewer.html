@@ -241,7 +241,7 @@
               />
           </dl>
 
-          <dl class="detailbar-license"><dt>
+          <dl class="detailbar-license"><dt @click="applyDebugCheats">
             {{ l10n('License') }}: {{ licenseTitleOrUnknown }}
           </dt><dd>
             {{ l10n(currentLicense.user_desc) || l10n('license_no_descr') }}

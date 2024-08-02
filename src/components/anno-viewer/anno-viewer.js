@@ -7,6 +7,7 @@ const {
 
 const pDelay = require('delay');
 
+const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const findTargetUri = require('../../findTargetUri.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
@@ -362,6 +363,7 @@ module.exports = {
     assembleVersionRelatedUrl: assembleVersionRelatedUrl.asVueMethod,
     formatters,
     toggleDetailBar,
+    applyDebugCheats,
 
     revise() { return eventBus.$emit('revise', this.annoData) },
     reply()  { return eventBus.$emit('reply',  this.annoData) },
