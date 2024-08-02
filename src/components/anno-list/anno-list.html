@@ -102,6 +102,7 @@
     </bootstrap-btnbar-dropdown><!-- ddSort -->
 
     <bootstrap-btnbar-dropdown ref="ddUser"
+      @toggle="userSessionDropDownToggled"
       :icon-fa="'user' + (isLoggedIn ? '' : '-secret')"
       :caption="userSessionInfo.userId || l10n('guest_identity_short')"
       >
@@ -173,6 +174,16 @@
         </component><!-- dropdownMenuItem -->
 
       </template><!-- guest session -->
+
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        v-if="debugCheatsReportCache"
+        :class="[
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'debug-cheats-report',
+        ].filter(Boolean)"
+        >{{ debugCheatsReportCache }}
+      </component><!-- dropdownMenuItem -->
     </bootstrap-btnbar-dropdown>
 
   </div><!-- .anno-list-buttonbar-top.pull-right -->
