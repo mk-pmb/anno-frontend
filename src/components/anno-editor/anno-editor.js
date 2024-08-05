@@ -46,6 +46,11 @@ const symbolForNoLanguage = '\u00A0\u2044';
 */
 
 
+function mapValuesSorted(o, f) {
+  return Object.keys(o).sort().map(k => f(o[k], k, o));
+}
+
+
 module.exports = {
 
   mixins: [
@@ -113,7 +118,18 @@ module.exports = {
       eventBus.$on('editorTabNowShowing:targetEditor',
         editor.spawnTargetEditorInContainerInTab);
     }
+    eventBus.$on('editorTabNowShowing:preview', () => {
+      let shapes = {};
+      editor.getZoneSelectorSvg().replace(/<(\w+) /g,
+        function found(m, t) { shapes[m && t] = (+shapes[t] || 0) + 1; });
+      delete shapes.svg;
+      shapes = mapValuesSorted(shapes, (t, c) => c + '×' + t);
+      shapes = (shapes.join(', ') || 'none');
+      const msg = '<p>SVG Shapes in selector: ' + shapes + '</p>';
+      editor.$refs.uiDebugTargetSummary.innerHTML = msg;
+    });
   },
+
 
   computed: {
 
