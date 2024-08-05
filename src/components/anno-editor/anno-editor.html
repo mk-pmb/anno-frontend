@@ -72,9 +72,23 @@
   </bootstrap-tab>
 
   <bootstrap-tab
+    :name="`${prefix}-${editorId}-tab-targeteditor`"
+    v-if="$store.state.targetEditorTabVoc"
+    :title="l10n($store.state.targetEditorTabVoc)"
+    topic="targetEditor"
+    >
+    <div class="external-target-editor-resizer tab-plugin-resizer">
+      <div class="external-target-editor-wrapper fill-area">
+        <div ref="targetEditorContainer" class="fill-area"></div>
+      </div>
+    </div>
+  </bootstrap-tab>
+
+  <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-zones`"
     :title="l10n('zones')"
-    :visible="Boolean($store.state.targetImage)"
+    :visible="Boolean($store.state.targetImage)
+      && (!$store.state.disableXrxVueEditor)"
     topic="zones"
     >
     <xrx-vue
@@ -85,10 +99,6 @@
       initial-image=""
       :show-toolbar-file="false"
       />
-    <p v-else class="m-4">
-      <bootstrap-button @click="hideEditorAndStartExternalTargetEditing"
-        >{{ l10n('edit') }}</bootstrap-button
-    </p>
     <div class="debug-feature external-zoneeditor-toolbar"
       style="position: absolute; top: 2px; right: 2px;"
       ><bootstrap-button
