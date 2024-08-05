@@ -93,6 +93,9 @@ const uiCfg = {
   ],
 
 
+  targetEditorTabVoc: 'zones', /*
+    Vocablulary item to use for the target editor tab. Empty = disable. */
+
   disableXrxVueEditor: false, /*
     Disable the legacy zone editor in case it causes too severe problems. */
 

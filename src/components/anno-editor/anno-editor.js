@@ -109,9 +109,9 @@ module.exports = {
   mounted() {
     const editor = this;
     const { state } = editor.$store;
-    if (state.disableXrxVueEditor) {
-      eventBus.$on('editorTabNowShowing:zones',
-        editor.hideEditorAndStartExternalTargetEditing);
+    if (state.targetEditorTabVoc) {
+      eventBus.$on('editorTabNowShowing:targetEditor',
+        editor.spawnTargetEditorInContainerInTab);
     }
   },
 
@@ -429,13 +429,32 @@ module.exports = {
 
 
     hideEditorAndStartExternalTargetEditing() {
-      const pst = this.getPrimarySubjectTarget();
-      console.debug('hideEditorAndStartExternalTargetEditing', pst);
+      const ev = {
+        annoTarget: this.getPrimarySubjectTarget(),
+        domContainer: null,
+      };
       eventBus.$emit('startLurkMode', {
         reason: 'externalTargetEditor',
       });
-      setTimeout(() => eventBus.$emit('startExternalTargetEditing', pst), 50);
+      setTimeout(() => eventBus.$emit('startExternalTargetEditing', ev), 50);
     },
+
+
+    spawnTargetEditorInContainerInTab() {
+      const ctnr = this.$refs.targetEditorContainer;
+      const loadingPleaseWait = '<p class="m-4 text-center">&#x231B;</p>';
+      jQuery(ctnr).html(loadingPleaseWait); /*
+        The important benefit of jQuery's `.html()` over `.innerHTML =`
+        is that it tries to unbind any DOM events of the previous content,
+        which greatly helps with garbage collection. */
+      const ev = {
+        annoTarget: this.getPrimarySubjectTarget(),
+        domContainer: ctnr,
+        replaceExistingContent: true,
+      };
+      setTimeout(() => eventBus.$emit('startExternalTargetEditing', ev), 50);
+    },
+
 
   },
 
