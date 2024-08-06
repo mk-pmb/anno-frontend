@@ -2,6 +2,7 @@
 'use strict';
 
 const api22 = require('../../api22.js');
+const eventBus = require('../../event-bus.js');
 
 const stampApiPathPrefix = require('./stampApiPathPrefix.js');
 
@@ -35,6 +36,12 @@ const EX = async function simpleDateStamp(viewer, origStampSpec, annoIdSpec) {
     window.alert(viewer.l10n('error:') + '\n' + err);
     throw err;
   }
+  eventBus.$emit('simpleDateStampSucceeded', {
+    eventWasHandled: false,
+    versId,
+    patchUrl,
+    patchData,
+  });
 };
 
 
