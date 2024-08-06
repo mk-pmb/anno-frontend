@@ -12,6 +12,8 @@
   ].filter(Boolean)"
   @mouseenter="onMouseEnter"
   @mouseleave="onMouseLeave"
+  :data-doi-preview="hasRealPublicDoi ? '' : latestVersionDoiUri"
+  :data-doi="hasRealPublicDoi ? latestVersionDoiUri : ''"
   :data-w3-anno-id="annoIdUrl"
   :data-iana-working-copy="annotation['iana:working-copy']"
   :data-target-fragment="targetFragment"
@@ -152,7 +154,7 @@
             </button>
 
             <button class="btn btn-sm btn-secondary"
-              v-if="currentVersionDoiUri || checkAclAuth({ isOwnAnno,
+              v-if="hasRealPublicDoi || checkAclAuth({ isOwnAnno,
                 privName: 'stamp_‹own›_add__ubhd_doiAssign' })"
               @click="toggleDetailBar"
               data-detailbar="doi"
@@ -248,7 +250,7 @@
           </dd></dl>
 
           <dl class="detailbar-doi">
-            <template v-if="currentVersionDoiUri">
+            <template v-if="hasRealPublicDoi">
               <dt-url-caption-link
                 v-show="latestVersionDoiUri"
                 :textBefore="doiLinkPreviewWarning"
@@ -261,7 +263,7 @@
                 :url="currentVersionDoiUri"
                 />
             </template>
-            <template v-if="(!currentVersionDoiUri) || doiLinkPreviewWarning">
+            <template v-if="!hasRealPublicDoi">
               <!-- We have mintDoi permission, because with neither that nor
                    a DOI, the detailbar would be hidden. -->
               <dt>
