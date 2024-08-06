@@ -203,8 +203,14 @@ module.exports = {
     // Expand this annotation
     eventBus.$on('expand', (annoIdUrl) => {
       cerr('Thread expand handler needs full rewrite!', { annoIdUrl });
-    })
+    });
 
+    function stampedReloadUnlessHandled(ev) {
+      // cdbg('stampedReloadUnlessHandled', ev);
+      if (!ev.eventWasHandled) { setTimeout(() => location.reload(), 10); }
+    }
+    eventBus.$emit('simpleDateStampSucceeded',
+      ev => setTimeout(() => stampedReloadUnlessHandled(ev), 100));
     viewer.toplevelCreated = viewer.annotation.modified;
   },
 
@@ -369,12 +375,10 @@ module.exports = {
 
     async approve() {
       await simpleDateStamp(this, 'dc:dateAccepted');
-      window.location.reload();
     },
 
     async unpublish() {
       await simpleDateStamp(this, 'as:deleted');
-      window.location.reload();
     },
 
 
