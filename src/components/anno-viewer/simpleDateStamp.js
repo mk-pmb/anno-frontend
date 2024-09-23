@@ -36,12 +36,14 @@ const EX = async function simpleDateStamp(viewer, origStampSpec, annoIdSpec) {
     window.alert(viewer.l10n('error:') + '\n' + err);
     throw err;
   }
-  eventBus.$emit('simpleDateStampSucceeded', {
+  const successEvent = ['simpleDateStampSucceeded', {
     eventWasHandled: false,
     versId,
     patchUrl,
     patchData,
-  });
+  }];
+  console.log(debugTrace, 'success.', ...successEvent);
+  eventBus.$emit(...successEvent);
 };
 
 
