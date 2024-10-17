@@ -27,6 +27,11 @@
   }
 
   switch (q.t) {
+  case '31mh':
+    cfg.initAppMode = 'cmp';
+    cfg.initCmpBaseId = 'VSdzSBZpRBqH6FrA2jx_Jg';
+    cfg.initCmpPrimarySideVersionNumber = 3;
+    return s.ubHdDigLit(1676, 2622, 'lange1937_12_06/0005', '004.jpg');
   case 'alteuni':
     return s.uniHdKarlLange1896();
   case 'engel':
