@@ -45,12 +45,13 @@ const mutations = {
 
     SET_HTML_BODY_VALUE(state, v) {
         ensureArray(state, 'body');
-        if (!textualHtmlBody.first(state)) {
+        let body = getters.firstHtmlBody(state);
+        if (!body) {
             if (!v) { return; }
-            add(state, 'body', textualHtmlBody.create());
+            body = textualHtmlBody.create();
+            add(state, 'body', body);
         }
-        ensureArray(state, 'body');
-        textualHtmlBody.first(state).value = v;
+        body.value = v;
     },
 
 
