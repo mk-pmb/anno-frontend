@@ -26,6 +26,8 @@ module.exports = {
   data() {
     return {
       currentActiveTabIndex: -1,
+      currentActiveTabName: '',
+      currentActiveTabTopic: '',
     };
   },
 
@@ -47,7 +49,11 @@ module.exports = {
         const ds = domEvent.target.dataset;
         const tabIndex = ds.index;
         const topic = (ds.topic || '');
-        if (bsName === 'shown') { tabMgr.currentActiveTabIndex = tabIndex; }
+        if (evBusName === 'editorTabNowShowing') {
+          tabMgr.currentActiveTabIndex = tabIndex;
+          tabMgr.currentActiveTabName = ds.name;
+          tabMgr.currentActiveTabTopic = topic;
+        }
         const evBusEvent = {
           annoAppEventName: evBusName,
           bootstrapEventName: bsName,
