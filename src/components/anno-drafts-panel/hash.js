@@ -5,8 +5,6 @@
 const crc32 = require('lighter-crc32');
 const isStr = require('is-string');
 
-const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
-
 
 function padStart(pad, text) { return (pad + text).slice(-pad.length); }
 
@@ -81,10 +79,10 @@ function weaklyHashUri(uri) {
 }
 
 
-function fileNameHashes(vueElem, anno) {
+function fileNameHashes(draftsPanelVueElem) {
   return {
-    target: weaklyHashUri(guessPrimaryTargetUri(anno, vueElem.$store.state)),
-    annoIdUrl: weaklyHashUri(anno.id),
+    target: weaklyHashUri(draftsPanelVueElem.editorAnnoPrimaryTargetUrl),
+    annoIdUrl: weaklyHashUri(draftsPanelVueElem.editorAnnoId),
   };
 }
 

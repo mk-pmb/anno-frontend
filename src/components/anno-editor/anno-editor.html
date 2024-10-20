@@ -187,8 +187,10 @@
     topic="drafts"
     >
     <anno-drafts-panel ref="draftsPanel"
+      :editorAnnoId="annoIdUrl"
+      :editorAnnoTitle="getAnnoTitle()"
+      :editorAnnoPrimaryTargetUrl="getPrimarySubjectTargetUrl()"
       :editorApi="{
-        getAnnoTitle,
         getCleanAnno,
         loadAnnoData,
         setStatusMsg,
