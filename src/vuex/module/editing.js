@@ -1,8 +1,4 @@
 const {
-    add,
-    ensureArray,
-} = require('@kba/anno-util')
-const {
     relationLinkBody,
     semanticTagBody,
     textualHtmlBody,
@@ -42,18 +38,6 @@ const getters = {
 //
 
 const mutations = {
-
-    SET_HTML_BODY_VALUE(state, v) {
-        ensureArray(state, 'body');
-        let body = getters.firstHtmlBody(state);
-        if (!body) {
-            if (!v) { return; }
-            body = textualHtmlBody.create();
-            add(state, 'body', body);
-        }
-        body.value = v;
-    },
-
 
     ADD_BODY(state, bodyData) { state.body.push(bodyData); },
     REMOVE_BODY(state, idx) { state.body.splice(idx, 1); },

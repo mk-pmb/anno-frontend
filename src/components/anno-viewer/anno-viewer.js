@@ -167,7 +167,7 @@ module.exports = {
     },
 
   props: {
-    annotation: { type: Object, required: true },
+    annotation: { type: [Object, Boolean, null], required: false },
     purlId: { type: String, required: false },
     showEditPreviewWarnings: { type: Boolean, default: false },
     asReply: { type: Boolean, default: false },

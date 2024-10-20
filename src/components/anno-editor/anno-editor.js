@@ -1,6 +1,6 @@
-const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
 const jQuery = require('jquery');
+const objFromKeysList = require('obj-from-keys-list').default;
 
 const eventBus = require('../../event-bus.js');
 
@@ -21,6 +21,10 @@ const svgRgx = {
 
 const maxSvgSelBytes = 32 * 1024;
 
+
+const pluginsUsed = [
+  'sanitizeHtml'
+];
 
 const symbolForNoLanguage = '\u00A0\u2044';
 /*  Some candidates:
@@ -70,6 +74,9 @@ module.exports = {
   data() {
     return {
       annoLanguage: { keepOrigExtra: '', selected: '' },
+      cachedPreviewStub: {},
+      cachedSanitizedHtmlBodyValue: null,
+      dirtyHtmlBodyValue: '',
       forceUpdatePreviewTs: 0,
       initialAuthorAgent: {},
       previousChosenAuthorIdUrl: '',
@@ -107,9 +114,11 @@ module.exports = {
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
       console.debug('Anno-Editor: Initial zone selector:',
         [editor.getZoneSelectorSvg()]);
+      editor.updatePluginImplCache();
       editor.initializeZoneEditor();
     });
   },
+
 
   mounted() {
     const editor = this;
@@ -119,6 +128,8 @@ module.exports = {
         editor.spawnTargetEditorInContainerInTab);
     }
     eventBus.$on('editorTabNowShowing:preview', () => {
+      editor.updatePreview();
+
       let shapes = {};
       editor.getZoneSelectorSvg().replace(/<(\w+) /g,
         function found(m, t) { shapes[m && t] = (+shapes[t] || 0) + 1; });
@@ -142,19 +153,6 @@ module.exports = {
       return ((sess || false).authorIdentities || []);
     },
 
-    stubbedAnnotationForPreview() {
-      const editor = this;
-      const now = Date.now();
-      const orig = editor.getCleanAnno();
-      const ann = {
-        created: now,
-        modified: now,
-        'x-force-update-preview': editor.forceUpdatePreviewTs,
-        ...orig,
-      };
-      return ann;
-    },
-
     editMode: {
       get() { return this.$store.state.editMode },
       set(v) { throw new Error('Legacy assignment: editMode = ' + v); },
@@ -173,12 +171,18 @@ module.exports = {
 
   methods: {
 
-    forceUpdatePreview() { this.forceUpdatePreviewTs = Date.now(); },
     getAnnoTitle() { return this.$store.state.editing.title; },
     setStatusMsg(...args) { return this.$refs.statusMsg.setMsg(...args); },
 
     loadAnnoData,
     getCleanAnno,
+
+    updatePluginImplCache() {
+      const editor = this;
+      editor.pluginImplCache = objFromKeysList({
+        gen: editor.$store.getAnnoAppRef().getPluginByName,
+      }, pluginsUsed);
+    },
 
     switchTabByRefName(refName) {
       const refs = this.$refs;
@@ -192,6 +196,10 @@ module.exports = {
       const tgtCateg = categorizeTargets(state, state.editing.target);
       // console.debug('getPrimarySubjectTarget: tgtCateg:', tgtCateg);
       return orf(tgtCateg.subjTgt);
+    },
+
+    getPrimarySubjectTargetUrl() {
+      return this.findResourceUrl(this.getPrimarySubjectTarget());
     },
 
     getZoneSelectorSvg() {
@@ -351,7 +359,7 @@ module.exports = {
       if (!agent) { return; }
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
       editor.previousChosenAuthorIdUrl = evt.agentId;
-      editor.forceUpdatePreview();
+      editor.updatePreview();
     },
 
     checkPreserveAuthorIdentity() {
@@ -385,9 +393,6 @@ module.exports = {
       }
     },
 
-    reloadAnnoHtml() {
-      eventBus.$emit('html-editor-reload-html');
-    },
 
     redisplayZoneEditorSvg() {
       const editor = this;
@@ -397,6 +402,7 @@ module.exports = {
       const svg = editor.getZoneSelectorSvg();
       if (svg) { zoneEditorRef.loadSvg(svg); }
     },
+
 
     compileTargetsListForTemplating() {
       const editor = this;
@@ -419,28 +425,27 @@ module.exports = {
     },
 
 
-    sanitizeHtmlNow() {
+    htmlBodyWasModified(evt) {
       const editor = this;
-      const store = editor.$store;
-      const sani = store.getAnnoAppRef().getPluginByName('sanitizeHtml');
-      if (!sani) { return false; }
-      let nModified = 0;
+      // console.debug('htmlBodyWasModified:', evt);
+      editor.dirtyHtmlBodyValue = evt.newHtml;
+      editor.cachedSanitizedHtmlBodyValue = null;
+    },
 
-      function checkBody(body, idx) {
-        const { format, value } = body;
-        if (format !== 'text/html') { return; }
-        if (!value) { return; }
-        const clean = sani(value);
-        if (clean === value) { return; }
-        store.commit('UPDATE_BODY', { '#': idx, value: clean });
-        nModified += 1;
-      }
 
-      arrayOfTruths.ifAnyMap(store.state.editing.body, checkBody);
-      if (!nModified) { return false; }
-      setTimeout(() => window.alert(editor.l10n('sanitize_html_modified')), 1);
-      editor.reloadAnnoHtml();
-      return true;
+    getCleanHtml() {
+      const editor = this;
+      const dirty = editor.dirtyHtmlBodyValue;
+      if (!dirty) { return ''; }
+      let clean = editor.cachedSanitizedHtmlBodyValue;
+      if (clean) { return clean; }
+      const sani = orf(editor.pluginImplCache).sanitizeHtml;
+      clean = (sani || String)(dirty);
+      const trace = (new Error()).stack.split(/\n\s*/).slice(1);
+      console.debug('getCleanHtml had to update the cache:',
+        { dirty: [dirty], sani, clean: [clean], trace });
+      editor.cachedSanitizedHtmlBodyValue = clean;
+      return clean;
     },
 
 
@@ -469,6 +474,20 @@ module.exports = {
         replaceExistingContent: true,
       };
       setTimeout(() => eventBus.$emit('startExternalTargetEditing', ev), 50);
+    },
+
+
+    updatePreview() {
+      const editor = this;
+      const now = Date.now();
+      const orig = editor.getCleanAnno();
+      editor.cachedPreviewStub = {
+        created: now,
+        modified: now,
+        'x-force-update-preview': now,
+        ...orig,
+      };
+      editor.forceUpdatePreviewTs = now;
     },
 
 
