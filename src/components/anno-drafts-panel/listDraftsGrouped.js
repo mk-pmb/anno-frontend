@@ -19,12 +19,11 @@ function decideVocGroup(draftMeta, annoHashes) {
 
 
 const EX = function listDraftsGrouped() {
-  const panel = this;
-  const editorAnno = panel.editorApi.getCleanAnno();
-  const eaHashes = hash.fileNameHashes(panel, editorAnno);
-  // console.debug('listDraftsGrouped:', { editorAnno, eaHashes });
+  const draftsPanelVueElem = this;
+  const eaHashes = hash.fileNameHashes(draftsPanelVueElem);
+  // console.debug('listDraftsGrouped:', { eaHashes });
   const byVoc = {};
-  const appCfg = panel.$store.state;
+  const appCfg = draftsPanelVueElem.$store.state;
   const groups = draftGroupsConfig(appCfg).map(function setup(grpCfg) {
     const gr = {
       ...grpCfg,
@@ -35,7 +34,7 @@ const EX = function listDraftsGrouped() {
   });
   // window.groups = groups;
   groups.byVoc = byVoc;
-  panel.allDrafts.forEach(function add(draftMeta) {
+  draftsPanelVueElem.allDrafts.forEach(function add(draftMeta) {
     const grVoc = decideVocGroup(draftMeta, eaHashes);
     (byVoc[grVoc] || byVoc.other).items.push(draftMeta);
   });

@@ -30,6 +30,9 @@ module.exports = {
   }; },
 
   props: {
+    editorAnnoId: String,
+    editorAnnoPrimaryTargetUrl: String,
+    editorAnnoTitle: String,
     editorApi: Object,
   },
 
@@ -51,7 +54,7 @@ module.exports = {
 
     draftFilenameCommentAdjusted() {
       let v = this.draftFilenameCommentCustom
-        || this.editorApi.getAnnoTitle()
+        || this.editorAnnoTitle
         || this.l10n('no_data');
       v = (String(v).match(/[\w\-]+/g) || []).join(' ');
       v = v.replace(/ (?=_)/g, '').replace(/_ /g, '_').replace(/ /g, '_');
