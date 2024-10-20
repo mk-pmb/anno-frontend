@@ -21,6 +21,9 @@ function wrapNonObj(x, k, u) {
 
 const expectedModelKeys = keys2str(editorModelDef.state);
 
+const dummyHtml = ('<h2>Placeholder</h2>'
+  + '<p><b>Error:</b> Use the HTML editor API instead!</p>');
+
 
 const EX = async function loadAnnoData(origAnno) {
   const editor = this;
@@ -40,6 +43,11 @@ const EX = async function loadAnnoData(origAnno) {
 
   const creator = wrapNonObj(popField('creator') || {}, 'id' /* Agent ID */);
   editor.initialAuthorAgent = jsonDeepCopy(creator);
+
+  // Snatch the HTML before we pop the bodies off the anno:
+  const firstHtmlBody = editorModelDef.getters.firstHtmlBody(anno);
+  const html = (firstHtmlBody || false).value || '';
+  if (firstHtmlBody) { firstHtmlBody.value = dummyHtml; }
 
   const editorFields = {
     doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi') || '',
@@ -96,9 +104,9 @@ const EX = async function loadAnnoData(origAnno) {
   editor.$refs.targetAdjustedMsg.setMsg(null,
     (tgtAdj && l10n('target_adjusted_' + tgtAdj)));
 
-  editor.sanitizeHtmlNow();
+  editor.$refs.htmlBodyEditor.setUserHtml(html);
+  editor.updatePreview();
   editor.redisplayZoneEditorSvg();
-  editor.reloadAnnoHtml();
 };
 
 

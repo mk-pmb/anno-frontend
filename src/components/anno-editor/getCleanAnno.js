@@ -1,6 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+const editorModelDef = require('../../vuex/module/editing.js');
+
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
@@ -12,6 +14,12 @@ const omitFieldsIfFalsey = [
   'created',
   'id', /* Anno ID */
 ];
+
+
+const htmlBodyDefaultProps = {
+  type: 'TextualBody',
+  format: 'text/html',
+};
 
 
 const EX = function getCleanAnno() {
@@ -38,15 +46,18 @@ const EX = function getCleanAnno() {
   setAnnoPropIf('dc:title', title);
   if (anno['dc:dateAccepted'] === false) { delete anno['dc:dateAccepted']; }
 
-  let bodies = [].concat(anno.body);
-  bodies = bodies.map(function cleanupBody(body) {
-    if (!body) { return; }
-    // Discard empty `TextualBody`s:
-    if (body.value) { return body; }
-    if (body.type && (body.type !== 'TextualBody')) { return body; }
-    console.debug('getCleanAnno: discard empty TextualBody:', body);
-    return null;
-  }).filter(Boolean);
+  const oldFirstHtmlBody = editorModelDef.getters.firstHtmlBody(anno);
+  if (oldFirstHtmlBody) {
+    oldFirstHtmlBody.value = ''; // <-- i.e. mark for deletion
+  }
+  const cleanHtml = editor.getCleanHtml();
+  const newFirstHtmlBody = (cleanHtml && {
+    ...htmlBodyDefaultProps,
+    ...oldFirstHtmlBody,
+    value: cleanHtml,
+  });
+  let bodies = [newFirstHtmlBody].concat(anno.body);
+  bodies = bodies.map(b => EX.checkOneTextualBody(b, editor)).filter(Boolean);
   EX.setOrDeleteMultiProp(anno, 'body', bodies);
   EX.setOrDeleteMultiProp(anno, 'target', anno.target);
 
@@ -74,6 +85,21 @@ Object.assign(EX, {
     }
     // eslint-disable-next-line no-param-reassign
     if (v) { anno[prop] = v; } else { delete anno[prop]; }
+  },
+
+  checkOneTextualBody(body/* , editor */) {
+    if (!body) { return false; }
+    if (body.type && (body.type !== 'TextualBody')) { return body; }
+    const { value } = body;
+    if (!value) {
+      // console.debug('getCleanAnno: discard empty TextualBody:', body);
+      return false;
+    }
+
+    if (value.includes('<img src="data:')) {
+      console.warn('getCleanAnno: Body contains an inline blob image!');
+    }
+    return body;
   },
 
 });

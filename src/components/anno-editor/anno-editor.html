@@ -20,8 +20,10 @@
     topic="comment_text"
     ref="commentTextTab"
     >
-    <html-editor
+    <html-editor ref="htmlBodyEditor"
       :editor-id="`${prefix}-${editorId}-html-editor`"
+      user-html=""
+      :onUserHtmlChanged="htmlBodyWasModified"
       >
       <template slot="extra-bodyparts-top">
         <input
@@ -150,7 +152,8 @@
     </div>
     <anno-viewer
       ref="preview"
-      :annotation="stubbedAnnotationForPreview"
+      :v-if="cachedPreviewStub"
+      :annotation="cachedPreviewStub"
       :collapseInitially="false"
       :forceUpdatePreviewTs="forceUpdatePreviewTs"
       purl="http://example.net/purl/dummy"
@@ -170,11 +173,11 @@
             rel="nofollow noopener noreferrer"
             >{{ tgt.title || tgt.url }}</a>
         </li>
-      </ol>
+      </ol><!-- /.targets -->
       <ul class="no-targets" v-show="!list.length">
         <li>{{ l10n('no_data') }}</li>
-      </ul>
-    </div>
+      </ul><!-- /.no-targets -->
+    </div><!-- /.preview-targets-urllist-section -->
   </bootstrap-tab>
 
   <bootstrap-tab
