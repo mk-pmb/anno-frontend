@@ -47,12 +47,10 @@ module.exports = {
     function installTabEvent(bsName, evBusName) {
       function bsTabEventProxy(domEvent) {
         const ds = domEvent.target.dataset;
-        const tabIndex = ds.index;
+        const tabIndex = +ds.index;
         const topic = (ds.topic || '');
         if (evBusName === 'editorTabNowShowing') {
-          tabMgr.currentActiveTabIndex = tabIndex;
-          tabMgr.currentActiveTabName = ds.name;
-          tabMgr.currentActiveTabTopic = topic;
+          tabMgr.tabWasSwitchedTo(tabIndex);
         }
         const evBusEvent = {
           annoAppEventName: evBusName,
@@ -73,6 +71,7 @@ module.exports = {
     installTabEvent('shown', 'editorTabNowShowing');
     installTabEvent('hide', 'editorTabAboutToHide');
     installTabEvent('hidden', 'editorTabNowHidden');
+    tabMgr.switchToNthTab(1);
   },
 
 
@@ -96,7 +95,26 @@ module.exports = {
       activate(tabMgr.$refs.tabs.querySelectorAll('.nav-link'));
       // Show only the relevant pane:
       activate(tabMgr.$refs.panesContainer.children);
+      tabMgr.tabWasSwitchedTo(idx);
+    },
+
+    tabWasSwitchedTo(idx) {
+      if (!Number.isFinite(idx)) {
+        const e = ('tabWasSwitchedTo: '
+          + 'New tab index must be a finite number, not '
+          + (typeof idx) + ' ' + String(idx));
+        throw new TypeError(e);
+      }
+      const tabMgr = this;
       tabMgr.currentActiveTabIndex = idx;
+      const panes = tabMgr.tabPanesAsVueElements();
+      const activePane = (panes[idx] || false);
+      const { name, topic } = activePane;
+      tabMgr.currentActiveTabName = name;
+      tabMgr.currentActiveTabTopic = topic;
+      panes.forEach((c) => { c.active = (c.tabIndex === idx); });
+      // console.debug('tabWasSwitchedTo', { idx, name, topic, activePane });
+      window.activePane = activePane;
     },
 
     switchToTabPaneByVueElem(elem) {

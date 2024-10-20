@@ -18,6 +18,7 @@ module.exports = {
 
   data() {
     return {
+      active: false,
       tabIndex: -1,
     };
   },
