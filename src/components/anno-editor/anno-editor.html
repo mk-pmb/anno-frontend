@@ -201,9 +201,11 @@
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-debug`"
     title="⚙"
+    ref="debugTab"
     tab-cls="ml-auto debug-feature debug-panel-tab"
     >
     <anno-editor-debug-panel
+      v-if="tabRefIsActive('debugTab')"
       ref="debugPanel"
       :editorApi="{
         getCleanAnno,
