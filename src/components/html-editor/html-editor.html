@@ -4,7 +4,7 @@
       <slot name="extra-bodyparts-top"></slot>
     </section>
 
-    <div ref="toolbar">
+    <div class="quill-toolbar-wrapper" ref="toolbarWrapper">
       <button :title="l10n('fmt_bold')" class="ql-bold"></button>
       <button :title="l10n('fmt_italic')" class="ql-italic"></button>
       <button :title="l10n('fmt_underline')" class="ql-underline"></button>
@@ -33,7 +33,7 @@
         </svg>
       </button>
     </div>
-    <div ref="editor"></div>
+    <div class="quill-wrapper" ref="quillWrapper"></div>
 
     <section class="extra-bodyparts-bottom">
       <slot name="extra-bodyparts-bottom"></slot>
