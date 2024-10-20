@@ -127,9 +127,8 @@ module.exports = {
       eventBus.$on('editorTabNowShowing:targetEditor',
         editor.spawnTargetEditorInContainerInTab);
     }
+    eventBus.$on('editorTabNowShowing:preview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', () => {
-      editor.updatePreview();
-
       let shapes = {};
       editor.getZoneSelectorSvg().replace(/<(\w+) /g,
         function found(m, t) { shapes[m && t] = (+shapes[t] || 0) + 1; });
@@ -185,10 +184,14 @@ module.exports = {
     },
 
     switchTabByRefName(refName) {
-      const refs = this.$refs;
-      const tab = refs[refName];
-      // console.debug('switchTabByRefName:', refName, tab);
-      refs.tablist.switchToTabPaneByVueElem(tab);
+      this.$refs.tablist.switchToTabPaneByVueElem(this.$refs[refName]);
+    },
+
+    tabRefIsActive(refName) {
+      const tab = this.$refs[refName];
+      const { active } = orf(tab);
+      // console.debug('tabRefIsActive:', { refName, tab, active });
+      return active;
     },
 
     getPrimarySubjectTarget() {
