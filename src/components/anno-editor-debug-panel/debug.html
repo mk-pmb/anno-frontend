@@ -16,9 +16,9 @@
 </div>
 
 
-<div class="topic" data-topic="annot">
+<div class="topic" data-topic="vue-model">
   <h3>Annotation (Vue data model)</h3>
-  <json-export-import-field class="jsondump-annot" path="editing"
+  <json-export-import-field class="jsondump-vue-model" path="editing"
     :extraButtons="[
       { c: '🗯', n: 'Validate editor fields', f: validateEditorFields, a: null },
     ]"
@@ -37,7 +37,19 @@
 </div>
 
 
-<div class="topic" data-topic="annot">
+<div class="topic" data-topic="sani-diff">
+  <h3>First HTML Body Sanitizer Diff</h3>
+  <div class="media" data-editor-prop="cachedSanitizedHtmlBodyDiff">
+    <div class="media-body">
+      <button @click="replaceWithEditorPropRawHtml"
+        class="btn btn-sm btn-default btn-outline-secondary"
+        >(load)</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="topic" data-topic="acl">
   <h3>ACL (accumulated)</h3>
   <json-export-import-field class="jsondump-acl" path="acl"
     :extraButtons="[
@@ -49,9 +61,9 @@
 </div>
 
 
-<div class="topic" data-topic="annot">
+<div class="topic" data-topic="acl-ovr">
   <h3>ACL overrides / Login override</h3>
-  <json-export-import-field class="jsondump-acl" path="aclOverrides"
+  <json-export-import-field class="jsondump-acl-ovr" path="aclOverrides"
     :extraButtons="[
       { c: '📛', n: 'Force logged-in', f: configureApp,
         a: { debugPretendIsLoggedIn: true } },

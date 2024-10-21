@@ -23,7 +23,8 @@ const maxSvgSelBytes = 32 * 1024;
 
 
 const pluginsUsed = [
-  'sanitizeHtml'
+  'easyHtmlDiff',
+  'sanitizeHtml',
 ];
 
 const symbolForNoLanguage = '\u00A0\u2044';
@@ -76,6 +77,7 @@ module.exports = {
       annoLanguage: { keepOrigExtra: '', selected: '' },
       cachedPreviewStub: {},
       cachedSanitizedHtmlBodyValue: null,
+      cachedSanitizedHtmlBodyDiff: '',
       dirtyHtmlBodyValue: '',
       forceUpdatePreviewTs: 0,
       initialAuthorAgent: {},
@@ -439,15 +441,27 @@ module.exports = {
     getCleanHtml() {
       const editor = this;
       const dirty = editor.dirtyHtmlBodyValue;
-      if (!dirty) { return ''; }
+      if (!dirty) {
+        editor.cachedSanitizedHtmlBodyValue = '';
+        editor.cachedSanitizedHtmlBodyDiff = '';
+        return '';
+      }
       let clean = editor.cachedSanitizedHtmlBodyValue;
       if (clean) { return clean; }
-      const sani = orf(editor.pluginImplCache).sanitizeHtml;
-      clean = (sani || String)(dirty);
+      const { sanitizeHtml, easyHtmlDiff } = orf(editor.pluginImplCache);
+      clean = (sanitizeHtml || String)(dirty);
+      const modified = (clean !== dirty);
+      const diff = ((modified && easyHtmlDiff && easyHtmlDiff(dirty, clean)) || '');
       const trace = (new Error()).stack.split(/\n\s*/).slice(1);
-      console.debug('getCleanHtml had to update the cache:',
-        { dirty: [dirty], sani, clean: [clean], trace });
+      console.debug('getCleanHtml had to update the cache:', {
+        input: { dirty },
+        sani: sanitizeHtml,
+        modified,
+        output: { clean, diff },
+        trace,
+      });
       editor.cachedSanitizedHtmlBodyValue = clean;
+      editor.cachedSanitizedHtmlBodyDiff = diff;
       return clean;
     },
 
