@@ -30,6 +30,7 @@ function makeDiv() { return document.createElement('div'); }
 
 
 const pluginInjectableModules = {
+  'nwdiff': require('nwdiff').default,
   'sanitize-html': require('sanitize-html'),
 };
 

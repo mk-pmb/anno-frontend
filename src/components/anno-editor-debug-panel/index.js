@@ -41,6 +41,11 @@ module.exports = {
 
     configureApp(btn) { this.$store.commit('FLAT_UPDATE_APP_STATE', btn.a); },
 
+    getEditorRef() {
+      // debug panel -> debug tab -> tabs list -> editor
+      return this.$parent.$parent.$parent;
+    },
+
     dumpAppConfig() {
       const u = undefined;
       const cfg = {
@@ -55,6 +60,17 @@ module.exports = {
         if (val === undefined) { return delete cfg[key]; }
       });
       return cfg;
+    },
+
+    replaceWithEditorPropRawHtml(evt) {
+      const dest = evt.target.parentNode;
+      const key = dest.parentNode.dataset.editorProp;
+      const val = this.getEditorRef()[key];
+      // console.debug('replaceWithEditorPropRawHtml:', { dest, key, val });
+      let html = String(val);
+      html = (html ? '<code class="code-diff">' + html + '</div>'
+        : '<i>(empty)</i>');
+      dest.innerHTML = html;
     },
 
   },
