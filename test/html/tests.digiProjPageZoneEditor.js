@@ -15,7 +15,7 @@
     window.ubhdAnnoApp.abortLurkMode(annoAppLurkReason);
   }
 
-  function startExternalTargetEditing(event) {
+  function startExternalTargetEditor(event) {
     const target = event.annoTarget;
     if (!target) { throw new Error('No target to edit!'); }
     if (!digiProjPage) { throw new Error('Not running in DigiProjectPage!'); }
@@ -37,8 +37,8 @@
 
   window.ubhdAnnoApp.configure({
     events: {
-      startExternalTargetEditing,
-      abortExternalTargetEditing() { digiProjPage.stopSvgZoneEditing(); },
+      startExternalTargetEditor,
+      abortExternalTargetEditor() { digiProjPage.stopSvgZoneEditing(); },
     },
   });
 }());
