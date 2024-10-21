@@ -466,7 +466,7 @@ module.exports = {
     },
 
 
-    hideEditorAndStartExternalTargetEditing() {
+    hideEditorAndStartExternalTargetEditor() {
       const ev = {
         annoTarget: this.getPrimarySubjectTarget(),
         domContainer: null,
@@ -474,7 +474,7 @@ module.exports = {
       eventBus.$emit('startLurkMode', {
         reason: 'externalTargetEditor',
       });
-      setTimeout(() => eventBus.$emit('startExternalTargetEditing', ev), 50);
+      setTimeout(() => eventBus.$emit('startExternalTargetEditor', ev), 50);
     },
 
 
@@ -490,7 +490,7 @@ module.exports = {
         domContainer: ctnr,
         replaceExistingContent: true,
       };
-      setTimeout(() => eventBus.$emit('startExternalTargetEditing', ev), 50);
+      setTimeout(() => eventBus.$emit('startExternalTargetEditor', ev), 50);
     },
 
 

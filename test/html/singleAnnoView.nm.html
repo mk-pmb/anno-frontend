@@ -76,7 +76,7 @@ window.ubhdAnnoApp.configure({
 window.ubhdAnnoApp.configure({
   events: {
 
-    startExternalTargetEditing(target) {
+    startExternalTargetEditor(target) {
       let descr = JSON.stringify(target, null, 2);
       if ((target.selector || false).type === 'SvgSelector') {
         const svg = target.selector.value;
@@ -85,7 +85,7 @@ window.ubhdAnnoApp.configure({
       window.alert('AnnoApp wants the external target editor to edit ' + descr);
     },
 
-    abortExternalTargetEditing() {
+    abortExternalTargetEditor() {
       window.alert('AnnoApp wants the external target editor to abort editing.');
     },
 

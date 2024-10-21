@@ -104,19 +104,19 @@
     <div class="debug-feature external-zoneeditor-toolbar"
       style="position: absolute; top: 2px; right: 2px;"
       ><bootstrap-button
-        @click="hideEditorAndStartExternalTargetEditing"
-        title="hideEditorAndStartExternalTargetEditing"
+        @click="hideEditorAndStartExternalTargetEditor"
+        title="hideEditorAndStartExternalTargetEditor"
         icon-fa="arrows-alt"
         ></bootstrap-button
       ><bootstrap-button
-        eventbus-emit="startExternalTargetEditing"
+        eventbus-emit="startExternalTargetEditor"
         :eventbus-args="getPrimarySubjectTarget"
-        title="startExternalTargetEditing"
+        title="startExternalTargetEditor"
         icon-fa="rocket"
         ></bootstrap-button
       ><bootstrap-button
-        eventbus-emit="abortExternalTargetEditing"
-        title="abortExternalTargetEditing"
+        eventbus-emit="abortExternalTargetEditor"
+        title="abortExternalTargetEditor"
         icon-fa="bomb"
         ></bootstrap-button
       >
