@@ -14,7 +14,7 @@ window.jQuery().ready(function getDigiRef() {
 
 function doneEditing() { window.ubhdAnnoApp.abortLurkMode(lurkReason); }
 
-function startExternalTargetEditing(event) {
+function startExternalTargetEditor(event) {
   console.debug('DOM container for target editing:', event.domContainer);
   const target = event.annoTarget;
   let descr = JSON.stringify(target, null, 2);
@@ -46,7 +46,7 @@ function startExternalTargetEditing(event) {
   }
 }
 
-function abortExternalTargetEditing() {
+function abortExternalTargetEditor() {
   window.alert('AnnoApp wants the external target editor to abort editing.');
 }
 
@@ -67,7 +67,7 @@ Object.assign(window, {
 
 window.ubhdAnnoApp.configure({
   events: {
-    startExternalTargetEditing,
-    abortExternalTargetEditing,
+    startExternalTargetEditor,
+    abortExternalTargetEditor,
   },
 });
