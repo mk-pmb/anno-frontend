@@ -16,4 +16,43 @@
     margin-left: 2em;
   }
 
+  .media {
+    width: 100%;
+    height: 8em;
+    resize: vertical;
+    overflow: scroll;
+    border: 1px solid lightgrey;
+    padding: 0.25em;
+  }
+
+  .code-diff {
+    display: block;
+    font-family: monospace;
+    font-size: 75%;
+    line-height: 1.2;
+    --text-color: dimgrey;
+    color: var(--text-color);
+  }
+  .code-diff del { background-color: mistyrose; --text-color: red; }
+  .code-diff ins { background-color: lightgreen; --text-color: green; }
+  .code-diff del, ins { color: var(--text-color); text-decoration: none; }
+  .code-diff i {
+    font-style: normal; padding: 0 0.25em;
+    border: 1px solid var(--text-color);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
