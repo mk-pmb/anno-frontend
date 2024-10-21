@@ -4,6 +4,7 @@
   /* global define */
 
   function noClosingSlash(s) { return s.replace(/\s*\/?$/, ''); }
+  function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
   const EX = function preparePluginSanitizeHtml(pluginCtx) {
     const { sani } = pluginCtx.injected;
@@ -16,9 +17,13 @@
       h = h.replace(/<(?:img|br)[^<>]+/g, noClosingSlash);
       h = h.replace(/\u00A0/g, '&nbsp;');
       // h = h.replace(/&#34;/g, '&quot;');
+      h = h.replace(/>\s*(<(?:p|div))(?=\s|>)/g, '>\n$1');
+      h = h.replace(/(<\/(?:p|div)>)\s*/g, '$1\n');
+      h = h.replace(/\s*(<br[ \/]*>)\s*/g, '$1\n');
+      h = h.trim();
       return h;
     };
-    s.rules = JSON.parse(JSON.stringify(EX.rules));
+    s.rules = jsonDeepCopy(EX.rules);
     return s;
   };
 
