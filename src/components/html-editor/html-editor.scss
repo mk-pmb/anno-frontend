@@ -12,4 +12,9 @@
 
   .row .col label { margin-top: 0.5em; }
 
+  /* *** BEGIN *** Hotfix for Quill popups outside visible area */
+  .ql-tooltip { left: 1em !important; top: -1em !important; }
+  .ql-tooltip.ql-flip { transform: unset !important; }
+  /* *** ENDOF *** Hotfix for Quill popups outside visible area */
+
 }
