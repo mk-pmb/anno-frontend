@@ -127,7 +127,7 @@ module.exports = {
     const { state } = editor.$store;
     if (state.targetEditorTabVoc) {
       eventBus.$on('editorTabNowShowing:targetEditor',
-        editor.spawnTargetEditorInContainerInTab);
+        editor.spawnExternalTagetEditorInTab);
     }
     eventBus.$on('editorTabNowShowing:preview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', () => {
@@ -478,19 +478,65 @@ module.exports = {
     },
 
 
-    spawnTargetEditorInContainerInTab() {
-      const ctnr = this.$refs.targetEditorContainer;
-      const loadingPleaseWait = '<p class="m-4 text-center">&#x231B;</p>';
-      jQuery(ctnr).html(loadingPleaseWait); /*
-        The important benefit of jQuery's `.html()` over `.innerHTML =`
-        is that it tries to unbind any DOM events of the previous content,
-        which greatly helps with garbage collection. */
-      const ev = {
-        annoTarget: this.getPrimarySubjectTarget(),
+    spawnExternalModuleInTab(modName, modParam) {
+      const editor = this;
+      const { l10n } = editor;
+      const ctnr = editor.$refs['containerFor' + modName];
+
+      /* First, we use jQuery's `.html()` to unbind any DOM events of the
+        previous content, which greatly helps with garbage collection.
+        This is a major benefit over `.innerHTML =`. */
+      jQuery(ctnr).html('');
+
+      // Now, we construct a loading message:
+      const wrapper = jQuery('<div class="m-4 placeholder-msg"></div>');
+      wrapper.append('<h5>' + l10n('externalTab:loading') + '</h5>');
+      const explain = jQuery('<p></p>');
+      explain.appendTo(wrapper);
+      wrapper.appendTo(ctnr);
+      if (modName === '!') {
+        return explain.text(l10n('error:') + ' ' + modParam);
+      }
+      explain.text(l10n('externalTab:hopeful').replace(/@@module@@/g,
+        (l10n('externalTab:module:' + modName)
+          || l10n('externalTab:module:generic'))));
+
+      const evName = 'startExternal' + modName;
+      const evArg = {
+        ...modParam,
         domContainer: ctnr,
         replaceExistingContent: true,
       };
-      setTimeout(() => eventBus.$emit('startExternalTargetEditor', ev), 50);
+
+      if (editor.$store.state.uiDebugMode) {
+        const jqHint = jQuery('<p>UI debug hint: Event <tt>' + evName
+          + '</tt> should have been fired with argument <tt></tt></p>');
+        const dbg = { ...evArg, domContainer: '[not JSON-able]' };
+        jqHint.find('tt').last().text(JSON.stringify(dbg, null, 2));
+        jqHint.appendTo(wrapper);
+      }
+
+      console.debug('Anno-Editor: spawnExternalModuleInTab:', evName, evArg);
+      const confirmOpt = 'debugConfirmSpawnExternalModuleInTab';
+      if (editor.$store.state[confirmOpt]) {
+        const msg = confirmOpt + ': Send event ' + evName + '?';
+        if (!window.confirm(msg)) { return; }
+      }
+      setTimeout(() => eventBus.$emit(evName, evArg), 50);
+    },
+
+
+    spawnExternalTagetEditorInTab() {
+      const editor = this;
+      const annoTarget = editor.getPrimarySubjectTarget();
+      if (!annoTarget) {
+        const { l10n } = editor;
+        editor.spawnExternalModuleInTab('!', l10n('corrupt_data')
+          + '\n' + l10n('missing_required_field')
+          + ' ' + l10n('targets_list_headline'));
+        return;
+      }
+      editor.spawnExternalModuleInTab('TargetEditor', { annoTarget });
     },
 
 
