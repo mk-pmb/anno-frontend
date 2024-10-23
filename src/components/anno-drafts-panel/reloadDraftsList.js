@@ -26,7 +26,7 @@ const EX = async function reloadDraftsList(opt) {
     panel.allDrafts = await genericSimpleApiCall(apiRequest);
   } catch (scanErr) {
     // genericSimpleApiCall should already have notified the user.
-    console.error(EX.name, 'failed', { scanErr });
+    console.error('Anno-Editor: reloadDraftsList failed', { scanErr });
   }
 };
 
