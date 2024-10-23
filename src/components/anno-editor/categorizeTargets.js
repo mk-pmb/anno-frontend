@@ -33,6 +33,7 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
     const cfgTgt = decideTargetForNewAnno(appCfg);
     matchesConfigTarget = targetRelatedness.sameAsConfigTarget(cfgTgt);
     report.aux.matchesConfigTarget = matchesConfigTarget;
+    report.aux.getConfigTargetUsedForComparison = Object.bind(null, cfgTgt);
   }
 
   let plainOrigTgt = [].concat(rawTarget);
