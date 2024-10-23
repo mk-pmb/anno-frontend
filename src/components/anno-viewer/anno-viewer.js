@@ -73,98 +73,98 @@ const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
 
 
 module.exports = {
-    name: 'anno-viewer', // necessary for nesting
+  name: 'anno-viewer', // necessary for nesting
 
-    template: require('./anno-viewer.html'),
-    style:    require('./anno-viewer.scss'),
+  template: require('./anno-viewer.html'),
+  style:    require('./anno-viewer.scss'),
 
-    mixins: [
-      require('../../checkAclAuth.js').vueMixin,
-      require('../../mixin/annoUrls.js'),
-      require('../../mixin/bootstrap-compat.js'),
-      require('../../mixin/dateFmt.js'),
-      require('../../mixin/l10n.js'),
-      require('../../mixin/prefix.js'),
-      require('../relationlink-editor/determinePredicateCaption.js'),
-    ],
+  mixins: [
+    require('../../checkAclAuth.js').vueMixin,
+    require('../../mixin/annoUrls.js'),
+    require('../../mixin/bootstrap-compat.js'),
+    require('../../mixin/dateFmt.js'),
+    require('../../mixin/l10n.js'),
+    require('../../mixin/prefix.js'),
+    require('../relationlink-editor/determinePredicateCaption.js'),
+  ],
 
-    data() {
-      const el = this;
-      const { state } = el.$store;
-      const anno = orf(el.annotation); // .annoData isn't available yet
-      const hasRealPublicDoi = Boolean(anno['dc:identifier']);
-      // cdbg('initData el.isListViewItem', [el.isListViewItem]);
+  data() {
+    const el = this;
+    const { state } = el.$store;
+    const anno = orf(el.annotation); // .annoData isn't available yet
+    const hasRealPublicDoi = Boolean(anno['dc:identifier']);
+    // cdbg('initData el.isListViewItem', [el.isListViewItem]);
 
-      const isListViewItem = (state.initAppMode === 'list');
+    const isListViewItem = (state.initAppMode === 'list');
 
-      const collapsed = Boolean(isListViewItem && el.collapseInitially
-        // ^-- This will likely be overruled by anno-list's mounted() event.
-        && (!el.asReply));
+    const collapsed = Boolean(isListViewItem && el.collapseInitially
+      // ^-- This will likely be overruled by anno-list's mounted() event.
+      && (!el.asReply));
 
-      const initData = {
-        auxMeta: decideAuxMeta(anno, el),
-        cachedIiifLink: '',
-        collapsed,
-        currentVersionDoiUri: String(anno['dc:identifier'] || ''),
-        detailBarClipCopyBtnCls: 'pull-right',
-        doiLinkPreviewWarning: '',
-        hasRealPublicDoi,
-        highlighted: false,
-        isListViewItem,
-        metaContextHints: [],
-        mintDoiMsg: '',
-        replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
-      };
+    const initData = {
+      auxMeta: decideAuxMeta(anno, el),
+      cachedIiifLink: '',
+      collapsed,
+      currentVersionDoiUri: String(anno['dc:identifier'] || ''),
+      detailBarClipCopyBtnCls: 'pull-right',
+      doiLinkPreviewWarning: '',
+      hasRealPublicDoi,
+      highlighted: false,
+      isListViewItem,
+      metaContextHints: [],
+      mintDoiMsg: '',
+      replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
+    };
 
-      if (anno['_ubhd:doiAssign']) {
-        // ^-- no `.extraFields`: That's an anno-editor thing.
-        initData.mintDoiMsg = el.l10n('mint_doi.pending');
-      }
+    if (anno['_ubhd:doiAssign']) {
+      // ^-- no `.extraFields`: That's an anno-editor thing.
+      initData.mintDoiMsg = el.l10n('mint_doi.pending');
+    }
 
-      (function maybePredictDoi() {
-        if (hasRealPublicDoi) { return; }
-        const predict = state.predictMintedDoiUrl;
-        if (!predict) { return; }
-        const annoIdUrl = anno.id;
-        if (!annoIdUrl) { return; }
-        const cur = predict(annoIdUrl);
-        if (!cur) { return; }
-        initData.doiLinkPreviewWarning = el.l10n('doi_url_preview_warning');
-        initData.currentVersionDoiUri = cur;
-      }());
+    (function maybePredictDoi() {
+      if (hasRealPublicDoi) { return; }
+      const predict = state.predictMintedDoiUrl;
+      if (!predict) { return; }
+      const annoIdUrl = anno.id;
+      if (!annoIdUrl) { return; }
+      const cur = predict(annoIdUrl);
+      if (!cur) { return; }
+      initData.doiLinkPreviewWarning = el.l10n('doi_url_preview_warning');
+      initData.currentVersionDoiUri = cur;
+    }());
 
-      (function maybeAddHint() {
-        if (!initData.replyingTo) { return; }
-        if (state.initAppMode === 'list') { return; }
-        const introText = el.l10n('inReplyTo_hint_intro');
-        if (!introText) { return; }
-        initData.metaContextHints.push({
-          cls: 'inreplyto',
-          faIcon: 'reply',
-          introText,
-          linkText: el.l10n('inReplyTo_hint_link'),
-          linkUrl: initData.replyingTo,
-        });
-      }());
+    (function maybeAddHint() {
+      if (!initData.replyingTo) { return; }
+      if (state.initAppMode === 'list') { return; }
+      const introText = el.l10n('inReplyTo_hint_intro');
+      if (!introText) { return; }
+      initData.metaContextHints.push({
+        cls: 'inreplyto',
+        faIcon: 'reply',
+        introText,
+        linkText: el.l10n('inReplyTo_hint_link'),
+        linkUrl: initData.replyingTo,
+      });
+    }());
 
-      const editorTgtCategs = categorizeTargets(state, anno.target);
-      (function maybeAddHint() {
-        const nAdd = editorTgtCategs.additional.length;
-        if (!nAdd) { return; }
-        let introText = el.l10n('additional_subjects_hint');
-        if (!introText) { return; }
-        introText = introText.replace(/@@nAdd@@/g, nAdd);
-        initData.metaContextHints.push({
-          cls: 'multi-target-hint',
-          faIcon: 'share-alt',
-          introText,
-          linkText: '[' + el.l10n('additional_subjects_show') + ']',
-          linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
-        });
-      }());
+    const editorTgtCategs = categorizeTargets(state, anno.target);
+    (function maybeAddHint() {
+      const nAdd = editorTgtCategs.additional.length;
+      if (!nAdd) { return; }
+      let introText = el.l10n('additional_subjects_hint');
+      if (!introText) { return; }
+      introText = introText.replace(/@@nAdd@@/g, nAdd);
+      initData.metaContextHints.push({
+        cls: 'multi-target-hint',
+        faIcon: 'share-alt',
+        introText,
+        linkText: '[' + el.l10n('additional_subjects_show') + ']',
+        linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
+      });
+    }());
 
-      return initData;
-    },
+    return initData;
+  },
 
   props: {
     annotation: { type: [Object, Boolean, null], required: false },
