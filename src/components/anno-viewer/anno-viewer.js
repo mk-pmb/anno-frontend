@@ -88,6 +88,16 @@ module.exports = {
     require('../relationlink-editor/determinePredicateCaption.js'),
   ],
 
+  props: {
+    acceptEmptyAnnoId: { type: Boolean, default: false },
+    annotation: { type: [Object, Boolean, null], required: false },
+    asReply: { type: Boolean, default: false }, /*
+      ^-- asReply controls whether comment is collapsible or not */
+    collapseInitially: { type: Boolean, default: true },
+    purlId: { type: String, required: false },
+    showEditPreviewWarnings: { type: Boolean, default: false },
+  },
+
   data() {
     const el = this;
     const { state } = el.$store;
@@ -164,16 +174,6 @@ module.exports = {
     }());
 
     return initData;
-  },
-
-  props: {
-    annotation: { type: [Object, Boolean, null], required: false },
-    purlId: { type: String, required: false },
-    showEditPreviewWarnings: { type: Boolean, default: false },
-    asReply: { type: Boolean, default: false },
-    // ^-- Controls whether comment is collapsible or not
-    collapseInitially: { type: Boolean, default: true },
-    acceptEmptyAnnoId: { type: Boolean, default: false },
   },
 
   beforeCreate() {
