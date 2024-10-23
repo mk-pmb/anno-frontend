@@ -41,7 +41,11 @@ const EX = async function genericSimpleApiCall(how) {
     setMsg('ok', l10n('generic_api_call_success') + spad);
     return result;
   } catch (apiFail) {
-    setMsg('fail', l10n('generic_api_call_failed') + spad + ': ' + apiFail);
+    const msgText = l10n('generic_api_call_failed') + spad + ': ' + apiFail;
+    const msgOpt = {
+      failingUrl: apiFail.apiUrl || '',
+    };
+    setMsg('fail', msgText, msgOpt);
     throw apiFail;
   }
 };

@@ -7,6 +7,9 @@
     'msgbox-row',
     ].concat(msg.topicCls).filter(Boolean)"
   v-show="!!msg.text"
+  :data-failing-url="msg.failingUrl"
+  :data-severity="msg.severity"
+  :data-title="msg.title"
   >
   <div class="scroll-offset" ref="scrollOffset"></div>
   <div
@@ -15,11 +18,16 @@
       'msgbox-col',
       ].concat(msg.topicCls).filter(Boolean)"
     >
-    <p class="m-1">
+    <p class="m-1 msgbox-pad msgbox-msg">
       <span v-show="msg.maybeIcon" class="icon">{{ msg.maybeIcon }}</span>
-      <span v-show="title" class="title">{{ title }}</span>
+      <span v-show="msg.title" class="title">{{ msg.title }}</span>
       {{ msg.textPre }}{{ msg.text }}{{ msg.textSuf }}
       <span class="timestamp" v-if="msg.timestamp">{{ msg.timestamp }}</span>
+    </p>
+    <p class="m-1 msgbox-pad msgbox-failing-url" v-if="msg.failingUrl">
+      {{ l10n('hint:') }} {{ l10n('error_caused_by_failing_url') }}
+      <a :href="msg.failingUrl" target="_blank" rel="noopener noreferrer"
+        >{{ l10n('generic_untitled_link:open_in_new_tab') }}</a>
     </p>
   </div>
   <div class="col-sm-1">

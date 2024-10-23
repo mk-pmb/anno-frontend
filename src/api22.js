@@ -41,7 +41,9 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
       if (url.startsWith(epBaseUrl)) { return url; }
       const msg = ('API boundary error: The URI is not inside the '
         + endpointName + ' endpoint namespace:\n' + url + '\n' + epBaseUrl);
-      throw new Error(msg);
+      const err = new Error(msg);
+      Object.assign(err, { epBaseUrl, url });
+      throw err;
     }
 
     return epBaseUrl + subUrl;
@@ -56,6 +58,7 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
       return result.data;
     } catch (err) {
       const rsp = orf(err.response);
+      err.apiUrl = url;
       err.headers = orf(rsp.headers);
       err.finalUrl = orf(rsp.request).responseURL || '';
       err.linkRels = orf(parseLinkRelationHeaders(err.headers.link));
