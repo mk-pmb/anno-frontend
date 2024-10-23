@@ -28,6 +28,7 @@ const severityIcons = {
 
 const simpleStringProps = (function init () {
   const ssp = [
+    'failingUrl',
     'severity',
     'text',
     'textPre',
@@ -48,6 +49,10 @@ const compoDef = {
 
   template: require('./row.html'),
   style: require('./style.scss'),
+
+  mixins: [
+    require('../../mixin/l10n.js'),
+  ],
 
   props: {
     uniqId:         String,
