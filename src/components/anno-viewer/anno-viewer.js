@@ -94,6 +94,8 @@ module.exports = {
     asReply: { type: Boolean, default: false }, /*
       ^-- asReply controls whether comment is collapsible or not */
     collapseInitially: { type: Boolean, default: true },
+    disableHoverEvents: { type: Boolean, default: false },
+    initiallyHighlighted: { type: Boolean, default: false },
     purlId: { type: String, required: false },
     showEditPreviewWarnings: { type: Boolean, default: false },
   },
@@ -119,7 +121,7 @@ module.exports = {
       detailBarClipCopyBtnCls: 'pull-right',
       doiLinkPreviewWarning: '',
       hasRealPublicDoi,
-      highlighted: false,
+      highlighted: !!el.initiallyHighlighted,
       isListViewItem,
       metaContextHints: [],
       mintDoiMsg: '',
@@ -454,10 +456,12 @@ module.exports = {
     },
 
     onMouseEnter() {
+      if (this.disableHoverEvents) { return; }
       this.startHighlighting();
       eventBus.$emit('mouseEnter', this.makeEventContext());
     },
     onMouseLeave() {
+      if (this.disableHoverEvents) { return; }
       this.stopHighlighting();
       eventBus.$emit('mouseLeave', this.makeEventContext());
     },
