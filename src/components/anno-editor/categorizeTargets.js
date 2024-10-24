@@ -2,6 +2,7 @@
 'use strict';
 
 const annoUrlsMixin = require('../../mixin/annoUrls.js');
+const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const targetRelatedness = require('./targetRelatedness.js');
@@ -61,6 +62,12 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
     }
     report.additional.push(tgt);
   });
+  report.subjTgtUrl = (function detect() {
+    const annoStub = { target: report.subjTgt };
+    const u = guessPrimaryTargetUri(annoStub, appCfg);
+    if (u === annoStub) { return ''; }
+    return u || '';
+  }());
   return report;
 };
 
