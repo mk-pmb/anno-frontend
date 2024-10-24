@@ -15,6 +15,7 @@ const EX = async function genericSimpleApiCall(how) {
     apiVerb,
     confirmed,
     confirmVoc,
+    confirmItemDescr,
     filename,
     panel,
     refine,
@@ -23,7 +24,8 @@ const EX = async function genericSimpleApiCall(how) {
 
   const { l10n } = panel;
   if (confirmVoc && (!confirmed)) {
-    if (!window.confirm(l10n(confirmVoc))) { return; }
+    const msg = l10n(confirmVoc) + '\n' + (confirmItemDescr || '');
+    if (!window.confirm(msg)) { return; }
   }
 
   function vocSlot(m, k) { return getOwn(vocSlot.s, k, '?' + m + '?'); }
