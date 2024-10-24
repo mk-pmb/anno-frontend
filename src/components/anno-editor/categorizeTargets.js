@@ -30,6 +30,7 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
 
   let matchesConfigTarget = appCfg.checkTargetMatchesConfigTarget;
   if (!matchesConfigTarget) {
+    // No custom decider => Construct the default one.
     const cfgTgt = decideTargetForNewAnno(appCfg);
     matchesConfigTarget = targetRelatedness.sameAsConfigTarget(cfgTgt);
     report.aux.matchesConfigTarget = matchesConfigTarget;
