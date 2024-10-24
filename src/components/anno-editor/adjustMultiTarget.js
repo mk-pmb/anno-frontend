@@ -38,7 +38,7 @@ const EX = function adjustMultiTarget(appCfg, orig) {
     return st;
   }());
 
-  const updated = report.recombine();
+  const updated = report.recombine({ addTypeHints: true });
   updated.primaryTargetAdjustHint = summary;
   console.debug('Anno-Editor: adjustMultiTarget:', { orig, report, summary });
   return jsonDeepCopy(
