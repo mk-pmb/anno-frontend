@@ -1,6 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+const isStr = require('is-string');
+
 const annoUrlsMixin = require('../../mixin/annoUrls.js');
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 
@@ -22,7 +24,6 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
   const report = {
     subjTgt: false,
     subjOrigIdx: -1,
-    replyingTo: [],
     localAnnos: [],
     additional: [],
     ...EX.apiImpl,
@@ -86,14 +87,26 @@ Object.assign(EX, {
       return true;
     },
 
-    recombine() {
+    recombine(origOpt) {
+      const opt = { ...origOpt };
       const report = this;
-      const targets = [
-        ...report.replyingTo,
-        ...report.localAnnos,
-        report.subjTgt,
-        ...report.additional,
-      ].filter(Boolean);
+      const targets = [];
+      let curType;
+
+      function addTgt(origTgt) {
+        if (!origTgt) { return; }
+        let tgt = origTgt;
+        if (isStr(tgt)) { tgt = { id: tgt }; }
+        if (opt.addTypeHints) { tgt[':ANNO_FE:targetType'] = curType; }
+        targets.push(tgt);
+      }
+
+      curType = 'anno';
+      report.localAnnos.forEach(addTgt);
+      curType = 'primary';
+      addTgt(report.subjTgt);
+      curType = 'additional';
+      report.additional.forEach(addTgt);
       return targets;
     },
 
@@ -106,7 +119,6 @@ Object.assign(EX, {
     // are guaranteed to be resource objects.
     const editorCategs = EX({ ...appCfg, ...optUnrank }, rawTarget);
     const report = {
-      replyingTo: editorCategs.replyingTo,
       localAnnos: editorCategs.localAnnos,
       subjects: editorCategs.additional,
     };
