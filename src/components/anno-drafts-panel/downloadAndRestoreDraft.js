@@ -18,6 +18,7 @@ const EX = async function downloadAndRestoreDraft(meta) {
     ...meta,
   });
   EX.neverRestoreFields.forEach(k => delete draftData[k]);
+  // console.debug('Anno-Editor: downloadAndRestoreDraft:', draftData);
 
   await panel.editorApi.loadAnnoData(draftData);
   eventBus.$emit('switchEditorTabByRefName', 'preview');
