@@ -3,12 +3,13 @@ const jQuery = require('jquery');
 const objFromKeysList = require('obj-from-keys-list').default;
 
 const eventBus = require('../../event-bus.js');
+const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 
+const categorizeTargets = require('./categorizeTargets.js');
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const getCleanAnno = require('./getCleanAnno.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
-const categorizeTargets = require('./categorizeTargets.js');
 
 // function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
@@ -199,12 +200,16 @@ module.exports = {
     getPrimarySubjectTarget() {
       const { state } = this.$store;
       const tgtCateg = categorizeTargets(state, state.editing.target);
-      // console.debug('getPrimarySubjectTarget: tgtCateg:', tgtCateg);
       return orf(tgtCateg.subjTgt);
     },
 
     getPrimarySubjectTargetUrl() {
-      return this.findResourceUrl(this.getPrimarySubjectTarget());
+      // Meh: this.findResourceUrl(this.getPrimarySubjectTarget());
+      // Better: Have categorizeTargets use guessPrimaryTargetUri
+      //    to potentially invoke config magic.
+      const { state } = this.$store;
+      const tgtCateg = categorizeTargets(state, state.editing.target);
+      return tgtCateg.subjTgtUrl;
     },
 
     getZoneSelectorSvg() {
@@ -411,11 +416,12 @@ module.exports = {
 
     compileTargetsListForTemplating() {
       const editor = this;
+      const { state } = editor.$store;
 
       function fmt(tgt, index) {
         if (!tgt) { return; }
         if (isStr(tgt)) { return fmt({ id: tgt }, index); }
-        const url = editor.findResourceUrl(tgt);
+        const url = guessPrimaryTargetUri({ target: tgt }, state);
         const rec = {
           index,
           url,
@@ -424,7 +430,7 @@ module.exports = {
         return rec;
       }
 
-      const { target } = editor.$store.state.editing;
+      const { target } = state.editing;
       const list = [].concat(target).map(fmt).filter(Boolean);
       return list;
     },
