@@ -3,8 +3,13 @@
 
 function unpackSingleElementArray(a) { return (a.length === 1 ? a[0] : a); }
 
+function ifNonEmptyObj(x) {
+  return (x && Object.keys(x).length && x) || false;
+}
+
 
 const EX = function decideTargetForNewAnno(state) {
+  const meta = ifNonEmptyObj(state.targetMetaData);
   const tgtSels = [];
 
   if (state.targetFragment) {
@@ -19,11 +24,14 @@ const EX = function decideTargetForNewAnno(state) {
     // (ch 3.2.1) or Segment thereof (ch 3.2.3).
     // Since all of their extra data (e.g. ch 3.2.2 "Classes") is optional,
     // we can just provide the value of the "id" field directly:
+    // … unless we have targetMetaData.
+    if (meta) { return { ...meta, id: state.targetSource }; }
     return state.targetSource;
   }
 
   // Using any selector(s) means our target must be a Specific Resource (ch 4):
   const tgtSpec = {
+    ...meta,
     source: state.targetSource,
     selector: unpackSingleElementArray(tgtSels),
   };
