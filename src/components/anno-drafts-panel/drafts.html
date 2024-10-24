@@ -111,6 +111,11 @@
             <bootstrap-button icon-fa="trash-o"
               @click="clickedDraftActionButton"
               data-action="reallyDeleteDraft"
+              :data-confirm-item-descr="[
+                draftMeta.humanDate,
+                draftMeta.humanTime,
+                draftMeta.customNamePart,
+                ].join(', ')"
               :title="l10n('delete_draft')"
               />
           </div>
