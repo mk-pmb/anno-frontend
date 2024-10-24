@@ -352,14 +352,33 @@ module.exports = {
       const { state } = editor.$store;
       const origTgt = state.editing.target;
       const tgtCateg = categorizeTargets(state, origTgt);
-      tgtCateg.subjTgt = (newSvg ? {
-        // ^-- Do not preserve any previous selectors because we'd have to
-        // ensure they are conceptually equivalent, and we cannot do that
-        // in software.
-        scope: state.targetSource,
-        source: state.targetImage,
-        selector: { type: 'SvgSelector', value: newSvg },
-      } : decideTargetForNewAnno(state));
+
+      let { subjTgt } = tgtCateg;
+      if (isStr(subjTgt)) {
+        // Keep nothing: It's just the URL, and we will set our own anyway.
+        subjTgt = {};
+      }
+      /* Starting with a fresh object would delete custom fields like
+        Dublin Core metadata, so instead we just delete what we have
+        authority for: */
+      delete subjTgt.id;
+      delete subjTgt.scope;
+      delete subjTgt.selector; /*
+        ^-- Do not preserve any previous selectors because we'd have to
+            ensure they are conceptually equivalent, and we cannot do
+            that in software. */
+      delete subjTgt.source;
+
+      if (newSvg) {
+        subjTgt.selector = { type: 'SvgSelector', value: newSvg };
+        subjTgt.source = state.targetImage;
+        subjTgt.scope = state.targetSource;
+      } else {
+        subjTgt.id = state.targetSource;
+      }
+
+      // Finally, weakly assign the targetMetaData and write back:
+      tgtCateg.subjTgt = { ...state.targetMetaData, ...subjTgt };
       const newTgtList = tgtCateg.recombine();
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['target', newTgtList]);
       editor.redisplayZoneEditorSvg();
