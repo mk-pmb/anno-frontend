@@ -29,7 +29,8 @@ function preserveUserInput(commit, ev) {
   const idx = +el.dataset.bodyIndex;
   console.debug('SemTag input changed',
     { idx, oldSemTitle, userInputValue, el, ev });
-  commit('UPDATE_BODY', { '#': idx, source: '', 'dc:title': userInputValue });
+  this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+    { prop: 'body', idx, upd: { source: '', 'dc:title': userInputValue } });
 }
 
 
@@ -63,17 +64,25 @@ module.exports = {
 
 
 
-      addSemanticTag() {
-        this.$store.commit('ADD_BODY', {
+      makeEmptyBody() {
+        return {
           type: 'SpecificResource',
           'dc:title': '',
           purpose,
           source: '',
-        });
+        };
       },
 
+      addBody() {
+        this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+          { prop: 'body', idx: '+', val: this.makeEmptyBody() });
+      },
 
-      removeBody(bodyIndex) { this.$store.commit('REMOVE_BODY', bodyIndex); },
+      removeBody(idx) {
+        this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+          { prop: 'body', idx, del: true });
+      },
+
 
         ensureCompletion() {
             const editor = this;
@@ -126,8 +135,9 @@ module.exports = {
                         el.dataset.semTitle = label;
                         el.dataset.semSource = source;
                         if (bodyIndex !== undefined) {
-                          editor.$store.commit('UPDATE_BODY',
-                            { '#': bodyIndex, 'dc:title': label, source });
+                          const upd = { 'dc:title': label, source };
+                          editor.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+                            { prop: 'body', idx: bodyIndex, upd });
                         }
                     });
 

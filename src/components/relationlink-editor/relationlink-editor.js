@@ -55,24 +55,33 @@ module.exports = {
         return arrayOfTruths(allBodies.map(mapRelationLinkBody));
       },
 
-      addRelationLink() {
-        this.$store.commit('ADD_BODY', {
+
+      makeEmptyBody() {
+        return {
           type: 'SpecificResource',
           'dc:title': '',
           purpose,
           'rdf:predicate': this.knownPredicates[0] || '',
           source: '',
-        });
+        };
       },
 
-      removeBody(bodyIdx) { this.$store.commit('REMOVE_BODY', bodyIdx); },
+      addBody() {
+        this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+          { prop: 'body', idx: '+', val: this.makeEmptyBody() });
+      },
+
+      removeBody(idx) {
+        this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+          { prop: 'body', idx, del: true });
+      },
 
       storeUserInput(event, prop) {
         const formField = event.target;
         const rowElem = formField.parentElement.parentElement;
-        const upd = { '#': +rowElem.dataset.bodyIndex };
-        upd[prop] = formField.value;
-        this.$store.commit('UPDATE_BODY', upd);
+        const idx = +rowElem.dataset.bodyIndex;
+        this.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+          { prop: 'body', idx, upd: { [prop]: formField.value } });
       },
 
       toggleVisibility(refName) {

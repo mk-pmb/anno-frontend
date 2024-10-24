@@ -39,10 +39,21 @@ const getters = {
 
 const mutations = {
 
-    ADD_BODY(state, bodyData) { state.body.push(bodyData); },
-    REMOVE_BODY(state, idx) { state.body.splice(idx, 1); },
-    UPDATE_BODY(st, { '#': idx, ...upd }) { Object.assign(st.body[idx], upd); },
-
+    UPDATE_EDITOR_ANNO_LIST_PROP(state, how) {
+      const { prop, upd, del } = how;
+      let { idx, val } = how;
+      const list = [].concat(state[prop] || []);
+      if (idx === '+') { idx = list.length; }
+      if (val !== undefined) { list[idx] = val; }
+      if (upd) { list[idx] = { ...list[idx], ...upd }; }
+      if (del) {
+        val = list[idx];
+        if (del.substr) { delete val[del]; }
+        if (del.forEach) { del.forEach(k => delete val[k]); }
+        if (del === true) { list.splice(idx, 1); }
+      }
+      state[prop] = list;
+    },
 
     RESET_ANNOTATION(state) {
       Object.keys(state).forEach(function reset(key) {

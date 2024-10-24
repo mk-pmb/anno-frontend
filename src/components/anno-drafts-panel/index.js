@@ -2,8 +2,6 @@
 'use strict';
 /* eslint-disable global-require */
 
-const jQuery = require('jquery');
-
 const eventBus = require('../../event-bus.js');
 
 const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
@@ -19,6 +17,7 @@ module.exports = {
   style: require('./style.scss'),
 
   mixins: [
+    require('../../mixin/datasetActionButton.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
   ],
@@ -75,18 +74,6 @@ module.exports = {
 
     scheduleAutoRescanDraftsList() {
       setTimeout(() => eventBus.$emit('autoReloadDraftsList'), 100);
-    },
-
-    clickedDraftActionButton(evt) {
-      const parents = jQuery(evt.target).parentsUntil('ul, ol').toArray();
-      const lineage = parents.reverse().concat(evt.target);
-      const datasets = lineage.map(x => x.dataset);
-      const meta = Object.assign({}, ...datasets);
-      // console.debug('clickedDraftActionButton', parents, meta);
-      const { action } = meta;
-      const impl = this[action];
-      if (!impl) { throw new Error('Draft action not implemented: ' + action); }
-      return impl.call(this, meta);
     },
 
     async reallyDeleteDraft(meta) {

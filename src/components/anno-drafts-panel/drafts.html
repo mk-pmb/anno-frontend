@@ -101,7 +101,7 @@
             >{{ draftMeta.humanDate }}<br>{{ draftMeta.humanTime }}</div>
           <div class="col-sm-1 text-nowrap buttons-col">
             <bootstrap-button icon-fa="edit"
-              @click="clickedDraftActionButton"
+              @click="clickedListItemDatasetActionButton"
               data-action="downloadAndRestoreDraft"
               :data-draft-name="draftMeta.customNamePart"
               :data-draft-date="draftMeta.humanDate"
@@ -109,7 +109,7 @@
               :title="l10n('edit_draft')"
               />
             <bootstrap-button icon-fa="trash-o"
-              @click="clickedDraftActionButton"
+              @click="clickedListItemDatasetActionButton"
               data-action="reallyDeleteDraft"
               :data-confirm-item-descr="[
                 draftMeta.humanDate,
