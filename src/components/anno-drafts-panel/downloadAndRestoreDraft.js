@@ -20,7 +20,7 @@ const EX = async function downloadAndRestoreDraft(meta) {
   EX.neverRestoreFields.forEach(k => delete draftData[k]);
 
   await panel.editorApi.loadAnnoData(draftData);
-  eventBus.$emit('switchEditorTabByRefName', 'commentTextTab');
+  eventBus.$emit('switchEditorTabByRefName', 'preview');
 };
 
 
