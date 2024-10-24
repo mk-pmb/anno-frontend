@@ -101,8 +101,8 @@ const EX = async function loadAnnoData(origAnno) {
   commit('FLAT_UPDATE_EDITOR_ANNO', model);
 
   const { l10n } = editor;
-  editor.$refs.targetAdjustedMsg.setMsg(null,
-    (tgtAdj && l10n('target_adjusted_' + tgtAdj)));
+  const tam = editor.$refs.targetAdjustedMsg;
+  if (tam) { tam.setMsg(null, (tgtAdj && l10n('target_adjusted_' + tgtAdj))); }
 
   editor.$refs.htmlBodyEditor.setUserHtml(html);
   editor.updatePreview();
