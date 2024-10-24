@@ -5,6 +5,15 @@
 
   .anno-body-buttonbar-bottom { display: none !important; }
 
+  ol.targets li .item-action-links {
+    display: inline-block;
+    margin-left: 2em;
+    visibility: hidden;
+  }
+  ol.targets li:active .item-action-links,
+  ol.targets li:hover .item-action-links { visibility: visible; }
+  ol.targets li .item-action-links a { text-decoration: none !important; }
+
 }
 
 
