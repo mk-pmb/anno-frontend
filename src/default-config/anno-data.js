@@ -32,6 +32,24 @@ const annoDataCfg = {
 
   targetFragment: null,
 
+  targetMetaData: {
+    // 'dc:title': '…',
+    /* The title, if available, will be used for link captions,
+      so prefer the scope's title if applicable.
+      Also, if people are likely to annotate targets with similar titles,
+      it's beneficial to have the distinguishing parts (e.g. page or part
+      numbers) near the beginning, in case the title is truncated. */
+
+    /* Theoretically, we could add even more:
+      'dc:author': '…',
+      'dc:description': '…',
+      … but most clients won't be able to use that anyway, and it may
+      quickly become redundant for groups of similar targets, so we
+      should prefer to declare those on the targetSource instead,
+      using HTML meta tags or similar.
+      */
+  },
+
   iiifUrlTemplate: '',
   /* ^-- Empty string, null, false: No IIIF links are shown.
       Non-empty string: For annotations with SVG zones, a link to the
