@@ -271,10 +271,14 @@ module.exports = {
         || refAnno.id
         );
       const { targetSource } = editor.$store.state;
-      const replyTgt = { id: replyToUrl, scope: targetSource };
+      const refAnnoTitle = (refAnno['dc:title'] || refAnno.title);
+      const replyTgt = {
+        id: replyToUrl,
+        scope: targetSource,
+        'dc:title': refAnnoTitle,
+      };
       const { l10n } = editor;
-      const title = (l10n('reply_title_prefix')
-        + (refAnno['dc:title'] || refAnno.title));
+      const title = l10n('reply_title_prefix') + refAnnoTitle;
       await editor.startCompose('reply', state => ({
         creator: editor.decideDefaultAuthorAgent(),
         title,
