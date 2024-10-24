@@ -56,10 +56,17 @@ const EX = function getCleanAnno() {
     ...oldFirstHtmlBody,
     value: cleanHtml,
   });
+
   let bodies = [newFirstHtmlBody].concat(anno.body);
   bodies = bodies.map(b => EX.checkOneTextualBody(b, editor)).filter(Boolean);
   EX.setOrDeleteMultiProp(anno, 'body', bodies);
-  EX.setOrDeleteMultiProp(anno, 'target', anno.target);
+
+  const targets = [].concat(anno.target).map(function optimize(tgt) {
+    if (!tgt) { return; }
+    delete tgt[':ANNO_FE:targetType'];
+    return tgt;
+  }).filter(Boolean);
+  EX.setOrDeleteMultiProp(anno, 'target', targets);
 
   return anno;
 };

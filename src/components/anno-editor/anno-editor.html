@@ -171,10 +171,34 @@
         }}</p>
       <ol class="targets" v-show="list.length">
         <li v-for="tgt in list"
-          :key="tgt.index + ':' + tgt.url">
+          :key="tgt.index + ':' + tgt.url"
+          :class="'anno-target anno-target-' + tgt.type"
+          :data-type="tgt.type"
+          :data-index="tgt.index "
+          :data-title="tgt.title"
+          :data-url="tgt.url"
+          >
+          <span class="is-reply-hint" v-if="tgt.type === 'replyingTo'"
+            >{{ l10n('inReplyTo_hint_short') }}</span>
           <a :href="tgt.url" target="_blank"
             rel="nofollow noopener noreferrer"
             >{{ tgt.title || tgt.url }}</a>
+          <span class="item-action-links">
+            <a class="rename-target"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('generic_list_item_rename_long')"
+              data-action="editListItemStringProp"
+              data-list="target"
+              data-prop="dc:title"
+              data-prompt="$$url"
+              >{{ l10n('generic_list_item_rename_icon') }}</a>
+            <a class="delete-target"
+              v-if="tgt.type !== 'primary'"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('generic_list_item_del_long')"
+              data-action="deleteTarget"
+              >{{ l10n('generic_list_item_del_icon') }}</a>
+          </span>
         </li>
       </ol><!-- /.targets -->
       <ul class="no-targets" v-show="!list.length">
@@ -193,11 +217,7 @@
       :editorAnnoId="annoIdUrl"
       :editorAnnoTitle="getAnnoTitle()"
       :editorAnnoPrimaryTargetUrl="getPrimarySubjectTargetUrl()"
-      :editorApi="{
-        getCleanAnno,
-        loadAnnoData,
-        setStatusMsg,
-        }"
+      :editorApi="{ getCleanAnno, loadAnnoData, setStatusMsg }"
       />
   </bootstrap-tab>
 
@@ -210,9 +230,7 @@
     <anno-editor-debug-panel
       v-if="tabRefIsActive('debugTab')"
       ref="debugPanel"
-      :editorApi="{
-        getCleanAnno,
-        }"
+      :editorApi="{ getCleanAnno }"
       />
   </bootstrap-tab>
 

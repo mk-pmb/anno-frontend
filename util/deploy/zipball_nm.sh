@@ -74,6 +74,7 @@ function deploy () {
     --redist-inplace )
       cp --verbose --target-directory="$DEPLOY_DEST_DIR"/experimental/dist \
         -- dist/*.js || return $?
+      sox-synth-play-notes E A
       return 0;;
     * ) echo E: $FUNCNAME: "Unsupported option: $1" >&2; return 2;;
   esac
