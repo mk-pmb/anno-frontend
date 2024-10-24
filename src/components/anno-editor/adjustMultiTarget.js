@@ -50,7 +50,7 @@ const EX = function adjustMultiTarget(appCfg, orig) {
     return st;
   }());
 
-  const updated = report.recombine();
+  const updated = report.recombine({ addTypeHints: true });
   updated.primaryTargetAdjustHint = summary;
 
   if (dbgp) { dbgp(jsonDeepCopy({ orig, report, summary })); } /*

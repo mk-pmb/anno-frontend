@@ -61,6 +61,7 @@ module.exports = {
 
   mixins: [
     require('../../mixin/annoUrls.js'),
+    require('../../mixin/datasetActionButton.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
   ],
@@ -130,6 +131,7 @@ module.exports = {
       eventBus.$on('editorTabNowShowing:targetEditor',
         editor.spawnExternalTagetEditorInTab);
     }
+    eventBus.$on('editorShouldUpdatePreview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', () => {
       let shapes = {};
@@ -417,21 +419,38 @@ module.exports = {
     compileTargetsListForTemplating() {
       const editor = this;
       const { state } = editor.$store;
+      const extra = orf(state.editing.extraFields);
+      const replyTo = [].concat(extra['as:inReplyTo']).filter(Boolean);
+
+      function getTypeSafe(tgt, index, url) {
+        const tt = tgt[':ANNO_FE:targetType'];
+        if (tt === 'primary') { return tt; }
+        if ((tt === 'anno') && replyTo.includes(url)) { return 'replyingTo'; }
+        if ((url === state.targetSource) || (url === state.targetImage)) {
+          const hints = { targetIdx: index, tt, expected: 'primary' };
+          hints.id = (tgt.id || tgt);
+          console.warn('Anno-Editor: compileTargetsListForTemplating: fixing:',
+            jsonDeepCopy(hints));
+          return 'primary';
+        }
+        return tt;
+      }
 
       function fmt(tgt, index) {
         if (!tgt) { return; }
         if (isStr(tgt)) { return fmt({ id: tgt }, index); }
         const url = guessPrimaryTargetUri({ target: tgt }, state);
+        const tgtType = getTypeSafe(tgt, index, url);
         const rec = {
           index,
+          type: tgtType,
           url,
           title: (tgt['dc:title'] || url),
         };
         return rec;
       }
 
-      const { target } = state.editing;
-      const list = [].concat(target).map(fmt).filter(Boolean);
+      const list = [].concat(state.editing.target).map(fmt).filter(Boolean);
       return list;
     },
 
@@ -557,6 +576,16 @@ module.exports = {
         ...orig,
       };
       editor.forceUpdatePreviewTs = now;
+    },
+
+
+
+    deleteTarget(ctx) {
+      const editor = this;
+      const voc = editor.l10n('delete_target_confirm');
+      if (!window.confirm([voc, ctx.title, ctx.url].join('\n\n'))) { return; }
+      editor.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+        { prop: 'target', idx: +ctx.index, del: true });
     },
 
 

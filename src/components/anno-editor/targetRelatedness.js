@@ -1,39 +1,38 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const sortedJson = require('safe-sortedjson');
-
-
-function jsonifyTarget(tgt) {
-  try {
-    return sortedJson(tgt, null, 2);
-  } catch (err) {
-    console.error('jsonifyTarget failed:', err, tgt);
-    throw err;
-  }
-}
+const isStr = require('is-string');
 
 
 const EX = {
 
+  urlProps: ['id', 'scope', 'source'],
+
   sameAsConfigTarget(cfgTgt, oneshotTgt) {
-    const ctJson = jsonifyTarget(cfgTgt);
-
-    function cmpCore(annoTgt, atJson) {
-      if (atJson === ctJson) { return 'exact match'; }
-      function propMatch(prop) {
-        const av = annoTgt[prop];
-        if ((av === cfgTgt) || (av === cfgTgt[prop])) { return prop; }
-        return false;
-      }
-      return propMatch('scope') || propMatch('source');
+    if (isStr(cfgTgt)) {
+      return EX.sameAsConfigTarget({ id: cfgTgt }, oneshotTgt);
     }
-
+    // const tr = 'Anno-Editor: matchesConfigTarget';
     const cmp = function matchesConfigTarget(annoTgt) {
-      const atJson = jsonifyTarget(annoTgt);
-      const r = cmpCore(annoTgt, atJson);
-      // console.debug('matchesConfigTarget', { annoTgt, cfgTgt, r });
-      return r;
+      if (isStr(annoTgt)) { return cmp({ id: annoTgt }); }
+      let matches = false;
+      // console.debug(tr + '? anno:', annoTgt, 'cfg:', cfgTgt);
+      EX.urlProps.forEach((annoKey) => {
+        if (matches) { return; }
+        const annoVal = annoTgt[annoKey];
+        if (!annoVal) { return; }
+        EX.urlProps.forEach((cfgKey) => {
+          if (matches) { return; }
+          const cfgVal = cfgTgt[cfgKey];
+          if (!cfgVal) { return; }
+          if (cfgVal === annoVal) {
+            // console.debug(tr + '!', { annoKey, cfgKey, annoVal, cfgVal });
+            matches = true;
+          }
+        });
+      });
+      // if (!matches) { console.debug(tr + ': Nope.'); }
+      return matches;
     };
 
     if (oneshotTgt) { return cmp(oneshotTgt); }
