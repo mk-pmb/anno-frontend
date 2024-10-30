@@ -163,7 +163,8 @@ module.exports = {
     (function maybeAddHint() {
       const nAdd = editorTgtCategs.additional.length;
       if (!nAdd) { return; }
-      let introText = el.l10n('additional_subjects_hint');
+      let introText = (el.l10n('additional_subjects_hint:n=' + nAdd, '')
+        || el.l10n('additional_subjects_hint', ''));
       if (!introText) { return; }
       introText = introText.replace(/@@nAdd@@/g, nAdd);
       initData.metaContextHints.push({
