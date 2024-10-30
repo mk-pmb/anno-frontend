@@ -165,6 +165,7 @@ module.exports = {
         introText,
         linkText: '[' + el.l10n('additional_subjects_show') + ']',
         linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
+        linkFrame: state.additionalTargetsHintLinkFrame || '',
       });
     }());
 
