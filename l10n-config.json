@@ -257,6 +257,7 @@
             "target_adjusted_added":    "Wurde hinzugefügt.",
             "target_adjusted_hoisted":  "Wurde an den Anfang der Liste verschoben.",
             "additional_subjects_hint": "Diese Annotation bezieht sich auf @@nAdd@@ weitere Unter\u00ADsuchungs\u00ADgegen\u00ADstände.",
+            "additional_subjects_hint:n=1": "Diese Annotation bezieht sich auf einen weiteren Unter\u00ADsuchungs\u00ADgegen\u00ADstand.",
             "additional_subjects_show": "Alle anzeigen",
 
             "cmp_layout_only":      "Zeige nur:",
