@@ -21,6 +21,12 @@ const domCfg = {
   */
 
 
+  additionalTargetsHintLinkFrame: '', /*
+    Which frame to open the link in that informs about an annotation having
+    additional targets. Use '' for same frame and '_blank' for new window/tab.
+  */
+
+
 
 };
 

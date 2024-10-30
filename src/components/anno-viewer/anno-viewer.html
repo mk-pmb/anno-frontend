@@ -301,7 +301,8 @@
             <i :class="'fa fa-' + mch.faIcon"></i>
             <div class="pad">
               <span class="intro">{{ mch.introText }}</span>
-              <a :href="mch.linkUrl">{{ mch.linkText }}</a>
+              <a :href="mch.linkUrl" :target="mch.linkFrame"
+                >{{ mch.linkText }}</a>
             </div><!-- /.pad -->
           </div>
         </div><!-- /.border -->
