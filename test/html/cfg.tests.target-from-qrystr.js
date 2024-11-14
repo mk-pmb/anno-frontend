@@ -34,6 +34,9 @@
     return s.ubHdDigLit(1676, 2622, 'lange1937_12_06/0005', '004.jpg');
   case 'alteuni':
     return s.uniHdKarlLange1896();
+  case 'at1':
+    cfg.targetMetaData = { 'dc:title': 'Seite 1 von Anno-Test-Projekt' };
+    return s.ubHdDigLit(1996, 3453, 'annotationen_test/0001');
   case 'engel':
     // One of our few old annotation with lots of versions.
     cfg.initAppMode = 'cmp';
