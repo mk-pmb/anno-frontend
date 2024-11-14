@@ -1,14 +1,15 @@
 <div
   :class="[
+    'annotation',
     'card',
     'panel',
     'panel-default',
-    'annoeditor-viewer',
+    'anno-viewer',
     (highlighted && 'annoeditor-highlight'),
     (legacyPurlHighlight && 'annoeditor-purl'),
     (asReply && 'annoeditor-reply'),
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
-    (isOwnAnno && 'own-anno'),
+    (isOwnAnno ? 'own-anno' : 'someone-elses-anno'),
   ].filter(Boolean)"
   @mouseenter="onMouseEnter"
   @mouseleave="onMouseLeave"
