@@ -17,7 +17,7 @@
 }
 
 
-.annoeditor-viewer.panel.panel-default {
+.anno-viewer.panel.panel-default {
   .fade-enter-active, .fade-leave-active {
     transition: opacity .4s;
   }
@@ -234,7 +234,7 @@
 
 }
 
-.annoeditor-viewer {
+.anno-viewer {
 
   .comment-separator { margin-bottom: 1ex; }
   .navigation-separator { clear: both; margin-bottom: 2px; }
