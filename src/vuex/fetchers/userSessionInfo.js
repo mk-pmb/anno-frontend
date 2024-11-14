@@ -57,8 +57,8 @@ const EX = async function fetchUserSessionInfo(store) {
   //    vue store will always replace it with a deeply proxified stand-in.
 
   if (superseded) {
-    // Another fetch attempt has superseded ours while we were waiting for the
-    // reply. Our reply might have stale old data, so we just drop it.
+    // Another fetch attempt has superseded ours while we were waiting for
+    // the reply. Our reply might have stale old data, so we just drop it.
     return;
   }
 
