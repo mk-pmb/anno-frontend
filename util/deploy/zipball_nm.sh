@@ -11,12 +11,17 @@ function zipball_nm () {
   local DEPLOY_CHECK_FILE='.htaccess'
   local ZIP_FN='tests.nm.snapshot.zip'
   local TESTS_DIR='test/html'
+  local SKIP_LINT=
+
+  case " $* " in
+    *' --no-lint '* ) SKIP_LINT='--no-lint';;
+  esac
 
   case " $* " in
     *' PD '* | \
     *' PU '* | \
     *' reex '* | \
-    *' pack '* ) npm run build || return $?;;
+    *' pack '* ) npm run build -- $SKIP_LINT || return $?;;
   esac
   case " $* " in
     *' reex '* ) deploy --redist-inplace; return $?;;
