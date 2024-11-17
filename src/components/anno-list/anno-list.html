@@ -104,7 +104,9 @@
     <bootstrap-btnbar-dropdown ref="ddUser"
       @toggle="userSessionDropDownToggled"
       :icon-fa="'user' + (isLoggedIn ? '' : '-secret')"
-      :caption="userSessionInfo.userId || l10n('guest_identity_short')"
+      :caption="userSessionInfo.shortUserId
+        || userSessionInfo.userId
+        || l10n('guest_identity_short')"
       >
       <template v-if="isLoggedIn">
         <component :is="bootstrapOpts.tags.dropdownMenuItem"
