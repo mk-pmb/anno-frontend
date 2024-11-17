@@ -26,13 +26,15 @@ const EX = async function fetchUserSessionInfo(store) {
     return;
   }
 
-  let { fetching } = orf(state[usiKey]);
+  let usiBeforeFetching = orf(state[usiKey]);
+  let { fetching } = usiBeforeFetching;
   if (fetching) {
     console.warn('fetchUserSessionInfo: Another request is already pending.',
       ':TODO: Abort the other request.');
   }
   fetching = {};
   await commit('INJECTED_MUTATION', [updateStoredUsi, false, { fetching }]);
+  usiBeforeFetching = null;
   const mutateUpdate = {
     fetchQueryTs: Date.now(),
     // ^-- Using a number in order to reduce Vue store proxification.
@@ -51,7 +53,8 @@ const EX = async function fetchUserSessionInfo(store) {
   }
   mutateUpdate.fetchReplyTs = Date.now();
 
-  fetching = orf(state[usiKey]).fetching;
+  const usiAfterFetching = state[usiKey];
+  fetching = orf(usiAfterFetching).fetching;
   const superseded = ((fetching && fetching.getPr()) !== fetchPr);
   // ^- We cannot just compare (state.fetching !=== fetching) because the
   //    vue store will always replace it with a deeply proxified stand-in.
@@ -64,6 +67,17 @@ const EX = async function fetchUserSessionInfo(store) {
 
   mutateUpdate.fetching = false;
   // ^-- Using a number in order to reduce Vue store proxification.
+
+  const combined = { ...mutateReplace, ...mutateUpdate };
+  const { userId } = combined;
+  if (userId) {
+    if (combined.shortUserId === undefined) {
+      let u = String(userId || '');
+      u = u.replace(/(\S{3}\@\S{3})\S{5,}/g, '$1…');
+      u = u.replace(/\.+(?=…$)/, '');
+      mutateUpdate.shortUserId = u;
+    }
+  }
 
   await commit('INJECTED_MUTATION',
     [updateStoredUsi, mutateReplace, mutateUpdate]);
