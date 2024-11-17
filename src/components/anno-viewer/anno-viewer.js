@@ -373,10 +373,12 @@ module.exports = {
 
     async approve() {
       await simpleDateStamp(this, 'dc:dateAccepted');
+      window.location.reload();
     },
 
     async unpublish() {
       await simpleDateStamp(this, 'as:deleted');
+      window.location.reload();
     },
 
 
