@@ -42,15 +42,20 @@ function build_maybe_lint () {
 }
 
 
-function build_dev () {
+function build_common () {
   build_maybe_lint || return $?
-  WEBPACK_AUDIENCE= webpack || return $?
+  WEBPACK_AUDIENCE="$WEBPACK_AUDIENCE" \
+    "$REPO_TOP"/build/run_tamed.sh webpack || return $?
+}
+
+
+function build_dev () {
+  WEBPACK_AUDIENCE='' build_common || return $?
 }
 
 
 function build_prod () {
-  build_maybe_lint || return $?
-  WEBPACK_AUDIENCE='prod' webpack || return $?
+  WEBPACK_AUDIENCE='prod' build_common || return $?
 }
 
 
