@@ -20,7 +20,6 @@ function orf(x) { return x || false; }
 
 
 module.exports = {
-    strict: process.env.NODE_ENV != 'production',
     state: {
       // No settings here! Default config belongs in `../default-config.js`.
       acl: null,
