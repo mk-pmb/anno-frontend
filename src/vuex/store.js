@@ -19,7 +19,7 @@ const fetchUserSessionInfo = require('./fetchers/userSessionInfo.js');
 function orf(x) { return x || false; }
 
 
-module.exports = {
+const EX = { // exports namespace
     state: {
       // No settings here! Default config belongs in `../default-config.js`.
       acl: null,
@@ -102,4 +102,7 @@ module.exports = {
       },
 
     },
-}
+};
+
+
+module.exports = EX;
