@@ -123,7 +123,7 @@ module.exports = {
       hasRealPublicDoi,
       highlighted: !!el.initiallyHighlighted,
       isListViewItem,
-      metaContextHints: [],
+      metaContextHintsCache: [],
       mintDoiMsg: '',
       replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
     };
@@ -143,38 +143,6 @@ module.exports = {
       if (!cur) { return; }
       initData.doiLinkPreviewWarning = el.l10n('doi_url_preview_warning');
       initData.currentVersionDoiUri = cur;
-    }());
-
-    (function maybeAddHint() {
-      if (!initData.replyingTo) { return; }
-      if (state.initAppMode === 'list') { return; }
-      const introText = el.l10n('inReplyTo_hint_intro');
-      if (!introText) { return; }
-      initData.metaContextHints.push({
-        cls: 'inreplyto',
-        faIcon: 'reply',
-        introText,
-        linkText: el.l10n('inReplyTo_hint_link'),
-        linkUrl: initData.replyingTo,
-      });
-    }());
-
-    const editorTgtCategs = categorizeTargets(state, anno.target);
-    (function maybeAddHint() {
-      const nAdd = editorTgtCategs.additional.length;
-      if (!nAdd) { return; }
-      let introText = (el.l10n('additional_subjects_hint:n=' + nAdd, '')
-        || el.l10n('additional_subjects_hint', ''));
-      if (!introText) { return; }
-      introText = introText.replace(/@@nAdd@@/g, nAdd);
-      initData.metaContextHints.push({
-        cls: 'multi-target-hint',
-        faIcon: 'share-alt',
-        introText,
-        linkText: '[' + el.l10n('additional_subjects_show') + ']',
-        linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
-        linkFrame: state.additionalTargetsHintLinkFrame || '',
-      });
     }());
 
     return initData;
@@ -538,6 +506,59 @@ module.exports = {
       }
 
       return preparsed;
+    },
+
+
+    maybeUpdateMetaContextHints() {
+      const el = this;
+      const { state } = el.$store;
+      const basedOn = [
+        state.forceRerenderConfigBasedUiTs,
+        state.initAppMode,
+        state.targetSource,
+      ].join('\v');
+      const oldCache = el.metaContextHintsCache;
+      const cacheValid = (oldCache.basedOn === basedOn);
+      if (cacheValid) { return oldCache; }
+
+      const anno = el.annoData;
+      const mch = [];
+      mch.basedOn = basedOn;
+
+      (function maybeAddReplyHint() {
+        if (!el.replyingTo) { return; }
+        if (state.initAppMode === 'list') { return; }
+        const introText = el.l10n('inReplyTo_hint_intro');
+        if (!introText) { return; }
+        mch.push({
+          cls: 'inreplyto',
+          faIcon: 'reply',
+          introText,
+          linkText: el.l10n('inReplyTo_hint_link'),
+          linkUrl: el.replyingTo,
+        });
+      }());
+
+      const editorTgtCategs = categorizeTargets(state, anno.target);
+      (function maybeAddHint() {
+        const nAdd = editorTgtCategs.additional.length;
+        if (!nAdd) { return; }
+        let introText = (el.l10n('additional_subjects_hint:n=' + nAdd, '')
+          || el.l10n('additional_subjects_hint', ''));
+        if (!introText) { return; }
+        introText = introText.replace(/@@nAdd@@/g, nAdd);
+        mch.push({
+          cls: 'multi-target-hint',
+          faIcon: 'share-alt',
+          introText,
+          linkText: '[' + el.l10n('additional_subjects_show') + ']',
+          linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
+          linkFrame: state.additionalTargetsHintLinkFrame || '',
+        });
+      }());
+
+      el.metaContextHintsCache = mch;
+      return mch;
     },
 
 
