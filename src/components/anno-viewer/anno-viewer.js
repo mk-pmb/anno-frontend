@@ -240,7 +240,7 @@ module.exports = {
       const viewer = this;
       const { authorIdentities } = orf(viewer.$store.state.userSessionInfo);
       if (!authorIdentities) { return false; }
-      const crea = resourceIdStr(orf(viewer.annotation).creator);
+      const crea = resourceIdStr(viewer.annoData.creator);
       if (!crea) { return false; }
       return authorIdentities.some(ai => (crea === ai.id));
     },
@@ -280,7 +280,7 @@ module.exports = {
 
     editable() {
       const viewer = this;
-      const anno = viewer.annotation;
+      const anno = viewer.annoData;
       const nonDebugEditable = (function decide() {
         const { isOwnAnno } = viewer;
         const auth = viewer.checkAclAuth({ isOwnAnno,
@@ -338,7 +338,7 @@ module.exports = {
 
     problemsWarningText() {
       const viewer = this;
-      const anno = viewer.annotation;
+      const anno = viewer.annoData;
       const { l10n } = viewer;
       const probs = [];
 
@@ -388,8 +388,8 @@ module.exports = {
         annoIdUrl: viewer.annoIdUrl,
         domElem: viewer.$el,
         dataApi: viewer.dataApi,
-        getVueBoundAnno() { return viewer.annotation; },
-        getAnnoJson() { return jsonDeepCopy(viewer.annotation); },
+        getVueBoundAnno() { return viewer.annoData; },
+        getAnnoJson() { return jsonDeepCopy(viewer.annoData); },
       };
     },
 
@@ -421,12 +421,12 @@ module.exports = {
       const viewer = this;
       const { annoIdUrl, l10n, setDoiMsg } = viewer;
       console.debug('askConfirmationToMintDoi: viewer anno:',
-        viewer.annotation);
-      // window.viewerAnnotation = viewer.annotation;
+        viewer.annoData);
+      // window.viewerAnnotation = viewer.annoData;
       if (!annoIdUrl) {
         return setDoiMsg('<missing_required_field><annofield_id>');
       }
-      if (viewer.annotation['_ubhd:doiAssign']) {
+      if (viewer.annoData['_ubhd:doiAssign']) {
         return window.alert(viewer.l10n('mint_doi.pending'));
       }
       if (!viewer.approval.active) {
