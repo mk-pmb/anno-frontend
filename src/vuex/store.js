@@ -26,6 +26,7 @@ const EX = { // exports namespace
     acl: null,
     cacheBusterEnabled: false,
     editMode: null,
+    forceRerenderConfigBasedUiTs: 0,
     lurkMode: false,
     userSessionInfo: false,
   },
