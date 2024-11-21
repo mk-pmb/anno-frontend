@@ -25,10 +25,13 @@ Object.assign(fvl, {
   guessVerNum(url) { return +orf(url && /\~(\d+)$/.exec(url))[1] || 0; },
 
 
-  mustGuessVerNum(url) {
+  mustGuessVerNum(trace, urlOrDict, dictKey, descr) {
+    const url = (dictKey ? urlOrDict[dictKey] : urlOrDict);
     const n = fvl.guessVerNum(url);
     if (n >= 1) { return n; }
-    throw new Error('Cannot guess version number from URL: ' + url);
+    const e = new Error(trace + 'Cannot guess version number from '
+      + (descr || ('URL in field "' + dictKey + '"')) + ': ' + url);
+    throw e;
   },
 
 
@@ -47,19 +50,18 @@ Object.assign(fvl, {
     if (!Array.isArray(verHistItems)) {
       throw new Error('Received version history in unexpected data format.');
     }
-    // console.debug('Obtained version history:', verHistItems);
+    console.debug('Obtained version history:', verHistItems);
     let versList = Array.from({ length: latestVerNum });
-    verHistItems.forEach(function learnVer(orig) {
+    verHistItems.forEach(function learnVer(orig, histEntIdx) {
       if (!orig) { return; }
-      const verNum = fvl.mustGuessVerNum(orig.id /* Anno ID URL */);
-      // if (verNum % 2) { return; }
+      const trace = 'Parse version history item #' + (histEntIdx + 1) + ': ';
+      const rInfo = { anno: orig };
+      rInfo.verNum = fvl.mustGuessVerNum(trace, orig, 'id');
       const nowLoaded = makeDeferred();
-      const rInfo = {
-        verNum,
-        anno: orig,
-        waitUntilLoaded() { return nowLoaded.promise; },
+      Object.assign(rInfo, {
         ...decideAuxMeta(orig, cmpVueElem),
-      };
+        waitUntilLoaded() { return nowLoaded.promise; },
+      });
       const plumbing = {
         receiveAnnoData(data) {
           delete plumbing.receiveAnnoData;
@@ -72,7 +74,7 @@ Object.assign(fvl, {
         },
       };
       rInfo.internalPlumbing = Object.bind(null, plumbing);
-      versList[verNum - 1] = rInfo;
+      versList[rInfo.verNum - 1] = rInfo;
     });
 
     const vocNoData = cmpVueElem.l10n('no_data');
@@ -110,9 +112,16 @@ Object.assign(fvl, {
       const { finalUrl } = apiErr;
       const linkRels = orf(apiErr.linkRels);
       // console.debug('discoverInitialFacts:', { apiErr, finalUrl, linkRels });
-      const latestVerNum = (fvl.guessVerNum(linkRels['latest-version'])
-        || fvl.guessVerNum(linkRels['original'])
-        || fvl.mustGuessVerNum(finalUrl));
+      let latestVerNum = 0;
+      const trace = ('While describing API error "' + String(apiErr)
+        + '" that occurred when fetching the latest version: ');
+      try {
+        latestVerNum = (fvl.guessVerNum(trace, linkRels, 'latest-version')
+          || fvl.guessVerNum(trace, linkRels, 'original')
+          || fvl.mustGuessVerNum(trace, finalUrl, null, 'URL after redirects'));
+      } catch (verNumErr) {
+        console.error(verNumErr);
+      }
       let verHistUrl = (linkRels['version-history'] || '');
       if (finalUrl && (!verHistUrl.includes('://'))) {
         verHistUrl = (new URL(verHistUrl, finalUrl)).href;
@@ -134,7 +143,10 @@ Object.assign(fvl, {
     }
 
     const latestVerUrl = lavStr('id');
-    const latestVerNum = fvl.mustGuessVerNum(latestVerUrl);
+    const trace = ('While reporting meta data for '
+      + 'the successfully fetched latest version: ');
+    const latestVerNum = fvl.mustGuessVerNum(trace, latestVerUrl, null,
+      "latest version URL (i.e. the annotation's ID field)");
     return {
       latestVerData,
       latestVerErr: false,

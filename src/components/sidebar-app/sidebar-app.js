@@ -91,7 +91,7 @@ module.exports = {
       sba.updateMsgBox({
         cls: 'error',
         msgTypePrefix: sba.l10n('error:'),
-        msg: String(err),
+        msg: String(err).trim().replace(/\r?\n/g, '¶ '),
         hint: err.hint,
         err,
       });
