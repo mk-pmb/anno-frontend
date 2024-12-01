@@ -188,7 +188,7 @@
   "body": {
     "format": "text/html",
     "type": "TextualBody",
-    "value": "<p>✅ (Edit: Jetzt deutsch.)</p>"
+    "value": "<p>✅ (Edit: Jetzt deutsch und mit Fake-DOI.)</p>"
   },
   "created": "2023-06-22T17:25:00Z",
   "creator": {
@@ -197,6 +197,7 @@
     "type": "Person"
   },
   "dc:dateAccepted": false,
+  "dc:identifier": "https://doi.org/10.1000/182",
   "dc:isVersionOf": "test-esau-spam-warhier",
   "dc:language": "de-DE",
   "dc:title": "Ich war hier.",
