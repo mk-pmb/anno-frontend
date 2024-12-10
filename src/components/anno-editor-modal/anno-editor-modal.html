@@ -19,6 +19,7 @@
             btn-class="close"
             data-dismiss="modal"
             aria-label="Close"
+            :title="l10n('discard')"
             icon-fa="close"
             />
         </div>
@@ -38,12 +39,14 @@
           <bootstrap-button eventbus-emit="saveNewDraft"
             btn-class="none"
             icon-fa="floppy-o"
+            :title="l10n('save_as_draft')"
             v-if="$store.state.draftStoreEndpoint"
             />
           <bootstrap-button eventbus-emit="discard"
             btn-class="close"
             data-dismiss="modal"
             aria-label="Close"
+            :title="l10n('discard')"
             icon-fa="close"
             />
         </div>
