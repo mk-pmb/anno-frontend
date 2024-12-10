@@ -128,7 +128,7 @@ module.exports = {
     const editor = this;
     const { state } = editor.$store;
     if (state.targetEditorTabVoc) {
-      eventBus.$on('editorTabNowShowing:targetEditor',
+      eventBus.$on('editorTabNowShowing:target-editor',
         editor.spawnExternalTagetEditorInTab);
     }
     eventBus.$on('editorShouldUpdatePreview', editor.updatePreview);

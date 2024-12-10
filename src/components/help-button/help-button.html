@@ -1,13 +1,17 @@
 <a :class="[
     'btn btn-sm btn-default',
     (bootstrapBtnCls && ('btn-' + bootstrapBtnCls)),
+    'help-topic-' + topic,
     'help-button',
   ].filter(Boolean).join(' ')"
   :data-topic="topic"
   :href="helpUrl"
   target="_blank"
   @click.stop
-  :title="title || l10n(topic)"
+  :title="title
+    || l10n('help-button:' + topic, '')
+    || l10n(topic, '')
+    || ''"
   >
   <span v-if="!buttonLabel" :class="[
       'label',
