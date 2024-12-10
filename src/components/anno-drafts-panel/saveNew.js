@@ -13,14 +13,13 @@ const hash = require('./hash.js');
 
 const EX = async function saveNew() {
   const panel = this;
-  let anno = panel.editorApi.getCleanAnno();
-  if (panel.$refs.saveAsTemplateCkb.checked) {
-    anno = EX.convertToTemplate(anno);
-  }
+  const anno = panel.editorApi.getCleanAnno();
+  const saveAsTemplate = panel.$refs.saveAsTemplateCkb.checked;
+  if (saveAsTemplate) { delete anno.target; }
   const draftJson = sortedJson(anno).replace(/'/g, '\\u0027') + '\n';
-  const draftContentHash = hash.weaklyHashAnnoDraft(draftJson);
+  const contentHash = hash.weaklyHashAnnoDraft(draftJson);
   const filename = (
-    EX.compileMinusParts(panel, draftContentHash).join('-')
+    EX.compileMinusParts({ panel, contentHash, saveAsTemplate }).join('-')
     + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
@@ -48,14 +47,15 @@ const EX = async function saveNew() {
 
 Object.assign(EX, {
 
-  compileMinusParts(draftsPanelVueElem, contentHash) {
-    const h = hash.fileNameHashes(draftsPanelVueElem);
+  compileMinusParts(how) {
+    const { panel, contentHash, saveAsTemplate } = how;
+    const h = hash.fileNameHashes(panel);
     // console.debug('drafts/compileMinusParts: hashes:', h);
     const p = dateFmt.parts();
     const m = {
       date: p.d,
       time: p.t,
-      targetHash: h.target,
+      targetHash: (saveAsTemplate ? 't' : h.target),
       annoIdUrlHash: h.annoIdUrl,
       contentHash,
     };
@@ -64,12 +64,6 @@ Object.assign(EX, {
       if (!v) { throw new Error('Mislabeled meta data slot: ' + k); }
       return v;
     });
-  },
-
-  convertToTemplate(origAnno) {
-    // i.e. just discard the target:
-    const { target, ...tmpl } = origAnno;
-    return tmpl;
   },
 
 });
