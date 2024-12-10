@@ -16,10 +16,14 @@
           btn-class="success create-new-annotation-button"
           :caption="l10n('compose_new_annot')" />
         <template v-if="isLoggedIn">
-          <!-- authorized AND logged in -->
-          <help-button topic="popover-logged-in" />
-        </template><!-- logged in but no access -->
-      </template><!-- authorized -->
+          <!-- authorized and logged in -->
+          <help-button topic="compose-anno-authorized-loggedin" />
+        </template>
+        <template v-else>
+          <!-- authorized even as guest -->
+          <help-button topic="compose-anno-authorized-guest" />
+        </template>
+      </template><!-- end of: authorized -->
       <template v-else><!-- not authorized -->
 
         <bootstrap-button ref="btnAclRequestCreate"
@@ -45,9 +49,15 @@
         </bootstrap-button>
         <template v-if="isLoggedIn">
           <!-- not authorized even though we're logged in -->
-          <help-button topic="popover-not-authorized" />
-        </template><!-- logged in but no access -->
-      </template><!-- not authorized -->
+          <help-button topic="compose-anno-unauthorized-loggedin" />
+        </template><!-- end of: logged in but no access -->
+        <template v-else>
+          <!-- help-button topic="compose-anno-unauthorized-guest" />
+            No help button needed in this case b/c there is no button to
+            which the help could refer.
+            -->
+        </template>
+      </template><!-- end of: unauthorized -->
     </template><!-- offerCreateNewAnnotationButton -->
 
   </div><!-- .anno-list-buttonbar-top.pull-left -->
@@ -158,7 +168,7 @@
             :caption="l10n('login')"
             :linkUrl="$store.state.loginFormUrl"
           />
-          <help-button topic="popover-not-logged-in" />
+          <help-button topic="session-menu-login" />
         </component><!-- dropdownMenuItem -->
 
         <component :is="bootstrapOpts.tags.dropdownMenuItem"
@@ -172,7 +182,7 @@
             :caption="l10n('register')"
             :linkUrl="$store.state.loginRegistrationFormUrl"
           />
-          <help-button topic="popover-not-logged-in" />
+          <help-button topic="session-menu-registration" />
         </component><!-- dropdownMenuItem -->
 
       </template><!-- guest session -->
