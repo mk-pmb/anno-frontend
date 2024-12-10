@@ -13,13 +13,8 @@
   <div class="col-xl">
     <h4>{{ l10n('save_as_draft') }}</h4>
   </div>
-  <div class="col-xl"><label>
-    <input type="checkbox" ref="saveAsTemplateCkb">
-    {{ l10n('save_as_template') }}
-  </label></div>
-</div>
-<div class="row">
-  <div class="col-sm-2 pt-2">{{ l10n('draft_filename_comment') }}:</div>
+</div><div class="row">
+  <div class="col-sm-3 pt-2">{{ l10n('draft_filename_comment') }}:</div>
   <div class="col-xl"><div class="position-relative">
     <input class="form-control" type="text"
       v-model="draftFilenameCommentCustom">
@@ -39,16 +34,20 @@
       }}</div>
     </div></div>
   </div><!-- /.pos-rel --></div><!-- /.col-xl -->
-</div><!-- /.row -->
-<div class="row">
+</div><div class="row">
   <div class="col-sm-3">{{ l10n('draft_filename_adjusted') }}:</div>
   <div class="col-xl"><code>{{ draftFilenameCommentAdjusted }}</code></div>
-  <div class="col-sm-1">
-    <div class="btn-group pull-right" role="group">
-      <bootstrap-button eventbus-emit="saveNewDraft"
-        icon-fa="floppy-o"
-        btn-class="outline-primary"
-        :caption="l10n('save_as_draft')" />
+</div><div class="row">
+  <div class="col-xl">
+    <div class="pull-right">
+      <label><input type="checkbox" ref="saveAsTemplateCkb">
+        {{ l10n('save_as_template') }}</label>
+      <div class="btn-group ml-4" role="group">
+        <bootstrap-button eventbus-emit="saveNewDraft"
+          icon-fa="floppy-o"
+          btn-class="outline-primary"
+          :caption="l10n('save_as_draft')" />
+      </div>
     </div>
   </div>
 </div></div>
