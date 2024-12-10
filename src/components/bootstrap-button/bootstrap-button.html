@@ -4,7 +4,7 @@
     'btn',
     'btn-default',  // required for BS3
     'text-nowrap',
-    'btn-' + [].concat(btnClass).filter(Boolean).join(' '),
+    'btn-' + [].concat(btnClass).filter(Boolean).join(' ').trim(),
     'btn-' + btnSize,
   ]"
   :title="title"
