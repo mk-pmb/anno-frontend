@@ -174,7 +174,7 @@ module.exports = {
     });
 
     // Expand this annotation
-    eventBus.$on('expand', (annoIdUrl) => {
+    eventBus.$on('expandAnno', (annoIdUrl) => {
       cerr('Thread expand handler needs full rewrite!', { annoIdUrl });
     });
 
@@ -440,7 +440,7 @@ module.exports = {
 
     startHighlighting(expand) {
       this.highlighted = true;
-      if (expand) { eventBus.$emit('expand', this.annoIdUrl, true); }
+      if (expand) { eventBus.$emit('expandAnno', this.annoIdUrl, true); }
     },
     stopHighlighting() { this.highlighted = false; },
     toggleHighlighting() { this.highlighted = !this.highlighted; },
