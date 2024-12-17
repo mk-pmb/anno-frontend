@@ -3,6 +3,7 @@
 const isStr = require('is-string');
 
 const guessPrimaryTargetUriImpl = require('../guessPrimaryTargetUri.js');
+const strU = require('../stringUtil.js');
 
 function orf(x) { return x || false; }
 
@@ -19,7 +20,7 @@ const MT = {
     const { state } = this.$store;
     let url = state.purlTemplate;
     if (!url) { return '#!missingConfig:purlTemplate!' + annoIdOrVersId; }
-    const versionIdentifier = annoIdOrVersId.split('/').slice(-1)[0];
+    const versionIdentifier = strU.fileBaseName(annoIdOrVersId);
 
     // %sl and {{ slug }} are deprecated and will be dropped soon!
     url = url.replace('%sl', versionIdentifier);
