@@ -65,7 +65,7 @@ module.exports = {
     // Initially open the list if there was an annotation persistently adressed
     if (annoList.purlId && annoList.purlAnnoInitiallyOpen) {
       eventBus.$once('fetched', () => {
-        setTimeout(() => eventBus.$emit('expand', annoList.purlId), 1);
+        setTimeout(() => eventBus.$emit('expandAnno', annoList.purlId), 1);
       });
     }
   },
