@@ -58,15 +58,6 @@ Boolean(cdbg, cerr); // Linter: Ignore whether they're all commented-out.
 function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
-function isStr(x) { return typeof x === 'string'; }
-
-
-function resourceIdStr(res) {
-  if (!res) { return ''; }
-  if (isStr(res)) { return res; }
-  if (isStr(res.id)) { return res.id; }
-  return '';
-}
 
 
 const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
@@ -216,7 +207,7 @@ module.exports = {
       const viewer = this;
       const { authorIdentities } = orf(viewer.$store.state.userSessionInfo);
       if (!authorIdentities) { return false; }
-      const crea = resourceIdStr(viewer.annoData.creator);
+      const crea = viewer.findResourceUrl(viewer.annoData.creator);
       if (!crea) { return false; }
       return authorIdentities.some(ai => (crea === ai.id));
     },
