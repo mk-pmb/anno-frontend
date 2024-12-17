@@ -3,7 +3,7 @@
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 const strU = require('../../stringUtil.js');
 
-function str(x) { return String(x || ''); }
+function ores(x) { return String(x || ''); }
 
 
 const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
@@ -17,12 +17,12 @@ const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
 
   // %ID  = Anno's ID (usually a full URL)
   // %id  = last path segment of %ID = everything behind the farthest slash.
-  slots['%ID'] = str(anno.id);
+  slots['%ID'] = ores(anno.id);
   slots['%id'] = strU.fileBaseName(slots['%ID']);
 
   // %VO  = dc:isVersionOf
   // %vo  = last path segment of dc:isVersionOf
-  slots['%VO'] = str(anno['dc:isVersionOf']);
+  slots['%VO'] = ores(anno['dc:isVersionOf']);
   slots['%vo'] = strU.fileBaseName(slots['%VO']);
 
   // %tu   First target URL
@@ -32,7 +32,7 @@ const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
   slots['%sc'] = guessPrimaryTargetUri(anno, { findScope: true });
 
 
-  const tplOrig = str(cfg[tplKeyPrefix + 'UrlTemplate']);
+  const tplOrig = ores(cfg[tplKeyPrefix + 'UrlTemplate']);
   const url = tplOrig.replace(/%\w{2}/g, m => (slots[m] || m));
   return url;
 };
