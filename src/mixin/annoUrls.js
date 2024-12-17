@@ -35,7 +35,9 @@ const MT = {
   findResourceUrl(res) {
     if (!res) { return ''; }
     if (isStr(res)) { return res; }
-    return (res.id || res.source || '');
+    if (isStr(res.id)) { return res.id; }
+    if (isStr(res.source)) { return res.source; }
+    return '';
   },
 
 
