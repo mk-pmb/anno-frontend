@@ -11,6 +11,7 @@ const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const findTargetUri = require('../../findTargetUri.js');
 const licensesByUrl = require('../../license-helper.js').byUrl;
+const strU = require('../../stringUtil.js');
 
 const categorizeTargets = require('../anno-editor/categorizeTargets.js');
 const decideAuxMeta = require('../anno-cmp-mode/decideAuxiliaryMetaData.js');
@@ -61,6 +62,8 @@ function orf(x) { return x || false; }
 
 
 const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
+
+const { fileBaseName } = strU;
 
 
 module.exports = {
@@ -197,11 +200,18 @@ module.exports = {
     uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
     uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
+
     legacyPurlHighlight() {
       const { purlId, annoData } = this;
-      return Boolean(purlId && annoData && ((purlId === annoData.id)
-        || (purlId === annoData['iana:latest-version'])));
+      if (!annoData) { return; }
+      const purlBn = purlId && fileBaseName(purlId);
+      if (!purlBn) { return; }
+      return ((fileBaseName(annoData.id) === purlBn)
+        || (fileBaseName(annoData['iana:latest-version']) === purlBn)
+        || (fileBaseName(annoData['dc:isVersionOf']) === purlBn)
+        );
     },
+
 
     isOwnAnno() {
       const viewer = this;
