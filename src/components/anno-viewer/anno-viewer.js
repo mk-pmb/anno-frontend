@@ -214,7 +214,7 @@ module.exports = {
       const viewer = this;
       const { authorIdentities } = orf(viewer.$store.state.userSessionInfo);
       if (!authorIdentities) { return false; }
-      const crea = resourceIdStr(viewer.annoData.creator);
+      const crea = viewer.findResourceUrl(viewer.annoData.creator);
       if (!crea) { return false; }
       return authorIdentities.some(ai => (crea === ai.id));
     },
