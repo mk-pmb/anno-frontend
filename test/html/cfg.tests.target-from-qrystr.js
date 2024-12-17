@@ -32,6 +32,9 @@
     cfg.initCmpBaseId = 'VSdzSBZpRBqH6FrA2jx_Jg';
     cfg.initCmpPrimarySideVersionNumber = 3;
     return s.ubHdDigLit(1676, 2622, 'lange1937_12_06/0005', '004.jpg');
+  case 'famw': // Finanzamt Moabit-West, Auktion Hans W. Lange 12.-13.5.1942
+    cfg.purlId = 'O2ANg_gMTd2wkQumHBEIcQ';
+    return s.ubHdDigLit(1676, 2622, 'lange1942_05_12/0005', '004.jpg');
   case 'alteuni':
     return s.uniHdKarlLange1896();
   case 'at1':
