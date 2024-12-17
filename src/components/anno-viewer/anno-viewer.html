@@ -6,7 +6,7 @@
     'panel-default',
     'anno-viewer',
     (highlighted && 'annoeditor-highlight'),
-    (legacyPurlHighlight && 'annoeditor-purl'),
+    (legacyPurlHighlight && 'annoviewer-purl-anno'),
     (asReply && 'annoeditor-reply'),
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
     (isOwnAnno ? 'own-anno' : 'someone-elses-anno'),
@@ -23,6 +23,8 @@
   <div v-if="!asReply" class="panel-heading">
     <h4 class="panel-title" @click="collapse('toggle')">
       <a role="button">
+        <span class="purl-heading-pointer"
+          v-if="legacyPurlHighlight"></span>
         <span class="collapse-arrow" v-if="isListViewItem"
           ><i :class="'fa fa-caret-' + (collapsed ? 'right' : 'down')"
           ></i></span>
