@@ -282,7 +282,7 @@ module.exports = {
       const { creator } = this.annoData;
       if (!creator) { return []; }
       const list = jsonDeepCopy([].concat(creator).filter(Boolean));
-      const lastItem = list.slice(-1);
+      const [lastItem] = list.slice(-1);
       if (lastItem) { lastItem['x-is-last-in-list'] = true; }
       return list;
     },
