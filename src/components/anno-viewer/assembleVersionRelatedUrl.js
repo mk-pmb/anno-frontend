@@ -1,9 +1,9 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
+const strU = require('../../stringUtil.js');
 
 function str(x) { return String(x || ''); }
-function lastPathSegment(s) { return s.split('/').slice(-1)[0]; }
 
 
 const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
@@ -18,12 +18,12 @@ const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
   // %ID  = Anno's ID (usually a full URL)
   // %id  = last path segment of %ID = everything behind the farthest slash.
   slots['%ID'] = str(anno.id);
-  slots['%id'] = lastPathSegment(slots['%ID']);
+  slots['%id'] = strU.fileBaseName(slots['%ID']);
 
   // %VO  = dc:isVersionOf
   // %vo  = last path segment of dc:isVersionOf
   slots['%VO'] = str(anno['dc:isVersionOf']);
-  slots['%vo'] = lastPathSegment(slots['%VO']);
+  slots['%vo'] = strU.fileBaseName(slots['%VO']);
 
   // %tu   First target URL
   slots['%tu'] = guessPrimaryTargetUri(anno);
