@@ -28,9 +28,11 @@ const EX = function getCleanAnno() {
   // console.debug('getCleanAnno: vueAnno:', vueAnno);
   // window.getCleanAnnoDebug = { vueAnno };
   const {
+    doi,
+    extraFields,
+    replyTo,
     title,
     versionOf,
-    extraFields,
     ...anno
   } = vueAnno;
   Object.assign(anno, extraFields);
@@ -41,6 +43,8 @@ const EX = function getCleanAnno() {
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   anno.type = ['Annotation'];
+  setAnnoPropIf('as:inReplyTo', replyTo);
+  setAnnoPropIf('dc:identifier', doi);
   setAnnoPropIf('dc:isVersionOf', versionOf);
   setAnnoPropIf('dc:language', editor.annoLanguage.selected);
   setAnnoPropIf('dc:title', title);
