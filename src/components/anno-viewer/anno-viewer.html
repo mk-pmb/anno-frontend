@@ -59,256 +59,256 @@
       <p>{{ annotation['skos:note'] }}</p>
     </div>
 
-    <div class="media" style="height: auto;">
+    <div role="toolbar" class="btn-toolbar
+      anno-body-buttonbar
+      anno-body-buttonbar-top
+      ">
+      <div role="group"
+        class="btn-group btn-group-sm">
 
-      <div class="media-body">
-        <div role="toolbar" class="btn-toolbar
-          anno-body-buttonbar
-          anno-body-buttonbar-top
-          ">
-          <div role="group"
-            class="btn-group btn-group-sm">
+        <button ref="sunsetWarningButton"
+          v-if="auxMeta.sunsetDescr" :title="auxMeta.sunsetDescr"
+          class="btn btn-sm btn-secondary anno-sunset-btn">
+          <span class="button-caption">&#x26D4;</span>
+        </button><!-- /ref="sunsetWarningButton" -->
 
-            <button ref="sunsetWarningButton"
-              v-if="auxMeta.sunsetDescr" :title="auxMeta.sunsetDescr"
-              class="btn btn-sm btn-secondary anno-sunset-btn">
-              <span class="button-caption">&#x26D4;</span>
-            </button><!-- /ref="sunsetWarningButton" -->
+        <button ref="approvalStatusButton"
+          v-if="approval.iconCls" :title="approval.explain"
+          class="btn btn-sm btn-secondary anno-approval-btn">
+          <span class="button-caption">
+            <span :class="'anno-approval-icon ' + approval.iconCls"></span>
+            <span v-if="approval.jsTs">
+              <span v-if="approval.future"
+                title="scheduled" class="fa fa-clock-o"></span>
+              <time class="approved-at" :datetime="approval.jsTs"
+                >{{ dateFmt(approval.jsTs) }}</time>
+            </span>
+            <span v-if="uiModeApproval && (!approval.jsTs)"
+              :title="l10n('date_time_unknown')">⛶</span>
+          </span><!-- /.button-caption -->
+        </button><!-- /ref="approvalStatusButton" -->
 
-            <button ref="approvalStatusButton"
-              v-if="approval.iconCls" :title="approval.explain"
-              class="btn btn-sm btn-secondary anno-approval-btn">
-              <span class="button-caption">
-                <span :class="'anno-approval-icon ' + approval.iconCls"></span>
-                <span v-if="approval.jsTs">
-                  <span v-if="approval.future"
-                    title="scheduled" class="fa fa-clock-o"></span>
-                  <time class="approved-at" :datetime="approval.jsTs"
-                    >{{ dateFmt(approval.jsTs) }}</time>
-                </span>
-                <span v-if="uiModeApproval && (!approval.jsTs)"
-                  :title="l10n('date_time_unknown')">⛶</span>
-              </span><!-- /.button-caption -->
-            </button><!-- /ref="approvalStatusButton" -->
-
-            <button class="btn btn-sm btn-secondary
-              anno-creators
-              "
-              @click="toggleDetailBar"
-              data-detailbar="creators"
-              ><span class="button-caption" ref="creatorsList">
-              <template v-for="aCreator of creatorsList">
-                <span class="anno-creator">
-                  <template v-if="aCreator['as:icon']">
-                    <img class="media-object" style="display: inline;"
-                      :src="aCreator['as:icon'].url"
-                      :alt="aCreator['as:icon'].name"
-                      width="15" height="15">
-                  </template>
-                  <template v-else>
-                    <i class="fa fa-user"></i>
-                  </template>
-                  <span class="name">{{
-                    formatters('agentNickname', aCreator)
-                    }}</span><span class="list-sep"
-                    :v-if="!aCreator['x-is-last-in-list']"
-                    >,</span>
-                </span>
+        <button class="btn btn-sm btn-secondary
+          anno-creators
+          "
+          @click="toggleDetailBar"
+          data-detailbar="creators"
+          ><span class="button-caption" ref="creatorsList">
+          <template v-for="aCreator of creatorsList">
+            <span class="anno-creator">
+              <template v-if="aCreator['as:icon']">
+                <img class="media-object" style="display: inline;"
+                  :src="aCreator['as:icon'].url"
+                  :alt="aCreator['as:icon'].name"
+                  width="15" height="15">
               </template>
-              <template v-if="!creatorsList.length">
-                <span class="no-creator">
-                  <i class="fa fa-user-secret"></i>
-                  {{ l10n('creator_none') }}
-                </span>
+              <template v-else>
+                <i class="fa fa-user"></i>
               </template>
-              </span><!-- .button-caption -->
-            </button>
-            <!-- 2021-08-20, Waterfox: Time must be its own button because
-              title=… on a <time> tag inside a <button> tag had no effect. -->
-            <button class="btn btn-sm btn-secondary
-              anno-creation-time
-              "
-              :title="[
-                (l10n('Created') + ': ' + dateFmt(annotation.created)),
-                (l10n('Modified') + ': ' + dateFmt(annotation.modified)),
-              ].join('\n')"
-              @click="toggleDetailBar"
-              data-detailbar="creation-date"
-              ><span class="button-caption">
-              <i class="fa fa-calendar"></i>
-              <time class="created-at"
-                :datetime="annotation.created"
-                >{{
-                  dateFmt(annotation.created)
-                    || l10n('date_time_unknown')
-                  }}</time>
-              </span><!-- .button-caption -->
-            </button>
-
-            <button class="btn btn-sm btn-secondary"
-              @click="toggleDetailBar"
-              data-detailbar="purl"
-              :title="l10n('purl')"
-              v-if="decideShowPurlButton()"
-              >
-              <span class="button-caption">
-                <i class="fa fa-link"></i>
-              </span><!-- .button-caption -->
-            </button>
-
-            <button class="btn btn-sm btn-secondary"
-              v-if="hasRealPublicDoi || checkAclAuth({ isOwnAnno,
-                privName: 'stamp_‹own›_add__ubhd_doiAssign' })"
-              @click="toggleDetailBar"
-              data-detailbar="doi"
-              >
-              <span class="button-caption">
-                <template v-if="hasRealPublicDoi">
-                  <i class="fa fa-link"></i>
-                  {{ l10n('doi') }}
-                </template>
-                <template v-else>
-                  <i class="fa fa-cart-plus"></i>
-                  {{ l10n('toggle_doi_request_detailbar') }}
-                </template>
-              </span><!-- .button-caption -->
-            </button>
-
-            <button class="btn btn-sm btn-secondary"
-              @click="toggleDetailBar"
-              data-detailbar="license"
-              :title="l10n('License') + ': ' + licenseTitleOrUnknown"
-              >
-              <span class="button-caption">
-                <template v-if="currentLicense.img_64x64">
-                  <img class="license-icon"
-                    :src="currentLicense.img_64x64"
-                    :alt="licenseTitleOrUnknown"
-                    >
-                </template>
-                <template v-else>{{ l10n('license_unknown_short') }}</template>
-              </span><!-- .button-caption -->
-            </button>
-
-            <bootstrap-button icon-fa="print"
-              v-if="$store.state.printViewButtonUrlTemplate"
-              btn-class="default btn-secondary print-view-button"
-              :linkUrl="assembleVersionRelatedUrl('printViewButton')"
-              linkTarget="_blank"
-              ></bootstrap-button>
-
-            <button class="btn btn-sm btn-secondary
-              frag-sel-btn
-              "
-              v-if="targetFragment"
-              :title="$store.state.targetFragmentButtonTitle"
-              ref="targetFragmentButton"
-              @click.stop="targetFragmentButtonClicked"
-              >
-              <span class="button-caption">
-                <i class="fa fa-indent"></i>
-                {{ targetFragment }}
-              </span><!-- .button-caption -->
-            </button>
-
-          </div><!-- .btn-group -->
-        </div><!-- role="toolbar" -->
-
-        <div ref="detailbars" class="detailbars">
-
-          <dl class="detailbar-creators"><dt>
-            {{ l10n('anno_created_by') }}:
-          </dt><dd>
-            <ul v-if="creatorsList.length" class="authors-list">
-              <li class="agent-description"
-                v-for="(agent, aidIndex) in creatorsList"
-                :key="agent.id || ('invalid:' + aidIndex)"
-                :data-agentid="agent.id || ''"
-                ><agent-profile-bulletable :agent="agent" /></li>
-            </ul>
-            <p v-else class="no-creator">
+              <span class="name">{{
+                formatters('agentNickname', aCreator)
+                }}</span><span class="list-sep"
+                :v-if="!aCreator['x-is-last-in-list']"
+                >,</span>
+            </span>
+          </template>
+          <template v-if="!creatorsList.length">
+            <span class="no-creator">
               <i class="fa fa-user-secret"></i>
               {{ l10n('creator_none') }}
-            </p>
-          </dd></dl>
+            </span>
+          </template>
+          </span><!-- .button-caption -->
+        </button>
+        <!-- 2021-08-20, Waterfox: Time must be its own button because
+          title=… on a <time> tag inside a <button> tag had no effect. -->
+        <button class="btn btn-sm btn-secondary
+          anno-creation-time
+          "
+          :title="[
+            (l10n('Created') + ': ' + dateFmt(annotation.created)),
+            (l10n('Modified') + ': ' + dateFmt(annotation.modified)),
+          ].join('\n')"
+          @click="toggleDetailBar"
+          data-detailbar="creation-date"
+          ><span class="button-caption">
+          <i class="fa fa-calendar"></i>
+          <time class="created-at"
+            :datetime="annotation.created"
+            >{{
+              dateFmt(annotation.created)
+                || l10n('date_time_unknown')
+              }}</time>
+          </span><!-- .button-caption -->
+        </button>
 
-          <dl class="detailbar-creation-date">
-            <dt>{{ l10n('Created') }}:</dt>
-            <dd>{{ dateFmt(annotation.created) || '&nbsp;' }}</dd>
-            <dt>{{ l10n('Modified') }}:</dt>
-            <dd>{{ dateFmt(annotation.modified) || '&nbsp;' }}</dd>
-          </dl>
+        <button class="btn btn-sm btn-secondary"
+          @click="toggleDetailBar"
+          data-detailbar="purl"
+          :title="l10n('purl')"
+          v-if="decideShowPurlButton()"
+          >
+          <span class="button-caption">
+            <i class="fa fa-link"></i>
+          </span><!-- .button-caption -->
+        </button>
 
-          <dl class="detailbar-purl">
-            <dt-url-caption-link
-              :caption="l10n('purl')"
-              :url="purl"
-              />
-          </dl>
-
-          <dl class="detailbar-license"><dt @click="applyDebugCheats">
-            {{ l10n('License') }}: {{ licenseTitleOrUnknown }}
-          </dt><dd>
-            {{ l10n(currentLicense.user_desc) || l10n('license_no_descr') }}
-          </dd></dl>
-
-          <dl class="detailbar-doi">
+        <button class="btn btn-sm btn-secondary"
+          v-if="hasRealPublicDoi || checkAclAuth({ isOwnAnno,
+            privName: 'stamp_‹own›_add__ubhd_doiAssign' })"
+          @click="toggleDetailBar"
+          data-detailbar="doi"
+          >
+          <span class="button-caption">
             <template v-if="hasRealPublicDoi">
-              <dt-url-caption-link
-                v-show="latestVersionDoiUri"
-                :textBefore="doiLinkPreviewWarning"
-                :caption="l10n('doi.of.annotation')"
-                :url="latestVersionDoiUri"
-                />
-              <dt-url-caption-link
-                :textBefore="doiLinkPreviewWarning"
-                :caption="l10n('doi.of.annotation.version')"
-                :url="currentVersionDoiUri"
-                />
+              <i class="fa fa-link"></i>
+              {{ l10n('doi') }}
             </template>
-            <template v-if="!hasRealPublicDoi">
-              <!-- We have mintDoi permission, because with neither that nor
-                   a DOI, the detailbar would be hidden. -->
-              <dt>
-                <div role="group" class="btn-group btn-group-sm">
-                  <button @click="askConfirmationToMintDoi" :class="[
-                      'btn btn-default btn-outline-secondary btn-sm',
-                      'mint-doi-button',
-                      (approval.active ? '' : 'unapproved'),
-                    ].filter(Boolean)"
-                  >
-                    <i class="fa fa-link"></i>
-                    {{ l10n('mint_doi') }}
-                  </button>
-                </div><!-- /.btn-group -->
-              </dt>
-              <dd>{{ mintDoiMsg }}</dd>
+            <template v-else>
+              <i class="fa fa-cart-plus"></i>
+              {{ l10n('toggle_doi_request_detailbar') }}
             </template>
-          </dl>
-        </div><!-- .detailbars -->
+          </span><!-- .button-caption -->
+        </button>
 
-        <div v-if="annotation[':ANNO_FE:replyRefNum']" class="
-          card-body panel-body
-          anno-reply-refnum
-          ">
-          <p>{{ replyRefNumText() }}</p>
-        </div>
+        <button class="btn btn-sm btn-secondary"
+          @click="toggleDetailBar"
+          data-detailbar="license"
+          :title="l10n('License') + ': ' + licenseTitleOrUnknown"
+          >
+          <span class="button-caption">
+            <template v-if="currentLicense.img_64x64">
+              <img class="license-icon"
+                :src="currentLicense.img_64x64"
+                :alt="licenseTitleOrUnknown"
+                >
+            </template>
+            <template v-else>{{ l10n('license_unknown_short') }}</template>
+          </span><!-- .button-caption -->
+        </button>
 
+        <bootstrap-button icon-fa="print"
+          v-if="$store.state.printViewButtonUrlTemplate"
+          btn-class="default btn-secondary print-view-button"
+          :linkUrl="assembleVersionRelatedUrl('printViewButton')"
+          linkTarget="_blank"
+          ></bootstrap-button>
+
+        <button class="btn btn-sm btn-secondary
+          frag-sel-btn
+          "
+          v-if="targetFragment"
+          :title="$store.state.targetFragmentButtonTitle"
+          ref="targetFragmentButton"
+          @click.stop="targetFragmentButtonClicked"
+          >
+          <span class="button-caption">
+            <i class="fa fa-indent"></i>
+            {{ targetFragment }}
+          </span><!-- .button-caption -->
+        </button>
+
+      </div><!-- .btn-group -->
+    </div><!-- role="toolbar" -->
+
+    <div ref="detailbars" class="detailbars">
+
+      <dl class="detailbar-creators"><dt>
+        {{ l10n('anno_created_by') }}:
+      </dt><dd>
+        <ul v-if="creatorsList.length" class="authors-list">
+          <li class="agent-description"
+            v-for="(agent, aidIndex) in creatorsList"
+            :key="agent.id || ('invalid:' + aidIndex)"
+            :data-agentid="agent.id || ''"
+            ><agent-profile-bulletable :agent="agent" /></li>
+        </ul>
+        <p v-else class="no-creator">
+          <i class="fa fa-user-secret"></i>
+          {{ l10n('creator_none') }}
+        </p>
+      </dd></dl>
+
+      <dl class="detailbar-creation-date">
+        <dt>{{ l10n('Created') }}:</dt>
+        <dd>{{ dateFmt(annotation.created) || '&nbsp;' }}</dd>
+        <dt>{{ l10n('Modified') }}:</dt>
+        <dd>{{ dateFmt(annotation.modified) || '&nbsp;' }}</dd>
+      </dl>
+
+      <dl class="detailbar-purl">
+        <dt-url-caption-link
+          :caption="l10n('purl')"
+          :url="purl"
+          />
+      </dl>
+
+      <dl class="detailbar-license"><dt @click="applyDebugCheats">
+        {{ l10n('License') }}: {{ licenseTitleOrUnknown }}
+      </dt><dd>
+        {{ l10n(currentLicense.user_desc) || l10n('license_no_descr') }}
+      </dd></dl>
+
+      <dl class="detailbar-doi">
+        <template v-if="hasRealPublicDoi">
+          <dt-url-caption-link
+            v-show="latestVersionDoiUri"
+            :textBefore="doiLinkPreviewWarning"
+            :caption="l10n('doi.of.annotation')"
+            :url="latestVersionDoiUri"
+            />
+          <dt-url-caption-link
+            :textBefore="doiLinkPreviewWarning"
+            :caption="l10n('doi.of.annotation.version')"
+            :url="currentVersionDoiUri"
+            />
+        </template>
+        <template v-if="!hasRealPublicDoi">
+          <!-- We have mintDoi permission, because with neither that nor
+               a DOI, the detailbar would be hidden. -->
+          <dt>
+            <div role="group" class="btn-group btn-group-sm">
+              <button @click="askConfirmationToMintDoi" :class="[
+                  'btn btn-default btn-outline-secondary btn-sm',
+                  'mint-doi-button',
+                  (approval.active ? '' : 'unapproved'),
+                ].filter(Boolean)"
+              >
+                <i class="fa fa-link"></i>
+                {{ l10n('mint_doi') }}
+              </button>
+            </div><!-- /.btn-group -->
+          </dt>
+          <dd>{{ mintDoiMsg }}</dd>
+        </template>
+      </dl>
+    </div><!-- .detailbars -->
+
+    <div v-if="annotation[':ANNO_FE:replyRefNum']" class="
+      card-body panel-body
+      anno-reply-refnum
+      ">
+      <p>{{ replyRefNumText() }}</p>
+    </div>
+
+
+    <div v-if="maybeUpdateMetaContextHints().length"
+      class="border border-info text-default meta-context-hints-box">
+      <div v-for="mch in metaContextHintsCache"
+        :class="'position-relative meta-context-hint ' + mch.cls"
+        >
+        <i :class="'fa fa-' + mch.faIcon"></i>
+        <div class="pad">
+          <span class="intro">{{ mch.introText }}</span>
+          <a :href="mch.linkUrl" :target="mch.linkFrame"
+            >{{ mch.linkText }}</a>
+        </div><!-- /.pad -->
+      </div>
+    </div><!-- /.border -->
+
+    <div class="media anno-main-content-wrapper">
+      <div class="media-body anno-main-content">
         <h4 class="media-heading" v-if="asReply">{{ title }}</h4>
-
-        <div v-if="maybeUpdateMetaContextHints().length"
-          class="border border-info text-default meta-context-hints-box">
-          <div v-for="mch in metaContextHintsCache"
-            :class="'position-relative meta-context-hint ' + mch.cls"
-            >
-            <i :class="'fa fa-' + mch.faIcon"></i>
-            <div class="pad">
-              <span class="intro">{{ mch.introText }}</span>
-              <a :href="mch.linkUrl" :target="mch.linkFrame"
-                >{{ mch.linkText }}</a>
-            </div><!-- /.pad -->
-          </div>
-        </div><!-- /.border -->
 
         <div v-if="firstHtmlBody"
           class="first-html-body"
@@ -382,9 +382,8 @@
           </span>
         </div>
 
-      </div><!-- class="media-body -->
-
-    </div>
+      </div><!-- /class="media-body" -->
+    </div><!-- /class="media" -->
 
     <!-- navigation -->
 

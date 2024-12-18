@@ -1,23 +1,23 @@
 .annoeditor-global-css.ui-debug-mode-on {
 
-  .media-body .first-html-body {
+  .media-body {
     overflow-y: auto;
     resize: vertical;
     min-height: 5em;
   }
-  .media-body .first-html-body:before {
+  .media-body:before {
     display: block; float: right;
     font-size: smaller; margin-left: 0.5em; margin-bottom: 0.25em;
     content: "[UI Debug Mode: +max-height +scroll]"; max-width: 50%;
     text-align: center; color: darkgreen; background-color: lightgreen;
   }
-  .media-body .first-html-body:not([style]) { max-height: 10em; }
-  .media-body .first-html-body[style] { overflow-y: scroll; }
+  .media-body:not([style]) { max-height: 10em; }
+  .media-body[style] { overflow-y: scroll; }
 
 }
 
 
-.anno-viewer.panel.panel-default {
+.anno-viewer.panel {
   .fade-enter-active, .fade-leave-active {
     transition: opacity .4s;
   }
@@ -59,6 +59,9 @@
     background: #e8e8e8;
     color: black;
   }
+
+  .media-body { height: auto; }
+  .media-body h3, .media-body h4 { font-size: inherit; }
 
   .btn-toolbar {
     .btn-group {
