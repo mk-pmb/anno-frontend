@@ -554,7 +554,15 @@ module.exports = {
         replaceExistingContent: true,
       };
 
-      if (editor.$store.state.uiDebugMode) {
+      const { uiDebugMode } = editor.$store.state;
+      Object.assign(wrapper, {
+        evName,
+        getCtnr() { return ctnr; },
+        getEvArg() { return evArg; },
+        uiDebugMode,
+      });
+
+      if (uiDebugMode) {
         const jqHint = jQuery('<p>UI debug hint: Event <tt>' + evName
           + '</tt> should have been fired with argument <tt></tt></p>');
         const dbg = { ...evArg, domContainer: '[not JSON-able]' };
@@ -569,6 +577,7 @@ module.exports = {
         if (!window.confirm(msg)) { return; }
       }
       setTimeout(() => eventBus.$emit(evName, evArg), 50);
+      return wrapper;
     },
 
 
