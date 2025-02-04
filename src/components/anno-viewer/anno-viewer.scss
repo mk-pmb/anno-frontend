@@ -118,21 +118,22 @@
 
 
 
-  &.annoviewer-purl-anno {
-    /* & > .panel-heading { border-right: 0.5em solid navy; } */
-    & > .panel-heading .purl-heading-pointer:before { content: "\261B  "; }
-  }
-
-
   &.annoeditor-highlight {
     & > .panel-heading {
       background: #990000;
       color: white;
     }
-    &.annoeditor-reply {
+    &.annoviewer-asreply {
       border: 1px solid #fc3;
       background-color: #fea;
     }
+  }
+
+
+  &.annoviewer-purl-anno {
+    /* & > .panel-heading { border-right: 0.5em solid navy; } */
+    & > .panel-body > .media > .media-body > h4 .purl-heading-pointer:before,
+    & > .panel-heading .purl-heading-pointer:before { content: "\261B  "; }
   }
 
 
