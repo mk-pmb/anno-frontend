@@ -39,6 +39,8 @@ const EX = async function fetchAnnoList(store) {
       nTotalAnnosIncludingNested: nOrigAnnos,
     });
     await commit('ANNOLIST_REPLACE', annos);
+    /* No need for a "done" event here: ANNOLIST_REPLACE will fire an event
+      very soon. (At time of writing, its name was "annoListReplaced".) */
   } catch (fetchFailed) {
     await commit('ANNOLIST_UPDATE_STATE', {
       fetching: false,

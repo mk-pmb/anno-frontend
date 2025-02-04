@@ -62,11 +62,15 @@ module.exports = {
     // When permissions have been updated, force an update.
     eventBus.$on('updatedPermissions', () => annoList.$forceUpdate());
 
+    const { state } = annoList.$store;
+
     // Initially open the list if there was an annotation persistently adressed
-    if (annoList.purlId && annoList.purlAnnoInitiallyOpen) {
-      eventBus.$once('fetched', () => {
-        setTimeout(() => eventBus.$emit('expandAnno', annoList.purlId), 1);
-      });
+    const expandPurlAnno = state.purlAnnoInitiallyOpen && state.purlId;
+    if (expandPurlAnno) {
+      eventBus.$once('annoListReplaced', () => setTimeout(() => {
+        console.debug('anno-list: Emitting expandAnno for', [expandPurlAnno]);
+        eventBus.$emit('expandAnno', expandPurlAnno);
+      }, 1));
     }
   },
   computed: {
@@ -74,7 +78,6 @@ module.exports = {
     sortedBy() { return this.$store.state.annotationList.sortedBy; },
 
     purlId() { return this.$store.state.purlId; },
-    purlAnnoInitiallyOpen() { return this.$store.state.purlAnnoInitiallyOpen; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
 
     isLoggedIn() { return this.$store.getters.isLoggedIn; },
