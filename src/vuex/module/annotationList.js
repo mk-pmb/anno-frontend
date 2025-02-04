@@ -1,3 +1,6 @@
+const eventBus = require('../../event-bus.js');
+
+
 function _sortByDateTime(field, dir=1) {
     return function(a, b) {
         a = a[field] || 0
@@ -108,6 +111,7 @@ const annoList = {
             state.fetching = false;
             state.fetchFailed = false;
             state.list = list;
+            setTimeout(() => eventBus.$emit('annoListReplaced'), 1);
         },
 
     }

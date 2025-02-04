@@ -5,6 +5,8 @@ const {
   svgSelectorResource
 } = require('@kba/anno-queries')
 
+const arrayOfTruths = require('array-of-truths');
+const floodBarrier = require('flood-barrier');
 const pDelay = require('delay');
 
 const applyDebugCheats = require('../../cheats.js');
@@ -64,6 +66,13 @@ function orf(x) { return x || false; }
 const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
 
 const { fileBaseName } = strU;
+
+
+const expandHandlerFloodBarrier = floodBarrier({
+  maxRepeats: 10,
+  cooldownSec: 1,
+  onHot: { message: 'anno-viewer: Excessive influx of "expandAnno" events!' },
+}, Boolean);
 
 
 module.exports = {
@@ -160,17 +169,20 @@ module.exports = {
     ;['start', 'stop', 'toggle'].forEach(state => {
       const methodName = `${state}Highlighting`;
       eventBus.$on(methodName, function manageHighlight(subjectIdUrl, expand) {
-        const ourIdUrl = viewer.annoIdUrl;
-        if (!ourIdUrl) { return; } // early init
-        if (subjectIdUrl !== ourIdUrl) { return; }
+        if (!viewer.representsAnnoIdUrl(subjectIdUrl)) { return; }
         viewer[methodName](expand);
       });
     });
 
-    // Expand this annotation
-    eventBus.$on('expandAnno', (annoIdUrl) => {
-      cerr('Thread expand handler needs full rewrite!', { annoIdUrl });
-    });
+    (function installExpansionHandler() {
+      function maybeExpandNow(annoIdUrlToBeExpanded) {
+        if (!viewer.representsAnnoIdUrl(annoIdUrlToBeExpanded)) { return; }
+        expandHandlerFloodBarrier();
+        viewer.collapse('show');
+        window.purlAnnoViewer = viewer;
+      }
+      eventBus.$on('expandAnno', maybeExpandNow);
+    }());
 
     function stampedReloadUnlessHandled(ev) {
       // cdbg('stampedReloadUnlessHandled', ev);
@@ -202,14 +214,7 @@ module.exports = {
 
 
     legacyPurlHighlight() {
-      const { purlId, annoData } = this;
-      if (!annoData) { return; }
-      const purlBn = purlId && fileBaseName(purlId);
-      if (!purlBn) { return; }
-      return ((fileBaseName(annoData.id) === purlBn)
-        || (fileBaseName(annoData['iana:latest-version']) === purlBn)
-        || (fileBaseName(annoData['dc:isVersionOf']) === purlBn)
-        );
+      return this.representsAnnoIdUrl(this.$store.state.purlId);
     },
 
 
@@ -441,7 +446,7 @@ module.exports = {
 
     startHighlighting(expand) {
       this.highlighted = true;
-      if (expand) { eventBus.$emit('expandAnno', this.annoIdUrl, true); }
+      if (expand) { this.collapse('show'); }
     },
     stopHighlighting() { this.highlighted = false; },
     toggleHighlighting() { this.highlighted = !this.highlighted; },
@@ -456,6 +461,13 @@ module.exports = {
         if (command === 'toggle') { return !el.collapsed; }
         throw new Error('anno-viewer: Invalid command for .collapse()');
       }());
+      if (!el.collapsed) {
+        const inReplyTo = arrayOfTruths.ifAny(this.annotation['as:inReplyTo']);
+        if (inReplyTo) {
+          // cdbg('Expand reply targets:', this.annoIdUrl, '->', inReplyTo);
+          inReplyTo.forEach(a => eventBus.$emit('expandAnno', a));
+        }
+      }
     },
 
     renderIiifLink() {
@@ -560,6 +572,18 @@ module.exports = {
 
       el.metaContextHintsCache = mch;
       return mch;
+    },
+
+
+    representsAnnoIdUrl(annoIdUrl) {
+      const { annoData } = this;
+      if (!annoData) { return; }
+      const annoBn = annoIdUrl && fileBaseName(annoIdUrl);
+      if (!annoBn) { return; }
+      return ((fileBaseName(annoData.id) === annoBn)
+        || (fileBaseName(annoData['iana:latest-version']) === annoBn)
+        || (fileBaseName(annoData['dc:isVersionOf']) === annoBn)
+        );
     },
 
 

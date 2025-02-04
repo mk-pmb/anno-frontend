@@ -7,7 +7,7 @@
     'anno-viewer',
     (highlighted && 'annoeditor-highlight'),
     (legacyPurlHighlight && 'annoviewer-purl-anno'),
-    (asReply && 'annoeditor-reply'),
+    (asReply && 'annoviewer-asreply'),
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
     (isOwnAnno ? 'own-anno' : 'someone-elses-anno'),
   ].filter(Boolean)"
@@ -15,9 +15,10 @@
   @mouseleave="onMouseLeave"
   :data-doi-preview="hasRealPublicDoi ? '' : latestVersionDoiUri"
   :data-doi="hasRealPublicDoi ? latestVersionDoiUri : ''"
-  :data-w3-anno-id="annoIdUrl"
-  :data-iana-working-copy="annotation['iana:working-copy']"
-  :data-target-fragment="targetFragment"
+  :data-w3-anno-id="annoIdUrl || ''"
+  :data-iana-working-copy="annotation['iana:working-copy'] || ''"
+  :data-as-inreplyto="annotation['as:inReplyTo'] || ''"
+  :data-target-fragment="targetFragment || ''"
   >
 
   <div v-if="!asReply" class="panel-heading">
@@ -43,7 +44,7 @@
         {{ title }}
       </a>
     </h4>
-  </div>
+  </div><!-- /.panel-heading -->
 
   <div role="tabpanel"
     class="card-body panel-body"
@@ -308,7 +309,11 @@
 
     <div class="media anno-main-content-wrapper">
       <div class="media-body anno-main-content">
-        <h4 class="media-heading" v-if="asReply">{{ title }}</h4>
+        <h4 class="media-heading" v-if="asReply">
+          <span class="purl-heading-pointer"
+            v-if="legacyPurlHighlight"></span>
+          {{ title }}
+        </h4>
 
         <div v-if="firstHtmlBody"
           class="first-html-body"
@@ -469,5 +474,5 @@
         />
 
     </template>
-  </div><!-- /role="tabpanel" -->
+  </div><!-- /.panel-body role="tabpanel" -->
 </div>
