@@ -200,7 +200,7 @@ export default [
     "selector": [ { "type": "FragmentSelector", "value": "frag-ex1" } ],
     "source": "http://anno.test/displayAnnotations",
   },
-  "type": ["Annotation"],
+  "type": "Annotation",
 },
 
 
@@ -215,7 +215,7 @@ export default [
     "selector": [ { "type": "FragmentSelector", "value": "frag-ex2" } ],
     "source": "http://anno.test/displayAnnotations",
   },
-  "type": ["Annotation"],
+  "type": "Annotation",
 },
 
 
@@ -230,7 +230,7 @@ export default [
     "selector": [ { "type": "FragmentSelector", "value": "frag-ex2" } ],
     "source": "http://anno.test/displayAnnotations",
   },
-  "type": ["Annotation"],
+  "type": "Annotation",
 },
 
 
@@ -245,7 +245,7 @@ export default [
     "selector": [ { "type": "FragmentSelector", "value": "frag-ex3" } ],
     "source": "http://anno.test/displayAnnotations",
   },
-  "type": ["Annotation"],
+  "type": "Annotation",
 },
 
 ];
