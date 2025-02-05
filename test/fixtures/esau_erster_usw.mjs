@@ -151,7 +151,15 @@
   "dc:title": "Erster!!!1! 💯",
   "id": "test-esau-spam-rsterr~3",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
+  "target": {
+    "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
+    "dc:title": "Vogel",
+    "selector": {
+      "type": "SvgSelector",
+       "value": "<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='1233'><rect x='822' y='685' width='135' height='162' /><rect x='356' y='693' width='134' height='160' /><rect x='824' y='897' width='132' height='184' /><rect x='358' y='904' width='135' height='185' /></svg>"
+    },
+    "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074/_image"
+  },
   "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -287,6 +295,63 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
+  "type": "Annotation"
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>Zu Risiken und Nebenwirkungen lesen Sie das Buch Genesis oder fragen Sie Ihren Bischof oder Pfarrer.</p>"
+  },
+  "created": "2024-07-22T00:10:00Z",
+  "creator": {
+    "id": "urn:uuid:ad51f9a8-6319-4023-8946-d829f6c65a4f",
+    "name": "Mose et al.",
+    "type": "Person"
+  },
+  "dc:isVersionOf": "test-esau-moses-fruit",
+  "dc:language": "de-DE",
+  "dc:title": "Verbotene Früchte",
+  "id": "test-esau-moses-fruit~1",
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": {
+    "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
+    "selector": {
+      "type": "SvgSelector",
+      "value": "<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='1233'><circle cx='593' cy='388' r='14'/><ellipse cx='525' cy='348' rx='0' ry='0'/><ellipse cx='537' cy='360' rx='18' ry='14'/></svg>"
+    },
+    "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074/_image"
+  },
+  "type": "Annotation"
+},
+{ "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": {
+    "format": "text/html",
+    "type": "TextualBody",
+    "value": "<p>… ist ihm im Hals stecken geblieben.</p>"
+  },
+  "created": "2024-07-22T00:10:00Z",
+  "creator": {
+    "id": "urn:uuid:ad51f9a8-6319-4023-8946-d829f6c65a4f",
+    "name": "Mose et al.",
+    "type": "Person"
+  },
+  "dc:isVersionOf": "test-esau-moses-adamsapfel",
+  "dc:language": "de-DE",
+  "dc:title": "Adams Apfel",
+  "id": "test-esau-moses-adamsapfel~1",
+  "motivation": ["commenting"],
+  "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "ubhd:anno-user": "arno",
+  "target": {
+    "scope": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
+    "selector": {
+      "type": "SvgSelector",
+      "value": "<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='411'><polygon points='136,115 136,121 145,128 151,119 151,113 140,113' /></svg>"
+    },
+    "source": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074/_image"
+  },
   "type": "Annotation"
 },
 null];
