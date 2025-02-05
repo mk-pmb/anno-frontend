@@ -1,6 +1,6 @@
 ﻿export default {
   "@context": "http://www.w3.org/ns/anno.jsonld",
-  "type": ["Annotation"],
+  "type": "Annotation",
   "id": "about:preview",
   "dc:title": "Uhr",
   "body": {
