@@ -16,7 +16,7 @@
   "id": "test-esau-spam-rsterr~1",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-rsterr",
@@ -59,7 +59,7 @@
       "dc:title": "„Jenseits von Palmyra – Kulturgüterschutz in der Lehre“: Tagungsbilanz der Organisatoren"
     }
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-zweiter",
@@ -85,7 +85,7 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-rsterr",
@@ -113,7 +113,7 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
@@ -133,7 +133,7 @@
   "id": "test-esau-spam-rsterr~2",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
@@ -152,7 +152,7 @@
   "id": "test-esau-spam-rsterr~3",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-rsterr",
@@ -181,7 +181,7 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-rsterr",
@@ -211,7 +211,7 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "body": {
@@ -231,7 +231,7 @@
   "id": "test-esau-spam-rsterr~4",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
   "target": "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074",
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-rsterr",
@@ -259,7 +259,7 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
   "as:inReplyTo": "test-esau-spam-hecomes",
@@ -287,6 +287,6 @@
     },
     "https://digi.ub.uni-heidelberg.de/diglit/cpg148/0074"
   ],
-  "type": ["Annotation"]
+  "type": "Annotation"
 },
 null];
