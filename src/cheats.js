@@ -1,5 +1,6 @@
 'use strict';
 
+const eventBus = require('./event-bus.js');
 const sessionStore = require('./browserStorage.js').session;
 
 const EX = function applyCheats() {
@@ -40,6 +41,22 @@ Object.assign(EX, {
   report: '',
   icons: { clear: '🧹', off: '🚫', add: '💾', yes: '✅' },
   codes: {},
+
+  checkAutoEmitQ(str, prefix) {
+    /* e.g. via main.js:
+      window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify([
+        'create', ['editor-set-userhtml', 'foo\n<h5>bar</h5>\nqux']])
+    */
+    let q = str;
+    if (prefix) { q = q.startsWith(prefix) && q.slice(prefix.length); }
+    let err = false;
+    try { q = q && JSON.parse(q); } catch (c) { err = c; }
+    console.debug('checkAutoEmitQ:', { str: (q ? '…' : str), prefix, err, q });
+    if (!q) { return; }
+    setTimeout(function scheduleAutoEmitQueue() { eventBus.multiEmit(q); }, 1);
+  },
+
+
 });
 
 function add(c, descr, f) { EX.codes[c] = Object.assign(f, { descr }); }
