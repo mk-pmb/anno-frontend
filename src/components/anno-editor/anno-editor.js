@@ -121,6 +121,8 @@ module.exports = {
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
     });
+    eventBus.$on('editor-set-userhtml',
+      html => editor.$refs.htmlBodyEditor.setUserHtml(html));
   },
 
 
