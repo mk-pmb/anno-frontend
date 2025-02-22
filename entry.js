@@ -1,2 +1,5 @@
 'use strict';
-window.ubhdAnnoApp = require('./src/main.js');
+(function namespace() {
+  const main = require('./src/main.js');
+  window[main.appName] = main;
+}());
