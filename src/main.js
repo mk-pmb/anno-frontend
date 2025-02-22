@@ -51,6 +51,8 @@ let configAccum = decideDefaultOptions();
 
 const EX = {
 
+  appName: 'ubhdAnnoApp',
+
   browserStorage,
 
   defaultConfig: configAccum,
@@ -95,7 +97,7 @@ const EX = {
     configAccum = null;
     bootstrapCompat.initialize(options.bootstrap);
     delete options.bootstrap;
-    // console.debug('ubhdAnnoApp starting with config:');
+    // console.debug(EX.appName, 'starting with config:');
 
     //
     // Create a container element if none was given
