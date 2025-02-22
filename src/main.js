@@ -189,6 +189,8 @@ const EX = {
     });
 
     applyCheats();
+    applyCheats.checkAutoEmitQ(window.name, EX.appName + ':autoEmitQ:');
+
     return vueRootElem;
   },
 
