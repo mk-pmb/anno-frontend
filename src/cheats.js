@@ -34,11 +34,13 @@ const EX = function applyCheats() {
   console.debug('ubhdAnnoApp cheats: ' + had);
 };
 
-EX.initialHash = window.location.hash;
-EX.ssSlot = 'cheats';
-EX.report = '';
-EX.icons = { clear: '🧹', off: '🚫', add: '💾', yes: '✅' };
-EX.codes = {};
+Object.assign(EX, {
+  initialHash: window.location.hash,
+  ssSlot: 'cheats',
+  report: '',
+  icons: { clear: '🧹', off: '🚫', add: '💾', yes: '✅' },
+  codes: {},
+});
 
 function add(c, descr, f) { EX.codes[c] = Object.assign(f, { descr }); }
 
