@@ -8,6 +8,7 @@ const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 const categorizeTargets = require('./categorizeTargets.js');
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const getCleanAnno = require('./getCleanAnno.js');
+const libPreviewWarnings = require('./previewWarnings.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
 const validateEditorFields = require('./validateEditorFields.js');
@@ -58,6 +59,15 @@ function mapValuesSorted(o, f) {
 }
 
 
+function checkEventBusAnnoArgEvent(evtName, arg) {
+  if (isStr(arg)) {
+    const msg = (evtName + ' expects an annotation as its argument, '
+      + 'but a string was given. Did you mean ' + evtName + 'ByUrl?');
+    throw new TypeError(msg);
+  }
+}
+
+
 module.exports = {
 
   mixins: [
@@ -65,6 +75,7 @@ module.exports = {
     require('../../mixin/datasetActionButton.js'),
     require('../../mixin/l10n.js'),
     require('../../mixin/prefix.js'),
+    libPreviewWarnings.asEditorMixin(),
   ],
 
   template: require('./anno-editor.html'),
@@ -82,6 +93,7 @@ module.exports = {
       cachedSanitizedHtmlBodyValue: null,
       cachedSanitizedHtmlBodyDiff: '',
       dirtyHtmlBodyValue: '',
+      previewWarnings: libPreviewWarnings.initializeDataApi(),
       forceUpdatePreviewTs: 0,
       initialAuthorAgent: {},
       previousChosenAuthorIdUrl: '',
@@ -123,9 +135,11 @@ module.exports = {
         [editor.getZoneSelectorSvg()]);
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
+      editor.previewWarnings.reset();
     });
     eventBus.$on('editor-set-userhtml',
       html => editor.$refs.htmlBodyEditor.setUserHtml(html));
+    eventBus.$on('validateEditorFields', editor.validateFields);
   },
 
 
@@ -175,6 +189,8 @@ module.exports = {
     titleRequired() {
       return !this.$store.state.editing.replyTo;
     },
+
+    activeTabTopic() { return this.$refs.tablist.currentActiveTabTopic; },
 
   },
 
@@ -257,7 +273,9 @@ module.exports = {
       const editor = this;
       const { commit, state } = editor.$store;
       commit('SET_APP_STATE_PROP', ['editMode', editMode]);
-      await editor.loadAnnoData(annoDataTmpl(state));
+      const anno = annoDataTmpl(state);
+      console.debug('startCompose: template:', anno);
+      await editor.loadAnnoData(anno);
       eventBus.$emit('open-editor');
     },
 
@@ -270,6 +288,7 @@ module.exports = {
     },
 
     async reply(refAnno) {
+      checkEventBusAnnoArgEvent('reply', refAnno);
       const editor = this;
       const replyToUrl = (
         refAnno['dc:isVersionOf']
@@ -294,6 +313,7 @@ module.exports = {
     },
 
     async revise(oldAnno) {
+      checkEventBusAnnoArgEvent('revise', oldAnno);
       const anno = jsonDeepCopy(oldAnno);
       const oldAnnoIdUrl = anno.id;
       if (!oldAnnoIdUrl) { throw new Error('revise(): oldAnno has no id!'); }
@@ -305,6 +325,7 @@ module.exports = {
       }
       anno['dc:replaces'] = oldAnnoIdUrl;
       delete anno.canonical;
+      delete anno.created;
       delete anno.id;
       delete anno.via;
       // console.debug('anno-editor revise():', anno);
@@ -506,6 +527,8 @@ module.exports = {
       const modified = (clean !== dirty);
       const diff = ((modified && easyHtmlDiff && easyHtmlDiff(dirty, clean)) || '');
       const trace = (new Error()).stack.split(/\n\s*/).slice(1);
+      editor.cachedSanitizedHtmlBodyValue = clean;
+      editor.cachedSanitizedHtmlBodyDiff = diff;
       console.debug('getCleanHtml had to update the cache:', {
         input: { dirty },
         sani: sanitizeHtml,
@@ -513,8 +536,7 @@ module.exports = {
         output: { clean, diff },
         trace,
       });
-      editor.cachedSanitizedHtmlBodyValue = clean;
-      editor.cachedSanitizedHtmlBodyDiff = diff;
+      editor.updatePreviewWarnings();
       return clean;
     },
 
@@ -606,6 +628,7 @@ module.exports = {
       const editor = this;
       const now = Date.now();
       const orig = editor.getCleanAnno();
+      editor.updatePreviewWarnings();
       editor.cachedPreviewStub = {
         created: now,
         modified: now,
@@ -614,7 +637,6 @@ module.exports = {
       };
       editor.forceUpdatePreviewTs = now;
     },
-
 
 
     deleteTarget(ctx) {

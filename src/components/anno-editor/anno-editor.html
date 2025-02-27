@@ -149,6 +149,20 @@
     :title="l10n('preview')"
     topic="preview"
     >
+    <div class="mt-4 preview-warnings-section"
+      v-for="list in compilePreviewWarningsListForTemplating()">
+      <h5>{{ l10n('preview:sus:listHeader') }}</h5>
+      <ul class="warnings" v-show="list.length">
+        <li v-for="pw in list"
+          :key="pw.index + ':' + pw.key"
+          :class="'preview-warning preview-warning-' + pw.key"
+          :data-index="pw.idx "
+          :data-key="pw.key"
+          :data-val="pw.val"
+          >{{ l10n('preview:sus:' + pw.key).replace(/@@ign@@/g, pw.val.ign) }}
+        </li>
+      </ul>
+    </div>
     <div ref="uiDebugTargetSummary" class="debug-feature target-debug-summary">
     </div>
     <anno-viewer
