@@ -202,6 +202,9 @@
             "discard":             "Verwerfen",
             "preview":             "Vorschau",
             "sanitize_html_modified": "Der Text enthielt eine oder mehrere ungültige Formatierung/en. Diese wurde/n in Text umgewandelt. Bitte prüfen Sie die Vorschau erneut auf Korrektheit.",
+            "preview:sus:listHeader": "Warnung(en):",
+            "preview:sus:mustView": "Solange auf der Vorschau-Seite Warnungen sind, kann nur von der Vorschau-Seite aus veröffentlicht werden.",
+            "preview:sus:angleBracketWords": "Der Vorschautext enthält Worte in spitzen Klammern. Diese könnten Überreste einer ungültiger Formatierung(en) sein: @@ign@@",
 
             "generic_api_call_in_progress":   "Wird verarbeitet:",
             "generic_api_call_failed":        "Fehlgeschlagen:",
@@ -527,6 +530,9 @@
             "discard":             "Discard",
             "preview":             "Preview",
             "sanitize_html_modified": "The Text contained one or more invalid formats. They were converted to plain text. Please re-check the preview for potential remnants.",
+            "preview:sus:listHeader": "Warning(s):",
+            "preview:sus:mustView": "As long as the preview pane contains warnings, you can only publish from the preview pane.",
+            "preview:sus:angleBracketWords": "The preview text contains words in angle brackets. They may be remains of unsupported formats: @@ign@@",
 
             "generic_api_call_in_progress":   "Waiting for result:",
             "generic_api_call_failed":        "Failed:",

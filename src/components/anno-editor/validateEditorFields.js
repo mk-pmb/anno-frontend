@@ -36,6 +36,12 @@ const vali = function validateEditorFields(editor, anno) {
     if (!anno['dc:language']) { mf('text_body_language'); }
   }
 
+  if (editor.previewWarnings.found) {
+    if (editor.activeTabTopic !== 'preview') {
+      problems.push(l10n('preview:sus:mustView'));
+    }
+  }
+
   if (!problems.length) { return true; }
   const ind = '• ';
   const msg = ind + problems.join('\n' + ind);

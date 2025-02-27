@@ -176,7 +176,10 @@ const EX = {
       });
       const plCtx = { pluginName: plName, vueRootElem, injected };
       try {
-        plugins[plName] = factory(plCtx);
+        const plug = factory(plCtx);
+        plugins[plName] = plug;
+        const plVueInit = plug.onVueReady || factory.onVueReady;
+        if (plVueInit) { setTimeout(() => plVueInit(plCtx), 1); }
       } catch (plErr) {
         console.error('AnnoApp: Prepare plugin ' + plName + ':', plErr);
         throw plErr;
