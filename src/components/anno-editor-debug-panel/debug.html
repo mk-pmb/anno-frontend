@@ -20,7 +20,7 @@
   <h3>Annotation (Vue data model)</h3>
   <json-export-import-field class="jsondump-vue-model" path="editing"
     :extraButtons="[
-      { c: '🗯', n: 'Validate editor fields', f: validateEditorFields, a: null },
+      { c: '🗯', n: 'validateEditorFields', f: simpleEventBusEvent, a: null },
     ]"
     :nicerJsonFunc="nicerAnnoJson"
     />
