@@ -16,6 +16,10 @@
   cfg.annoByIdUrlPrefix = 'as/author/anno/';
   cfg.annoListSearchPrefix = cfg.annoByIdUrlPrefix + 'by/subject_target/';
   cfg.draftStoreEndpoint = aux.testDirBaseUrl + 'fixtures/drafts/';
+  cfg.stampActionPathPrefixesByStampName = {
+    'as:deleted': '../../approver/anno/',
+    'dc:dateAccepted': '../../approver/anno/',
+  };
 
   cfg.loginFormUrl = function guessLoginFormUrl(lateCfg) {
     return lateCfg.annoEndpoint.replace(/\w+\/$/, '') + 'session/login';
