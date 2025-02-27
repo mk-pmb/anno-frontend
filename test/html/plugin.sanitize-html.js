@@ -26,12 +26,21 @@
       return h;
     };
     s.rules = jsonDeepCopy(EX.rules);
+
     return s;
   };
 
   EX.injectModules = {
     sani: 'sanitize-html',
   };
+
+
+  EX.onVueReady = function installPreviewNagging(pluginCtx) {
+    const { editor } = pluginCtx.vueRootElem;
+    const linters = editor.previewWarnings.getLinterFuncs();
+    linters.lintAngleBracketWords = EX.lint;
+  };
+
 
   EX.okEmptyHtmlTags = {
     block: [
@@ -86,6 +95,20 @@
     r.allowedSchemesByTag = { img: EX.superset(r.allowedSchemes, 'data') };
     return r;
   }());
+
+
+  EX.lint = function lintAngleBracketWords(bodyHtml, ignored) {
+    let found = [];
+    bodyHtml.replace(/&lt;(\/?\w+)&gt;/, function each(m, w) {
+      if (!found.includes(w)) { found.push('<' + w + '>'); }
+    });
+    found = found.join(' ');
+    if (!found) { return; }
+    const key = 'angleBracketWords';
+    if (ignored[key] === found) { return; }
+    return { [key]: { ign: found } };
+  };
+
 
 
 
