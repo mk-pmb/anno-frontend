@@ -4,11 +4,9 @@
 function orf(x) { return x || false; }
 
 
-const vali = function validateEditorFields(onBehalfOfVueComponent, anno) {
-  // console.debug('validateEditorFields', anno, { onBehalfOfVueComponent });
-  // onBehalfOfVueComponent.$el.debugValidate = () => onBehalfOfVueComponent;
+const vali = function validateEditorFields(editor, anno) {
   const problems = [];
-  let { l10n } = onBehalfOfVueComponent;
+  let { l10n } = editor;
   if (!l10n) {
     l10n = String;
     problems.push('Validation component should provide l10n');
