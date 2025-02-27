@@ -2,16 +2,16 @@
 'use strict';
 /* eslint-disable global-require */
 
-const loMapValues = require('lodash.mapvalues');
-
-const validateEditorFields = require('../anno-editor/validateEditorFields.js');
+const eventBus = require('../../event-bus.js');
 
 const nicerAnnoJson = require('./nicerAnnoJson.js');
 
 
+/*
 function contextAsFirstArg(func) {
   return function proxy(...args) { return func(this, ...args); };
 }
+*/
 
 
 module.exports = {
@@ -31,15 +31,13 @@ module.exports = {
 
     nicerAnnoJson,
 
-    ...loMapValues({
-      validateEditorFields,
-    }, contextAsFirstArg),
-
     updateAcl(btn) {
       this.$store.commit((btn.a ? 'UPDATE_ACL' : 'EMPTY_ACL'), btn.a);
     },
 
     configureApp(btn) { this.$store.commit('FLAT_UPDATE_APP_STATE', btn.a); },
+
+    simpleEventBusEvent(btn) { eventBus.$emit(btn.a || btn.n); },
 
     getEditorRef() {
       // debug panel -> debug tab -> tabs list -> editor
