@@ -94,11 +94,13 @@ module.exports = {
     const editor = this;
     // :TODO: [legacy-todo] Move these to store maybe??
     const editorOpenCssClass = 'has-annoeditor-showing';
-    eventBus.$on('create', this.create)
-    eventBus.$on('reply', this.reply)
-    eventBus.$on('revise', this.revise)
-    eventBus.$on('discard', this.discard)
-    eventBus.$on('save', this.save)
+
+    eventBus.$on('create', editor.create);
+    eventBus.$on('discard', editor.discard);
+    eventBus.$on('reply', editor.reply);
+    eventBus.$on('revise', editor.revise);
+    eventBus.$on('save', editor.save);
+
     eventBus.$on('loadAnnoData', editor.loadAnnoData);
     eventBus.$on('saveNewDraft', () => {
       editor.switchTabByRefName('draftsPanel');
