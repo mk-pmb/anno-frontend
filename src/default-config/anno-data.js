@@ -14,7 +14,7 @@ const annoDataCfg = {
     displays the annotations about the image.
   */
 
-  targetImage: null, /*
+  targetImage: '', /*
     In case of annotations about an image, URL of an image file in
     default (usually: original) resolution.
   */
@@ -30,7 +30,7 @@ const annoDataCfg = {
     is available in several formats, where the image is only one of them.
   */
 
-  targetFragment: null,
+  targetFragment: '',
 
   targetMetaData: {
     // 'dc:title': '…',
