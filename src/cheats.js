@@ -39,7 +39,14 @@ Object.assign(EX, {
   initialHash: window.location.hash,
   ssSlot: 'cheats',
   report: '',
-  icons: { clear: '🧹', off: '🚫', add: '💾', yes: '✅' },
+  icons: {
+    add: '💾',
+    chainsaw: '🪚',
+    clear: '🧹',
+    off: '🚫',
+    scalesOfJustice: '⚖️',
+    yes: '✅',
+  },
   codes: {},
 
   checkAutoEmitQ(str, prefix) {
@@ -61,10 +68,14 @@ Object.assign(EX, {
 
 function add(c, descr, f) { EX.codes[c] = Object.assign(f, { descr }); }
 
+add('IDCHOPPERS', EX.icons.scalesOfJustice + EX.icons.chainsaw,
+  a => a.debugReconfigure.approvalMode());
 add('IDDQD', 'UI', a => a.debugReconfigure.ui());
 add('IDKFA', 'ACL', a => a.debugReconfigure.acl());
 add('xrx', '', a => a.debugReconfigure.xrx());
 add('preimg', '', a => a.debugReconfigure.preimg());
+
+
 
 
 
