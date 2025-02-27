@@ -13,17 +13,18 @@ const uiCfg = {
 
   initCmpApprovalMode: false, // show approval buttons?
 
-  loginRegistrationFormUrl: null,
-  loginFormUrl: null,
+  loginRegistrationFormUrl: '',
+  loginFormUrl: '',
+  loginFormFrame: '', // set to '_blank' for new tab
 
-  logoutPageUrl: null, /*
+  logoutPageUrl: '', /*
     URL where the logout button should lead to.
     Use the special URL "fake://insecure" to have the logout button just
     make the anno app just pretend the session has ended, without notifying
     the session server about the user's attempt to invalidate it.
   */
 
-  permissionsRequestFormUrl: null,
+  permissionsRequestFormUrl: '',
   permissionsRequestAllowGuest: false,
 
   helpUrlTemplate: [
@@ -55,12 +56,12 @@ const uiCfg = {
   /* ^-- In case the app was loaded via a persistent URL of an annotation,
       whether that annotation shall be visible initially, potentially by
       opening parent threads. */
-  purlId: null,
+  purlId: '',
   /* ^-- In case the app was loaded via a persistent URL of an annotation,
       that annotation's ID. Should begin with the URL of `annoEndpoint`. */
 
 
-  targetFragmentButtonTitle: null, /*
+  targetFragmentButtonTitle: '', /*
     Hover title (not caption) of the Fragment Identifier button.
     Usually, this should be a description of what the
     `targetFragmentButtonClicked` event handler does. (see `events.md`) */
