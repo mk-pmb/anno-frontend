@@ -11,6 +11,8 @@ const uiCfg = {
   // ^- 'list' = annotation list (default)
   //    'cmp' = comparison view / print view
 
+  initCmpApprovalMode: false, // show approval buttons?
+
   loginRegistrationFormUrl: null,
   loginFormUrl: null,
 
