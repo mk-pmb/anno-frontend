@@ -208,10 +208,12 @@ module.exports = {
 
     targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
 
-    uiModeApproval() { return this.$store.state.initCmpApprovalMode; },
     uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
     uiModeList() { return this.$store.state.initAppMode === 'list'; },
 
+    uiModeApproval() {
+      return this.uiModeCmp && this.$store.state.initCmpApprovalMode;
+    },
 
     legacyPurlHighlight() {
       return this.representsAnnoIdUrl(this.$store.state.purlId);

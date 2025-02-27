@@ -78,6 +78,7 @@ const EX = {
       vueRootElem.$store.commit('FLAT_UPDATE_APP_STATE', u);
     }, {
       acl() { r({ aclOverrides: { '*': { '*': 'allow' } } }); },
+      approvalMode(enable = true) { r({ initCmpApprovalMode: enable }); },
       ui(enable = true) { r({ uiDebugMode: enable }); },
       xrx(enable = true) { r({ disableXrxVueEditor: !enable }); },
     });
