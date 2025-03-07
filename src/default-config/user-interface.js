@@ -103,6 +103,19 @@ const uiCfg = {
     Disable the legacy zone editor in case it causes too severe problems. */
 
 
+  draftFilenameCommentOptimizers: {
+    /* Optional string transformation functions that optimize the draft title
+      before applying the usual filename safety transformations.
+      To disable a default function, overwrite it with a same-named entry
+      set to `false` in your local config.
+    */
+    germanUmlauts(s) {
+      return s.replace(/Ä|ä/g, 'ae').replace(/Ö|ö/g, 'oe'
+        ).replace(/Ü|ü/g, 'ue').replace(/ß/g, 'ss');
+    },
+  },
+
+
 
 
 
