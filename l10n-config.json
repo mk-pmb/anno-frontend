@@ -145,7 +145,7 @@
             "lurk:module:generic": "ein anderes Moduls auf dieser Seite",
             "lurk:module:externalTargetEditor": "einen spezialisierten Bezug-Editor",
             "externalTab:loading": "\u231B Wird geladen…",
-            "externalTab:hopeful": "In diesem Bereich erscheint hoffentlich gleich @@module@@.",
+            "externalTab:hopeful": "In diesem Bereich erscheint hoffentlich gleich (binnen wenigen Sekunden) @@module@@.",
             "externalTab:module:generic": "ein externes Zusatzmodul",
             "externalTab:module:TargetEditor": "ein spezialisierter Bezug-Editor",
 
@@ -418,7 +418,7 @@
             "lurk:module:generic": "a separate module on this page",
             "lurk:module:externalTargetEditor": "a specialized target editor",
             "externalTab:loading": "\u231B Loading…",
-            "externalTab:hopeful": "This area should soon show @@module@@.",
+            "externalTab:hopeful": "This area should very soon (within a few seconds) show @@module@@.",
             "externalTab:module:generic": "an external auxiliary module",
             "externalTab:module:TargetEditor": "a specialized target editor",
 
