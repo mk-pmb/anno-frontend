@@ -2,6 +2,8 @@
 'use strict';
 /* eslint-disable global-require */
 
+const loMapValues = require('lodash.mapvalues');
+
 const eventBus = require('../../event-bus.js');
 
 const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
@@ -52,10 +54,17 @@ module.exports = {
     },
 
     draftFilenameCommentAdjusted() {
+      const appCfg = this.$store.state;
       let v = this.draftFilenameCommentCustom
         || this.editorAnnoTitle
         || this.l10n('no_data');
-      v = (String(v).match(/[\w\-]+/g) || []).join(' ');
+      v = String(v);
+      loMapValues(appCfg.draftFilenameCommentOptimizers, function apply(f) {
+        let b = f(v);
+        if (b) { b = String(b); }
+        if (b) { v = b; }
+      });
+      v = (v.match(/[\w\-]+/g) || []).join(' ');
       v = v.replace(/ (?=_)/g, '').replace(/_ /g, '_').replace(/ /g, '_');
       v = v.slice(0, this.draftFilenameCommentMaxLen).toLowerCase();
       return v;
