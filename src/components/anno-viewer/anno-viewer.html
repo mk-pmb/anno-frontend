@@ -127,8 +127,7 @@
           anno-creation-time
           "
           :title="[
-            (l10n('Created') + ': ' + dateFmt(annotation.created)),
-            (l10n('Modified') + ': ' + dateFmt(annotation.modified)),
+            (l10n('annofield_created') + ': ' + dateFmt(annotation.created)),
           ].join('\n')"
           @click="toggleDetailBar"
           data-detailbar="creation-date"
@@ -231,10 +230,8 @@
       </dd></dl>
 
       <dl class="detailbar-creation-date">
-        <dt>{{ l10n('Created') }}:</dt>
+        <dt>{{ l10n('annofield_created') }}:</dt>
         <dd>{{ dateFmt(annotation.created) || '&nbsp;' }}</dd>
-        <dt>{{ l10n('Modified') }}:</dt>
-        <dd>{{ dateFmt(annotation.modified) || '&nbsp;' }}</dd>
       </dl>
 
       <dl class="detailbar-purl">
