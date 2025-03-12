@@ -59,6 +59,7 @@ Object.assign(EX, {
     'collection', // <- non-standard legacy prop used by ancient anno-fe
     'created',
     'dc:dateAccepted',
+    'dc:identifier',
     'doi',
     'iana:latest-version',
     'iana:version-history',
