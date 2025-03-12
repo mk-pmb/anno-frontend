@@ -15,7 +15,7 @@ const vali = function validateEditorFields(editor, anno) {
   mf.pre = l10n('missing_required_field');
 
   if (!anno['dc:title']) { mf('annofield_title'); }
-  if (!anno.rights) { mf('License'); }
+  if (!anno.rights) { mf('annofield_rights'); }
   if (!orf(anno.creator).id /* Agent ID */) { mf('author_identity'); }
 
   let firstTextualBody = false;

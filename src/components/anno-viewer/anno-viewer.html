@@ -174,7 +174,7 @@
         <button class="btn btn-sm btn-secondary"
           @click="toggleDetailBar"
           data-detailbar="license"
-          :title="l10n('License') + ': ' + licenseTitleOrUnknown"
+          :title="l10n('annofield_rights') + ': ' + licenseTitleOrUnknown"
           >
           <span class="button-caption">
             <template v-if="currentLicense.img_64x64">
@@ -242,7 +242,7 @@
       </dl>
 
       <dl class="detailbar-license"><dt @click="applyDebugCheats">
-        {{ l10n('License') }}: {{ licenseTitleOrUnknown }}
+        {{ l10n('annofield_rights') }}: {{ licenseTitleOrUnknown }}
       </dt><dd>
         {{ l10n(currentLicense.user_desc) || l10n('license_no_descr') }}
       </dd></dl>
