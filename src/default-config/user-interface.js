@@ -116,6 +116,9 @@ const uiCfg = {
   },
 
 
+  annoListSortOrder: '', // Initial sort order. Empty = default.
+
+
 
 
 

@@ -17,9 +17,17 @@ const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
 const sessionStore = require('../../browserStorage.js').session;
+const sorting = require('./sort/index.js');
 
 
 function orf(x) { return x || false; }
+
+
+/* Install event listener for debugging with autoEmitQ, e.g.
+  window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify([
+    '-creator', '-rights'].map(c => ['list:sort', c])); /* */
+eventBus.$on('list:sort', sorting.setPrimarySortCriterion);
+
 
 
 /* eslint-disable global-require */
@@ -51,13 +59,17 @@ module.exports = {
   mounted() {
     const annoList = this;
     annoList.collapseAll('apply');
-
-    // Sort the list initially and after every fetch
-    annoList.sort();
-    eventBus.$on('fetched', async function onFetched() {
-      await annoList.sort();
-      await annoList.collapseAll('apply');
+    eventBus.$on('annoListReplaced', () => {
+      if (!annoList.verifySorted()) {
+        /* verifySorted had to sort just now, which should have fired another
+          annoListReplaced event already => abondon this one. */
+        return;
+      }
+      annoList.collapseAll('apply')
     });
+
+    const sortedByPref = sessionStore.get('anno-list:sortedBy');
+    if (sortedByPref) { sorting.setPrimarySortCriterion(sortedByPref); }
 
     // When permissions have been updated, force an update.
     eventBus.$on('updatedPermissions', () => annoList.$forceUpdate());
@@ -75,7 +87,6 @@ module.exports = {
   },
   computed: {
     annos() { return this.$store.state.annotationList.list; },
-    sortedBy() { return this.$store.state.annotationList.sortedBy; },
 
     purlId() { return this.$store.state.purlId; },
     numberOfAnnotations() { return this.$store.getters.numberOfAnnotations; },
@@ -98,10 +109,6 @@ module.exports = {
 
 
   methods: {
-    sort(...args) {
-      return this.$store.dispatch('sort', ...args);
-      // Implemented in src/vuex/module/annotationList.js
-    },
 
     logoutButtonClicked() {
       window.error(':TODO: Confirm logout');
@@ -115,6 +122,7 @@ module.exports = {
       if (action === 'show') { st = false; }
       if (action === 'toggle') { st = !st; }
       annoList.collapsed = st;
+      // console.debug('collapseAll: ', { action });
       if (action !== 'apply') { sessionStore.put('anno-list:collapsed', st); }
 
       const verb = (st ? 'hide' : 'show');
@@ -132,5 +140,47 @@ module.exports = {
       this.debugCheatsReportCache = applyDebugCheats.report;
     },
 
+
+    verifySorted() { return sorting.verifySorted(this); },
+
+
+    generateSortOptionsMenuItems() {
+      const az = { invert: false, letterOrder: 'az', plusMinus: '+' };
+      const za = { invert: true, letterOrder: 'za', plusMinus: '-' };
+      const menu = [];
+      const curCrit = sorting.currentCriteriaAndWheterhInverted;
+      const [ccName] = Object.keys(curCrit);
+      const ccInvert = curCrit[ccName];
+      const mme = function makeMenuEntry(name, order) {
+        const isCC = ((name === ccName) && (order.invert === ccInvert));
+        const ent = { name, ...order };
+        if (isCC) { ent.isCurrentPrimaryCriterion = true; }
+        menu.push(ent);
+      };
+      Object.keys(sorting.availableCriteria).forEach(
+        name => mme(name, az) + mme(name, za));
+      return menu;
+    },
+
+
+    setPrimarySortCriterionAndSort(spec) {
+      const annoList = this;
+      annoList.collapseAll('hide');
+      const ssKey = 'anno-list:sortedBy';
+      if (spec) {
+        const ccStr = sorting.setPrimarySortCriterion(spec);
+        sessionStore.put(ssKey, ccStr);
+      } else {
+        sorting.restoreCriteriaStackFromString('');
+        sessionStore.del(ssKey);
+      }
+      annoList.verifySorted();
+    },
+
+
+
+
+
   },
+
 };

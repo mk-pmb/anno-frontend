@@ -2,6 +2,9 @@
 'use strict';
 
 function orf(x) { return x || false; }
+function parseDate(d) { return (+(new Date(d))) || 0; }
+
+const dummySortable = { sort: Boolean };
 
 
 const EX = function findAnnoRelations(allAnnosFlat) {
@@ -37,6 +40,10 @@ const EX = function findAnnoRelations(allAnnosFlat) {
     return orphanedAnnos.push(anno);
   });
 
+  allAnnosFlat.forEach(function sortSubAnnos(anno) {
+    (anno[':ANNO_FE:replies'] || dummySortable).sort(EX.cmpAnnoDates);
+  });
+
   const topLevelAnnos = [
     ...nonReplyAnnos,
     ...orphanedAnnos,
@@ -61,6 +68,8 @@ Object.assign(EX, {
     if (!anno) { return false; }
     return (anno['dc:isVersionOf'] || anno.id);
   },
+
+  cmpAnnoDates(a, b) { return parseDate(a.created) - parseDate(b.created); },
 
 });
 
