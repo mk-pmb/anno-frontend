@@ -81,34 +81,46 @@
       v-if="numberOfAnnotations"
       icon-fa="sort"
       :caption="l10n('sort')"
+      class="dropdown-menu-sort-options"
       >
-      <template v-for="sortProp in [
-        'created',
-        'modified',
-        'title',
-        'creator',
-        ]">
-        <component :is="bootstrapOpts.tags.dropdownMenuItem"
-          v-for="sortOrder in ['az', 'za']"
-          :key="`sort_${sortProp}_${sortOrder}`"
-          :class="[
-            'criterion',
-            bootstrapOpts.tags.dropdownMenuItemCls,
-            bootstrapOpts.tags.dropdownMenuItemBtnCls,
-            'text-nowrap',
-            ((sortedBy === `${sortProp}_${sortOrder}`) &&
-              bootstrapOpts.tags.dropdownMenuItemChosen),
-            'sort-prop-' + sortProp,
-            'sort-order-' + sortOrder,
-          ].filter(Boolean)"
-          @click="sort(`${sortProp}_${sortOrder}`); collapseAll('hide');"
-          :data-sort-prop="sortProp"
-          :data-sort-order="sortOrder"
-          >{{ l10n(`sort_prop_${sortProp}`) }}
-            <span :title="l10n(`sort_order_word_${sortOrder}`)"
-              >{{ l10n(`sort_order_symbol_${sortOrder}`) }}</span>
-        </component><!-- sortOrder -->
-      </template><!-- sortProp -->
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        v-for="sortCrit in generateSortOptionsMenuItems()"
+        :key="`sort_${sortCrit.name}_${sortCrit.letterOrder}`"
+        :class="[
+          'criterion',
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+          (sortCrit.isCurrentPrimaryCriterion
+            && bootstrapOpts.tags.dropdownMenuItemChosen),
+          'sort-prop-' + sortCrit.name,
+          'sort-order-' + sortCrit.letterOrder,
+        ].filter(Boolean)"
+        @click="setPrimarySortCriterionAndSort(
+          sortCrit.plusMinus + sortCrit.name)"
+        :data-sort-prop="sortCrit.name"
+        :data-sort-order="sortCrit.letterOrder"
+        >{{ l10n('sort_prop_' + sortCrit.name, '')
+          || l10n('annofield_' + sortCrit.name, '')
+          || sortCrit.name }}
+          <span :title="l10n(`sort_order_word_${sortCrit.letterOrder}`)"
+            >{{ l10n('sort_order_symbol_' + sortCrit.letterOrder) }}</span>
+      </component><!-- sortCrit -->
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        key="sort_default"
+        :class="[
+          'criterion',
+          'reset-criteria',
+          /* To hide this element via CSS:
+            .annoeditor-global-css .dropdown-menu-sort-options
+            .criterion.reset-criteria { display: none; } */
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+        ].filter(Boolean)"
+        @click="setPrimarySortCriterionAndSort(false)"
+        >{{ l10n('reset_to_default') }}
+      </component><!-- /sort reset -->
     </bootstrap-btnbar-dropdown><!-- ddSort -->
 
     <bootstrap-btnbar-dropdown ref="ddUser"
