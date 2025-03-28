@@ -11,7 +11,7 @@
       :placeholder="l10n('add_semtag')"
     / -->
     <bootstrap-button
-      btn-class="success ml-2"
+      btn-class="outline-success"
       icon-fa="plus"
       @click="addBody"
       >{{
@@ -44,8 +44,8 @@
     </div>
     <div class="col-md-2">
       <bootstrap-button
-        btn-class="danger"
-        icon-fa="trash-o"
+        btn-class="outline-danger"
+        icon-text="❌"
         @click="removeBody(body['#'])">
         {{ l10n('delete_semtag') }}
       </bootstrap-button>
