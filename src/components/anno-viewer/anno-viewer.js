@@ -68,6 +68,16 @@ const relationlinkRequiredFields = ['predicate', 'purpose', 'url'];
 const { fileBaseName } = strU;
 
 
+const unicodeIcons = {
+  calendar: '📅',
+  lock: '🔒',
+  reject: '🚫',
+  success: '✅',
+  trash: '🗑',
+  unlock: '🔓',
+};
+
+
 const expandHandlerFloodBarrier = floodBarrier({
   maxRepeats: 10,
   cooldownSec: 1,
@@ -129,6 +139,7 @@ module.exports = {
       metaContextHintsCache: [],
       mintDoiMsg: '',
       replyingTo: findTargetUri(firstEntryIfArray(anno['as:inReplyTo'])),
+      unicodeIcons,
     };
 
     if (anno['_ubhd:doiAssign']) {
@@ -234,7 +245,8 @@ module.exports = {
       const val = this.annoData['dc:dateAccepted'];
       const st = { val, active: true, explain: '' };
       if (val === undefined) { return st; } // i.e. no approval required
-      let icon = '';
+      const { auxMeta } = this;
+      if (auxMeta.sunsetDescr) { return st; }
       let colorCls = '';
       if (val) {
         st.jsTs = (new Date(val)).getTime();
@@ -248,16 +260,19 @@ module.exports = {
         st.explain = this.l10n('anno_approval_pending');
         colorCls = ' text-danger'; // No decision yet => Attention needed.
       }
-      if (this.auxMeta.sunny) {
+      if (auxMeta.sunny) {
         if (st.active) {
-          icon = (this.uiModeApproval ? 'unlock' : '');
+          st.iconText = (this.uiModeApproval ? unicodeIcons.success : '');
         } else {
-          icon = 'lock';
+          st.iconText = unicodeIcons.lock;
+          if (st.future) { st.iconText = unicodeIcons.calendar; }
         }
-      } else {
-        st.icon = (st.active ? 'gavel' : 'trash-o');
+      } else { // retracted…
+        st.iconText = (st.active
+          ? unicodeIcons.trash // … but was public: actually retracted, or
+          : unicodeIcons.reject); // … never public = rejected by moderation.
       }
-      st.iconCls = (icon && ('fa fa-' + icon + colorCls));
+      st.iconCls = (st.iconText && ('anno-approval-icon' + colorCls));
       return st;
     },
 
