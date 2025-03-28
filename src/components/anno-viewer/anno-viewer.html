@@ -29,11 +29,10 @@
         <span class="collapse-arrow" v-if="isListViewItem"
           ><i :class="'fa fa-caret-' + (collapsed ? 'right' : 'down')"
           ></i></span>
-        <span v-show="approval.iconCls"
-          :class="'anno-approval-icon ' + approval.iconCls"
-          :title="approval.explain"></span>
         <span v-show="auxMeta.sunsetDescr" class="anno-sunset-icon"
           :title="auxMeta.sunsetDescr">&#x26D4;</span>
+        <span v-show="approval.iconCls" :class="approval.iconCls"
+          :title="approval.explain">{{ approval.iconText }}</span>
         <span v-show="Boolean(problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
@@ -77,10 +76,9 @@
           v-if="approval.iconCls" :title="approval.explain"
           class="btn btn-sm btn-secondary anno-approval-btn">
           <span class="button-caption">
-            <span :class="'anno-approval-icon ' + approval.iconCls"></span>
-            <span v-if="approval.jsTs">
-              <span v-if="approval.future"
-                title="scheduled" class="fa fa-clock-o"></span>
+            <span :class="approval.iconCls"
+              >{{ approval.iconText }}</span>
+            <span class="approved-at" v-if="approval.jsTs">
               <time class="approved-at" :datetime="approval.jsTs"
                 >{{ dateFmt(approval.jsTs) }}</time>
             </span>
@@ -432,7 +430,7 @@
         ><bootstrap-button
           @click="unpublish"
           btn-class="default btn-outline-danger btn-outline-secondary"
-          :icon-fa="approval.active ? 'trash-o' : 'gavel'"
+          :icon-text="approval.active ? unicodeIcons.trash : unicodeIcons.reject"
           irrevocable-confirm
           v-if="uiModeApproval && checkAclAuth({ isOwnAnno,
             privName: 'stamp_‹own›_add_as_deleted' })">
