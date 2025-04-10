@@ -3,8 +3,9 @@
     ...decideTopLevelCssClasses(),
     'annoeditor-sidebar',
     `access-${isLoggedIn ? 'logged-in' : 'guest'}`,
-    `annoeditor-appmpde-${appMode}`,
+    `annoeditor-appmode-${appMode}`,
     ].filter(Boolean)"
+  :data-appmode="appMode"
   :data-number-of-annotations="numberOfAnnotations"
   >
   <div class="annoeditor-sidebar-body">
