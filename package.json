@@ -1,0 +1,35 @@
+{ "name": "as22-plugin-html-sanitizer",
+  "version": "0.0.0",
+  "description": "Plugin stub to allow the anno-frontend HTML sanitizer plugin to also run in anno-server-22.",
+  "keywords": [],
+
+  "author": "Heidelberg University Library (https://www.ub.uni-heidelberg.de/)",
+  "homepage": "https://github.com/UB-Heidelberg/anno-frontend/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UB-Heidelberg/anno-frontend.git",
+    "branch": "as22-plugin-html-sanitizer"
+  },
+  "bugs": {
+    "url": "https://github.com/UB-Heidelberg/anno-frontend/issues"
+  },
+
+  "contributors": [
+    "M.K. (https://github.com/mk-pmb)"
+  ],
+
+  "private": false, "license": "MIT",
+
+  "main": "plugin.sanitize-html.js",
+  "scripts": { "test": "elp && nodemjs test/all.mjs" },
+  "directories": { "test": "test" },
+  "eslintConfig": { "extends": "nodejs-pmb" },
+
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+
+
+  "engines": { "npm": ">=7.0.0", "node": ">=16.0.0" }
+}
