@@ -16,7 +16,7 @@
 const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
-const sessionStore = require('../../browserStorage.js').session;
+const persistentConfig = require('../../browserStorage.js').appConfig;
 const sorting = require('./sort/index.js');
 
 
@@ -51,7 +51,7 @@ module.exports = {
 
   data() {
     return {
-      collapsed: (sessionStore.get('anno-list:collapsed') !== false),
+      collapsed: (persistentConfig.get('anno-list:collapsed') !== false),
       debugCheatsReportCache: '',
     };
   },
@@ -68,7 +68,7 @@ module.exports = {
       annoList.collapseAll('apply')
     });
 
-    const sortedByPref = sessionStore.get('anno-list:sortedBy');
+    const sortedByPref = persistentConfig.get('anno-list:sortedBy');
     if (sortedByPref) { sorting.setPrimarySortCriterion(sortedByPref); }
 
     // When permissions have been updated, force an update.
@@ -123,7 +123,9 @@ module.exports = {
       if (action === 'toggle') { st = !st; }
       annoList.collapsed = st;
       // console.debug('collapseAll: ', { action });
-      if (action !== 'apply') { sessionStore.put('anno-list:collapsed', st); }
+      if (action !== 'apply') {
+        persistentConfig.put('anno-list:collapsed', st);
+      }
 
       const verb = (st ? 'hide' : 'show');
       annoList.$children.forEach(function maybeCollapse(viewer) {
@@ -169,10 +171,10 @@ module.exports = {
       const ssKey = 'anno-list:sortedBy';
       if (spec) {
         const ccStr = sorting.setPrimarySortCriterion(spec);
-        sessionStore.put(ssKey, ccStr);
+        persistentConfig.put(ssKey, ccStr);
       } else {
         sorting.restoreCriteriaStackFromString('');
-        sessionStore.del(ssKey);
+        persistentConfig.del(ssKey);
       }
       annoList.verifySorted();
     },
