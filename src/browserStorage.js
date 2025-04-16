@@ -7,12 +7,15 @@ const ns = 'ubhd210923anno';
 const dbs = {};
 
 function makeDb(type) {
-  const db = new WebStorageES6('Session', ns);
+  const db = new WebStorageES6(type, ns);
   db.del = db.forget;
   dbs[type.toLowerCase()] = db;
 }
 
-// makeDb('Local');
+makeDb('Local');
 makeDb('Session');
+// ^-- ATTN: in Firefox, "Session"Storage is separate per tab.
+
+dbs.appConfig = dbs.local;
 
 module.exports = dbs;

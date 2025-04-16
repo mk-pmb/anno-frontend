@@ -1,7 +1,7 @@
 'use strict';
 
 const eventBus = require('./event-bus.js');
-const sessionStore = require('./browserStorage.js').session;
+const persistentConfig = require('./browserStorage.js').appConfig;
 
 const EX = function applyCheats() {
   const annoApp = window.ubhdAnnoApp.getAnnoAppRef();
@@ -12,17 +12,17 @@ const EX = function applyCheats() {
   let hadAny = '';
   if (cmd.includes('RESET')) {
     window.location.hash = '';
-    sessionStore.forget(EX.ssSlot);
+    persistentConfig.forget(EX.ssSlot);
     had = EX.icons.clear;
     hadAny = true;
   }
-  const mem = sessionStore.get(EX.ssSlot) || {};
+  const mem = persistentConfig.get(EX.ssSlot) || {};
   Object.keys(EX.codes).forEach(function checkCode(code) {
     let icon = (mem[code] ? 'yes' : 'off');
     if (cmd.includes(code)) {
       mem[code] = true;
       icon = 'add';
-      sessionStore.put(EX.ssSlot, mem);
+      persistentConfig.put(EX.ssSlot, mem);
     }
     const func = EX.codes[code];
     had += (had && ' · ') + EX.icons[icon] + ' ' + (func.descr || code);
