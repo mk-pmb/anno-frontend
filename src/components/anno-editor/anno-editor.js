@@ -15,6 +15,7 @@ const validateEditorFields = require('./validateEditorFields.js');
 
 // function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+function ores(x) { return x || ''; }
 function orf(x) { return x || false; }
 
 const svgRgx = {
@@ -240,7 +241,7 @@ module.exports = {
       // console.debug('getZoneSelectorSvg', { sel }, orf(sel).value);
       if (!sel) { return ''; }
       if (sel.type !== 'SvgSelector') { return ''; }
-      return (sel.value || '');
+      return ores(sel.value);
     },
 
     save() {
@@ -342,7 +343,7 @@ module.exports = {
       editor.svgUpdateBlockedUntil = now + (1e3
         * editor.svgUpdateMinimumRepeatDelaySec);
 
-      let newSvg = String(unoptimizedNewSvg || '').trim();
+      let newSvg = String(ores(unoptimizedNewSvg)).trim();
       const discardedSvgParts = [];
       function discardSvg(part) {
         discardedSvgParts.push(part);
@@ -525,7 +526,7 @@ module.exports = {
       const { sanitizeHtml, easyHtmlDiff } = orf(editor.pluginImplCache);
       clean = (sanitizeHtml || String)(dirty);
       const modified = (clean !== dirty);
-      const diff = ((modified && easyHtmlDiff && easyHtmlDiff(dirty, clean)) || '');
+      const diff = ores(modified && easyHtmlDiff && easyHtmlDiff(dirty, clean));
       const trace = (new Error()).stack.split(/\n\s*/).slice(1);
       editor.cachedSanitizedHtmlBodyValue = clean;
       editor.cachedSanitizedHtmlBodyDiff = diff;
