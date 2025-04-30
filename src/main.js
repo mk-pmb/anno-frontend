@@ -164,6 +164,7 @@ const EX = {
 
     vueRootElem.$el.getAnnoAppRef = EX.getAnnoAppRef;
     store.getAnnoAppRef = EX.getAnnoAppRef;
+    Object.assign(store, storeBlueprint.customApiExtras);
 
     // Initialize store state
     setTimeout(() => vueRootElem.$store.dispatch('retrieveInitialState'), 1);
@@ -193,7 +194,6 @@ const EX = {
     });
 
     applyCheats();
-    applyCheats.checkAutoEmitQ(window.name, EX.appName + ':autoEmitQ:');
 
     return vueRootElem;
   },
@@ -201,6 +201,10 @@ const EX = {
 
 };
 
+
+
+eventBus.$once('annoListReplaced',
+  () => applyCheats.checkAutoEmitQ(window.name, EX.appName + ':autoEmitQ:'));
 
 
 
