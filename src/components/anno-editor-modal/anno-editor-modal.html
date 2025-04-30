@@ -28,10 +28,10 @@
           v-for="hdr in [decideHeaderDetails()]" :key="0"
           class="modal-title">
           {{ l10n(hdr.title) }}
-          <a v-if="hdr.annoIdUrl"
-            @mouseenter="startHighlighting(hdr.annoIdUrl)"
-            @mouseleave="stopHighlighting(hdr.annoIdUrl)"
-            >{{ annoIdToPermaUrl(hdr.annoIdUrl) }}</a>
+          <a v-if="hdr.refUrl" class="anno-url wrap-anywhere"
+            @mouseenter="startHighlighting(hdr.refUrl)"
+            @mouseleave="stopHighlighting(hdr.refUrl)"
+            >{{ annoIdToPermaUrl(hdr.refUrl) }}</a>
         </component>
 
         <div class="top-right-buttons ml-auto text-nowrap"
