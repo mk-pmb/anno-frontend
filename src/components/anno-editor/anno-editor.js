@@ -271,9 +271,15 @@ module.exports = {
     async startCompose(editMode, annoDataTmpl) {
       const editor = this;
       const { commit, state } = editor.$store;
-      commit('SET_APP_STATE_PROP', ['editMode', editMode]);
       const anno = annoDataTmpl(state);
-      console.debug('startCompose: template:', anno);
+      const updEditMode = {
+        editEnforceReplaces: ores(anno['dc:replaces']),
+        editEnforceReplying: ores(anno['as:inReplyTo']),
+        editEnforceVersionOf: ores(anno['dc:isVersionOf']),
+        editMode,
+      };
+      commit('FLAT_UPDATE_APP_STATE', updEditMode);
+      // console.debug('startCompose:', updEditMode, 'template:', anno);
       await editor.loadAnnoData(anno);
       eventBus.$emit('open-editor');
     },
@@ -293,21 +299,14 @@ module.exports = {
         refAnno['dc:isVersionOf']
         || refAnno.id
         );
-      const { targetSource } = editor.$store.state;
       const refAnnoTitle = (refAnno['dc:title'] || refAnno.title);
-      const replyTgt = {
-        id: replyToUrl,
-        scope: targetSource,
-        'dc:title': refAnnoTitle,
-      };
       const { l10n } = editor;
       const title = l10n('reply_title_prefix') + refAnnoTitle;
       await editor.startCompose('reply', state => ({
         creator: editor.decideDefaultAuthorAgent(),
-        title,
-        target: [replyTgt, decideTargetForNewAnno(state)],
+        target: decideTargetForNewAnno(state),
+        'dc:title': title,
         'as:inReplyTo': replyToUrl,
-        motivation: ['replying'],
       }));
     },
 
