@@ -12,26 +12,14 @@ const EX = {
     if (isStr(cfgTgt)) {
       return EX.sameAsConfigTarget({ id: cfgTgt }, oneshotTgt);
     }
-    // const tr = 'Anno-Editor: matchesConfigTarget';
+    // const tr = 'Anno-Editor: matchesConfigTarget:';
+    const cfgUrls = EX.urlProps.map(k => cfgTgt[k]).filter(Boolean);
+    // console.debug(tr, 'cfgUrls:', cfgUrls); }
     const cmp = function matchesConfigTarget(annoTgt) {
       if (isStr(annoTgt)) { return cmp({ id: annoTgt }); }
-      let matches = false;
-      // console.debug(tr + '? anno:', annoTgt, 'cfg:', cfgTgt);
-      EX.urlProps.forEach((annoKey) => {
-        if (matches) { return; }
-        const annoVal = annoTgt[annoKey];
-        if (!annoVal) { return; }
-        EX.urlProps.forEach((cfgKey) => {
-          if (matches) { return; }
-          const cfgVal = cfgTgt[cfgKey];
-          if (!cfgVal) { return; }
-          if (cfgVal === annoVal) {
-            // console.debug(tr + '!', { annoKey, cfgKey, annoVal, cfgVal });
-            matches = true;
-          }
-        });
-      });
-      // if (!matches) { console.debug(tr + ': Nope.'); }
+      const annoUrls = EX.urlProps.map(k => annoTgt[k]).filter(Boolean);
+      const matches = annoUrls.some(u => cfgUrls.includes(u));
+      // if (!matches) { console.debug(tr, 'nope:', annoUrls, annoTgt); }
       return matches;
     };
 
