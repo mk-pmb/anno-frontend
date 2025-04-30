@@ -35,7 +35,13 @@ const EX = function getCleanAnno() {
     versionOf,
     ...anno
   } = vueAnno;
-  Object.assign(anno, extraFields);
+
+  // eslint-disable-next-line array-callback-return
+  const susXF = Object.entries(extraFields).map(function safeCopy([k, v]) {
+    if ((!v) || (anno[k] !== undefined)) { return (k + '=' + String(v)); }
+    anno[k] = v;
+  }).filter(Boolean).join(' ; ');
+  if (susXF) { editor.l10nFubar('getCleanAnno: suspicious XF: ' + susXF); }
 
   function setAnnoPropIf(k, v) { if (v) { anno[k] = v; } }
 
