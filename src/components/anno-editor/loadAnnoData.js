@@ -7,6 +7,7 @@ const objPop = require('objpop');
 const editorModelDef = require('../../vuex/module/editing.js');
 
 const adjustMultiTarget = require('./adjustMultiTarget.js');
+const fixupReplyMode = require('./fixupReplyMode.js');
 const legacyFieldsMustAgree = require('./legacyFieldsMustAgree.js');
 
 
@@ -35,26 +36,15 @@ const EX = async function loadAnnoData(origAnno) {
   function popStr(k) { return String(popField(k) || ''); }
 
   const draftReply = anno['as:inReplyTo'];
-  const target = adjustMultiTarget(state, popField('target'), {
+  anno.target = adjustMultiTarget(state, popField('target'), {
     omitByUrl: draftReply,
   });
-  const primTgtAdj = target.primaryTargetAdjustHint;
-
-  (function adjustReplyMode() {
-    const enfReply = state.editEnforceReplying;
-    if (enfReply) {
-      anno['as:inReplyTo'] = enfReply;
-      anno.motivation = 'replying';
-      target.unshift({ id: enfReply, ':ANNO_FE:targetType': 'inReplyTo' });
-    } else {
-      delete anno['as:inReplyTo'];
-      if (anno.motivation === 'replying') { delete anno.motivation; }
-    }
-  }());
+  const primTgtAdj = anno.target.primaryTargetAdjustHint;
 
   function enforceTLF(k, v) { if (v) { anno[k] = v; } else { delete anno[k]; } }
   enforceTLF('dc:replaces', state.editEnforceReplaces);
   enforceTLF('dc:isVersionOf', state.editEnforceVersionOf);
+  fixupReplyMode(state, anno);
 
   const title = (legacyFieldsMustAgree(popField, String, 'dc:title title')
     || '').replace(/\s+/g, ' ').trim();
