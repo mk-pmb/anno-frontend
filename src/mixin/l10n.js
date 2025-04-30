@@ -43,5 +43,11 @@ function l10n(cfg, vocKey, fallback) {
 module.exports = {
   methods: {
     l10n(...args) { return l10n(this.$store.state, ...args); },
+
+    l10nFubar(descr) {
+      const q = this.l10n('please_report_error:') + '\n\n\u00A0';
+      if (!window.prompt(q, descr)) { throw new Error('FUBAR: ' + descr); }
+    },
+
   },
 };

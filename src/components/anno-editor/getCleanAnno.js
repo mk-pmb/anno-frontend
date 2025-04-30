@@ -35,11 +35,11 @@ const EX = function getCleanAnno() {
     versionOf,
     ...anno
   } = vueAnno;
-  Object.assign(anno, extraFields);
+
+  EX.checkExtraFields(editor, anno, extraFields);
+  EX.deleteNonEditableFieldsInplace(anno);
 
   function setAnnoPropIf(k, v) { if (v) { anno[k] = v; } }
-
-  EX.deleteNonEditableFieldsInplace(anno);
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   anno.type = ['Annotation'];
@@ -77,6 +77,18 @@ const EX = function getCleanAnno() {
 
 
 Object.assign(EX, {
+
+  checkExtraFields(editor, anno, extraFields) {
+    if (!extraFields) { return; }
+
+    // eslint-disable-next-line array-callback-return
+    const susXF = Object.entries(extraFields).map(function safeCopy([k, v]) {
+      if ((!v) || (anno[k] !== undefined)) { return (k + '=' + String(v)); }
+      anno[k] = v;
+    }).filter(Boolean).join(' ; ');
+    if (susXF) { editor.l10nFubar('getCleanAnno: suspicious XF: ' + susXF); }
+  },
+
 
   deleteNonEditableFieldsInplace(a) {
     omitFieldsIfFalsey.forEach(k => deleteIf(a, k, !a[k]));
