@@ -26,12 +26,11 @@
       >
       <template slot="extra-bodyparts-top">
         <input
-          :placeholder="l10n('annofield_title')
-            + (titleRequired ? ` (${l10n('required_field')})` : '')"
+          :placeholder="l10n('annofield_title') + ' ' + l10n('required_field')"
           v-model="title"
           class="form-control"
           type="text"
-          :required="titleRequired"
+          required
           >
         <agent-identity-selector ref="authorIdentitySelector"
           :row-caption="l10n('author_identity')"

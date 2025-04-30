@@ -187,10 +187,6 @@ module.exports = {
       set(t) { this.$store.commit('SET_EDITOR_ANNO_PROP', ['title', t]); },
     },
 
-    titleRequired() {
-      return !this.$store.state.editing.replyTo;
-    },
-
     activeTabTopic() { return this.$refs.tablist.currentActiveTabTopic; },
 
   },
