@@ -108,6 +108,22 @@ const EX = { // exports namespace
 
   },
 
+  customApiExtras: {
+
+    getAnnoByIdUrl(annoIdUrl) {
+      const allAnnos = this.state.annotationList.list;
+      function by(k) { return allAnnos.find(a => a[k] === annoIdUrl); }
+      const found = (by('id')
+        || by('canonical')
+        || by('dc:isVersionOf')
+        || false);
+      return found;
+    },
+
+  },
+
+
+
 };
 
 
