@@ -43,9 +43,9 @@ const EX = function getCleanAnno() {
 
   anno['@context'] = 'http://www.w3.org/ns/anno.jsonld';
   anno.type = ['Annotation'];
-  setAnnoPropIf('as:inReplyTo', replyTo);
-  setAnnoPropIf('dc:identifier', doi);
-  setAnnoPropIf('dc:isVersionOf', versionOf);
+  setAnnoPropIf('as:inReplyTo', replyTo); // legacy compat
+  setAnnoPropIf('dc:identifier', doi); // legacy compat
+  setAnnoPropIf('dc:isVersionOf', versionOf); // legacy compat
   setAnnoPropIf('dc:language', editor.annoLanguage.selected);
   setAnnoPropIf('dc:title', title);
   if (anno['dc:dateAccepted'] === false) { delete anno['dc:dateAccepted']; }
