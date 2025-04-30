@@ -112,7 +112,9 @@ module.exports = {
     eventBus.$on('create', editor.create);
     eventBus.$on('discard', editor.discard);
     eventBus.$on('reply', editor.reply);
+    eventBus.$on('replyByUrl', url => editor.methodByUrl('reply', url));
     eventBus.$on('revise', editor.revise);
+    eventBus.$on('reviseByUrl', url => editor.methodByUrl('revise', url));
     eventBus.$on('save', editor.save);
 
     eventBus.$on('loadAnnoData', editor.loadAnnoData);
@@ -307,6 +309,12 @@ module.exports = {
         'as:inReplyTo': replyToUrl,
         motivation: ['replying'],
       }));
+    },
+
+    async methodByUrl(methodName, annoIdUrl) {
+      const ed = this;
+      const anno = ed.$store.getAnnoByIdUrl(annoIdUrl);
+      return anno && ed[methodName].call(ed, anno);
     },
 
     async revise(oldAnno) {
