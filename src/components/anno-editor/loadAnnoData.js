@@ -27,16 +27,34 @@ const dummyHtml = ('<h2>Placeholder</h2>'
 
 const EX = async function loadAnnoData(origAnno) {
   const editor = this;
+  const { l10n } = editor;
   const { commit, state } = editor.$store;
+
   const anno = jsonDeepCopy(origAnno);
   const popField = objPop.d(anno);
   function popStr(k) { return String(popField(k) || ''); }
 
-  const target = adjustMultiTarget(state, popField('target'));
-  const tgtAdj = target.primaryTargetAdjustHint;
+  const draftReply = anno['as:inReplyTo'];
+  const target = adjustMultiTarget(state, popField('target'), {
+    omitByUrl: draftReply,
+  });
+  const primTgtAdj = target.primaryTargetAdjustHint;
 
-  const replyTo = '';
-  // :TODO: replyTo: Detect here or remove globally.
+  (function adjustReplyMode() {
+    const enfReply = state.editEnforceReplying;
+    if (enfReply) {
+      anno['as:inReplyTo'] = enfReply;
+      anno.motivation = 'replying';
+      target.unshift({ id: enfReply, ':ANNO_FE:targetType': 'inReplyTo' });
+    } else {
+      delete anno['as:inReplyTo'];
+      if (anno.motivation === 'replying') { delete anno.motivation; }
+    }
+  }());
+
+  function enforceTLF(k, v) { if (v) { anno[k] = v; } else { delete anno[k]; } }
+  enforceTLF('dc:replaces', state.editEnforceReplaces);
+  enforceTLF('dc:isVersionOf', state.editEnforceVersionOf);
 
   const title = (legacyFieldsMustAgree(popField, String, 'dc:title title')
     || '').replace(/\s+/g, ' ').trim();
@@ -54,7 +72,6 @@ const EX = async function loadAnnoData(origAnno) {
     title,
     creator,
     target,
-    replyTo,
     versionOf: popStr('dc:isVersionOf'),
     body: arrayOfTruths(popField('body')),
     rights: '',
@@ -100,9 +117,12 @@ const EX = async function loadAnnoData(origAnno) {
   commit('RESET_ANNOTATION');
   commit('FLAT_UPDATE_EDITOR_ANNO', model);
 
-  const { l10n } = editor;
-  const tam = editor.$refs.targetAdjustedMsg;
-  if (tam) { tam.setMsg(null, (tgtAdj && l10n('target_adjusted_' + tgtAdj))); }
+  function setMsgBoxOrAlert(box, msg) {
+    if (box) { return box.setMsg(null, msg || ''); }
+    if (msg) { window.alert(msg); }
+  }
+  setMsgBoxOrAlert(editor.$refs.targetAdjustedMsg, primTgtAdj
+    && l10n('target_adjusted_' + primTgtAdj));
 
   editor.$refs.htmlBodyEditor.setUserHtml(html);
   editor.updatePreview();
