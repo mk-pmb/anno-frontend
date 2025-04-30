@@ -65,6 +65,10 @@ const EX = function categorizeTargets(appCfg, rawTarget, origOpt) {
       report.subjTgt = tgt;
       report.subjOrigIdx = idx;
       return;
+    } else if (url === appCfg.targetSource) {
+      console.warn('categorizeTargets: non-primary(?!) targetSource:', tgt);
+    } else if (url === appCfg.targetImage) {
+      console.warn('categorizeTargets: non-primary(?!) targetImage:', tgt);
     }
     report.additional.push(tgt);
   });
