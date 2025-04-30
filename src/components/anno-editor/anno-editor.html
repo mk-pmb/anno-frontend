@@ -10,9 +10,8 @@
   <template slot="extras-above">
     <msgbox-row ref="statusMsg" class="status-msg" :addTimestamp="true" />
     <msgbox-row ref="targetAdjustedMsg" class="target-adjusted"
-      severity="info"
       :title="l10n('target_adjusted_title')"
-      />
+      severity="info" />
   </template>
 
   <bootstrap-tab :name="`${prefix}-${editorId}-tab-comment`"
