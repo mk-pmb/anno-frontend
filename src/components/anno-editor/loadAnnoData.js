@@ -71,7 +71,7 @@ const EX = async function loadAnnoData(origAnno) {
     doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi') || '',
     title,
     creator,
-    target,
+    target: popField('target'),
     versionOf: popStr('dc:isVersionOf'),
     body: arrayOfTruths(popField('body')),
     rights: '',
