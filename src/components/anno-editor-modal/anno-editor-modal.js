@@ -52,10 +52,11 @@ module.exports = {
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},
 
         decideHeaderDetails() {
-          const { editMode, editing } = this.$store.state;
-          const hdr = { title: 'annoeditor_mode_' + editMode };
-          if (editMode === 'revise') { hdr.annoIdUrl = editing.id; }
-          if (editMode === 'reply') { hdr.annoIdUrl = editing.replyTo; }
+          const st = this.$store.state;
+          const em = st.editMode;
+          const hdr = { title: 'annoeditor_mode_' + em };
+          if (em === 'reply') { hdr.refUrl = st.editEnforceReplying; }
+          if (em === 'revise') { hdr.refUrl = st.editEnforceReplaces; }
           return hdr;
         },
 

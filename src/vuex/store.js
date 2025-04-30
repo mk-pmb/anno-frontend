@@ -25,6 +25,9 @@ const EX = { // exports namespace
     // No settings here! Default config belongs in `../default-config.js`.
     acl: null,
     cacheBusterEnabled: false,
+    editEnforceReplaces: '',
+    editEnforceReplying: '',
+    editEnforceVersionOf: '',
     editMode: null,
     forceRerenderConfigBasedUiTs: 0,
     lurkMode: false,

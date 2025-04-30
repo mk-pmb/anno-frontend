@@ -14,7 +14,6 @@ function initialState() {
     doi: null,
     extraFields: null,
     id: '',
-    replyTo: null,
     rights: '',
     target: null,
     title: '',
