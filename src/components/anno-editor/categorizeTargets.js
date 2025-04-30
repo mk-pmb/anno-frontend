@@ -12,12 +12,15 @@ const targetRelatedness = require('./targetRelatedness.js');
 
 const { findResourceUrl } = annoUrlsMixin.methods;
 
+function arrayIfAny(x) { return x && [].concat(x); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+function orf(x) { return x || false; }
 
 const optUnrank = { checkTargetMatchesConfigTarget() { return false; } };
 
 
-const EX = function categorizeTargets(appCfg, rawTarget) {
+const EX = function categorizeTargets(appCfg, rawTarget, origOpt) {
+  const opt = orf(origOpt);
   const { annoEndpoint } = appCfg;
   if (!annoEndpoint) { throw new Error('Empty annoEndpoint?'); }
 
@@ -45,10 +48,12 @@ const EX = function categorizeTargets(appCfg, rawTarget) {
   } catch (jsonErr) {
     throw new Error('Original targets list is not JSON-able');
   }
+  const omitByUrl = arrayIfAny(opt.omitByUrl);
   plainOrigTgt.forEach(function scan(tgt, idx) {
     if (!tgt) { return; }
     if (typeof tgt === 'string') { return scan({ id: tgt }, idx); }
     const url = findResourceUrl(tgt);
+    if (omitByUrl && omitByUrl.includes(url)) { return; }
     // console.debug('categorizeTargets', { idx, url, annoEndpoint });
     if (url) {
       if (url.startsWith(annoEndpoint)) {

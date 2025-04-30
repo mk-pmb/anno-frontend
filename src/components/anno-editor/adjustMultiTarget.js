@@ -15,8 +15,8 @@ const dbgp = false;
 
 
 
-const EX = function adjustMultiTarget(appCfg, orig) {
-  const report = categorizeTargets(appCfg, orig);
+const EX = function adjustMultiTarget(appCfg, orig, opt) {
+  const report = categorizeTargets(appCfg, orig, opt);
   const oldSubjTgt = (report.subjTgt || false);
   const summary = (function summarize() {
     if (report.subjOrigIdx > report.localAnnos.length) { return 'hoisted'; }
