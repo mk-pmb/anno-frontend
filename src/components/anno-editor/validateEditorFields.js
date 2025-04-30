@@ -1,11 +1,15 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
+const fixupReplyMode = require('./fixupReplyMode.js');
+
+
 function orf(x) { return x || false; }
 
 
 const vali = function validateEditorFields(editor, anno) {
   const problems = [];
+  const appCfg = orf(orf(editor.$store).state);
   let { l10n } = editor;
   if (!l10n) {
     l10n = String;
@@ -34,6 +38,14 @@ const vali = function validateEditorFields(editor, anno) {
 
   if (firstTextualBody.value) {
     if (!anno['dc:language']) { mf('text_body_language'); }
+  }
+
+  if (appCfg.editMode) {
+    const vueStoreUpdates = fixupReplyMode(appCfg, anno);
+    if (vueStoreUpdates) {
+      editor.$store.commit('FLAT_UPDATE_EDITOR_ANNO', vueStoreUpdates);
+      problems.push(l10n('reply_target_restored'));
+    }
   }
 
   if (editor.previewWarnings.found) {
