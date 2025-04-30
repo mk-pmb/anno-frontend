@@ -19,7 +19,11 @@ const EX = {
       err.val = v;
       throw err;
     }
-    state[k] = v;
+    if ((v === undefined) || (v === null)) {
+      delete state[k];
+    } else {
+      state[k] = v;
+    }
   },
 
   typesafeFlatUpdateState(st, upd) {
