@@ -7,6 +7,8 @@ const { neverSubmitFields } = require('../anno-editor/saveCreate.js');
 
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 
+function ores(x) { return x || ''; }
+
 
 const EX = async function downloadAndRestoreDraft(meta) {
   const panel = this;
@@ -17,18 +19,25 @@ const EX = async function downloadAndRestoreDraft(meta) {
     apiVerb: 'GET',
     ...meta,
   });
+
+  const { state } = panel.$store;
+  const hints = [];
+
+  if (ores(draftData['as:inReplyTo']) !== ores(state.editEnforceReplying)) {
+    hints.push(panel.l10n('draft_reply_target_differs'));
+  }
+
   EX.neverRestoreFields.forEach(k => delete draftData[k]);
   // console.debug('Anno-Editor: downloadAndRestoreDraft:', draftData);
 
   await panel.editorApi.loadAnnoData(draftData);
   eventBus.$emit('switchEditorTabByRefName', 'preview');
+  if (hints.length) { window.alert('• ' + hints.join('• ')); }
 };
 
 
 EX.neverRestoreFields = [
   ...neverSubmitFields,
-  'as:inReplyTo',
-  'dc:isVersionOf',
   'dc:replaces',
 ];
 
