@@ -264,6 +264,7 @@
             "additional_subjects_hint": "Diese Annotation bezieht sich auf @@nAdd@@ weitere Unter\u00ADsuchungs\u00ADgegen\u00ADstände.",
             "additional_subjects_hint:n=1": "Diese Annotation bezieht sich auf einen weiteren Unter\u00ADsuchungs\u00ADgegen\u00ADstand.",
             "additional_subjects_show": "Alle anzeigen",
+            "draft_reply_target_differs": "Das Antwortbezug-Feld (\"as:inReplyTo\") des Entwurfs wich ab. Bitte prüfen Sie die Liste der Bezüge (\"target\").",
 
             "cmp_layout_only":      "Zeige nur:",
             "cmp_layout_top":       "Vgl. oben:",
@@ -524,6 +525,7 @@
             "target_adjusted_hoisted":  "Moved to start of list.",
             "additional_subjects_hint": "This annotation concerns @@nAdd@@ more subject matter item(s).",
             "additional_subjects_show": "Show all",
+            "draft_reply_target_differs": "The draft's reply reference field (\"as:inReplyTo\") has been adjusted. Please double-check the list of targets.",
 
             "discard":             "Discard",
             "preview":             "Preview",
