@@ -33,13 +33,7 @@ function zipball_nm () {
   local NM_DEPS=()
   find_nm_deps || return $?
 
-  local TEST_DEPS=(
-    -type f
-    '(' -name '*.js'
-      -o -name '*.css'
-      ')'
-    )
-  readarray -t TEST_DEPS < <(find test/ "${TEST_DEPS[@]}")
+  readarray -t TEST_DEPS < <(gitfind 'css js' test/)
 
   local PACK_FILES=(
     "${NM_HTML[@]}"
@@ -58,6 +52,16 @@ function zipball_nm () {
     *' deploy '* ) deploy || return $?;;
     *' PU '* ) deploy --no-unzip || return $?;;
   esac
+}
+
+
+function gitfind () {
+  local FEXTS="$1"; shift
+  FEXTS="$(printf '%s|' -- $FEXTS)"
+  FEXTS="${FEXTS%|}"
+  ( git grep -lPe -- "$@"
+    git status --porcelain -uall -- "$@" | cut --bytes=4-
+  ) | grep -Pe '\.('"$FEXTS"')$' | LANG=C sort --version-sort --unique
 }
 
 
