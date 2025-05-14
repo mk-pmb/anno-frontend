@@ -1,5 +1,5 @@
 { "name": "as22-plugin-html-sanitizer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Plugin stub to allow the anno-frontend HTML sanitizer plugin to also run in anno-server-22.",
   "keywords": [],
 
@@ -26,8 +26,16 @@
   "eslintConfig": { "extends": "nodejs-pmb" },
 
   "dependencies": {
+    "equal-pmb": "^0.1.28",
+    "generic-common-prefix": "^0.1.1",
+    "sanitize-html": "^2.13.0"
   },
   "devDependencies": {
+    "eslint-config-nodejs-pmb": "^0.3.6",
+    "eslint-plugin-json-light-pmb": "^1.0.7",
+    "eslint-plugin-n": "^17.16.2",
+    "eslint-pretty-pmb": "^1.0.7",
+    "nodemjs": "^0.1.16"
   },
 
 

@@ -1,0 +1,28 @@
+%YAML 1.2
+# -*- coding: UTF-8, tab-width: 4 -*-
+---
+
+^:
+    import: 'plugins/html-sanitizer/index.mjs'
+    # The import path is relative to the top level directory of your
+    # `anno-server-22` repo. You can use `../`, but if you run the server
+    # in docker, be aware that the repo is mapped to `/app`, so you most
+    # likely want to install your plugins into a subdirectory inside that.
+
+
+    ifMissing: 'error'
+    # What shall `anno-server-22` do if the plugin cannot be loaded?
+    # * 'error': Refuse to start.
+    # * 'warn': Accept unsanizized annos.
+
+
+    annoFrontendPluginFile: ''
+    # Name of (the symlink to) your local copy of the frontend plugin.
+    # empty = default = as suggested in the install instructions.
+
+
+
+
+
+
+...
