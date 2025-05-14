@@ -1,7 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-function unpackSingleElementArray(a) { return (a.length === 1 ? a[0] : a); }
+const unpackSingleProp = require('unwrap-single-prop').default;
 
 function ifNonEmptyObj(x) {
   return (x && Object.keys(x).length && x) || false;
@@ -33,7 +33,7 @@ const EX = function decideTargetForNewAnno(state) {
   const tgtSpec = {
     ...meta,
     source: state.targetSource,
-    selector: unpackSingleElementArray(tgtSels),
+    selector: unpackSingleProp(0, tgtSels),
   };
   return tgtSpec;
 };

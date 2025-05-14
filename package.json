@@ -63,6 +63,7 @@
     "safe-sortedjson": "^1.0.8",
     "sanitize-html": "^2.13.0",
     "semtonotes-utils": "^0.2.2",
+    "unwrap-single-prop": "^0.1.0",
     "vue": "^2.6.12",
     "vue-frag": "^1.3.1",
     "vue-guess-refname-path-to-pmb": "^0.1.1",
