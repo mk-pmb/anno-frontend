@@ -55,8 +55,15 @@ const vali = function validateEditorFields(editor, anno) {
   }
 
   if (!problems.length) { return true; }
-  const ind = '• ';
-  const msg = ind + problems.join('\n' + ind);
+  let msg = '• ';
+  msg += problems.join('\n' + msg);
+
+  if (appCfg.uiDebugMode) {
+    msg += ('\n\n<uiDebugMode> Enter "!" to '
+      + 'ignore and continue despite validation failure');
+    return (window.prompt(msg, '') === '!');
+  }
+
   window.alert(msg); // eslint-disable-line no-undef,no-alert
   return false;
 };
