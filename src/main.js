@@ -6,6 +6,7 @@ const getOwn = require('getown');
 const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
 const objFromKeysList = require('obj-from-keys-list').default;
+const unpackSingleProp = require('unwrap-single-prop').default;
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -200,6 +201,20 @@ const EX = {
 
 
 };
+
+
+EX.reuseLib = (function compile() {
+  const ovr = { Vue, Vuex, unpackSingleProp, AnnoFrontend: EX };
+  const re = function reuseLib(id) {
+    const x = getOwn(ovr, id) || re.require(id) || false;
+    return unpackSingleProp('default', x);
+  };
+  re.require = require;
+  return re;
+}());
+
+
+
 
 
 
