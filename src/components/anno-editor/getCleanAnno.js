@@ -36,6 +36,10 @@ const EX = function getCleanAnno() {
     ...anno
   } = vueAnno;
 
+  if (extraFields['dc:dateAccepted'] === false) {
+    // User is trying to edit an annotation that is still pending approval.
+    delete extraFields['dc:dateAccepted'];
+  }
   // eslint-disable-next-line array-callback-return
   const susXF = Object.entries(extraFields).map(function safeCopy([k, v]) {
     if ((!v) || (anno[k] !== undefined)) { return (k + '=' + String(v)); }
