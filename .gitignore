@@ -1,14 +1,9 @@
 ﻿
-# compiled files, libs and such
-/doc/context.json
-/dist/swagger-ui
-/node_modules
-/*.log
-/dist
-/rel-vra.json
-/extension
-/deploy.mk
+# Auto-generated files
 /.nyc_output
+/dist
+/node_modules
+
 
 
 # Host-specific files
