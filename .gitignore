@@ -1,13 +1,14 @@
 ﻿
+# Host-specific files
+/*.@*
+
+
+
 # Auto-generated files
 /.nyc_output
 /dist
 /node_modules
 
-
-
-# Host-specific files
-/*.@*
 
 
 # unsorted stuff (this section should be empty):
