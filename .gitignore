@@ -1,6 +1,8 @@
 ﻿
 # Host-specific files
 /*.@*
+/addon
+/wt.*
 
 
 
