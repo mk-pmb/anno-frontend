@@ -1,5 +1,5 @@
 { "name": "as22-plugin-html-sanitizer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plugin stub to allow the anno-frontend HTML sanitizer plugin to also run in anno-server-22.",
   "keywords": [],
 

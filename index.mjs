@@ -26,7 +26,8 @@ const EX = {
   saniFunc() { throw new Error('Implementation not loaded yet!'); },
 
   checkAnno(hookCtx) {
-    const { anno } = hookCtx;
+    const { anno, req } = hookCtx;
+
     anno.body.forEach(function validate(body, idx) {
       const { format, value } = body;
       if (format !== 'text/html') { return; }
@@ -35,7 +36,12 @@ const EX = {
       const msg = ('HTML sanitization mismatch in body #' + (idx + 1)
         + ' after ' + commonPrefix.measure(value, clean)
         + ' acceptable characters.');
-      try { eq(clean, value); } catch (e) { console.error(msg, e); }
+      if (req.serverDebugFlags.reportHtmlSanitizerComplaints) {
+        let complaint;
+        try { eq(clean, value); } catch (caught) { complaint = caught; }
+        req.logCkp('sanit!', msg,
+          complaint || EX.emptyComplaintBugMsg);
+      }
       throw new Error(msg);
     });
   },
@@ -43,6 +49,12 @@ const EX = {
 
 
 };
+
+
+EX.probablyBugMsg = 'This is probably a bug in the HTML sanitizer.';
+EX.emptyComplaintBugMsg = 'No diff report. ' + EX.probablyBugMsg;
+
+
 
 
 
