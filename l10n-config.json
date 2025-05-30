@@ -55,7 +55,7 @@
             "edit":                "Bearbeiten",
             "edit_as_moderator":   "Fremdbearb.",
             "edit_draft":          "Laden/Bearbeiten",
-            "edit_draft_labeled":  "Laden/bearbeite Entwurf \"@@draftName@@\" vom @@draftDate@@ um @@draftTime@@",
+            "edit_draft_labeled":  "Lade/bearbeite Entwurf \"@@draftName@@\" vom @@draftDate@@ um @@draftTime@@",
             "editor_placeholder":  "Annotieren Sie hier",
             "toggle_extended_options": "Erweitert …",
             "license_unknown_short": "§ ?",
