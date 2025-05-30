@@ -11,6 +11,7 @@ function ores(x) { return x || ''; }
 
 
 const EX = async function downloadAndRestoreDraft(meta) {
+  // see also: eventBus.$on('loadDraftFile', …) in index.js
   const panel = this;
   const draftData = await genericSimpleApiCall({
     panel,
