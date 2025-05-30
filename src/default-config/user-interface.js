@@ -118,6 +118,12 @@ const uiCfg = {
 
   annoListSortOrder: '', // Initial sort order. Empty = default.
 
+  userMustConfirmAdditionalSubjectTargets: true, /*
+    Useful to avoid accidents when some users don't know about multi target
+    annos, but annoying extra-effort for users who often use them.
+    Ideally, one day, we may provide a per-user override.
+    */
+
 
 
 

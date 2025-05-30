@@ -184,18 +184,30 @@
       <ol class="targets" v-show="list.length">
         <li v-for="tgt in list"
           :key="tgt.index + ':' + tgt.url"
-          :class="'anno-target anno-target-' + tgt.type"
+          :class="tgt.typeCls"
           :data-type="tgt.type"
           :data-index="tgt.index "
           :data-title="tgt.title"
           :data-url="tgt.url"
           >
+          <span class="unconfirmed" v-if="tgt.unconfirmed"
+            :title="l10n('generic_list_item_pls_confirm_or_remove')"
+            onclick="window.alert(this.title)"
+            >{{ l10n('generic_list_item_uncertain_icon') }}</span>
           <span class="is-reply-hint" v-if="tgt.type === 'replyingTo'"
             >{{ l10n('inReplyTo_hint_short') }}</span>
           <a :href="tgt.url" target="_blank"
             rel="nofollow noopener noreferrer"
             >{{ tgt.title || tgt.url }}</a>
           <span class="item-action-links">
+            <a class="confirm-target"
+              v-if="tgt.unconfirmed"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('generic_list_item_add_long')"
+              data-action="deleteListItemProp"
+              data-list="target"
+              data-prop=":ANNO_FE:unconfirmed"
+              >{{ l10n('generic_list_item_accept_icon') }}</a>
             <a class="rename-target"
               href="#" @click.stop="clickedListItemDatasetActionButton"
               :title="l10n('generic_list_item_rename_long')"
