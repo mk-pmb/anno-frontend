@@ -40,5 +40,13 @@ module.exports = {
       // eventBus.$emit('editorShouldUpdatePreview');
     },
 
+    deleteListItemProp(ctx) {
+      const vueElem = this;
+      const { list, index, prop } = ctx;
+      const a = { prop: list, idx: +index, del: [prop] };
+      vueElem.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP', a);
+      // eventBus.$emit('editorShouldUpdatePreview');
+    },
+
   },
 };

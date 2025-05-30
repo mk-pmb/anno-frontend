@@ -111,7 +111,10 @@ const EX = async function loadAnnoData(origAnno) {
     if (box) { return box.setMsg(null, msg || ''); }
     if (msg) { window.alert(msg); }
   }
+  const silentMultiTargetAdd = ((primTgtAdj === 'added')
+    && state.userMustConfirmAdditionalSubjectTargets);
   setMsgBoxOrAlert(editor.$refs.targetAdjustedMsg, primTgtAdj
+    && (!silentMultiTargetAdd)
     && l10n('target_adjusted_' + primTgtAdj));
 
   editor.$refs.htmlBodyEditor.setUserHtml(html);

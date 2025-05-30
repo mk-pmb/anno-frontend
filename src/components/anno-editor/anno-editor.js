@@ -493,12 +493,19 @@ module.exports = {
         if (!tgt) { return; }
         if (isStr(tgt)) { return fmt({ id: tgt }, index); }
         const url = guessPrimaryTargetUri({ target: tgt }, state);
+        const unconfirmed = tgt[':ANNO_FE:unconfirmed'];
         const tgtType = getTypeSafe(tgt, index, url);
+        const typeCls = [''].concat([
+          tgtType,
+          (unconfirmed && 'unconfirmed'),
+        ].filter(Boolean)).map(c => ('anno-target' + (c && '-') + c));
         const rec = {
           index,
-          type: tgtType,
-          url,
           title: (tgt['dc:title'] || url),
+          type: tgtType,
+          typeCls,
+          unconfirmed,
+          url,
         };
         return rec;
       }

@@ -50,6 +50,11 @@ const EX = function adjustMultiTarget(appCfg, orig, opt) {
     return st;
   }());
 
+  if (appCfg.userMustConfirmAdditionalSubjectTargets) {
+    // eslint-disable-next-line no-param-reassign
+    report.additional.forEach(tgt => { tgt[':ANNO_FE:unconfirmed'] = true; });
+  }
+
   const updated = report.recombine({ addTypeHints: true });
   updated.primaryTargetAdjustHint = summary;
 

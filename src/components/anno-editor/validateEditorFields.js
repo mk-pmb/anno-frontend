@@ -22,19 +22,37 @@ const vali = function validateEditorFields(editor, anno) {
   if (!anno.rights) { mf('annofield_rights'); }
   if (!orf(anno.creator).id /* Agent ID */) { mf('author_identity'); }
 
+  function validateList(func, listName, items) {
+    if (!items) { return; }
+
+    function complain(idx, item, msg) {
+      if (!msg) { return; }
+      let trace = listName + ': #' + (idx + 1);
+      const descr = (item['dc:title'] || item.value || '');
+      if (descr) { trace += ' (' + JSON.stringify(descr) + ')'; }
+      problems.push(trace + ': ' + l10n(msg));
+    }
+
+    [].concat(items).forEach(function check(item, idx) {
+      func(item, complain.bind(null, idx, item), idx);
+    });
+  }
+
+  validateList(function checkOneTarget(tgt, complain) {
+    if (tgt[':ANNO_FE:unconfirmed']) {
+      complain('generic_list_item_pls_confirm_or_remove');
+    }
+  }, l10n('targets_list_headline'), anno.target);
+
   let firstTextualBody = false;
-  [].concat(anno.body || []).forEach(function verifyBody(body) {
-    let problem;
+  validateList(function checkOneBody(body, complain) {
     if ((!firstTextualBody) && (body.type === 'TextualBody')) {
       firstTextualBody = body;
     }
     if (body.purpose === 'classifying') {
-      problem ||= vali.verifyClassifyingBody(body);
+      complain(vali.verifyClassifyingBody(body));
     }
-    if (!problem) { return; }
-    const descr = (body['dc:title'] || body.value || '');
-    problems.push(l10n(problem) + ' ' + JSON.stringify(descr));
-  });
+  }, l10n('annofield_body'), anno.body);
 
   if (firstTextualBody.value) {
     if (!anno['dc:language']) { mf('text_body_language'); }
