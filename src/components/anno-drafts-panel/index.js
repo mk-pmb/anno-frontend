@@ -9,6 +9,7 @@ const eventBus = require('../../event-bus.js');
 const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 const listDraftsGrouped = require('./listDraftsGrouped.js');
+const parseDraftFileName = require('./parseDraftFileName.js');
 const reloadDraftsList = require('./reloadDraftsList.js');
 const saveNew = require('./saveNew.js');
 
@@ -39,11 +40,14 @@ module.exports = {
 
   mounted() {
     const panel = this;
-    eventBus.$on('userReloadDraftsList', panel.reloadDraftsList);
     eventBus.$on('autoReloadDraftsList', panel.autoReloadDraftsList);
+    eventBus.$on('userReloadDraftsList', panel.reloadDraftsList);
+
     // Defer draft list loading until editor is opened: If we'd laod it
     // before we know the editor's target, groups will be wrong.
     eventBus.$on('open-editor', panel.autoReloadDraftsList);
+
+    eventBus.$on('loadDraftFile', panel.loadDraftFile);
   },
 
   computed: {
@@ -85,6 +89,7 @@ module.exports = {
       setTimeout(() => eventBus.$emit('autoReloadDraftsList'), 100);
     },
 
+
     async reallyDeleteDraft(meta) {
       return genericSimpleApiCall({
         ...meta,
@@ -95,12 +100,31 @@ module.exports = {
       }).then(this.scheduleAutoRescanDraftsList);
     },
 
+
+    draftMetaToApiMeta(dm) {
+      const am = {
+        filename: dm.fileName,
+        draftDate: dm.humanDate,
+        draftName: dm.customNamePart,
+        draftTime: dm.humanTime,
+      };
+      return am;
+    },
+
+
+    loadDraftFile(fileName) {
+      const panel = this;
+      const draftMeta = parseDraftFileName(fileName);
+      if (!draftMeta) { throw new Error('Invalid draft file name!'); }
+      const apiMeta = panel.draftMetaToApiMeta(draftMeta);
+      return panel.downloadAndRestoreDraft(apiMeta);
+    },
+
   },
 
 };
 
 /*
-setTimeout(() => eventBus.$emit('create'), 1e3);
-setTimeout(() => eventBus.$emit('switchEditorTabByRefName',
-  'draftsPanel'), 2e3);
+window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify(['create',
+  ['loadDraftFile', '20221128-120200-ec611702-0-9f85f583-pferdekopf.json']])
 */
