@@ -89,39 +89,39 @@
       >{{ l10n('draft_group_' + draftGroup.voc) }}
       <span class="number-of-items">(<var>{{
         draftGroup.items.length }}</var>)</span>
-      </h5>
-      <ol class="p-0 ml-0">
-        <li v-for="am in draftGroup.items.map(draftMetaToApiMeta)"
-          :key="draftGroup.voc + ':' + am.filename"
-          :data-filename="am.filename"
-          class="row"
-        >
-          <div class="col-sm-2 text-nowrap smallprint date-time-col"
-            >{{ am.draftDate }}<br>{{ am.draftTime }}</div>
-          <div class="col-sm-1 text-nowrap buttons-col">
-            <bootstrap-button icon-fa="edit"
-              @click="clickedListItemDatasetActionButton"
-              data-action="downloadAndRestoreDraft"
-              :data-draft-name="am.draftName"
-              :data-draft-date="am.draftDate"
-              :data-draft-time="am.draftTime"
-              :title="l10n('edit_draft')"
-              />
-            <bootstrap-button icon-text="🗑"
-              @click="clickedListItemDatasetActionButton"
-              data-action="reallyDeleteDraft"
-              :data-confirm-item-descr="[
-                am.draftDate,
-                am.draftTime,
-                am.draftName,
-                ].join(', ')"
-              :title="l10n('delete_draft')"
-              />
-          </div>
-          <div class="col-xl custom-name-part-col"
-            >{{ am.draftName }}</div>
-        </li>
-      </ol>
+    </h5>
+    <ol class="p-0 ml-0">
+      <li v-for="am in draftGroup.items.map(draftMetaToApiMeta)"
+        :key="draftGroup.voc + ':' + am.filename"
+        :data-filename="am.filename"
+        class="row"
+      >
+        <div class="col-sm-2 text-nowrap smallprint date-time-col"
+          >{{ am.draftDate }}<br>{{ am.draftTime }}</div>
+        <div class="col-sm-1 text-nowrap buttons-col">
+          <bootstrap-button icon-fa="edit"
+            @click="clickedListItemDatasetActionButton"
+            data-action="downloadAndRestoreDraft"
+            :data-draft-name="am.draftName"
+            :data-draft-date="am.draftDate"
+            :data-draft-time="am.draftTime"
+            :title="l10n('edit_draft')"
+            />
+          <bootstrap-button icon-text="🗑"
+            @click="clickedListItemDatasetActionButton"
+            data-action="reallyDeleteDraft"
+            :data-confirm-item-descr="[
+              am.draftDate,
+              am.draftTime,
+              am.draftName,
+              ].join(', ')"
+            :title="l10n('delete_draft')"
+            />
+        </div>
+        <div class="col-xl custom-name-part-col"
+          >{{ am.draftName }}</div>
+      </li>
+    </ol>
     </div>
   </div>
 </div></div><!-- /.col-xl /.row -->
