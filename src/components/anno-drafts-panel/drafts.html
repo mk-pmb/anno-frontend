@@ -9,11 +9,11 @@
   border-bottom pb-4
   ">
 
-<div class="row draft-filename-comment">
+<div class="row save-draft-headline">
   <div class="col-xl">
     <h4>{{ l10n('save_as_draft') }}</h4>
   </div>
-</div><div class="row">
+</div><div class="row draft-filename-comment">
   <div class="col-sm-3 pt-2">{{ l10n('draft_filename_comment') }}:</div>
   <div class="col-xl"><div class="position-relative">
     <input class="form-control" type="text"
@@ -34,10 +34,10 @@
       }}</div>
     </div></div>
   </div><!-- /.pos-rel --></div><!-- /.col-xl -->
-</div><div class="row">
+</div><div class="row draft-filename-adjusted-preview">
   <div class="col-sm-3">{{ l10n('draft_filename_adjusted') }}:</div>
   <div class="col-xl"><code>{{ draftFilenameCommentAdjusted }}</code></div>
-</div><div class="row">
+</div><div class="row draft-save-now">
   <div class="col-xl">
     <div class="pull-right">
       <label><input type="checkbox" ref="saveAsTemplateCkb">
@@ -48,9 +48,10 @@
           btn-class="outline-primary"
           :caption="l10n('save_as_draft')" />
       </div>
-    </div>
-  </div>
-</div></div>
+    </div><!-- /.pull-right -->
+  </div><!-- /.col-xl -->
+</div><!-- /.row.draft-save-now -->
+</div>
 
 </div><!-- /.save-as-draft -->
 
@@ -77,7 +78,7 @@
   </p></div>
 </div>
 
-<div class="row list-row"><div class="col-xl">
+<div class="row list-row draft-groups-row"><div class="col-xl draft-groups-col">
   <div v-for="draftGroup in listDraftsGrouped()" :key="draftGroup.voc"
     class="draft-group border-bottom mb-4"
     :data-draft-group="draftGroup.voc"
@@ -123,8 +124,8 @@
       </li>
     </ol>
     </div>
-  </div>
-</div></div><!-- /.col-xl /.row -->
+  </div><!-- /.draft-group -->
+</div><!-- /.draft-groups-col --></div><!-- /.draft-groups-row -->
 
 
 
@@ -132,5 +133,5 @@
 
 </div><!-- /.existing-drafts-list -->
 
-</div><!-- /.card-body -->
-</div><!-- /.card panel -->
+</div><!-- /.card-body.panel-body[ref="panelBody"] -->
+</div><!-- /.card.panel.drafts-panel -->
