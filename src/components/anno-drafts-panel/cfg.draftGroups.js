@@ -2,8 +2,11 @@
 'use strict';
 
 function getDraftGroups(cfg) {
+  const collapse = { initiallyExpanded: false };
+
   const sameSvc = (cfg.draftGroupSameServiceTargetPrefix && {
     voc: 'same_svc',
+    ...collapse,
   });
 
   const grp = [
@@ -11,7 +14,7 @@ function getDraftGroups(cfg) {
     { voc: 'same_anno' },
     { voc: 'same_subj' },
     sameSvc,
-    { voc: 'other' },
+    { voc: 'other', ...collapse },
     { voc: 'no_target' },
 
   ].filter(Boolean);

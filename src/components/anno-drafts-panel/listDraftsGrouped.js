@@ -2,7 +2,6 @@
 'use strict';
 /* eslint-disable global-require */
 
-const draftGroupsConfig = require('./cfg.draftGroups.js');
 const hash = require('./hash.js');
 
 
@@ -22,21 +21,22 @@ const EX = function listDraftsGrouped() {
   const draftsPanelVueElem = this;
   const eaHashes = hash.fileNameHashes(draftsPanelVueElem);
   // console.debug('listDraftsGrouped:', { eaHashes });
-  const byVoc = {};
-  const appCfg = draftsPanelVueElem.$store.state;
-  const groups = draftGroupsConfig(appCfg).map(function setup(grpCfg) {
-    const gr = {
-      ...grpCfg,
-      items: [],
-    };
-    byVoc[grpCfg.voc] = gr;
+  const origGroups = draftsPanelVueElem.draftGroups;
+
+  /* We must not modify anything in the original groups, because that
+    would cause an infinite re-render loop. Instead, we make a flat copy
+    of each group and add the items only to that copy. */
+  const byVoc = new Map();
+  const groups = origGroups.map(function copyAndExtendOneGroup(origGr) {
+    const gr = { ...origGr, items: [] };
+    byVoc.set(gr.voc, gr);
     return gr;
   });
-  // window.groups = groups;
-  groups.byVoc = byVoc;
+  const dfGr = byVoc.get('other');
+  if (!dfGr) { throw new Error('listDraftsGrouped: Missing default group!'); }
   draftsPanelVueElem.allDrafts.forEach(function add(draftMeta) {
     const grVoc = decideVocGroup(draftMeta, eaHashes);
-    (byVoc[grVoc] || byVoc.other).items.push(draftMeta);
+    (byVoc.get(grVoc) || dfGr).items.push(draftMeta);
   });
   return groups;
 };
