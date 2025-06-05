@@ -2,16 +2,33 @@
 'use strict';
 /* eslint-disable global-require */
 
+const jq = require('jquery');
 const loMapValues = require('lodash.mapvalues');
 
 const eventBus = require('../../event-bus.js');
 
 const downloadAndRestoreDraft = require('./downloadAndRestoreDraft.js');
+const draftGroupsConfig = require('./cfg.draftGroups.js');
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 const listDraftsGrouped = require('./listDraftsGrouped.js');
 const parseDraftFileName = require('./parseDraftFileName.js');
 const reloadDraftsList = require('./reloadDraftsList.js');
 const saveNew = require('./saveNew.js');
+
+
+function initDraftGroups(appCfg) {
+  const groups = draftGroupsConfig(appCfg).map(function init(grpCfg, idx) {
+    const {
+      initiallyExpanded,
+      ...gr
+    } = grpCfg;
+    gr.index = idx;
+    gr.expanded = (initiallyExpanded !== false);
+    return gr;
+  });
+  // console.debug('initDraftGroups:', groups);
+  return groups;
+}
 
 
 module.exports = {
@@ -25,11 +42,16 @@ module.exports = {
     require('../../mixin/prefix.js'),
   ],
 
-  data() { return {
-    draftFilenameCommentCustom: '',
-    allDrafts: [],
-    refreshDraftsHintVoc: 'init',
-  }; },
+  data() {
+    const panel = this;
+    const appCfg = panel.$store.state;
+    return {
+      allDrafts: [],
+      draftFilenameCommentCustom: '',
+      draftGroups: initDraftGroups(appCfg),
+      refreshDraftsHintVoc: 'init',
+    };
+  },
 
   props: {
     editorAnnoId: String,
@@ -118,6 +140,14 @@ module.exports = {
       if (!draftMeta) { throw new Error('Invalid draft file name!'); }
       const apiMeta = panel.draftMetaToApiMeta(draftMeta);
       return panel.downloadAndRestoreDraft(apiMeta);
+    },
+
+
+    toggleCollapseDraftGroup(domEvent) {
+      const { draftGroups } = this;
+      const headline = jq(domEvent.target).closest('h5')[0];
+      const dg = draftGroups[headline.dataset.index];
+      dg.expanded = !dg.expanded;
     },
 
   },

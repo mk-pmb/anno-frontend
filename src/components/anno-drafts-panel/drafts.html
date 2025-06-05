@@ -82,15 +82,24 @@
     class="draft-group border-bottom mb-4"
     :data-draft-group="draftGroup.voc"
     >
-    <h5
-      class="mb-0"
+    <h5 :class="[
+        'draft-group-headline',
+        'mb-0',
+        (draftGroup.expanded ? 'expanded' : 'collapsed'),
+        ].filter(Boolean)"
       :data-voc="draftGroup.voc"
+      :data-index="draftGroup.index"
       :data-n="draftGroup.items.length"
-      >{{ l10n('draft_group_' + draftGroup.voc) }}
+      @click="toggleCollapseDraftGroup"
+      ><span class="collapsible-area-chevron">
+        <var v-if="draftGroup.expanded" class="chevron-down">&#x25BE;</var>
+        <var v-else class="chevron-right">&#x25B8;</var>
+      </span>
+      {{ l10n('draft_group_' + draftGroup.voc) }}
       <span class="number-of-items">(<var>{{
         draftGroup.items.length }}</var>)</span>
     </h5>
-    <ol class="p-0 ml-0">
+    <ol class="p-0 m-0" v-show="draftGroup.expanded">
       <li v-for="am in draftGroup.items.map(draftMetaToApiMeta)"
         :key="draftGroup.voc + ':' + am.filename"
         :data-filename="am.filename"
@@ -122,6 +131,7 @@
           >{{ am.draftName }}</div>
       </li>
     </ol>
+    <div class="spacer mb-2"></div>
   </div><!-- /.draft-group -->
 </div><!-- /.draft-groups-col --></div><!-- /.draft-groups-row -->
 
