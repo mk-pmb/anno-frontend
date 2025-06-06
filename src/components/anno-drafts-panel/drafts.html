@@ -39,7 +39,7 @@
   <div class="col-xl"><code>{{ draftFilenameCommentAdjusted }}</code></div>
 </div><div class="row draft-save-now">
   <div class="col-xl">
-    <div class="pull-right">
+    <div class="float-right">
       <label><input type="checkbox" ref="saveAsTemplateCkb">
         {{ l10n('save_as_template') }}</label>
       <div class="btn-group ml-4" role="group">
@@ -48,7 +48,7 @@
           btn-class="outline-primary"
           :caption="l10n('save_as_draft')" />
       </div>
-    </div><!-- /.pull-right -->
+    </div><!-- /.float-right -->
   </div><!-- /.col-xl -->
 </div><!-- /.row.draft-save-now -->
 
@@ -62,7 +62,7 @@
   <div class="col-sm label-col"
     ><h4>{{ l10n('existing_drafts') }}</h4></div>
   <div class="col-sm-1 action-col">
-    <div class="btn-group pull-right" role="group">
+    <div class="btn-group float-right" role="group">
       <bootstrap-button eventbus-emit="userReloadDraftsList"
         icon-fa="refresh"
         :caption="l10n('refresh')" />
