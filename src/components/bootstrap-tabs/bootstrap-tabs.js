@@ -89,8 +89,6 @@ module.exports = {
       const idx = (+n || 0) - 1;
       // console.debug({ switchToNthTab: n });
       const activate = jqSetSingularClass.bind(null, 'active', idx);
-      // Highlight the correct tab in BS3:
-      activate(tabMgr.$refs.tabs.children);
       // Highlight the correct tab in BS4:
       activate(tabMgr.$refs.tabs.querySelectorAll('.nav-link'));
       // Show only the relevant pane:
