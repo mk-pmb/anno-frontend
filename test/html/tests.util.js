@@ -138,7 +138,7 @@
 
 
     topRightSubmitButton(destForm, submitBtn, ...extraBtn) {
-      const rel = jq('<div class="pull-right" style="position: relative;">');
+      const rel = jq('<div class="float-right" style="position: relative;">');
       const grp = jq('<div class="btn-group">').appendTo(rel);
       grp[0].style = 'position: absolute; right: 0; bottom: 1em;';
       destForm.on('submit', tu.alwaysFalse);
