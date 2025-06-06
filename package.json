@@ -80,7 +80,6 @@
     "absdir": "^1.0.6",
     "babel-loader": "^8.2.2",
     "bootstrap": "^4.6.0",
-    "bootstrap3": "^3.3.5",
     "browserslist": "^4.21.1",
     "browserslist-lint": "^0.3.3",
     "css-loader": "^3.6.0",
