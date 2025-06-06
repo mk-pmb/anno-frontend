@@ -139,7 +139,7 @@ module.exports = {
       cachedIiifLink: '',
       collapsed,
       currentVersionDoiUri: String(anno['dc:identifier'] || ''),
-      detailBarClipCopyBtnCls: 'pull-right',
+      detailBarClipCopyBtnCls: 'float-right',
       doiLinkPreviewWarning: '',
       hasRealPublicDoi,
       highlighted: !!el.initiallyHighlighted,
