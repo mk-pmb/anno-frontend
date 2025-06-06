@@ -9,24 +9,6 @@ const cfg = { // Default config. will be updated in-place later.
 
 const defaultTagsByBsMajorVer = {
 
-  '3': {
-    dropdownWrapperCls: [
-      'dropdown',
-      // ^-- https://getbootstrap.com/docs/3.3/components/#dropdowns
-
-      // Required to allow dropdowns to integrate into btn-groups:
-      'btn-group btn-group-sm',
-    ],
-    dropdownMenu: 'ul',
-    dropdownMenuItem: 'li',
-    dropdownMenuItemCls: '',
-    dropdownMenuItemPad: 'a',
-    dropdownMenuItemBtnCls: 'btn btn-sm',
-    dropdownMenuItemChosen: 'btn-primary',
-
-    modalHeaderTitle: 'h4',
-  },
-
   '4': {
     dropdownWrapperCls: [
       'btn-group btn-group-sm',
@@ -42,7 +24,6 @@ const defaultTagsByBsMajorVer = {
     // but I couldn't find official compatibility info in the BS4 docs.
 
     dropdownMenuItemCls: 'dropdown-item',
-    dropdownMenuItemPad: 'span', // should be omitted once we drop BS3
     dropdownMenuItemBtnCls: '',
     dropdownMenuItemChosen: 'active',
 

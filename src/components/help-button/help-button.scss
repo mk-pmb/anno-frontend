@@ -23,27 +23,13 @@
 }
 
 
-&.bs-ver-major-3 {
-  .help-button {
-    .default-help-icon {
-      margin-top: -3px;
-      margin-bottom: -3px;
-    }
-  }
-}
-
-
 
 .annoeditor-bootstrap-tabs .help-button {
-
   padding: 0;
   margin: 0;
   margin-left: 0.5ex;
   vertical-align: top;
   cursor: help;
-
-  border-color: transparent; /* required for BS3 */
-
 }
 
 
