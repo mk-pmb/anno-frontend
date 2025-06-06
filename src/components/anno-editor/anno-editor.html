@@ -200,14 +200,6 @@
             rel="nofollow noopener noreferrer"
             >{{ tgt.title || tgt.url }}</a>
           <span class="item-action-links">
-            <a class="confirm-target"
-              v-if="tgt.unconfirmed"
-              href="#" @click.stop="clickedListItemDatasetActionButton"
-              :title="l10n('generic_list_item_add_long')"
-              data-action="deleteListItemProp"
-              data-list="target"
-              data-prop=":ANNO_FE:unconfirmed"
-              >{{ l10n('generic_list_item_accept_icon') }}</a>
             <a class="rename-target"
               href="#" @click.stop="clickedListItemDatasetActionButton"
               :title="l10n('generic_list_item_rename_long')"
@@ -216,6 +208,14 @@
               data-prop="dc:title"
               data-prompt="$$url"
               >{{ l10n('generic_list_item_rename_icon') }}</a>
+            <a class="confirm-target mx-4"
+              v-if="tgt.unconfirmed"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('generic_list_item_add_long')"
+              data-action="deleteListItemProp"
+              data-list="target"
+              data-prop=":ANNO_FE:unconfirmed"
+              >{{ l10n('generic_list_item_accept_icon') }}</a>
             <a class="delete-target"
               v-if="tgt.type !== 'primary'"
               href="#" @click.stop="clickedListItemDatasetActionButton"
