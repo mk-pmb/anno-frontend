@@ -25,4 +25,19 @@ Object.assign(bus, {
 
 });
 
+
+(function installRemindersForMistakenEventNames() {
+  const commonMistakes = {
+    edit: 'revise?',
+    editByUrl: 'reviseByUrl?',
+  };
+  const msg = 'W: anno-frontend: Probably futile eventBus call:';
+  function reminder(evName, hint, ...args) {
+    console.warn(msg, { evName, hint}, args);
+  }
+  Object.entries(commonMistakes).forEach(([evName, hint]) => bus.$on(
+    evName, reminder.bind(null, evName, hint)));
+}());
+
+
 module.exports = bus;
