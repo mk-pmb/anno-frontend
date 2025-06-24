@@ -114,8 +114,16 @@ const EX = { // exports namespace
   customApiExtras: {
 
     getAnnoByIdUrl(annoIdUrl) {
-      const allAnnos = this.state.annotationList.list;
-      function by(k) { return allAnnos.find(a => a[k] === annoIdUrl); }
+      const { state } = this;
+      const allAnnos = state.annotationList.list;
+      let url = String(annoIdUrl || '');
+      if (!url) { return false; }
+      if (!url.includes('/')) {
+        const fixed = state.annoEndpoint + 'anno/' + url;
+        console.debug('getAnnoByIdUrl: upgrade URL:', { orig: url, fixed });
+        url = fixed;
+      }
+      function by(k) { return allAnnos.find(a => a[k] === url); }
       const found = (by('id')
         || by('canonical')
         || by('dc:isVersionOf')
