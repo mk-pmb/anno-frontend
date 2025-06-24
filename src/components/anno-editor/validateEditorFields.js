@@ -25,12 +25,14 @@ const vali = function validateEditorFields(editor, anno) {
   function validateList(func, listName, items) {
     if (!items) { return; }
 
-    function complain(idx, item, msg) {
-      if (!msg) { return; }
+    function complain(idx, item, msgVoc, detail) {
+      if (!msgVoc) { return; }
       let trace = listName + ': #' + (idx + 1);
       const descr = (item['dc:title'] || item.value || '');
       if (descr) { trace += ' (' + JSON.stringify(descr) + ')'; }
-      problems.push(trace + ': ' + l10n(msg));
+      let msg = trace + ': ' + l10n(msgVoc);
+      if (detail) { msg = msg.replace(/[: ]*$/, ': ') + detail; }
+      problems.push(msg);
     }
 
     [].concat(items).forEach(function check(item, idx) {
@@ -39,9 +41,14 @@ const vali = function validateEditorFields(editor, anno) {
   }
 
   validateList(function checkOneTarget(tgt, complain) {
-    if (tgt[':ANNO_FE:unconfirmed']) {
-      complain('generic_list_item_pls_confirm_or_remove');
-    }
+    complain(tgt[':ANNO_FE:unconfirmed']
+      && 'generic_list_item_pls_confirm_or_remove');
+    complain(tgt.scope && (!tgt.source) && 'corrupt_data',
+      'Target with scope needs a source.');
+    complain(tgt.id && tgt.source && 'corrupt_data',
+      'Target with ID must not have a source.');
+    complain(tgt.id && tgt.scope && 'corrupt_data',
+      'Target with ID must not have a scope.');
   }, l10n('targets_list_headline'), anno.target);
 
   let firstTextualBody = false;
