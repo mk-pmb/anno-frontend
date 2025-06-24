@@ -36,10 +36,13 @@ const EX = async function loadAnnoData(origAnno) {
   function popStr(k) { return String(popField(k) || ''); }
 
   const draftReply = anno['as:inReplyTo'];
+  console.debug('Original targets:', ...[].concat(jsonDeepCopy(anno.target)));
   anno.target = adjustMultiTarget(state, popField('target'), {
     omitByUrl: draftReply,
   });
   const primTgtAdj = anno.target.primaryTargetAdjustHint;
+  console.debug('Adjusted targets:', ...jsonDeepCopy(anno.target),
+    { primTgtAdj });
 
   function enforceTLF(k, v) { if (v) { anno[k] = v; } else { delete anno[k]; } }
   enforceTLF('dc:replaces', state.editEnforceReplaces);
