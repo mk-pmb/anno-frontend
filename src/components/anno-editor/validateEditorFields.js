@@ -79,9 +79,13 @@ const vali = function validateEditorFields(editor, anno) {
     }
   }
 
-  if (!problems.length) { return true; }
+  if (!problems.length) {
+    console.debug('validateEditorFields: OK!');
+    return true;
+  }
   let msg = '• ';
   msg += problems.join('\n' + msg);
+  console.warn('validateEditorFields:', msg);
 
   if (appCfg.uiDebugMode) {
     msg += ('\n\n<uiDebugMode> Enter "!" to '
