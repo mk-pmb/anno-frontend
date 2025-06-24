@@ -313,6 +313,9 @@ module.exports = {
     async methodByUrl(methodName, annoIdUrl) {
       const ed = this;
       const anno = ed.$store.getAnnoByIdUrl(annoIdUrl);
+      const msg = 'anno-frontend: editor: methodByUrl:';
+      const report = { methodName, annoIdUrl, annoFound: !!anno };
+      console[anno ? 'debug' : 'error'](msg, report);
       return anno && ed[methodName].call(ed, anno);
     },
 
@@ -665,3 +668,10 @@ module.exports = {
   },
 
 };
+
+/*
+window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify([
+  ['reviseByUrl', 'test-esau-moses-fruit'],
+  ['switchEditorTabByRefName', 'debugTab'],
+  ])
+*/
