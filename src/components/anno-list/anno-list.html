@@ -77,6 +77,21 @@
       :caption="collapsed ? l10n('open_all') : l10n('close_all')"
       />
 
+    <!-- [
+    *
+      *
+        *
+          *
+            *
+              Abusing whitespace as separator for what should have been
+              split into multiple files.
+            *
+          *
+        *
+      *
+    *
+    ] -->
+
     <bootstrap-btnbar-dropdown ref="ddSort"
       v-if="numberOfAnnotations"
       icon-fa="sort"
@@ -122,6 +137,21 @@
         >{{ l10n('reset_to_default') }}
       </component><!-- /.reset-criteria -->
     </bootstrap-btnbar-dropdown><!-- /ref=ddSort -->
+
+    <!-- [
+    *
+      *
+        *
+          *
+            *
+              Abusing whitespace as separator for what should have been
+              split into multiple files.
+            *
+          *
+        *
+      *
+    *
+    ] -->
 
     <bootstrap-btnbar-dropdown ref="ddUser"
       @toggle="userSessionDropDownToggled"
@@ -209,6 +239,21 @@
         >{{ debugCheatsReportCache }}
       </component><!-- dropdownMenuItem -->
     </bootstrap-btnbar-dropdown><!-- /ref="ddUser" -->
+
+    <!-- [
+    *
+      *
+        *
+          *
+            *
+              Abusing whitespace as separator for what should have been
+              split into multiple files.
+            *
+          *
+        *
+      *
+    *
+    ] -->
 
   </div><!-- .anno-list-buttonbar-top.float-right -->
 
