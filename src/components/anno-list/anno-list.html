@@ -120,8 +120,8 @@
         ].filter(Boolean)"
         @click="setPrimarySortCriterionAndSort(false)"
         >{{ l10n('reset_to_default') }}
-      </component><!-- /sort reset -->
-    </bootstrap-btnbar-dropdown><!-- ddSort -->
+      </component><!-- /.reset-criteria -->
+    </bootstrap-btnbar-dropdown><!-- /ref=ddSort -->
 
     <bootstrap-btnbar-dropdown ref="ddUser"
       @toggle="userSessionDropDownToggled"
@@ -208,7 +208,7 @@
         ].filter(Boolean)"
         >{{ debugCheatsReportCache }}
       </component><!-- dropdownMenuItem -->
-    </bootstrap-btnbar-dropdown>
+    </bootstrap-btnbar-dropdown><!-- /ref="ddUser" -->
 
   </div><!-- .anno-list-buttonbar-top.float-right -->
 
