@@ -151,6 +151,17 @@
       class="dropdown-menu-list-options"
       >
       <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        @click="$store.dispatch('fetchAnnoList')"
+        :class="[
+          'list-opt',
+          'list-opt-reload-anno-list',
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+        ].filter(Boolean)"
+        ><i class="fa fa-refresh"></i> {{ l10n('refresh') }}
+      </component><!-- /.list-opt-reload-anno-list -->
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
         @click="collapseAll('toggle')"
         v-if="numberOfAnnotations"
         :class="[
