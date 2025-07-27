@@ -68,14 +68,6 @@
     hidden-print
     " role="group">
 
-    <bootstrap-button ref="btnCollapseAll"
-      @click="collapseAll('toggle')"
-      v-if="numberOfAnnotations"
-      btn-class="outline-secondary"
-      :data-state="collapsed ? 'hide' : 'show'"
-      :icon-fa="collapsed ? 'plus' : 'minus'"
-      :caption="collapsed ? l10n('open_all') : l10n('close_all')"
-      />
 
     <!-- [
     *
@@ -137,6 +129,42 @@
         >{{ l10n('reset_to_default') }}
       </component><!-- /.reset-criteria -->
     </bootstrap-btnbar-dropdown><!-- /ref=ddSort -->
+
+    <!-- [
+    *
+      *
+        *
+          *
+            *
+              Abusing whitespace as separator for what should have been
+              split into multiple files.
+            *
+          *
+        *
+      *
+    *
+    ] -->
+
+    <bootstrap-btnbar-dropdown ref="ddList"
+      icon-fa="list"
+      :caption="l10n('annolist_list_menu_title')"
+      class="dropdown-menu-list-options"
+      >
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        @click="collapseAll('toggle')"
+        v-if="numberOfAnnotations"
+        :class="[
+          'list-opt',
+          'list-opt-toggle-collapse-all',
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+        ].filter(Boolean)"
+        :data-state="collapsed ? 'hide' : 'show'"
+        ><i :class="'fa fa-' + (collapsed ? 'plus' : 'minus')"></i>
+          {{ collapsed ? l10n('open_all') : l10n('close_all') }}
+      </component><!-- /.list-opt-toggle-collapse-all -->
+    </bootstrap-btnbar-dropdown><!-- /ref=ddList -->
 
     <!-- [
     *
