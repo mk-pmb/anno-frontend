@@ -138,6 +138,7 @@
             "sort_prop_creator": "Verfasst von",
             "version_from":        "Version vom",
             "active_version":      "Angezeigte Version",
+            "annolist_list_menu_title": "Liste",
 
             "zones":               "Zonen",
             "lurk:explain:generic": "Die Bearbeitung wurde an @@module@@ übergeben.",
@@ -417,6 +418,7 @@
             "sort_prop_creator":      "Author(s)",
             "version_from":        "Version as of",
             "active_version":      "Active version",
+            "annolist_list_menu_title": "List",
 
             "zones":               "Zones",
             "lurk:explain:generic": "Editing has been delegated to @@module@@.",
