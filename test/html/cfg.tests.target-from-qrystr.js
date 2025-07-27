@@ -43,6 +43,10 @@
     return s.ubHdDigLit(1528, 2353, 'sauer1941/0012', '219.jpg');
   case 'esau':
     return s.ubHdDigLit(1233, 1901, 'cpg148/0074', '033v.jpg');
+  case 'kdmkk':
+    return s.ubHdDigLit(1611, 2469, 'kraus1924/0026', '011.jpg');
+  case 'perl':
+    return s.ubHdDigLit(1765, 3044, 'perl1937_03_18/0036', '034.jpg');
   case 'wat':
     return s.ubHdJournal('arch-inf', 69356);
   case 'wg15':
