@@ -573,6 +573,11 @@ module.exports = {
       (function maybeAddHint() {
         const nAdd = editorTgtCategs.additional.length;
         if (!nAdd) { return; }
+        if (el.uiModeCmp) { /*
+          In comparison mode, including single anno view, we can assume
+          the embedding application will display all targets. */
+          return;
+        }
         let introText = (el.l10n('additional_subjects_hint:n=' + nAdd, '')
           || el.l10n('additional_subjects_hint', ''));
         if (!introText) { return; }
