@@ -15,7 +15,7 @@ jobs:
     name: 'CI tests'
     steps:
       - uses: actions/checkout@v4
-      - uses: mk-pmb/github-ci-util-2405-pmb/act/install@master
+      - uses: mk-pmb/github-ci-util-2405-pmb/act/install@experimental
       - run: ghciu './test/ci.sh'
 
 
