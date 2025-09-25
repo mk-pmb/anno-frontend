@@ -32,8 +32,15 @@ function run_tamed () {
   # ulimit -T $MAX_THREADS # -T: invalid option (even though man page has it)
   # ulimit -u $MAX_PROCESSES # Operation not permitted
   ulimit -v $(( MAX_MEMORY_MB * 1024 ))
-  exec nice --adjustment=$NICENESS "$@" || return $?
+  set -- nice --adjustment=$NICENESS "$@"
+
+  exec "$@" || return $?
 }
+
+
+
+
+
 
 
 run_tamed "$@"; exit $?
