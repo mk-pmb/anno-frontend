@@ -20,7 +20,6 @@ require('style-loader');
 // for ../.babelrc:
 require('@babel/plugin-transform-runtime');
 require('@babel/preset-env');
-require('@babel/preset-stage-2');
 require('@babel/runtime');
 
 
