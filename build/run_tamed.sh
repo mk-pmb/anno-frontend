@@ -16,6 +16,7 @@ function run_tamed () {
     # Running on a CI server = Optimizing for speed is acceptable.
     exec "$@"; return $?
   fi
+  [ "$#" -ge 1 ] || set -- bash -i
 
   local NICENESS=15 # inverse priority; 15 = very low priority
   local MAX_MEMORY_MB=2048
