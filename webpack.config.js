@@ -2,54 +2,40 @@
 'use strict';
 
 const webpack = require('webpack');
-const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const absPath = require('absdir')(module, '.');
 
-const sourceMapOpts = {
+const addSourceMaps = false;
+const sourceMapOpts = addSourceMaps && {
 };
 
 
-const shellPluginOpts = {};
-const shellPluginEvents = [
-  'onBeforeBuild',
-  'onBuildStart',
-  'onBuildError',
-  'onBuildEnd',
-  'onBuildExit',
-  'onWatchRun',
-  'onDoneWatch',
-  'onBeforeNormalRun',
-  'onAfterDone',
-];
-shellPluginEvents.forEach(function registerHook(ev) {
-  const hookCmd = ('./build/webpack-hooks.sh '
-    + ev.replace(/([A-Z])/g, '_$1').toLowerCase());
-  shellPluginOpts[ev] = {
-    scripts: [hookCmd],
-    blocking: true,
-    parallel: false,
-  };
-});
+const cssLoaderOpts = { sourceMap: addSourceMaps };
+if (absPath === '/app') {
+  // Probably running in docker
+  cssLoaderOpts.sourceMap = false; /*
+    Error: "/tmp/…/quill/dist/quill.snow.css" is not in the SourceMap.
+    Issue: https://github.com/webpack/webpack-sources/issues/90
+    Fix: Update webpack soon[tm]. For now: Disable CSS source maps. */
+}
 
+const audience = (process.env.WEBPACK_AUDIENCE || 'dev');
 
 module.exports = {
   entry: './entry.js',
   mode: (function guessAudience() {
-    const a = (process.env.WEBPACK_AUDIENCE || 'dev');
-    if (a === 'prod') { return 'production'; }
-    if (a === 'dev') { return 'development'; }
-    return a;
+    if (audience === 'prod') { return 'production'; }
+    if (audience === 'dev') { return 'development'; }
+    return audience;
   }()),
   devtool: false,
   // node: {fs: 'empty'},
   // target: 'node',
   plugins: [
-    new webpack.SourceMapDevToolPlugin(sourceMapOpts),
-    new WebpackShellPlugin(shellPluginOpts),
-  ],
+    addSourceMaps && new webpack.SourceMapDevToolPlugin(sourceMapOpts),
+  ].filter(Boolean),
   output: {
     path: absPath('dist'),
-    filename: `anno-frontend.js`,
+    filename: 'anno-frontend.' + audience + '.js',
   },
   optimization: {
     moduleIds: 'deterministic',
@@ -105,8 +91,8 @@ module.exports = {
         use: [
           // Order might be important here!
           { loader: 'style-loader' },
-          { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: cssLoaderOpts },
+          { loader: 'sass-loader', options: cssLoaderOpts },
         ],
       },
     ],

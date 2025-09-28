@@ -21,7 +21,7 @@ function zipball_nm () {
     *' PD '* | \
     *' PU '* | \
     *' reex '* | \
-    *' pack '* ) npm run build -- $SKIP_LINT || return $?;;
+    *' pack '* ) ./build/build.sh $SKIP_LINT || return $?;;
   esac
   case " $* " in
     *' reex '* ) deploy --redist-inplace; return $?;;
