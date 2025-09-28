@@ -5,6 +5,7 @@ function build_cli () {
   export LANG{,UAGE}=en_US.UTF-8  # make error messages search engine-friendly
   local REPO_TOP="$(readlink -m -- "$BASH_SOURCE"/../..)"
   cd -- "$REPO_TOP" || return $?
+  exec </dev/null
 
   local LINT_BEFORE_BUILD=+
   if [ "$1" == --no-lint ]; then LINT_BEFORE_BUILD=; shift; fi
@@ -17,7 +18,7 @@ function build_cli () {
 function build_lint () {
   echo 'Lint…'
   local LINT_CMD=(
-    eslint
+    ./node_modules/.bin/eslint
     --ext='js,mjs'
     --
     src/
@@ -44,13 +45,15 @@ function build_maybe_lint () {
 
 function build_common () {
   build_maybe_lint || return $?
-  WEBPACK_AUDIENCE="$WEBPACK_AUDIENCE" \
-    "$REPO_TOP"/build/run_tamed.sh webpack || return $?
+  local TAME=
+  [ "$(nice)" -ge 1 ] || [ "$REPO_TOP" -ef /app ] ||
+    TAME='./build/run_tamed.sh'
+  $TAME ./build/webpack-wrapper.sh --audience="$WEBPACK_AUDIENCE" || return $?
 }
 
 
 function build_dev () {
-  WEBPACK_AUDIENCE='' build_common || return $?
+  WEBPACK_AUDIENCE='dev' build_common || return $?
 }
 
 
