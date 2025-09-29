@@ -40,6 +40,15 @@ module.exports = {
       // eventBus.$emit('editorShouldUpdatePreview');
     },
 
+    mutateList(ctx) {
+      const vueElem = this;
+      const muta = vueElem[ctx.muta];
+      if (!muta) { return; }
+      const a = { prop: ctx.list, idx: +ctx.index, ctx };
+      a.injectedMutation = muta;
+      vueElem.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP', a);
+    },
+
     deleteListItemProp(ctx) {
       const vueElem = this;
       const { list, index, prop } = ctx;
