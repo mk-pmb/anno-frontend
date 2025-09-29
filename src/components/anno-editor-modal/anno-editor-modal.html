@@ -24,12 +24,14 @@
         </component>
 
         <div class="top-right-buttons ml-auto text-nowrap">
+          <span class="button-spacer ml-4"></span>
           <bootstrap-button eventbus-emit="saveNewDraft"
-            btn-class="none"
-            icon-fa="floppy-o"
+            btn-class="btn-save-anno-draft btn-outline-secondary"
+            :icon-text="l10n('save_as_draft_icon')"
             :title="l10n('save_as_draft')"
             v-if="$store.state.draftStoreEndpoint"
             />
+          <span class="button-spacer ml-4"></span>
           <bootstrap-button eventbus-emit="discard"
             btn-class="close"
             data-dismiss="modal"
@@ -58,7 +60,7 @@
 
         <div class="position-relative save-draft-buttons-area">
           <bootstrap-button eventbus-emit="saveNewDraft"
-            icon-fa="floppy-o"
+            :icon-text="l10n('save_as_draft_icon')"
             btn-class="outline-secondary"
             v-if="$store.state.draftStoreEndpoint"
             :caption="l10n('save_as_draft')" />

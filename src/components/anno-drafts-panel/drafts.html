@@ -44,7 +44,7 @@
         {{ l10n('save_as_template') }}</label>
       <div class="btn-group ml-4" role="group">
         <bootstrap-button eventbus-emit="saveNewDraft"
-          icon-fa="floppy-o"
+          :icon-text="l10n('save_as_draft_icon')"
           btn-class="outline-primary"
           :caption="l10n('save_as_draft')" />
       </div>
