@@ -53,6 +53,10 @@
     return s.ubHdDigLit(1494, 2348, 'cpg389/0015', '002r.jpg');
   case 'wg55':
     return s.ubHdDigLit(1494, 2348, 'cpg389/0055', '002r.jpg');
+  case 'petau-smk': // Petau, Paul: Satyressa mit Knaben in Vorderansicht
+    cfg.purlId = 'cb4d76aa-aec9-4668-9bae-6dc012caa1ab';
+    // ^-- Leo's favorite example for a multi target anno accross books.
+    return s.ubHdDigLit(1498, 2217, 'petau1757/0019', '00_Tafel_04.jpg');
   }
   return s.uniHdKarlLange1896();
 }());
