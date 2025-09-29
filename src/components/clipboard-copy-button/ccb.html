@@ -5,6 +5,7 @@
     'clipboard-copy-button',
     (defaultCls && 'float-right'),
   ]"
+  v-show="!!cliptext"
   :data-clipboard-text="cliptext"
   icon-fa="clipboard">
   <span ref="successLabel"
