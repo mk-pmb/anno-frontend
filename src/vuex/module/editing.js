@@ -39,9 +39,11 @@ const getters = {
 const mutations = {
 
     UPDATE_EDITOR_ANNO_LIST_PROP(state, how) {
-      const { prop, upd, del } = how;
+      how.list = [].concat(state[how.prop] || []);
+      const muta = how.injectedMutation;
+      if (muta) { Object.assign(how, muta(how, state)); }
+      const { list, upd, del } = how;
       let { idx, val } = how;
-      const list = [].concat(state[prop] || []);
       if (idx === '+') { idx = list.length; }
       if (val !== undefined) { list[idx] = val; }
       if (upd) { list[idx] = { ...list[idx], ...upd }; }
@@ -51,7 +53,7 @@ const mutations = {
         if (del.forEach) { del.forEach(k => delete val[k]); }
         if (del === true) { list.splice(idx, 1); }
       }
-      state[prop] = list;
+      state[how.prop] = list;
     },
 
     RESET_ANNOTATION(state) {

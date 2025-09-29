@@ -4,6 +4,7 @@ const objFromKeysList = require('obj-from-keys-list').default;
 
 const eventBus = require('../../event-bus.js');
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
+const persistentConfig = require('../../browserStorage.js').appConfig;
 
 const categorizeTargets = require('./categorizeTargets.js');
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
@@ -124,7 +125,7 @@ module.exports = {
     });
     eventBus.$on('switchEditorTabByRefName', editor.switchTabByRefName);
     eventBus.$on('updateZoneEditorImage',
-      (imgUrl) => window.alert('Stub! updateZoneEditorImage:\n' + imgUrl));
+      (imgUrl) => editor.uiPanic('Stub! updateZoneEditorImage:\n' + imgUrl));
     eventBus.$on('close-editor', () => {
       document.body.classList.remove(editorOpenCssClass);
     });
@@ -198,6 +199,12 @@ module.exports = {
     getAnnoTitle() { return this.$store.state.editing.title; },
     setStatusMsg(...args) { return this.$refs.statusMsg.setMsg(...args); },
 
+    uiPanic: Object.assign(function uiPanic(why) {
+      window.alert(this.l10n(uiPanic.msg[why] || why));
+    }, { msg: {
+      EInvalidData: '<error:> <corrupt_data>',
+    } }),
+
     loadAnnoData,
     getCleanAnno,
 
@@ -248,7 +255,7 @@ module.exports = {
       if (editMode === 'create') { return saveCreate(editor); }
       if (editMode === 'revise') { return saveCreate(editor); }
       if (editMode === 'reply') { return saveCreate(editor); }
-      window.alert('Save not implemented for editMode = ' + editMode);
+      editor.uiPanic('Save not implemented for editMode = ' + editMode);
     },
 
     discard() {
@@ -489,15 +496,22 @@ module.exports = {
             jsonDeepCopy(hints));
           return 'primary';
         }
-        return tt;
+        return (tt || 'unknown');
       }
+
+      let prevRec = false;
+      let hadPrimary = false;
 
       function fmt(tgt, index) {
         if (!tgt) { return; }
         if (isStr(tgt)) { return fmt({ id: tgt }, index); }
         const url = guessPrimaryTargetUri({ target: tgt }, state);
         const unconfirmed = tgt[':ANNO_FE:unconfirmed'];
-        const tgtType = getTypeSafe(tgt, index, url);
+        let tgtType = getTypeSafe(tgt, index, url);
+        if (tgtType === 'primary') {
+          if (hadPrimary) { tgtType = 'additional'; }
+          hadPrimary = true;
+        }
         const typeCls = [''].concat([
           tgtType,
           (unconfirmed && 'unconfirmed'),
@@ -509,7 +523,11 @@ module.exports = {
           typeCls,
           unconfirmed,
           url,
+          sameTypeAsPrev: (prevRec.type === tgtType),
+          sameTypeAsNext: false, // will be updated if there is a next entry.
         };
+        if (prevRec) { prevRec.sameTypeAsNext = rec.sameTypeAsPrev; }
+        prevRec = rec;
         return rec;
       }
 
@@ -663,6 +681,41 @@ module.exports = {
 
 
     validateFields() { validateEditorFields(this, this.getCleanAnno()); },
+
+
+    clipThisTargetForReuse(ctx) {
+      const editor = this;
+      const tgt = editor.$store.state.editing.target[ctx.index];
+      if (!tgt) { return editor.uiPanic('EInvalidData'); }
+      const clean = jsonDeepCopy(tgt);
+      Object.keys(clean).forEach(k => (k.startsWith(':') && delete clean[k]));
+      persistentConfig.put('clippedTarget', clean);
+    },
+
+
+    appendTargetClippedForReuse() {
+      const editor = this;
+      const tgt = persistentConfig.get('clippedTarget');
+      if (!tgt) { return editor.uiPanic('EInvalidData'); }
+      const val = jsonDeepCopy(tgt);
+      val[':ANNO_FE:targetType'] = 'additional';
+      val[':ANNO_FE:unconfirmed'] = true;
+      editor.$store.commit('UPDATE_EDITOR_ANNO_LIST_PROP',
+        { prop: 'target', idx: '+', val });
+    },
+
+
+    moveTargetUpByOne(evt) {
+      const { list, idx } = evt;
+      const item = list[idx];
+      const before = list.slice(0, idx).filter(Boolean);
+      const prev = before.pop();
+      const after = list.slice(idx + 1);
+      return { list: [...before, item, prev, ...after] };
+    },
+
+
+
 
 
   },

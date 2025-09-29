@@ -177,6 +177,13 @@
       />
     <div class="mt-4 preview-targets-urllist-section"
       v-for="list in [compileTargetsListForTemplating()]">
+      <div class="preview-targets-buttonbar-top float-right"
+      ><bootstrap-button
+        @click="appendTargetClippedForReuse"
+        :title="l10n('reuse_target:paste')"
+        :icon-text="l10n('reuse_target:icon')"
+        ></bootstrap-button
+      ></div><!-- /.preview-targets-buttonbar-top -->
       <h5>{{ l10n('targets_list_headline') }}</h5>
       <p class="explain">{{
         l10n('targets_list_explain').replace(/@@count@@/g, list.length)
@@ -208,6 +215,19 @@
               data-prop="dc:title"
               data-prompt="$$url"
               >{{ l10n('generic_list_item_rename_icon') }}</a>
+            <a class="reuse-target"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('reuse_target:clip')"
+              data-action="clipThisTargetForReuse"
+              >{{ l10n('reuse_target:icon') }}</a>
+            <a class="move-target-up-by-one"
+              v-if="tgt.sameTypeAsPrev"
+              href="#" @click.stop="clickedListItemDatasetActionButton"
+              :title="l10n('generic_list_item_move1up_long')"
+              data-action="mutateList"
+              data-muta="moveTargetUpByOne"
+              data-list="target"
+              >{{ l10n('generic_list_item_move1up_icon') }}</a>
             <a class="confirm-target mx-4"
               v-if="tgt.unconfirmed"
               href="#" @click.stop="clickedListItemDatasetActionButton"
@@ -222,6 +242,9 @@
               :title="l10n('generic_list_item_del_long')"
               data-action="deleteTarget"
               >{{ l10n('generic_list_item_del_icon') }}</a>
+            <a class="debug-one-target debug-feature"
+              href="#" @click.stop="uiPanic(JSON.stringify(tgt, null, 2))"
+              >⚙</a>
           </span>
         </li>
       </ol><!-- /.targets -->
