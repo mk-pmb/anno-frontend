@@ -95,12 +95,13 @@
           ><span class="button-caption" ref="creatorsList">
           <template v-for="aCreator of creatorsList">
             <span class="anno-creator">
-              <template v-if="aCreator['as:icon']">
+              <span class="agent-icon agent-icon-cage"
+                v-if="aCreator['as:icon']">
                 <img class="media-object" style="display: inline;"
                   :src="aCreator['as:icon'].url"
                   :alt="aCreator['as:icon'].name"
                   width="15" height="15">
-              </template>
+              </span>
               <template v-else>
                 <i class="fa fa-user"></i>
               </template>
