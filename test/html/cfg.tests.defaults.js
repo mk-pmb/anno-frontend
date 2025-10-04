@@ -51,6 +51,11 @@
     // subjectTargets.forEach(window.mainApp.addTargetPreview);
   };
 
+  cfgUpd.optimizeAuthorAgentForRendering = function oaa(agent) {
+    var icon = agent['as:icon'];
+    if (icon && icon.url) { icon.url = '#origurl=' + icon.url; }
+  };
+
 
 
 

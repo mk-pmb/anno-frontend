@@ -125,6 +125,14 @@ const uiCfg = {
     */
 
 
+  optimizeAuthorAgentForRendering: false, /*
+    Can be set to a function that optimizes an author agent for rendering.
+    The renderer uses a temporary copy of the original author info,
+    so this does not change the actual data of the annotation.
+    Use cases include replacing external image URLs with local copies.
+    */
+
+
 
 
 
