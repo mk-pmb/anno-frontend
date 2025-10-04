@@ -304,9 +304,13 @@ module.exports = {
     creatorsList() {
       const { creator } = this.annoData;
       if (!creator) { return []; }
-      const list = jsonDeepCopy([].concat(creator).filter(Boolean));
+      let list = jsonDeepCopy([].concat(creator).filter(Boolean));
+      if (!list.length) { return list; }
       const [lastItem] = list.slice(-1);
-      if (lastItem) { lastItem['x-is-last-in-list'] = true; }
+      lastItem['x-is-last-in-list'] = true;
+      const appCfg = this.$store.state;
+      const opti = appCfg.optimizeAuthorAgentForRendering;
+      if (opti) { list = list.map(cr => (opti(cr) || cr)); }
       return list;
     },
 
