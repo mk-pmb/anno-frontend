@@ -2,7 +2,7 @@
 /* -*- tab-width: 2 -*- */
 (function setDefaultTestConfig() {
   'use strict';
-  window.ubhdAnnoApp.configure({
+  var cfgUpd = {
 
     makeDebugLogger: Function.bind.bind(console.debug, console),
 
@@ -15,9 +15,9 @@
     targetSource: ('http://anno.test/' + location.pathname.replace(/^\S+\//,
       '').replace(/\.\S+$/, '')),
 
-  });
+  };
 
-  function onVersionSelected(event) {
+  cfgUpd.initCmpOnVersionSelected = function onVersionSelected(event) {
     console.debug('Version selected:', event);
 
     /* For debugging, it may be helpful to export the event so you can
@@ -49,10 +49,10 @@
       preview components for the new targets. */
     // const subjectTargets = evt.categorizeTargets().subjects;
     // subjectTargets.forEach(window.mainApp.addTargetPreview);
-  }
+  };
 
-  window.ubhdAnnoApp.configure({
-    initCmpOnVersionSelected: onVersionSelected,
-  });
 
+
+
+  window.ubhdAnnoApp.configure(cfgUpd);
 }());
