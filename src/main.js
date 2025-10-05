@@ -1,12 +1,13 @@
-// const Vue = require('vue/dist/vue.esm.js').default;
-const Vue = require('vuejs-debug-traverse-210506-pmb/vue.esm.js').default;
-const Vuex = require('vuex/dist/vuex.esm.js').default;
+const autoDefault = require('require-mjs-autoprefer-default-export-pmb');
 
+// const Vue = autoDefault(require('vue/dist/vue.esm.js'));
+const Vue = autoDefault(require('vuejs-debug-traverse-210506-pmb/vue.esm.js'));
+const Vuex = autoDefault(require('vuex/dist/vuex.esm.js'));
 const getOwn = require('getown');
 const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
-const objFromKeysList = require('obj-from-keys-list').default;
-const unpackSingleProp = require('unwrap-single-prop').default;
+const objFromKeysList = autoDefault(require('obj-from-keys-list'));
+const unpackSingleProp = autoDefault(require('unwrap-single-prop'));
 
 
 if (process.env.NODE_ENV !== 'production') {
