@@ -3,6 +3,8 @@ const autoDefault = require('require-mjs-autoprefer-default-export-pmb');
 // const Vue = autoDefault(require('vue/dist/vue.esm.js'));
 const Vue = autoDefault(require('vuejs-debug-traverse-210506-pmb/vue.esm.js'));
 const Vuex = autoDefault(require('vuex/dist/vuex.esm.js'));
+
+const annoDataApi = autoDefault(require('./annoDataApi'));
 const getOwn = require('getown');
 const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
@@ -205,13 +207,23 @@ const EX = {
 
 
 EX.reuseLib = (function compile() {
-  const ovr = { Vue, Vuex, unpackSingleProp, AnnoFrontend: EX };
+  const ovr = {
+    annoDataApi,
+    autoDefault,
+    AnnoFrontend: EX,
+    unpackSingleProp,
+    Vue,
+    Vuex,
+  };
+  return getOwn.bind(null, ovr);
+  /* Sharing our original require() doesn't work with Webpack anyways. :-(
+
   const re = function reuseLib(id) {
-    const x = getOwn(ovr, id) || re.require(id) || false;
-    return unpackSingleProp('default', x);
+    return autoDefault(getOwn(ovr, id) || re.require(id) || false);
   };
   re.require = require;
   return re;
+  */
 }());
 
 
