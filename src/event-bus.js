@@ -1,4 +1,5 @@
-const Vue = require('vue').default;
+const autoDefault = require('require-mjs-autoprefer-default-export-pmb');
+const Vue = autoDefault(require('vue'));
 // const memoize = require('lodash.memoize');
 
 const bus = new Vue();
