@@ -7,16 +7,45 @@
 on:
   push:
     branches:
-      -   '*'
+      - 'experimental'
+      - 'latest'
+      - 'master'
+      - 'stable'
+      - 'staging'
+
+env:
+  GHCIU_STEPSUMM_RELEASE_TAG: 'auto-ci-release/${{ github.ref_name }}'
+
 
 jobs:
   job_ci_test:
     runs-on: ubuntu-latest
-    name: 'CI tests'
+    name: 'CI tests (usually ≤ 3 min)'
     steps:
       - uses: actions/checkout@v4
       - uses: mk-pmb/github-ci-util-2405-pmb/act/install@experimental
       - run: ghciu './test/ci.sh'
 
+      - name: 'Add debug files to auto-release'
+        if: always()
+        run: >
+          zip -r9 dist/debug_node_modules.zip --
+          node_modules/
+          package.json
+          package-lock.json
+
+      - name: 'Publish auto-release'
+        if: always()
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: True
+          artifactErrorsFailBuild: True
+          artifacts: 'dist/*'
+          body: '&nbsp;' # If empty, GitHub would use the commit message.
+          makeLatest: False
+          prerelease: True
+          removeArtifacts: True # Remove old files from release.
+          commit: '${{ github.sha }}'
+          tag: '${{ env.GHCIU_STEPSUMM_RELEASE_TAG }}'
 
 ...
