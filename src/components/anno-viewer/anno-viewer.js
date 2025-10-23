@@ -510,7 +510,9 @@ module.exports = {
 
 
     decideShowPurlButton() {
-      const st = this.$store.state;
+      const viewer = this;
+      if (!viewer.annoIdUrl) { return false; }
+      const st = viewer.$store.state;
       if (st.doiHidesPurlButton && this.hasRealPublicDoi) { return false; }
       return true;
     },
