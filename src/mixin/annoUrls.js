@@ -33,12 +33,26 @@ const MT = {
   },
 
 
-  findResourceUrl(res) {
+  findResourceUrlNaive(res) {
     if (!res) { return ''; }
     if (isStr(res)) { return res; }
     if (isStr(res.id)) { return res.id; }
     if (isStr(res.source)) { return res.source; }
     return '';
+  },
+
+
+  findResourceUrl(res) {
+    const url = MT.findResourceUrlNaive(res);
+    if (!url) { return url; }
+    if (!/^[a-z]/i.test(url)) {
+      const msg = ('Expected resource URL to start with a letter :'
+        + JSON.stringify(url)
+        + ' – Original Resource was: '
+        + JSON.stringify(res));
+      throw new Error(msg);
+    }
+    return url;
   },
 
 
