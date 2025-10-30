@@ -12,7 +12,8 @@ const EX = function findAnnoRelations(allAnnosFlat) {
   // and prepare their list of children (i.e. replies).
   const annosById = new Map();
   const repliesByParentId = new Map();
-  allAnnosFlat.forEach(function prepare(anno) {
+  allAnnosFlat.forEach(function prepare(origAnno) {
+    const anno = { ...origAnno };
     const directChildren = []; // We'll find them later.
     // eslint-disable-next-line no-param-reassign
     anno[':ANNO_FE:replies'] = directChildren;
