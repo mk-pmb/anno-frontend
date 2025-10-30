@@ -1,17 +1,18 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const EX = function flattenSubAnnos(topAnno) {
+const EX = function flattenSubAnnos(origTopAnno) {
+  const topAnno = { ...origTopAnno };
   const offspring = [];
   let nextReplyRefNum = 1;
-  (function dive(ctx) {
+  (function dive(origAnno, ctx) {
     const {
-      anno,
       ancestorIds,
       parent,
       indent,
     } = ctx;
     // const depth = ancestorIds.length;
+    const anno = { ...origAnno };
     if (parent) {
       anno[':ANNO_FE:inReplyToRefNum'] = parent[':ANNO_FE:replyRefNum'];
       offspring.push(anno);
@@ -30,13 +31,11 @@ const EX = function flattenSubAnnos(topAnno) {
     const subCtx = {
       ...ctx,
       parent: anno,
-      anno: null, // safe-guard; should be overwritten before invocation.
       ancestorIds: [...ancestorIds, annoIdUrl],
       indent: '  ' + indent,
     };
-    directChildren.forEach(subAnno => dive({ ...subCtx, anno: subAnno }));
-  }({
-    anno: topAnno,
+    directChildren.forEach(subAnno => dive(subAnno, subCtx));
+  }(topAnno, {
     parent: false,
     ancestorIds: [],
     indent: '',

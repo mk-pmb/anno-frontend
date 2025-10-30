@@ -1,7 +1,10 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
+const autoDefault = require('require-mjs-autoprefer-default-export-pmb');
 
+const annoDataApi = autoDefault(require('../../../annoDataApi'));
 const api22 = require('../../../api22.js');
+const deepFreeze = autoDefault(require('deep-freeze-es6'), 'deepFreeze');
 const eventBus = require('../../../event-bus.js');
 
 const optimizeAnnoList = require('./optimizeAnnoList.js');
@@ -29,15 +32,25 @@ const EX = async function fetchAnnoList(store) {
     if (!Array.isArray(annos)) {
       throw new TypeError('Received an invalid annotations list');
     }
+
+    Object.assign(annos, EX.rawAnnoListApi);
+    try {
+      annoDataApi.upgradeAnnoList.inplace(annos);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    deepFreeze(annos);
     eventBus.$emit('annoListFetchedRaw', annos);
+
     const nOrigAnnos = annos.length;
     annos = await optimizeAnnoList(annos, state);
     annos.nTotalAnnosIncludingNested = nOrigAnnos;
     eventBus.$emit('annoListFetchedOptimized', annos);
-    eventBus.$emit('annoListFetchedCounts', {
+    eventBus.$emit('annoListFetchedCounts', Object.freeze({
       nTopLevelAnnos: annos.length,
       nTotalAnnosIncludingNested: nOrigAnnos,
-    });
+    }));
     await commit('ANNOLIST_REPLACE', annos);
     /* No need for a "done" event here: ANNOLIST_REPLACE will fire an event
       very soon. (At time of writing, its name was "annoListReplaced".) */
@@ -49,6 +62,7 @@ const EX = async function fetchAnnoList(store) {
     eventBus.$emit('fetchListFailed', fetchFailed);
   }
 };
+
 
 
 module.exports = EX;
