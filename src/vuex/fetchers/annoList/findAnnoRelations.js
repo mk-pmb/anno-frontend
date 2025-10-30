@@ -36,7 +36,12 @@ const EX = function findAnnoRelations(allAnnosFlat) {
     inReplyTo = (inReplyTo.id || inReplyTo);
     const replies = repliesByParentId.get(inReplyTo);
     if (replies) { return replies.push(anno); }
-    console.warn(EX.name + ': orphan:', { id: anno.id, inReplyTo });
+    /* Reply orphans usually occurr when someone replies to an anno that does
+      not have the current page as target, and then adds the current page as a
+      target only in the reply. That way, only the reply is found in the search
+      results for the current page, but not the reply-parent.
+    console.warn('Anno-Frontend:', 'findAnnoRelations: orphan:',
+      { id: anno.id, inReplyTo }); /* */
     return orphanedAnnos.push(anno);
   });
 
