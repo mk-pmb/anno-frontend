@@ -246,7 +246,7 @@ module.exports = {
       // console.debug('getZoneSelectorSvg', { sel }, orf(sel).value);
       if (!sel) { return ''; }
       if (sel.type !== 'SvgSelector') { return ''; }
-      return ores(sel.value);
+      return ores(sel.value).trim();
     },
 
     save() {
