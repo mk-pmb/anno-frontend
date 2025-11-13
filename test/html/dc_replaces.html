@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>dc:replaces cheat form</title>
+  <meta name="viewport" content="width=device-width">
+</head><body bgcolor="#CCCCCC">
+
+<textarea rows="5" cols="120" wrap="hard"
+  placeholder="Click and paste the anno URL"></textarea>
+
+<script>
+/*jslint indent: 2, maxlen: 80, continue: false, unparam: false, browser: true */
+(function () {
+  'use strict';
+  var txa = document.getElementsByTagName('textarea')[0], f;
+  f = function f() {
+    var v = txa.value.trim();
+    if (v.startsWith('http')) {
+      v = v.split('/').slice(-1)[0].split(/[_~](?=\d+$)/);
+      txa.value = (v[1] ? ('dc:isVersionOf = ' + v[0] + '\ndc:replaces = '
+        + v[0] + '~' + v[1] + '\n') : 'ERROR: Link had no version suffix!\n');
+    }
+    txa.select();
+    return false;
+  };
+  txa.onchange = f;
+  txa.onfocus = f;
+  txa.onkeyup = f;
+  txa.onmouseup = f;
+}());
+</script>
+
+</body></html>
