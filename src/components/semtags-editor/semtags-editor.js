@@ -36,7 +36,7 @@ function preserveUserInput(commit, ev) {
 
 module.exports = {
     mixins: [
-        require('@/mixin/l10n'),
+        require('../../mixin/l10n.js'),
     ],
     template: require('./semtags-editor.html'),
     style: [
