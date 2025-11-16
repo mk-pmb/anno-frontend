@@ -4,7 +4,7 @@ import getOwn from 'getown';
 import mu from './miscUtil.mjs';
 import upgradeAnnoList from './upgradeAnnoList.mjs';
 
-// function orf(x) { return x || false; }
+function orf(x) { return x || false; }
 
 
 const ada = {
@@ -20,10 +20,8 @@ const ada = {
 
 
   findTargetSelectors(anno, opt) {
-    const tgt = anno.target;
-    let sel = (tgt || false).selector;
-    if (!sel) { return []; }
-    sel = [].concat(sel).filter(Boolean);
+    let sel = ada.mapTargets(anno, tgt => orf(tgt).selector);
+    if (!sel) { return (orf(opt).unique ? false : []); }
     if (!opt) { return sel; }
     if (opt.type) { sel = sel.filter(s => (s.type === opt.type)); }
     if (opt.map) { sel = sel.filter(opt.map); }
