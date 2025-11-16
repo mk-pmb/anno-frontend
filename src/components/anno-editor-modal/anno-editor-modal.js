@@ -7,9 +7,10 @@
  *
  */
 
-const jq = require('jquery');
 const HelpButton = require('../help-button');
 const eventBus = require('../../event-bus.js');
+
+const jq = window.jQuery;
 
 const simpleEmitButtonHandlers = {
   // These handlers are so simple, I was tempted to just put their code in
