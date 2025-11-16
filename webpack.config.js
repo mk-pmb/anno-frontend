@@ -56,11 +56,6 @@ module.exports = {
     '@kba/anno-errors': 'Anno.Errors',
     '@kba/xrx-vue': 'XrxVue',
   },
-  resolve: {
-    alias: {
-      '@': absPath('src'),
-    },
-  },
   module: {
     rules: [
       { test: /\.png$/i,

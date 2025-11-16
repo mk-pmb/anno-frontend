@@ -15,7 +15,7 @@ function jqSetSingularClass(cls, idx, list) {
 
 module.exports = {
   mixins: [
-    require('@/mixin/l10n'),
+    require('../../mixin/l10n.js'),
   ],
   template: require('./bootstrap-tabs.html'),
   style: require('./bootstrap-tabs.scss'),

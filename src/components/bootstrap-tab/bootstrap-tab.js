@@ -4,7 +4,7 @@
 
 module.exports = {
 
-  mixins: require('@/mixin/l10n'),
+  mixins: require('../../mixin/l10n.js'),
   template: require('./bootstrap-tab.html'),
 
   props: {
