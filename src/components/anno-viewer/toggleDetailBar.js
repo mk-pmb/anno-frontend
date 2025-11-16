@@ -1,7 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const jq = require('jquery');
+const jq = window.jQuery;
 
 
 function maybeImportHtml(jqBar, refs) {
