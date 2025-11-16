@@ -2,10 +2,10 @@
 'use strict';
 /* eslint-disable global-require */
 
-const jq = require('jquery');
-
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 const parseDraftFileName = require('./parseDraftFileName.js');
+
+const jq = window.jQuery;
 
 
 const EX = async function reloadDraftsList(opt) {

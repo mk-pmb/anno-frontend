@@ -2,7 +2,8 @@
 'use strict';
 
 const getOwn = require('getown');
-const jQuery = require('jquery');
+
+const { jQuery } = window;
 
 // const eventBus = require('../event-bus.js');
 

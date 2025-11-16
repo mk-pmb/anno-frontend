@@ -2,10 +2,10 @@
 'use strict';
 /* eslint-disable global-require */
 
-const jQuery = require('jquery');
-
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
+
+const { jQuery } = window;
 
 
 function jqSetSingularClass(cls, idx, list) {

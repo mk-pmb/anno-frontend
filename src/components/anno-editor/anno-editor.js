@@ -1,5 +1,4 @@
 const isStr = require('is-string');
-const jQuery = require('jquery');
 const objFromKeysList = require('obj-from-keys-list').default;
 
 const eventBus = require('../../event-bus.js');
@@ -13,6 +12,8 @@ const libPreviewWarnings = require('./previewWarnings.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
 const validateEditorFields = require('./validateEditorFields.js');
+
+const { jQuery } = window;
 
 // function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
