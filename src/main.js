@@ -54,6 +54,7 @@ const eventBusProxies = objFromKeysList(function makeEventBusProxy(ev) {
 
 let vueRootElem;
 let configAccum = decideDefaultOptions();
+let currentAnnosList = false;
 
 const EX = {
 
@@ -205,6 +206,10 @@ const EX = {
   },
 
 
+  getCurrentAnnosList() { return currentAnnosList; }, /*
+    No protections required: It's stored from the eventBus event,
+    so it should already be a frozen array. */
+
 };
 
 
@@ -233,6 +238,7 @@ EX.reuseLib = (function compile() {
 
 
 
+eventBus.$on('annoListFetchedRaw', (list) => { currentAnnosList = list; });
 
 
 eventBus.$once('annoListReplaced',
