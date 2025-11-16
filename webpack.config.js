@@ -46,7 +46,6 @@ module.exports = {
     '@kba/anno-queries': 'Anno.Queries',
     '@kba/anno-store-http': 'Anno.HttpStore',
     '@kba/anno-errors': 'Anno.Errors',
-    '@kba/xrx-vue': 'XrxVue',
   },
   module: {
     rules: [
