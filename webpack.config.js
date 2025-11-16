@@ -38,7 +38,6 @@ module.exports = {
     compress: true,
   },
   externals: {
-    'jquery': 'jQuery',
     'quill/dist/quill.js': 'Quill',
     'axios': 'axios',
     '@ubhd/authorities-client': 'AuthoritiesClient',
