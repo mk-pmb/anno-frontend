@@ -1,10 +1,15 @@
 import arrayOfTruths from 'array-of-truths';
 import getOwn from 'getown';
 
+import mu from './miscUtil.mjs';
+import upgradeAnnoList from './upgradeAnnoList.mjs';
+
 // function orf(x) { return x || false; }
 
 
 const ada = {
+  miscUtil: mu,
+  upgradeAnnoList,
 
   mapListField(anno, field, mapper) {
     return arrayOfTruths.ifAnyMap(getOwn(anno, field), mapper);

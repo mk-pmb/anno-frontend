@@ -210,6 +210,11 @@ const EX = {
     No protections required: It's stored from the eventBus event,
     so it should already be a frozen array. */
 
+  findAnno(urlOrBasename) {
+    const al = currentAnnosList;
+    return al && al.findAnno(urlOrBasename);
+  },
+
 };
 
 
