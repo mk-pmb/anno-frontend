@@ -7,19 +7,22 @@ function parseDate(d) { return (+(new Date(d))) || 0; }
 const dummySortable = { sort: Boolean };
 
 
-const EX = function findAnnoRelations(allAnnosFlat) {
+const EX = function findAnnoRelations(allOrigAnnosFlat) {
   // Register all known annos as potential parents
   // and prepare their list of children (i.e. replies).
   const annosById = new Map();
   const repliesByParentId = new Map();
-  allAnnosFlat.forEach(function prepare(anno) {
+  const allAnnosFlat = allOrigAnnosFlat.map(function prepare(origAnno) {
+    const anno = { ...origAnno };
     const directChildren = []; // We'll find them later.
     // eslint-disable-next-line no-param-reassign
     anno[':ANNO_FE:replies'] = directChildren;
     if (anno.id) { annosById.set(anno.id, anno); }
     const rt = EX.decideReplyTarget(anno);
-    if (!rt) { return; } // ID-less anno cannot have replies
-    repliesByParentId.set(rt, directChildren);
+    if (rt) { repliesByParentId.set(rt, directChildren); } /*
+      else: If (!rt), it means this anno has no URL by which other annos
+      could refer to it. Thus, it can never have children. */
+    return anno;
   });
 
   const nonReplyAnnos = [];

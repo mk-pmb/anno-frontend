@@ -1,7 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 
-const EX = function flattenSubAnnos(topAnno) {
+const EX = function flattenSubAnnos(origTopAnno) {
+  const topAnno = { ...origTopAnno };
   const offspring = [];
   let nextReplyRefNum = 1;
   (function dive(ctx) {
