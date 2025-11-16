@@ -49,10 +49,6 @@ module.exports = {
     'axios': 'axios',
     '@ubhd/authorities-client': 'AuthoritiesClient',
     'semtonotes-utils': 'XrxUtils',
-    '@kba/anno-store': 'Anno.Store',
-    '@kba/anno-queries': 'Anno.Queries',
-    '@kba/anno-store-http': 'Anno.HttpStore',
-    '@kba/anno-errors': 'Anno.Errors',
   },
   module: {
     rules: [
