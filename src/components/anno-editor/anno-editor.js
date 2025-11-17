@@ -217,7 +217,10 @@ module.exports = {
     },
 
     switchTabByRefName(refName) {
-      this.$refs.tablist.switchToTabPaneByVueElem(this.$refs[refName]);
+      const editor = this;
+      const tab = this.$refs[refName];
+      if (tab) { return editor.$refs.tablist.switchToTabPaneByVueElem(tab); }
+      throw new Error('Anno-Editor: $ref not found (try topic?): ' + refName);
     },
 
     tabRefIsActive(refName) {
