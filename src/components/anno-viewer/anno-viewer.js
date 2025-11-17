@@ -53,9 +53,8 @@ const xrxUtilsUtils = require('./xrxUtilsUtils.js');
  */
 
 
-const cdbg = console.debug.bind(console, 'anno-viewer:');
-const cerr = console.error.bind(console, 'anno-viewer:');
-Boolean(cdbg, cerr); // Linter: Ignore whether they're all commented-out.
+// eslint-disable-next-line no-unused-vars
+const { cdbg, cerr, cwarn } = require('../../clog.js')('Anno-Viewer');
 
 
 function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
