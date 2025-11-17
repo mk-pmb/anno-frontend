@@ -3,6 +3,7 @@
 
 const arrayOfTruths = require('array-of-truths');
 const objPop = require('objpop');
+const unpackSingleProp = require('unwrap-single-prop').default
 
 const editorModelDef = require('../../vuex/module/editing.js');
 
@@ -32,7 +33,8 @@ const EX = async function loadAnnoData(origAnno) {
   const { commit, state } = editor.$store;
 
   const anno = jsonDeepCopy(origAnno);
-  const draftReply = anno['as:inReplyTo'];
+  const draftReply = unpackSingleProp(0, anno['as:inReplyTo']);
+  if (draftReply) { anno['as:inReplyTo'] = draftReply; }
   anno.target = adjustMultiTarget(state, anno.target, {
     omitByUrl: draftReply,
   });
