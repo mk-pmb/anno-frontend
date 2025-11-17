@@ -75,6 +75,7 @@
     :name="`${prefix}-${editorId}-tab-targeteditor`"
     v-if="$store.state.targetEditorTabVoc"
     :title="l10n($store.state.targetEditorTabVoc)"
+    ref="targetEditorTab"
     topic="target-editor"
     >
     <div class="external-target-editor-resizer tab-plugin-resizer">
@@ -90,6 +91,7 @@
     :title="l10n('zones')"
     :visible="Boolean($store.state.targetImage)
       && (!$store.state.disableXrxVueEditor)"
+    ref="xrxTab"
     topic="zones"
     >
     <xrx-vue
@@ -125,6 +127,7 @@
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-semtags`"
     :title="l10n('semtags')"
+    ref="semtagsTab"
     topic="tags"
     >
     <semtags-editor />
@@ -133,6 +136,7 @@
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-links`"
     :title="l10n('relationlinks')"
+    ref="linksTab"
     topic="links"
     >
     <relationlink-editor ref="relationLinkEditor"
@@ -145,6 +149,7 @@
   <bootstrap-tab
     :name="`${prefix}-${editorId}-tab-preview`"
     :title="l10n('preview')"
+    ref="previewTab"
     topic="preview"
     >
     <div class="mt-4 preview-warnings-section"
@@ -258,6 +263,7 @@
     :name="`${prefix}-${editorId}-tab-drafts`"
     :title="l10n('drafts')"
     v-if="$store.state.draftStoreEndpoint"
+    ref="draftsTab"
     topic="drafts"
     >
     <anno-drafts-panel ref="draftsPanel"
