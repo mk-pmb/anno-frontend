@@ -32,11 +32,8 @@ const EX = async function loadAnnoData(origAnno) {
   const { commit, state } = editor.$store;
 
   const anno = jsonDeepCopy(origAnno);
-  const popField = objPop.d(anno);
-  function popStr(k) { return String(popField(k) || ''); }
-
   const draftReply = anno['as:inReplyTo'];
-  anno.target = adjustMultiTarget(state, popField('target'), {
+  anno.target = adjustMultiTarget(state, anno.target, {
     omitByUrl: draftReply,
   });
   const primTgtAdj = anno.target.primaryTargetAdjustHint;
@@ -44,7 +41,11 @@ const EX = async function loadAnnoData(origAnno) {
   function enforceTLF(k, v) { if (v) { anno[k] = v; } else { delete anno[k]; } }
   enforceTLF('dc:replaces', state.editEnforceReplaces);
   enforceTLF('dc:isVersionOf', state.editEnforceVersionOf);
-  fixupReplyMode(state, anno);
+  fixupReplyMode(state, anno); // ATTN: modifies the anno inplace!
+
+  const popField = objPop.d(anno); /* <- can only be used safely after
+    we're done with all in-place modifications, like fixupReplyMode. */
+  function popStr(k) { return String(popField(k) || ''); }
 
   const title = (legacyFieldsMustAgree(popField, String, 'dc:title title')
     || '').replace(/\s+/g, ' ').trim();
