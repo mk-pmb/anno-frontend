@@ -1,3 +1,4 @@
+const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
 const objFromKeysList = require('obj-from-keys-list').default;
 
@@ -487,7 +488,7 @@ module.exports = {
       const editor = this;
       const { state } = editor.$store;
       const extra = orf(state.editing.extraFields);
-      const replyTo = [].concat(extra['as:inReplyTo']).filter(Boolean);
+      const replyTo = arrayOfTruths(extra['as:inReplyTo']);
 
       function getTypeSafe(tgt, index, url) {
         const tt = tgt[':ANNO_FE:targetType'];
@@ -507,7 +508,6 @@ module.exports = {
       let hadPrimary = false;
 
       function fmt(tgt, index) {
-        if (!tgt) { return; }
         if (isStr(tgt)) { return fmt({ id: tgt }, index); }
         const url = guessPrimaryTargetUri({ target: tgt }, state);
         const unconfirmed = tgt[':ANNO_FE:unconfirmed'];
@@ -516,10 +516,10 @@ module.exports = {
           if (hadPrimary) { tgtType = 'additional'; }
           hadPrimary = true;
         }
-        const typeCls = [''].concat([
+        const typeCls = [''].concat(arrayOfTruths([
           tgtType,
           (unconfirmed && 'unconfirmed'),
-        ].filter(Boolean)).map(c => ('anno-target' + (c && '-') + c));
+        ])).map(c => ('anno-target' + (c && '-') + c));
         const rec = {
           index,
           title: (tgt['dc:title'] || url),
@@ -535,7 +535,7 @@ module.exports = {
         return rec;
       }
 
-      const list = [].concat(state.editing.target).map(fmt).filter(Boolean);
+      const list = arrayOfTruths(state.editing.target).map(fmt);
       return list;
     },
 
