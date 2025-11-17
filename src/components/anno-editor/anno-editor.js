@@ -535,8 +535,11 @@ module.exports = {
         return rec;
       }
 
-      const list = arrayOfTruths(state.editing.target).map(fmt);
-      return list;
+      const input = jsonDeepCopy(arrayOfTruths(state.editing.target));
+      // cdbg('compileTargetsListForTemplating <<', { replyTo, extra, input });
+      const result = input.map(fmt);
+      // cdbg('compileTargetsListForTemplating >>', jsonDeepCopy(result));
+      return result;
     },
 
 

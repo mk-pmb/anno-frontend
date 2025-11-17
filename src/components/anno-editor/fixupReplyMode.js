@@ -9,7 +9,8 @@ function ifHasKeys(x) { return x && Boolean(Object.keys(x).length) && x; }
 
 const EX = function fixupReplyMode(state, anno) {
   const enfReply = state.editEnforceReplying;
-  const tgtList = arrayOfTruths(anno.target);
+  const origTgtList = arrayOfTruths(anno.target);
+  let tgtList = origTgtList;
   const vueStoreUpdates = {};
 
   function upd(k, v) {
@@ -30,12 +31,16 @@ const EX = function fixupReplyMode(state, anno) {
     upd('motivation', 'replying');
     const hasReplyTgt = tgtList.some(t => (t.id || t) === enfReply);
     if (!hasReplyTgt) {
-      tgtList.unshift({ id: enfReply, ':ANNO_FE:targetType': 'inReplyTo' });
-      upd('target', tgtList);
+      const replyTgts = arrayOfTruths(enfReply).map(function fmt(replyTgt) {
+        if (typeof replyTgt === 'string') { return fmt({ id: replyTgt }); }
+        return { ...replyTgt, ':ANNO_FE:targetType': 'inReplyTo' };
+      });
+      tgtList = replyTgts.concat(tgtList);
     }
   } else if (anno.motivation === 'replying') {
     upd('motivation');
   }
+  if (tgtList !== origTgtList) { upd('target', tgtList); }
 
   return ifHasKeys(vueStoreUpdates);
 };
