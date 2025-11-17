@@ -53,9 +53,9 @@ const EX = function categorizeTargets(appCfg, rawTarget, origOpt) {
     if (!tgt) { return; }
     if (typeof tgt === 'string') { return scan({ id: tgt }, idx); }
     const url = findResourceUrl(tgt);
-    if (omitByUrl && omitByUrl.includes(url)) { return; }
     // console.debug('categorizeTargets', { idx, url, annoEndpoint });
     if (url) {
+      if (omitByUrl && omitByUrl.includes(url)) { return; }
       if (url.startsWith(annoEndpoint)) {
         // which should itself --^ end in a slash
         return report.localAnnos.push(tgt);
