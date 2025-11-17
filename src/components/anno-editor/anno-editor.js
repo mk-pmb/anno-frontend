@@ -16,6 +16,9 @@ const validateEditorFields = require('./validateEditorFields.js');
 
 const { jQuery } = window;
 
+// eslint-disable-next-line no-unused-vars
+const { cdbg, cerr, cwarn } = require('../../clog.js')('Anno-Editor');
+
 // function soon(f) { return setTimeout(f, 1); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function ores(x) { return x || ''; }
@@ -137,8 +140,7 @@ module.exports = {
       jQuery(editor.$el).find('.initially-hidden').hide();
       editor.setStatusMsg(); // reset = dismiss
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
-      console.debug('Anno-Editor: Initial zone selector:',
-        [editor.getZoneSelectorSvg()]);
+      cdbg('Initial zone selector:', [editor.getZoneSelectorSvg()]);
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
       editor.previewWarnings.reset();
@@ -227,7 +229,7 @@ module.exports = {
     tabRefIsActive(refName) {
       const tab = this.$refs[refName];
       const { active } = orf(tab);
-      // console.debug('tabRefIsActive:', { refName, tab, active });
+      // cdbg('tabRefIsActive:', { refName, tab, active });
       return active;
     },
 
@@ -248,7 +250,7 @@ module.exports = {
 
     getZoneSelectorSvg() {
       const sel = this.getPrimarySubjectTarget().selector;
-      // console.debug('getZoneSelectorSvg', { sel }, orf(sel).value);
+      // cdbg('getZoneSelectorSvg', { sel }, orf(sel).value);
       if (!sel) { return ''; }
       if (sel.type !== 'SvgSelector') { return ''; }
       return ores(sel.value).trim();
@@ -291,7 +293,7 @@ module.exports = {
         editMode,
       };
       commit('FLAT_UPDATE_APP_STATE', updEditMode);
-      // console.debug('startCompose:', updEditMode, 'template:', anno);
+      // cdbg('startCompose:', updEditMode, 'template:', anno);
       await editor.loadAnnoData(anno);
       eventBus.$emit('open-editor');
     },
@@ -347,16 +349,16 @@ module.exports = {
       delete anno.created;
       delete anno.id;
       delete anno.via;
-      // console.debug('anno-editor revise():', anno);
+      // cdbg('revise:', anno);
       await this.startCompose('revise', () => anno);
     },
 
     setZoneSelector(unoptimizedNewSvg) {
       const editor = this;
-      const refuse = 'Anno-Editor: Refusing setZoneSelector(): ';
+      const refuse = 'Refusing setZoneSelector(): ';
       const now = Date.now();
       if (now < editor.svgUpdateBlockedUntil) {
-        return console.warn(refuse + 'Cooldown from previous update.');
+        return cwarn(refuse + 'Cooldown from previous update.');
       }
       editor.svgUpdateBlockedUntil = now + (1e3
         * editor.svgUpdateMinimumRepeatDelaySec);
@@ -371,8 +373,7 @@ module.exports = {
       newSvg = newSvg.replace(/\s*(?=<\w)/g, '\n');
       if (svgRgx.emptySvgTag.test(newSvg)) { newSvg = discardSvg(newSvg); }
       if (discardedSvgParts.length) {
-        console.warn('Anno-Editor: Discarded degenerate SVG part(s):',
-          discardedSvgParts);
+        cwarn('Discarded degenerate SVG part(s):', discardedSvgParts);
       }
 
       const badFail = newSvg && (function checkBadFail() {
@@ -391,13 +392,13 @@ module.exports = {
       if (badFail) {
         const e = refuse + 'SVG selector ' + badFail;
         const n = '\n' + encodeURI(newSvg).replace(/%20/g, decodeURI);
-        console.error(e || n, { oldSvg, newSvg });
+        cerr(e || n, { oldSvg, newSvg });
         // window.prompt(editor.l10n('please_report_error:'), e + n);
         return;
       }
-      console.debug('Anno-Editor: setZoneSelector:',
-        { oldSvg, newSvg: (newSvg === oldSvg ? '(same)' : newSvg) });
-      if (newSvg === oldSvg) { return; }
+      const same = (newSvg === oldSvg);
+      cdbg('setZoneSelector:', { oldSvg, newSvg: (same ? '(same)' : newSvg) });
+      if (same) { return; }
       const { state } = editor.$store;
       const origTgt = state.editing.target;
       const tgtCateg = categorizeTargets(state, origTgt);
@@ -469,7 +470,7 @@ module.exports = {
           zoneEditorRef.loadImage(targetImage);
         }
       } catch (zoneEditErr) {
-        console.error('Zone editor init failure:', zoneEditErr);
+        cerr('Zone editor init failure:', zoneEditErr);
       }
     },
 
@@ -497,8 +498,7 @@ module.exports = {
         if ((url === state.targetSource) || (url === state.targetImage)) {
           const hints = { targetIdx: index, tt, expected: 'primary' };
           hints.id = (tgt.id || tgt);
-          console.warn('Anno-Editor: compileTargetsListForTemplating: fixing:',
-            jsonDeepCopy(hints));
+          cwarn('compileTargetsListForTemplating: fixing:', hints);
           return 'primary';
         }
         return (tt || 'unknown');
@@ -542,7 +542,7 @@ module.exports = {
 
     htmlBodyWasModified(evt) {
       const editor = this;
-      // console.debug('htmlBodyWasModified:', evt);
+      // cdbg('htmlBodyWasModified:', evt);
       editor.dirtyHtmlBodyValue = evt.newHtml;
       editor.cachedSanitizedHtmlBodyValue = null;
     },
@@ -565,7 +565,7 @@ module.exports = {
       const trace = (new Error()).stack.split(/\n\s*/).slice(1);
       editor.cachedSanitizedHtmlBodyValue = clean;
       editor.cachedSanitizedHtmlBodyDiff = diff;
-      console.debug('getCleanHtml had to update the cache:', {
+      cdbg('getCleanHtml had to update the cache:', {
         input: { dirty },
         sani: sanitizeHtml,
         modified,
@@ -635,7 +635,7 @@ module.exports = {
         jqHint.appendTo(wrapper);
       }
 
-      console.debug('Anno-Editor: spawnExternalModuleInTab:', evName, evArg);
+      cdbg('spawnExternalModuleInTab:', evName, evArg);
       const confirmOpt = 'debugConfirmSpawnExternalModuleInTab';
       if (editor.$store.state[confirmOpt]) {
         const msg = confirmOpt + ': Send event ' + evName + '?';
