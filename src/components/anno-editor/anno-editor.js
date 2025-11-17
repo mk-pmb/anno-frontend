@@ -1,6 +1,7 @@
 const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
 const objFromKeysList = require('obj-from-keys-list').default;
+const unpackSingleProp = require('unwrap-single-prop').default
 
 const eventBus = require('../../event-bus.js');
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
@@ -198,7 +199,11 @@ module.exports = {
     setStatusMsg(...args) { return this.$refs.statusMsg.setMsg(...args); },
 
     uiPanic: Object.assign(function uiPanic(why) {
-      window.alert(this.l10n(uiPanic.msg[why] || why));
+      const msg = this.l10n(uiPanic.msg[why] || why);
+      window.alert(msg);
+      const err = new Error(msg);
+      err.codeOrVoc = why;
+      return err;
     }, { msg: {
       EInvalidData: '<error:> <corrupt_data>',
     } }),
@@ -280,9 +285,14 @@ module.exports = {
       const editor = this;
       const { commit, state } = editor.$store;
       const anno = annoDataTmpl(state);
+      const draftReply = ores(unpackSingleProp(0, anno['as:inReplyTo']));
+      if (draftReply) { anno['as:inReplyTo'] = draftReply; }
+      if (Array.isArray(draftReply)) {
+        throw editor.uiPanic('reply_target_too_many');
+      }
       const updEditMode = {
         editEnforceReplaces: ores(anno['dc:replaces']),
-        editEnforceReplying: ores(anno['as:inReplyTo']),
+        editEnforceReplying: draftReply,
         editEnforceVersionOf: ores(anno['dc:isVersionOf']),
         editMode,
       };
