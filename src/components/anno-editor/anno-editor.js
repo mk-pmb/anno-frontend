@@ -8,6 +8,7 @@ const persistentConfig = require('../../browserStorage.js').appConfig;
 
 const categorizeTargets = require('./categorizeTargets.js');
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
+const fixupSvgSelector = require('./fixupSvgSelector.js');
 const getCleanAnno = require('./getCleanAnno.js');
 const libPreviewWarnings = require('./previewWarnings.js');
 const loadAnnoData = require('./loadAnnoData.js');
@@ -23,13 +24,6 @@ const { cdbg, cerr, cwarn } = require('../../clog.js')('Anno-Editor');
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function ores(x) { return x || ''; }
 function orf(x) { return x || false; }
-
-const svgRgx = {
-  emptySvgTag: /^<svg\s*>\s*<\/svg\s*>$/,
-  tinyShape: /<\w+(?=\s)[^<>]*\s(?:width|height)="\d{0,2}e\-\d{2,}"[^<>]>\s*/g,
-};
-
-const maxSvgSelBytes = 32 * 1024;
 
 
 const pluginsUsed = [
@@ -363,39 +357,9 @@ module.exports = {
       editor.svgUpdateBlockedUntil = now + (1e3
         * editor.svgUpdateMinimumRepeatDelaySec);
 
-      let newSvg = String(ores(unoptimizedNewSvg)).trim();
-      const discardedSvgParts = [];
-      function discardSvg(part) {
-        discardedSvgParts.push(part);
-        return '';
-      }
-      newSvg = newSvg.replace(svgRgx.tinyShape, discardSvg);
-      newSvg = newSvg.replace(/\s*(?=<\w)/g, '\n');
-      if (svgRgx.emptySvgTag.test(newSvg)) { newSvg = discardSvg(newSvg); }
-      if (discardedSvgParts.length) {
-        cwarn('Discarded degenerate SVG part(s):', discardedSvgParts);
-      }
-
-      const badFail = newSvg && (function checkBadFail() {
-        if (newSvg.length > maxSvgSelBytes) {
-          return 'is too huge: ' + newSvg.length + ' bytes';
-        }
-        if (!/\d/.test(newSvg)) { return 'contains no digits at all.'; }
-        if (!/[1-9]/.test(newSvg)) { return 'contains no non-zero digits.'; }
-        const m = /<\w+ [^<>1-9]+>/.exec(newSvg);
-        if (m) {
-          newSvg = m[0];
-          return 'contains a shape with no non-zero digits.';
-        }
-      }());
       const oldSvg = editor.getZoneSelectorSvg();
-      if (badFail) {
-        const e = refuse + 'SVG selector ' + badFail;
-        const n = '\n' + encodeURI(newSvg).replace(/%20/g, decodeURI);
-        cerr(e || n, { oldSvg, newSvg });
-        // window.prompt(editor.l10n('please_report_error:'), e + n);
-        return;
-      }
+      const newSvg = ores(fixupSvgSelector(unoptimizedNewSvg, oldSvg));
+      if (newSvg.startsWith('<fail>')) { return; }
       const same = (newSvg === oldSvg);
       cdbg('setZoneSelector:', { oldSvg, newSvg: (same ? '(same)' : newSvg) });
       if (same) { return; }
