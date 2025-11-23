@@ -90,7 +90,7 @@ const EX = { // exports namespace
         ((appMode === 'list') && 'fetchAnnoList'),
         'fetchUserSessionInfo',
       ];
-      pEachSeries(todo, async function dare(phase) {
+      await pEachSeries(todo, async function dare(phase) {
         try {
           await (phase && store.dispatch(phase));
         } catch (err) {
@@ -99,6 +99,7 @@ const EX = { // exports namespace
           eventBus.$emit('error', err);
         }
       });
+      eventBus.$emit('initialStateRetrieved');
     },
 
     fetchAnnoList,
