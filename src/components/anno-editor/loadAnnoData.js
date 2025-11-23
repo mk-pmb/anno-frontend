@@ -57,7 +57,10 @@ const EX = async function loadAnnoData(origAnno) {
 
   // Snatch the HTML before we pop the bodies off the anno:
   const firstHtmlBody = editorModelDef.getters.firstHtmlBody(anno);
-  const html = (firstHtmlBody || false).value || '';
+  let html = String((firstHtmlBody || false).value
+    || popField('html') // <-- proprietary debug fallback for easier testing
+    || '').trim();
+  if (!html.startsWith('<')) { html = '<p>' + html + '</p>'; }
   if (firstHtmlBody) { firstHtmlBody.value = dummyHtml; }
 
   const editorFields = {
