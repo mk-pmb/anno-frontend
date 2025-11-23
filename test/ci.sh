@@ -7,6 +7,7 @@ function ci_test () {
   cd -- "$REPO_DIR" || return $?
   [ -f 'webpack.config.js' ] || return $?$(
     echo 'E: Failed to determine REPO_DIR' >&2)
+  [ -n "$CI" ] || return 4$(echo E: 'Not running on CI?!' >&2)
 
   npm install --global npm@7 || return $?
   npm install . || return $?
@@ -17,8 +18,21 @@ function ci_test () {
     -- node_modules/vue2-teleport/dist/teleport.*
   ### ENDOF ### Hotfix for vue2-teleport issue 13 (2025-10-23) ###
 
+  mkdir --parents -- dist
+  ci_multipack dist/debug_node_modules node_modules/ package*.json || return $?
   npm run build || return $?
+  ( cd dist && ci_multipack all_dist_bundles anno-frontend.* ) || return $?
   npm test || return $?
+}
+
+
+function ci_multipack () {
+  local DEST_BFN="$1"; shift
+  echo "pack $DEST_BFN:"
+  zip -r9 "$DEST_BFN".zip -- "$@" || return $?
+  tar czvf "$DEST_BFN".tgz -- "$@" || return $?
+  du --apparent-size -- "$DEST_BFN".*
+  echo
 }
 
 
