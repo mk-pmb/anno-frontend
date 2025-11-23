@@ -1,11 +1,11 @@
 <div class="row agent-identity-selector-row">
   <div class="col col-sm-1">
-    <label class="agent-identity-label" :for="dropdownId"
+    <label class="agent-identity-label" :for="dropdownIdOrFallback"
       :v-if="rowCaption"
       >{{ rowCaption }}:</label>
   </div>
   <div class="col agent-identity-selector-col col-md-11">
-    <select ref="dropdown" :id="dropdownId" :name="dropdownName"
+    <select ref="dropdown" :id="dropdownIdOrFallback" :name="dropdownName"
       class="form-control"
       @change="internalSelectionChanged($event)">
       <option
