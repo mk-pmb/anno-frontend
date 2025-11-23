@@ -1,5 +1,6 @@
 const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
+const mergeOptions = require('merge-options');
 const objFromKeysList = require('obj-from-keys-list').default;
 const unpackSingleProp = require('unwrap-single-prop').default
 
@@ -67,6 +68,24 @@ function checkEventBusAnnoArgEvent(evtName, arg) {
       + 'but a string was given. Did you mean ' + evtName + 'ByUrl?');
     throw new TypeError(msg);
   }
+}
+
+
+function decideInitialAnnoForStartCompose(annoDataTmpl, state) {
+  let anno = annoDataTmpl(state);
+  Object.keys(anno).forEach(k => (anno[k] || delete anno[k]));
+  if (state.uiDebugMode) {
+    const k = 'annoFE_compose_init';
+    let v = window[k] || window.localStorage.getItem(k);
+    v = v && JSON.parse(v);
+    if (v) {
+      cdbg(k, '!', v);
+      cdbg(k, '+', anno);
+      anno = mergeOptions(v, anno);
+      cdbg(k, '=', anno);
+    }
+  }
+  return anno;
 }
 
 
@@ -283,7 +302,7 @@ module.exports = {
     async startCompose(editMode, annoDataTmpl) {
       const editor = this;
       const { commit, state } = editor.$store;
-      const anno = annoDataTmpl(state);
+      const anno = decideInitialAnnoForStartCompose(annoDataTmpl, state);
       const draftReply = ores(unpackSingleProp(0, anno['as:inReplyTo']));
       if (draftReply) { anno['as:inReplyTo'] = draftReply; }
       if (Array.isArray(draftReply)) {
