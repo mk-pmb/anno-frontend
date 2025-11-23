@@ -153,7 +153,7 @@ module.exports = {
       jQuery(editor.$el).find('.initially-hidden').hide();
       editor.setStatusMsg(); // reset = dismiss
       editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
-      cdbg('Initial zone selector:', [editor.getZoneSelectorSvg()]);
+      // cdbg('Initial zone selector:', [editor.getZoneSelectorSvg()]);
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
       editor.previewWarnings.reset();
