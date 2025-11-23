@@ -166,8 +166,8 @@ module.exports = {
 
   mounted() {
     const editor = this;
-    const { state } = editor.$store;
-    if (state.targetEditorTabVoc) {
+    const initialState = editor.$store.state;
+    if (initialState.targetEditorTabVoc) {
       eventBus.$on('editorTabNowShowing:target-editor',
         editor.spawnExternalTagetEditorInTab);
     }
