@@ -7,6 +7,8 @@ function decodeAgentFromDataset() {
   return orf(a && JSON.parse(a));
 }
 
+function naiveRandomStr() { return Math.random().toString(36).slice(2); }
+
 
 module.exports = {
 
@@ -27,12 +29,22 @@ module.exports = {
   },
 
   data() { return {
+    dropdownIdOrFallback: '',
     currentAgentId: '',
   } },
 
   created() {
     const vueElem = this;
     vueElem.currentAgentId = (orf(vueElem.initialAgent).id || '');
+    vueElem.dropdownIdOrFallback = (vueElem.dropdownId
+      || ('agent-identity-selector-' + naiveRandomStr() + naiveRandomStr()));
+  },
+
+  mounted() {
+    const vueElem = this;
+    const domElem = vueElem.$el;
+    const dd = vueElem.$refs.dropdown;
+    domElem.focus = dd.focus.bind(dd);
   },
 
   methods: {

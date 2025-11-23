@@ -28,13 +28,13 @@
         <input
           :placeholder="l10n('annofield_title') + ' ' + l10n('required_field')"
           v-model="title"
-          class="form-control"
+          class="form-control anno-title-field"
           type="text"
           required
           >
         <agent-identity-selector ref="authorIdentitySelector"
+          class="author-agent-field"
           :row-caption="l10n('author_identity')"
-          dropdown-id="annoeditor-author-identity-selector"
           :known-identities="knownAuthorIdentities"
           :initial-agent="initialAuthorAgent"
           :onchange="onSelectAuthorIdentity"
