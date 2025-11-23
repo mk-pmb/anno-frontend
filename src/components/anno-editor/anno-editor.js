@@ -157,6 +157,7 @@ module.exports = {
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
       editor.previewWarnings.reset();
+      editor.focusMostImportantInputFieldInCommentTextTab();
     });
     eventBus.$on('editor-set-userhtml',
       html => editor.$refs.htmlBodyEditor.setUserHtml(html));
@@ -171,6 +172,8 @@ module.exports = {
       eventBus.$on('editorTabNowShowing:target-editor',
         editor.spawnExternalTagetEditorInTab);
     }
+    eventBus.$on('editorTabNowShowing:comment_text',
+      editor.focusMostImportantInputFieldInCommentTextTab);
     eventBus.$on('editorShouldUpdatePreview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', editor.updatePreview);
     eventBus.$on('editorTabNowShowing:preview', () => {
@@ -711,6 +714,22 @@ module.exports = {
       const prev = before.pop();
       const after = list.slice(idx + 1);
       return { list: [...before, item, prev, ...after] };
+    },
+
+
+    focusMostImportantInputFieldInCommentTextTab() {
+      // const trace = 'focusMostImportantInputFieldInCommentTextTab';
+      const editor = this;
+      const stEdi = editor.$store.state.editing;
+      const fieldSel = (function decide() {
+        if (!stEdi.title) { return '.anno-title-field'; }
+        if (!orf(stEdi.creator).id) { return '.author-agent-field select'; }
+        return '.annoeditor-html-editor .ql-editor';
+      }());
+      const jqCTT = jQuery(editor.$refs.commentTextTab.$el);
+      const fieldElem = fieldSel && jqCTT.find(fieldSel)[0];
+      // cdbg(trace, { fieldSel }, fieldElem, jsonDeepCopy(stEdi));
+      if (fieldElem) { fieldElem.focus(); }
     },
 
 
