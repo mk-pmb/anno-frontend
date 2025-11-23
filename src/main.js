@@ -173,9 +173,6 @@ const EX = {
     store.getAnnoAppRef = EX.getAnnoAppRef;
     Object.assign(store, storeBlueprint.customApiExtras);
 
-    // Initialize store state
-    setTimeout(() => vueRootElem.$store.dispatch('retrieveInitialState'), 1);
-
     function installPlugin(plName, factory) {
       const injected = loMapValues(factory.injectModules, function inj(what) {
         const found = getOwn(pluginInjectableModules, what);
@@ -201,6 +198,11 @@ const EX = {
     });
 
     applyCheats();
+
+    setTimeout(() => vueRootElem.$store.dispatch('retrieveInitialState'), 1);
+    eventBus.$once('initialStateRetrieved', async function almostReady() {
+      setTimeout(() => eventBus.$emit('annoAppReady'), 1);
+    });
 
     return vueRootElem;
   },
@@ -246,7 +248,7 @@ EX.reuseLib = (function compile() {
 eventBus.$on('annoListFetchedRaw', (list) => { currentAnnosList = list; });
 
 
-eventBus.$once('annoListReplaced',
+eventBus.$once('annoAppReady',
   () => applyCheats.checkAutoEmitQ(window.name, EX.appName + ':autoEmitQ:'));
 
 
