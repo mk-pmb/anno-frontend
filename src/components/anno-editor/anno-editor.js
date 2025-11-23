@@ -98,7 +98,6 @@ module.exports = {
       forceUpdatePreviewTs: 0,
       initialAuthorAgent: {},
       previewWarnings: libPreviewWarnings.initializeDataApi(),
-      previousChosenAuthorIdUrl: '',
       svgUpdateBlockedUntil: 0,
       symbolForNoLanguage,
       zoneEditorEventsSetupDone: false,
@@ -274,7 +273,7 @@ module.exports = {
       const { authorIdentities } = orf(editor.$store.state.userSessionInfo);
       if (!orf(authorIdentities).length) { return; }
       if (authorIdentities.length === 1) { return authorIdentities[0]; }
-      const prev = editor.previousChosenAuthorIdUrl;
+      const prev = persistentConfig.get('previousChosenAuthorIdUrl');
       if (!prev) { return; }
       function isPrevAgent(a) { return orf(a).id /* Agent ID */ === prev; }
       const agent = authorIdentities.find(isPrevAgent);
@@ -413,7 +412,7 @@ module.exports = {
       const agent = evt.getAgent();
       if (!agent) { return; }
       editor.$store.commit('SET_EDITOR_ANNO_PROP', ['creator', agent]);
-      editor.previousChosenAuthorIdUrl = evt.agentId;
+      persistentConfig.put('previousChosenAuthorIdUrl', evt.agentId);
       editor.updatePreview();
     },
 
