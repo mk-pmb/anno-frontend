@@ -11,7 +11,10 @@ function zipball_nm () {
   local DEPLOY_CHECK_FILE='.htaccess'
   local ZIP_FN='tests.nm.snapshot.zip'
   local TESTS_DIR='test/html'
-  local SKIP_LINT=
+  local BUILD= SKIP_LINT= AUDIENCE=
+  for BUILD in build.@"$HOSTNAME".sh build/build.sh ; do
+    [ -x "$BUILD" ] && break
+  done
 
   case " $* " in
     *' --no-lint '* ) SKIP_LINT='--no-lint';;
@@ -21,7 +24,7 @@ function zipball_nm () {
     *' PD '* | \
     *' PU '* | \
     *' reex '* | \
-    *' pack '* ) ./build/build.sh $SKIP_LINT || return $?;;
+    *' pack '* ) ./"$BUILD" $SKIP_LINT $AUDIENCE || return $?;;
   esac
   case " $* " in
     *' reex '* ) deploy --redist-inplace; return $?;;
