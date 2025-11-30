@@ -1,4 +1,3 @@
-// -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 /* eslint-disable global-require */
 
@@ -16,6 +15,7 @@ function jqSetSingularClass(cls, idx, list) {
 module.exports = {
   mixins: [
     require('../../mixin/l10n.js'),
+    require('./shadyDomWorkaroundNoHide251130.js'),
   ],
   template: require('./bootstrap-tabs.html'),
   style: require('./bootstrap-tabs.scss'),
@@ -76,6 +76,13 @@ module.exports = {
 
 
   methods: {
+
+    tabClicked(evt) {
+      const tabMgr = this;
+      if (evt.target.parentNode.parentNode !== tabMgr.$refs.tabs) { return; }
+      // console.debug(tabMgr, 'tabClicked', evt.target.dataset);
+      setTimeout(tabMgr.shadyDomWorkaroundNoHide251130, 50);
+    },
 
     tabPanesAsVueElements() {
       const ctnr = this.$refs.panesContainer;
