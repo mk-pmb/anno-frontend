@@ -44,16 +44,16 @@ module.exports = {
       tabPaneVue() { return tabMgr.tabPanesAsVueElements(this.tabIndex); },
     };
     const jqTabs = jQuery(tabMgr.$refs.tabs);
-    function installTabEvent(bsName, evBusName) {
+    function installTabEvent(bsName, evBusEvName) {
       function bsTabEventProxy(domEvent) {
         const ds = domEvent.target.dataset;
         const tabIndex = +ds.index;
         const topic = (ds.topic || '');
-        if (evBusName === 'editorTabNowShowing') {
+        if (evBusEvName === 'editorTabNowShowing') {
           tabMgr.tabWasSwitchedTo(tabIndex);
         }
-        const evBusEvent = {
-          annoAppEventName: evBusName,
+        const evBusEvInfo = {
+          annoAppEventName: evBusEvName,
           bootstrapEventName: bsName,
           tabIndex,
           tabName: ds.name,
@@ -61,9 +61,9 @@ module.exports = {
           tabTopic: topic,
           ...tabEventApi,
         };
-        // console.debug('Anno-Editor tab event:', evBusEvent);
-        eventBus.$emit(evBusName, evBusEvent);
-        if (topic) { eventBus.$emit(evBusName + ':' + topic, evBusEvent); }
+        // console.debug('Anno-Editor tab event:', evBusEvInfo);
+        eventBus.$emit(evBusEvName, evBusEvInfo);
+        if (topic) { eventBus.$emit(evBusEvName + ':' + topic, evBusEvInfo); }
       }
       jqTabs.on(bsName + '.bs.tab', 'a[data-toggle="tab"]', bsTabEventProxy);
     }
