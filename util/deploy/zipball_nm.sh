@@ -11,14 +11,14 @@ function zipball_nm () {
   local DEPLOY_CHECK_FILE='.htaccess'
   local ZIP_FN='tests.nm.snapshot.zip'
   local TESTS_DIR='test/html'
+  local FLAGS=" $* "
   local BUILD= SKIP_LINT= AUDIENCE=
   for BUILD in build.@"$HOSTNAME".sh build/build.sh ; do
     [ -x "$BUILD" ] && break
   done
 
-  case " $* " in
-    *' --no-lint '* ) SKIP_LINT='--no-lint';;
-  esac
+  [ "${FLAGS/ --no-lint }" == "$FLAGS" ] || SKIP_LINT='--no-lint'
+  [ "${FLAGS/ reex }" == "$FLAGS" ] || AUDIENCE='dev'
 
   case " $* " in
     *' PD '* | \
