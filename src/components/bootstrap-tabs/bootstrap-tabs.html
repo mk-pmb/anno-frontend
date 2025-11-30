@@ -1,4 +1,8 @@
-<div class="annoeditor-bootstrap-tabs">
+<div class="annoeditor-bootstrap-tabs"
+  :data-cat-index="currentActiveTabIndex"
+  :data-cat-name="currentActiveTabName"
+  :data-cat-topic="currentActiveTabTopic"
+  >
   <slot name="extras-above"></slot>
   <ul ref="tabs" class="nav nav-tabs">
     <li role="presentation"
