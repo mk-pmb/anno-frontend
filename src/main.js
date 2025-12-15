@@ -59,6 +59,7 @@ let currentAnnosList = false;
 const EX = {
 
   appName: 'ubhdAnnoApp',
+  appBundleMeta: {}, // will be inserted at build time.
 
   browserStorage,
 

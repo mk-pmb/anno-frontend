@@ -8,6 +8,12 @@ function wpw_cli_init () {
   set -o errexit -o pipefail
   exec </dev/null
 
+  case "$REPO_TOP" in
+    /app ) # probably running in docker
+      git config --global --add safe.directory "$REPO_TOP"
+      ;;
+  esac
+
   local AUDIENCE='dev'
   case "$1" in
     --audience=* ) AUDIENCE="${1#*=}"; shift;;
@@ -33,6 +39,10 @@ function wpw_cli_init () {
   echo D: "webpack for $AUDIENCE:"
   env "${WP_ENV[@]}" ./node_modules/.bin/webpack
 
+  chown --recursive --reference dist/{,} 2>/dev/null || true
+  wpw_insert_build_info_strings || return $?
+
+  chmod a=r -- "$BUNDLE_DEST_BFN".* || true
   du --human-readable -- "$BUNDLE_DEST_BFN".*
   sha1sum --binary -- "$BUNDLE_DEST_BFN".*
 
@@ -44,6 +54,21 @@ function wpw_cli_init () {
   local GREP='grep --color=always -m 10 -HaboPe'
   ! LANG=C $GREP "$BAD_RGX" -- "$BUNDLE_DEST_BFN".* >&2 || return 4$(
     echo E: "Found suspicious strings in dist/ files, see above." >&2)
+}
+
+
+function wpw_insert_build_info_strings () {
+  local MARK_RGX='\b(appBundleMeta:) *\{\}'
+  local FILES=()
+  readarray -t FILES < <(grep -lPe "$MARK_RGX" -- "$BUNDLE_DEST_BFN".*)
+  [ -n "${FILES[0]}" ] || return 0
+
+  local GIT_INFO="$(git log --format="%at %h" -n 10)"
+  GIT_INFO="${GIT_INFO//$'\n'/ }"
+  local META="{uts:$(date +%s),git:'$GIT_INFO'}"
+
+  chmod u+w -- "${FILES[@]}" || return $?
+  LANG=C sed -re "s~$MARK_RGX~\n\1$META\n~" -i -- "${FILES[@]}" || return $?
 }
 
 
