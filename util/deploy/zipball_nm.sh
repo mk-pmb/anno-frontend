@@ -111,7 +111,6 @@ function deploy () {
 
 function find_nm_deps () {
   local RGX='"(\.*/)*node_modules/($\
-    |@/anno-common|$\
     |(@æ*/|)æ+)/'
   RGX="${RGX//$'\n'/}"
   RGX="${RGX//æ/[a-z0-9_-]}"
@@ -139,9 +138,6 @@ function refine_one_nm_dep () {
   done
 
   case "${DEP##*/}" in
-
-    anno-common )
-      NM_DEPS+=( "$DEP"/anno-webpack/dist );;
 
     font-awesome )
       NM_DEPS+=(
