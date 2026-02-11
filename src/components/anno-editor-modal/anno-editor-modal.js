@@ -53,11 +53,13 @@ module.exports = {
         stopHighlighting(...args) {eventBus.$emit('stopHighlighting', ...args)},
 
         decideHeaderDetails() {
-          const st = this.$store.state;
+          const modal = this;
+          const st = modal.$store.state;
           const em = st.editMode;
           const hdr = { title: 'annoeditor_mode_' + em };
           if (em === 'reply') { hdr.refUrl = st.editEnforceReplying; }
           if (em === 'revise') { hdr.refUrl = st.editEnforceReplaces; }
+          hdr.permaUrl = hdr.refUrl && modal.annoIdToPermaUrl(hdr.refUrl);
           return hdr;
         },
 

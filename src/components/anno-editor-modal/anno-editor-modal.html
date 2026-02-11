@@ -20,7 +20,9 @@
           <a v-if="hdr.refUrl" class="anno-url wrap-anywhere"
             @mouseenter="startHighlighting(hdr.refUrl)"
             @mouseleave="stopHighlighting(hdr.refUrl)"
-            >{{ annoIdToPermaUrl(hdr.refUrl) }}</a>
+            @click.prevent
+            :href="hdr.permaUrl" target="_blank"
+            >{{ hdr.permaUrl }}</a>
         </component>
 
         <div class="top-right-buttons ml-auto text-nowrap">
