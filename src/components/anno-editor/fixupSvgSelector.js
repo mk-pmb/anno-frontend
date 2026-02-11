@@ -66,7 +66,7 @@ const EX = function fixupSvgSelector(unoptimizedNewSvg, oldSvg) {
   const m = svgRgx.shapeWithNoNonzeroDigits.exec(newSvg);
   if (m) { return fail('contains a shape with no non-zero digits.'); }
 
-  return newSvg;
+  return newSvg.trim();
 };
 
 

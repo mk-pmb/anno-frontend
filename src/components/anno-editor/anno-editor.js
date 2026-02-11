@@ -273,7 +273,7 @@ module.exports = {
       // cdbg('getZoneSelectorSvg', { sel }, orf(sel).value);
       if (!sel) { return ''; }
       if (sel.type !== 'SvgSelector') { return ''; }
-      return ores(sel.value).trim();
+      return ores(sel.value).trim().replace(/\s*\n/g, '\n');
     },
 
     save() {

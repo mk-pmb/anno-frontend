@@ -14,6 +14,7 @@ const legacyFieldsMustAgree = require('./legacyFieldsMustAgree.js');
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function keys2str(x) { return String(Object.keys(x).sort()); }
+function orf(x) { return x || false; }
 
 function wrapNonObj(x, k, u) {
   if (x === undefined) { return u; }
@@ -63,11 +64,33 @@ const EX = async function loadAnnoData(origAnno) {
   if (!html.startsWith('<')) { html = '<p>' + html + '</p>'; }
   if (firstHtmlBody) { firstHtmlBody.value = dummyHtml; }
 
+  function fixupOneTarget(origTgt, idx) {
+    const tgt = { ...origTgt };
+    const sel = orf(tgt.selector);
+    console.debug('fixupOneTargetInplace:', { idx, sel });
+    if (sel.type === 'SvgSelector') {
+      const origSvg = String(sel.value || '');
+      if (!origSvg.includes('<svg')) {
+        console.warn('Anno-Frontend: Broken target#' + idx
+          + ': Discard SVG selector that has no svg root tag:', origSvg);
+        delete tgt.selector;
+        if (tgt.scope && state.targetScopeImpliesSource) {
+          tgt.id = tgt.scope;
+          delete tgt.scope;
+          delete tgt.source;
+        }
+      }
+    }
+    return tgt;
+  }
+  const origTargets = [].concat(popField('target')).filter(Boolean);
+  const fixedTargets = origTargets.map(fixupOneTarget);
+
   const editorFields = {
     doi: legacyFieldsMustAgree(popField, String, 'dc:identifier doi') || '',
     title,
     creator,
-    target: popField('target'),
+    target: fixedTargets,
     versionOf: popStr('dc:isVersionOf'),
     body: arrayOfTruths(popField('body')),
     rights: '',
