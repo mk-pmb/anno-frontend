@@ -6,12 +6,13 @@ const getOwn = require('getown');
 const api22 = require('../../api22.js');
 const eventBus = require('../../event-bus.js');
 
+const neverSubmitFields = require('./neverSubmitFields.js');
 const validateEditorFields = require('./validateEditorFields.js');
 
 
 const EX = async function saveCreate(editor) {
   const anno = editor.getCleanAnno();
-  EX.neverSubmitFields.forEach(k => delete anno[k]);
+  neverSubmitFields.forEach(k => delete anno[k]);
   const { state, commit, dispatch } = editor.$store;
 
   // window.relaEd = editor.$refs.relationLinkEditor;
@@ -53,20 +54,6 @@ const EX = async function saveCreate(editor) {
 
 
 Object.assign(EX, {
-
-  neverSubmitFields: [
-    'as:deleted',
-    'collection', // <- non-standard legacy prop used by ancient anno-fe
-    'created',
-    'dc:dateAccepted',
-    'dc:identifier',
-    'doi',
-    'iana:latest-version',
-    'iana:version-history',
-    'iana:working-copy',
-    'replyTo',
-    'ubhd:aclPreviewBySubjectTargetUrl',
-  ],
 
   parseCustomToplevelAttributes(anno, ctaText) {
     const ctaDict = {};

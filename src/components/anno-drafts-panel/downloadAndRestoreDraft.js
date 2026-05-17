@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 
 const eventBus = require('../../event-bus.js');
-const { neverSubmitFields } = require('../anno-editor/saveCreate.js');
+const neverSubmitFields = require('../anno-editor/neverSubmitFields.js');
 
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
 
