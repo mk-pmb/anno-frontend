@@ -103,7 +103,6 @@ module.exports = {
   style: require('./anno-editor.scss'),
 
   props: {
-    editorId: { type: String, default: 'anno-editor' },
     svgUpdateMinimumRepeatDelaySec: { type: Number, default: 0.1 },
   },
 

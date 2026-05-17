@@ -14,13 +14,13 @@
       severity="info" />
   </template>
 
-  <bootstrap-tab :name="`${prefix}-${editorId}-tab-comment`"
+  <bootstrap-tab :name="`${prefix}-anno-editor-tab-comment`"
     :title="l10n('comment_tab')"
     topic="comment_text"
     ref="commentTextTab"
     >
     <html-editor ref="htmlBodyEditor"
-      :editor-id="`${prefix}-${editorId}-html-editor`"
+      :editor-id="`${prefix}-anno-editor-html-editor`"
       user-html=""
       :onUserHtmlChanged="htmlBodyWasModified"
       >
@@ -72,7 +72,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-targeteditor`"
+    :name="`${prefix}-anno-editor-tab-targeteditor`"
     v-if="$store.state.targetEditorTabVoc"
     :title="l10n($store.state.targetEditorTabVoc)"
     ref="targetEditorTab"
@@ -87,7 +87,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-zones`"
+    :name="`${prefix}-anno-editor-tab-zones`"
     :title="l10n('zones')"
     :visible="Boolean($store.state.targetImage)
       && (!$store.state.disableXrxVueEditor)"
@@ -125,7 +125,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-semtags`"
+    :name="`${prefix}-anno-editor-tab-semtags`"
     :title="l10n('semtags')"
     ref="semtagsTab"
     topic="tags"
@@ -134,7 +134,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-links`"
+    :name="`${prefix}-anno-editor-tab-links`"
     :title="l10n('relationlinks')"
     ref="linksTab"
     topic="links"
@@ -147,7 +147,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-preview`"
+    :name="`${prefix}-anno-editor-tab-preview`"
     :title="l10n('preview')"
     ref="previewTab"
     topic="preview"
@@ -260,7 +260,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-drafts`"
+    :name="`${prefix}-anno-editor-tab-drafts`"
     :title="l10n('drafts')"
     v-if="$store.state.draftStoreEndpoint"
     ref="draftsTab"
@@ -275,7 +275,7 @@
   </bootstrap-tab>
 
   <bootstrap-tab
-    :name="`${prefix}-${editorId}-tab-debug`"
+    :name="`${prefix}-anno-editor-tab-debug`"
     title="⚙"
     ref="debugTab"
     tab-cls="ml-auto debug-feature debug-panel-tab"
