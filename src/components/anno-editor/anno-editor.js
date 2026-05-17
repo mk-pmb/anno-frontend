@@ -196,7 +196,7 @@ module.exports = {
       const sess = this.$store.state.userSessionInfo;
       // ^- Already proxified by vue, so we don't need to
       //    protect anything by deep-copying it.
-      return ((sess || false).authorIdentities || []);
+      return (orf(sess).authorIdentities || []);
     },
 
     editMode: {
