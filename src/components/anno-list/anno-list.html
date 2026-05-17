@@ -186,6 +186,18 @@
         ].filter(Boolean)"
         ><i class="fa fa-link"></i> {{ l10n('import_annos_from_url') }}
       </component><!-- /.list-opt-import-annos-from-url -->
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        @click="menuCmdImportLatestDraft"
+        :class="[
+          'list-opt',
+          'list-opt-import-latest-draft',
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+        ].filter(Boolean)"
+        ><i class="fa fa-pencil"></i>
+          {{ l10n('annolist_import_latest_draft') }}
+      </component><!-- /.list-opt-import-annos-from-url -->
     </bootstrap-btnbar-dropdown><!-- /ref=ddList -->
 
     <!-- [

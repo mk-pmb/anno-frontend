@@ -39,7 +39,7 @@ const ldr = {
     const [, proto, remainder] = url.split(/^(\w+):/);
     const mapped = ldr.urlMap[proto];
     if (mapped) {
-      const fullUrl = mapped.join(remainder);
+      opt.url = mapped.join(remainder);
       const hint = 'imported from ' + url;
       if (ldr.buttons.byName.trace.checked) {
         opt.mergeIntoEach = { 'skos:note': hint };

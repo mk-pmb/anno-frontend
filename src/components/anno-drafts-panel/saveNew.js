@@ -7,6 +7,7 @@ const pDelay = require('delay');
 const sortedJson = require('safe-sortedjson');
 
 const genericSimpleApiCall = require('./genericSimpleApiCall.js');
+const persistentConfig = require('../../browserStorage.js').appConfig;
 
 const hash = require('./hash.js');
 
@@ -23,7 +24,7 @@ const EX = async function saveNew() {
     + '-' + panel.draftFilenameCommentAdjusted
     + '.json');
 
-  await genericSimpleApiCall({
+  const saved = await genericSimpleApiCall({
     panel,
     actionDescrVoc: 'save_as_draft',
     apiVerb: 'PUT',
@@ -41,6 +42,8 @@ const EX = async function saveNew() {
       throw err;
     },
   });
+  console.debug(EX.name, { saved });
+  persistentConfig.put('lastDraftSavedAsFileName', filename);
   await panel.scheduleAutoRescanDraftsList();
 };
 

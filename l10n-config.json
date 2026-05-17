@@ -143,6 +143,8 @@
             "annolist_list_menu_title": "Liste",
             "import_annos_from_url": "Lade von URL",
             "anno_imported_from_url": "Hinzugefügt aus URL",
+            "annolist_import_latest_draft": "Lade neuesten Entwurf",
+            "annolist_import_latest_draft:forgot": "Ihr Browser scheint sich nicht mehr zu erinnern, welchen Entwurf Sie zuletzt gespeichert hatten. Abhilfe: Laden Sie den Entwurf und speichern Sie ihn erneut.",
 
             "zones":               "Zonen",
             "lurk:explain:generic": "Die Bearbeitung wurde an @@module@@ übergeben.",
@@ -432,6 +434,8 @@
             "annolist_list_menu_title": "List",
             "import_annos_from_url": "Import from URL",
             "anno_imported_from_url": "Imported from URL",
+            "annolist_import_latest_draft": "Import latest draft",
+            "annolist_import_latest_draft:forgot": "It seems your browser cannot remember which draft you saved last. Try loading the draft and saving it again.",
 
             "zones":               "Zones",
             "lurk:explain:generic": "Editing has been delegated to @@module@@.",

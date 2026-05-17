@@ -182,14 +182,21 @@ module.exports = {
     },
 
 
-    async menuCmdImportAnnosFromUrl() {
+    async menuCmdImportAnnosFromUrl(origHow) {
       const annoList = this;
       const menuItemCaption = annoList.l10n('import_annos_from_url');
-      let input = window.prompt(menuItemCaption, annoList.previousImportUrl);
-      input = (input || '').trim();
+      const how = {
+        insertBeforeIndex: 0, /* Insert imported annos at the top of the list,
+          i.e. near the menu bar from where the user invoked the action. */
+        ...origHow,
+      };
+      let input = String(how.url || '');
+      if (!input) {
+        input = window.prompt(menuItemCaption, annoList.previousImportUrl);
+        input = (input || '').trim();
+      }
       if (!input) { return; }
       annoList.previousImportUrl = input;
-      const how = {};
       if (input.startsWith('[') || input.startsWith('{')) {
         how.data = input;
       } else {
@@ -205,6 +212,19 @@ module.exports = {
         console.error(importFailed);
         window.alert(annoList.l10n('error:') + ' ' + importFailed);
       }
+    },
+
+
+    menuCmdImportLatestDraft() {
+      const { l10n } = this;
+      const filename = persistentConfig.get('lastDraftSavedAsFileName');
+      if (!filename) {
+        window.alert(l10n(
+          '<error:> <annolist_import_latest_draft:forgot>'));
+        return;
+      }
+      const url = this.$store.state.draftStoreEndpoint + filename;
+      this.menuCmdImportAnnosFromUrl({ url });
     },
 
 
