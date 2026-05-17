@@ -326,11 +326,34 @@
   "type": "Annotation"
 },
 { "@context": "http://www.w3.org/ns/anno.jsonld",
-  "body": {
-    "format": "text/html",
-    "type": "TextualBody",
-    "value": "<p>… ist ihm im Hals stecken geblieben.</p>"
-  },
+  "body": [
+    { "format": "text/html",
+      "type": "TextualBody",
+      "value": "<p>… ist ihm im Hals stecken geblieben.</p>"
+    },
+    { "dc:title": "Apfel",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/4002405-2",
+      "type": "SpecificResource"
+    },
+    { "dc:title": "Adamsapfel",
+      "purpose": "classifying",
+      "source": "https://d-nb.info/gnd/870254200",
+      "type": "SpecificResource"
+    },
+    { "dc:title": "Wikipedia: Adamsapfel",
+      "purpose": "linking",
+      "rdf:predicate": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+      "source": "https://de.wikipedia.org/wiki/Adamsapfel",
+      "type": "SpecificResource"
+    },
+    { "dc:title": "Wikipedia: Kulturapfel",
+      "purpose": "linking",
+      "rdf:predicate": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+      "source": "https://de.wikipedia.org/wiki/Kulturapfel",
+      "type": "SpecificResource"
+    }
+  ],
   "created": "2024-07-22T00:10:00Z",
   "creator": {
     "id": "urn:uuid:ad51f9a8-6319-4023-8946-d829f6c65a4f",
