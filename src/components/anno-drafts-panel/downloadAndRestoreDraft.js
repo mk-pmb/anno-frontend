@@ -32,7 +32,7 @@ const EX = async function downloadAndRestoreDraft(meta) {
   // console.debug('Anno-Editor: downloadAndRestoreDraft:', draftData);
 
   await panel.editorApi.loadAnnoData(draftData);
-  eventBus.$emit('switchEditorTabByRefName', 'preview');
+  eventBus.$emit('switchEditorTabByTopic', 'preview');
   if (hints.length) { window.alert('• ' + hints.join('• ')); }
 };
 

@@ -137,10 +137,12 @@ module.exports = {
 
     eventBus.$on('loadAnnoData', editor.loadAnnoData);
     eventBus.$on('saveNewDraft', () => {
-      editor.switchTabByRefName('draftsPanel');
+      editor.switchTabByChildRefName('draftsPanel');
       editor.$refs.draftsPanel.saveNew();
     });
-    eventBus.$on('switchEditorTabByRefName', editor.switchTabByRefName);
+    eventBus.$on('switchEditorTabByChildRefName',
+      editor.switchTabByChildRefName);
+    eventBus.$on('switchEditorTabByTopic', editor.switchTabByTopic);
     eventBus.$on('updateZoneEditorImage',
       (imgUrl) => editor.uiPanic('Stub! updateZoneEditorImage:\n' + imgUrl));
     eventBus.$on('close-editor', () => {
@@ -151,7 +153,7 @@ module.exports = {
       document.body.classList.add(editorOpenCssClass);
       jQuery(editor.$el).find('.initially-hidden').hide();
       editor.setStatusMsg(); // reset = dismiss
-      editor.switchTabByRefName(opt.tabRefName || 'commentTextTab');
+      editor.switchTabByChildRefName('htmlBodyEditor');
       // cdbg('Initial zone selector:', [editor.getZoneSelectorSvg()]);
       editor.updatePluginImplCache();
       editor.initializeZoneEditor();
@@ -209,7 +211,9 @@ module.exports = {
       set(t) { this.$store.commit('SET_EDITOR_ANNO_PROP', ['title', t]); },
     },
 
-    activeTabTopic() { return this.$refs.tablist.currentActiveTabTopic; },
+    activeTabTopic() {
+      return ores(orf(this.$refs.tablist).currentActiveTabTopic);
+    },
 
   },
 
@@ -238,18 +242,17 @@ module.exports = {
       }, pluginsUsed);
     },
 
-    switchTabByRefName(refName) {
+    switchTabByChildRefName(refName) {
       const editor = this;
-      const tab = this.$refs[refName];
-      if (tab) { return editor.$refs.tablist.switchToTabPaneByVueElem(tab); }
+      const inside = this.$refs[refName]; // something inside the tab
+      if (inside) {
+        return editor.$refs.tablist.switchToTabPaneByVueElem(inside);
+      }
       throw new Error('Anno-Editor: $ref not found (try topic?): ' + refName);
     },
 
-    tabRefIsActive(refName) {
-      const tab = this.$refs[refName];
-      const { active } = orf(tab);
-      // cdbg('tabRefIsActive:', { refName, tab, active });
-      return active;
+    switchTabByTopic(topic) {
+      return this.$refs.tablist.switchToTabPaneByTopic(topic);
     },
 
     getPrimarySubjectTarget() {
@@ -725,7 +728,7 @@ module.exports = {
         if (!orf(stEdi.creator).id) { return '.author-agent-field select'; }
         return '.annoeditor-html-editor .ql-editor';
       }());
-      const jqCTT = jQuery(editor.$refs.commentTextTab.$el);
+      const jqCTT = jQuery(editor.$refs.htmlBodyEditor.$el);
       const fieldElem = fieldSel && jqCTT.find(fieldSel)[0];
       // cdbg(trace, { fieldSel }, fieldElem, jsonDeepCopy(stEdi));
       if (fieldElem) { fieldElem.focus(); }
@@ -742,6 +745,6 @@ module.exports = {
 /*
 window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify([
   ['reviseByUrl', 'test-esau-moses-fruit'],
-  ['switchEditorTabByRefName', 'debugTab'],
+  ['switchEditorTabByTopic', 'debug'],
   ])
 */

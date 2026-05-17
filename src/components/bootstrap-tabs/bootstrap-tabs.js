@@ -87,7 +87,11 @@ module.exports = {
     tabPanesAsVueElements() {
       const ctnr = this.$refs.panesContainer;
       const r = this.$children.filter(c => (c.$el.parentNode === ctnr));
-      r.forEach(function updateIndex(c, i) { c.tabIndex = i; });
+      r.byTopic = Object.create(null);
+      r.forEach(function each(c, i) {
+        c.tabIndex = i;
+        if (c.topic) { r.byTopic[c.topic] = c; }
+      });
       return r;
     },
 
@@ -140,6 +144,13 @@ module.exports = {
         });
       }
       tabMgr.switchToNthTab(n);
+    },
+
+    switchToTabPaneByTopic(topic) {
+      const tabMgr = this;
+      const pane = (tabMgr.tabPanesAsVueElements().byTopic[topic] || false);
+      const idx = (+pane.tabIndex || 0);
+      tabMgr.switchToNthTab(idx + 1);
     },
 
   },
