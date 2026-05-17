@@ -5,6 +5,8 @@ cd -- "$(readlink -m -- "$BASH_SOURCE"/../..)"
 exec </dev/null
 
 RLS="$1"; shift || true
+[ -n "$RLS" ] || RLS="$(git branch 2>/dev/null |
+  sed -nre 's~^\* ~ci:~p')" || true
 case "$RLS" in
   e ) RLS='ci:experimental';;
   g | '' ) RLS='ci:staging';;
@@ -21,3 +23,4 @@ wget --output-document="$ZIP".part -- "$URL"
 mv --verbose --no-target-directory -- "$ZIP"{.part,}
 ( mkdir --parents dist && cd -- dist && unzip -jo ../"$ZIP" )
 rm --verbose -- "$ZIP"
+echo D: "Success: Updated $PWD/dist <- $URL"
