@@ -10,7 +10,6 @@ const getOwn = require('getown');
 const libAnnoUrls = autoDefault(require('./mixin/annoUrls.js')).methods;
 const loMapValues = require('lodash.mapvalues');
 const mergeOptions = require('merge-options');
-const objFromKeysList = autoDefault(require('obj-from-keys-list'));
 const unpackSingleProp = autoDefault(require('unwrap-single-prop'));
 
 
@@ -41,16 +40,6 @@ const pluginInjectableModules = {
 };
 
 const plugins = {};
-
-const eventBusProxies = objFromKeysList(function makeEventBusProxy(ev) {
-  return function eventBusProxy(...args) {
-    setTimeout(function delayedEmit() { eventBus.$emit(ev, ...args); }, 10);
-  };
-}, [
-  'abortLurkMode',
-  'startHighlighting',
-  'stopHighlighting',
-]);
 
 let vueRootElem;
 let configAccum = decideDefaultOptions();
@@ -93,8 +82,7 @@ const EX = {
     return r;
   }()),
 
-  ...eventBusProxies,
-  getAnnoAppRef() { return EX; },
+  getAnnoAppRef() { return EX; }, // = vueRootElem.$el.get… = store.get…
   getEventBus() { return eventBus; },
   getPluginByName(p) { return getOwn(plugins, p, false); },
   getPluginFactories: Object.bind(null, {}),
@@ -219,6 +207,19 @@ const EX = {
   },
 
 };
+
+
+// Install legacy eventBus proxies:
+Object([
+  'abortLurkMode',
+  'startHighlighting',
+  'stopHighlighting',
+]).forEach(function makeEventBusProxy(ev) {
+  EX[ev] = function eventBusProxy(...args) {
+    setTimeout(function delayedEmit() { eventBus.$emit(ev, ...args); }, 10);
+  };
+});
+
 
 
 EX.reuseLib = (function compile() {
