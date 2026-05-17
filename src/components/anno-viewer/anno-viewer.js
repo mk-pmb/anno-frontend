@@ -525,21 +525,24 @@ module.exports = {
         const caption = (body['dc:title'] || body.value || body.label || url);
         return { ...body, caption, url };
       });
+      return preparsed;
+    },
+
+
+    preparseLinkingPurposeBodies() {
+      const viewer = this;
+      const preparsed = viewer.preparsePurposeTagBodies('linking');
       if (!preparsed) { return preparsed; }
-
-      if (purpose === 'linking') {
-        const vocMiss = viewer.l10n('missing_required_field');
-        preparsed.forEach(function validate(body) {
-          // eslint-disable-next-line no-param-reassign
-          body.predicate = (body['rdf:predicate'] || body.predicate);
-          const miss = relationlinkRequiredFields.map(
-            f => (body[f] ? '' : viewer.l10n('relationlink_' + f))
-          ).filter(Boolean);
-          // eslint-disable-next-line no-param-reassign
-          if (miss.length) { body.error = vocMiss + ' ' + miss.join(', '); }
-        });
-      }
-
+      const vocMiss = viewer.l10n('missing_required_field');
+      preparsed.forEach(function validate(body) {
+        // eslint-disable-next-line no-param-reassign
+        body.predicate = (body['rdf:predicate'] || body.predicate);
+        const miss = relationlinkRequiredFields.map(
+          f => (body[f] ? '' : viewer.l10n('relationlink_' + f))
+        ).filter(Boolean);
+        // eslint-disable-next-line no-param-reassign
+        if (miss.length) { body.error = vocMiss + ' ' + miss.join(', '); }
+      });
       return preparsed;
     },
 

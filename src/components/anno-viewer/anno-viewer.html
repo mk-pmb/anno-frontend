@@ -324,7 +324,7 @@
           class="first-html-body"
           v-html="firstHtmlBody.value"></div>
 
-        <template v-for="linkingBodies in [preparsePurposeTagBodies('linking')]">
+        <template v-for="linkingBodies in [preparseLinkingPurposeBodies()]">
           <h5 v-if="linkingBodies.length"><span class="fa fa-link"></span>
             {{ l10n('relationlinks') }}</h5>
           <ul v-if="linkingBodies.length">
