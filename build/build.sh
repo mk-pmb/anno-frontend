@@ -17,6 +17,15 @@ function build_cli () {
 
 function build_lint () {
   echo 'Lint…'
+
+  # Colon before v-if/v-show?
+  # <span v-if="false">1</span><span :v-if="false">2</span>
+  # <span v-show="false">3</span><span :v-show="false">4</span>
+  # = 2 4 => only the no-colon conditions take effect.
+  git grep --color=always -nPe '\s:v-\w+=' -- src/ | grep . && return 4$(
+    # ^-- The pipe to grep is avoid the git pager.
+    echo E: 'Found mistaken colons before v-… attributes!' >&2) || true
+
   local LINT_CMD=(
     ./node_modules/.bin/eslint
     --ext='js,mjs'

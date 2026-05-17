@@ -117,7 +117,7 @@
               <span class="name">{{
                 formatters('agentNickname', aCreator)
                 }}</span><span class="list-sep"
-                :v-if="!aCreator['x-is-last-in-list']"
+                v-if="!aCreator['x-is-last-in-list']"
                 >,</span>
             </span>
           </template>
