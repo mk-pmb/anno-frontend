@@ -52,6 +52,15 @@
   .meta-context-hints-box i.fa { position: absolute; margin-top: 0.2em; }
   .meta-context-hints-box .pad { padding-left: 1.5em; }
 
+  .meta-context-hints-box .meta-context-hint a {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: inherit; display: inline; vertical-align: bottom;
+  }
+
+  .meta-context-hints-box .meta-context-hint.imported-from-url a {
+    display: inline-block; max-width: 20em;
+  }
+
   span.relation-predicate { font-size: smaller; }
   span.relation-predicate:after { content: ":"; }
 

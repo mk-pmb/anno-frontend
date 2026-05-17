@@ -19,6 +19,7 @@
   :data-iana-working-copy="annotation['iana:working-copy'] || ''"
   :data-as-inreplyto="annotation['as:inReplyTo'] || ''"
   :data-target-fragment="targetFragment || ''"
+  :data-imported-from="annotation['ubhd:sourceUrl'] || ''"
   >
 
   <div v-if="!asReply" class="panel-heading">
@@ -33,6 +34,14 @@
           :title="auxMeta.sunsetDescr">&#x26D4;</span>
         <span v-show="approval.iconCls" :class="approval.iconCls"
           :title="approval.explain">{{ approval.iconText }}</span>
+        <a v-if="annotation['ubhd:sourceUrl']"
+          class="anno-imported-from-source-url"
+          :href="annotation['ubhd:sourceUrl']"
+          target="_blank"
+          @click.prevent
+          :title="l10n('anno_imported_from_url')
+            + ': ' + annotation['ubhd:sourceUrl']"
+          ><i class="fa fa-link"></i></a>
         <span v-show="Boolean(problemsWarningText)" class="
           anno-editor-error
           anno-error-annotation-problems
@@ -298,7 +307,7 @@
         <div class="pad">
           <span class="intro">{{ mch.introText }}</span>
           <a :href="mch.linkUrl" :target="mch.linkFrame"
-            >{{ mch.linkText }}</a>
+            >{{ mch.linkText || mch.linkUrl }}</a>
         </div><!-- /.pad -->
       </div>
     </div><!-- /.border -->

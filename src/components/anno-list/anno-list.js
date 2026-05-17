@@ -16,6 +16,7 @@
 const applyDebugCheats = require('../../cheats.js');
 const eventBus = require('../../event-bus.js');
 const HelpButton = require('../help-button');
+const xrqImportAnnosFromCeson = require('../../xrq/importAnnosFromCeson.js');
 const persistentConfig = require('../../browserStorage.js').appConfig;
 const sorting = require('./sort/index.js');
 
@@ -53,6 +54,7 @@ module.exports = {
     return {
       collapsed: (persistentConfig.get('anno-list:collapsed') !== false),
       debugCheatsReportCache: '',
+      previousImportUrl: '',
     };
   },
 
@@ -177,6 +179,32 @@ module.exports = {
         persistentConfig.del(ssKey);
       }
       annoList.verifySorted();
+    },
+
+
+    async menuCmdImportAnnosFromUrl() {
+      const annoList = this;
+      const menuItemCaption = annoList.l10n('import_annos_from_url');
+      let input = window.prompt(menuItemCaption, annoList.previousImportUrl);
+      input = (input || '').trim();
+      if (!input) { return; }
+      annoList.previousImportUrl = input;
+      const how = {};
+      if (input.startsWith('[') || input.startsWith('{')) {
+        how.data = input;
+      } else {
+        how.url = input;
+      }
+      try {
+        await xrqImportAnnosFromCeson.doImportAnnosFromCeson(
+          annoList.$store, how);
+        const msg = (annoList.l10n('generic_api_call_success')
+          + ' ' + menuItemCaption);
+        setTimeout(() => window.alert(msg), 10);
+      } catch (importFailed) {
+        console.error(importFailed);
+        window.alert(annoList.l10n('error:') + ' ' + importFailed);
+      }
     },
 
 

@@ -141,6 +141,8 @@
             "version_from":        "Version vom",
             "active_version":      "Angezeigte Version",
             "annolist_list_menu_title": "Liste",
+            "import_annos_from_url": "Lade von URL",
+            "anno_imported_from_url": "Hinzugefügt aus URL",
 
             "zones":               "Zonen",
             "lurk:explain:generic": "Die Bearbeitung wurde an @@module@@ übergeben.",
@@ -428,6 +430,8 @@
             "version_from":        "Version as of",
             "active_version":      "Active version",
             "annolist_list_menu_title": "List",
+            "import_annos_from_url": "Import from URL",
+            "anno_imported_from_url": "Imported from URL",
 
             "zones":               "Zones",
             "lurk:explain:generic": "Editing has been delegated to @@module@@.",

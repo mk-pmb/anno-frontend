@@ -560,6 +560,17 @@ module.exports = {
       const mch = [];
       mch.basedOn = basedOn;
 
+      (function maybeAddImportedFromHint() {
+        const url = anno['ubhd:sourceUrl'];
+        if (!url) { return; }
+        mch.push({
+          cls: 'imported-from-url',
+          faIcon: 'link',
+          introText: el.l10n('anno_imported_from_url') + ':',
+          linkUrl: url,
+        });
+      }());
+
       (function maybeAddReplyHint() {
         if (!el.replyingTo) { return; }
         if (state.initAppMode === 'list') { return; }

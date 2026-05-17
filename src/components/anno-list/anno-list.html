@@ -175,6 +175,17 @@
         ><i :class="'fa fa-' + (collapsed ? 'plus' : 'minus')"></i>
           {{ collapsed ? l10n('open_all') : l10n('close_all') }}
       </component><!-- /.list-opt-toggle-collapse-all -->
+      <component :is="bootstrapOpts.tags.dropdownMenuItem"
+        @click="menuCmdImportAnnosFromUrl"
+        :class="[
+          'list-opt',
+          'list-opt-import-annos-from-url',
+          bootstrapOpts.tags.dropdownMenuItemCls,
+          bootstrapOpts.tags.dropdownMenuItemBtnCls,
+          'text-nowrap',
+        ].filter(Boolean)"
+        ><i class="fa fa-link"></i> {{ l10n('import_annos_from_url') }}
+      </component><!-- /.list-opt-import-annos-from-url -->
     </bootstrap-btnbar-dropdown><!-- /ref=ddList -->
 
     <!-- [

@@ -34,21 +34,20 @@ const ldr = {
     f: ['../fixtures/', '.mjs'],
   },
 
-  async fromURL(url, opt) {
+  async fromURL(url, origOpt) {
+    const opt = { ...origOpt, url };
     const [, proto, remainder] = url.split(/^(\w+):/);
     const mapped = ldr.urlMap[proto];
     if (mapped) {
       const fullUrl = mapped.join(remainder);
       const hint = 'imported from ' + url;
-      const mOpt = { ...opt };
       if (ldr.buttons.byName.trace.checked) {
-        mOpt.mergeIntoEach = { 'skos:note': hint };
+        opt.mergeIntoEach = { 'skos:note': hint };
       }
-      return ldr.fromURL(fullUrl, mOpt);
     }
-    const data = await jq.ajax({ url, dataType: 'text' });
-    ldr.fromCeson(data, opt);
+    return ldr.fromCeson(null, opt);
   },
+
 };
 
 
