@@ -7,7 +7,10 @@ const parseCeson = require('ceson/parse.js');
 const optimizeList = require('../vuex/fetchers/annoList/optimizeAnnoList.js');
 
 
-async function doImportAnnosFromCeson(store, how) {
+const xrqDo = {};
+
+
+xrqDo.doImportAnnosFromCeson = async function importRaw(store, how) {
   const oldState = store.state;
   const cesonData = parseCeson(how.data);
   let annos = [].concat(cesonData);
@@ -25,8 +28,20 @@ async function doImportAnnosFromCeson(store, how) {
     // console.debug('xrq: ImportAnnosFromCeson: added.');
   }
   store.commit('INJECTED_MUTATION', [append]);
-}
-
-module.exports = {
-  doImportAnnosFromCeson,
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = xrqDo;
