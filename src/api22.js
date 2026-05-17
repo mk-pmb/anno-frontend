@@ -47,23 +47,7 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
     const url = constructRequestUri(endpointName, subUrl);
     // console.debug('Anno-Viewer api22 endpointRequest:',
     //   { endpointName, method, subUrl, dataLength: data && data.length });
-    try {
-      const result = await axios({ ...EX.defaultAxiosOpts, method, url, data });
-      return result.data;
-    } catch (err) {
-      const rsp = orf(err.response);
-      err.apiUrl = url;
-      err.headers = orf(rsp.headers);
-      err.finalUrl = orf(rsp.request).responseURL || '';
-      err.linkRels = orf(parseLinkRelationHeaders(err.headers.link));
-      if (rsp && rsp.status && rsp.statusText && rsp.data) {
-        const msg = (rsp.status + ' ' + rsp.statusText + '\n' + rsp.data);
-        const aug = new Error(msg);
-        Object.assign(aug, err);
-        throw aug;
-      }
-      throw err;
-    }
+    return EX.webRequest(method, url, data);
   }
 
   const api = {
@@ -88,6 +72,27 @@ Object.assign(EX, {
   defaultAxiosOpts: {
     // maxRedirects: 0, // doesn't work in Firefox anyway
     withCredentials: 1, // without it, xhr won't set cookies for CORS
+  },
+
+
+  async webRequest(method, url, data) {
+    try {
+      const result = await axios({ ...EX.defaultAxiosOpts, method, url, data });
+      return result.data;
+    } catch (err) {
+      const rsp = orf(err.response);
+      err.apiUrl = url;
+      err.headers = orf(rsp.headers);
+      err.finalUrl = orf(rsp.request).responseURL || '';
+      err.linkRels = orf(parseLinkRelationHeaders(err.headers.link));
+      if (rsp && rsp.status && rsp.statusText && rsp.data) {
+        const msg = (rsp.status + ' ' + rsp.statusText + '\n' + rsp.data);
+        const aug = new Error(msg);
+        Object.assign(aug, err);
+        throw aug;
+      }
+      throw err;
+    }
   },
 
 
