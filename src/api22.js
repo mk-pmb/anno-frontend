@@ -17,12 +17,6 @@ const supportedHttpMethods = [
 ];
 
 
-const defaultAxiosOpts = {
-  // maxRedirects: 0, // doesn't work in Firefox anyway
-  withCredentials: 1, // without it, xhr won't set cookies for CORS
-};
-
-
 const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
   function constructRequestUri(endpointName, subUrl) {
     if ((!subUrl) && (subUrl !== '')) {
@@ -54,7 +48,7 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
     // console.debug('Anno-Viewer api22 endpointRequest:',
     //   { endpointName, method, subUrl, dataLength: data && data.length });
     try {
-      const result = await axios({ ...defaultAxiosOpts, method, url, data });
+      const result = await axios({ ...EX.defaultAxiosOpts, method, url, data });
       return result.data;
     } catch (err) {
       const rsp = orf(err.response);
@@ -89,5 +83,19 @@ const EX = function apiFactory(cfg /* <- e.g. Vue app store state */) {
 
 
 
-// Object.assign(EX, {});
+Object.assign(EX, {
+
+  defaultAxiosOpts: {
+    // maxRedirects: 0, // doesn't work in Firefox anyway
+    withCredentials: 1, // without it, xhr won't set cookies for CORS
+  },
+
+
+});
+
+
+
+
+
+
 module.exports = EX;
