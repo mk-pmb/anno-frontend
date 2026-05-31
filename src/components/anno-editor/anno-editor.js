@@ -8,6 +8,9 @@ const eventBus = require('../../event-bus.js');
 const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 const persistentConfig = require('../../browserStorage.js').appConfig;
 
+const identifyImportedFromNS = require(
+  '../anno-viewer/identifyImportedFromNamespace.js');
+
 const categorizeTargets = require('./categorizeTargets.js');
 const decideTargetForNewAnno = require('./decideTargetForNewAnno.js');
 const fixupSvgSelector = require('./fixupSvgSelector.js');
@@ -361,23 +364,36 @@ module.exports = {
     },
 
     async revise(oldAnno) {
-      checkEventBusAnnoArgEvent('revise', oldAnno);
+      let composeVerb = 'revise';
+      checkEventBusAnnoArgEvent(composeVerb, oldAnno);
       const anno = jsonDeepCopy(oldAnno);
       const oldAnnoIdUrl = anno.id;
       if (!oldAnnoIdUrl) { throw new Error('revise(): oldAnno has no id!'); }
-      if (!anno['dc:isVersionOf']) {
-        anno['dc:isVersionOf'] = (
-          anno.canonical
-          || oldAnnoIdUrl
-          );
+
+      const appCfg = this.$store.state;
+      const impFromNS = identifyImportedFromNS(appCfg, anno);
+      delete anno['ubhd:sourceUrl'];
+      if (impFromNS === 'anno') {
+        if (!anno['dc:isVersionOf']) {
+          anno['dc:isVersionOf'] = (
+            anno.canonical
+            || oldAnnoIdUrl
+            );
+        }
+        anno['dc:replaces'] = oldAnnoIdUrl;
       }
-      anno['dc:replaces'] = oldAnnoIdUrl;
+      if (impFromNS === 'web') {
+        composeVerb = 'create';
+        delete anno['dc:isVersionOf'];
+        delete anno['dc:replaces'];
+      }
+
       delete anno.canonical;
       delete anno.created;
       delete anno.id;
       delete anno.via;
       // cdbg('revise:', anno);
-      await this.startCompose('revise', () => anno);
+      await this.startCompose(composeVerb, () => anno);
     },
 
     setZoneSelector(unoptimizedNewSvg) {

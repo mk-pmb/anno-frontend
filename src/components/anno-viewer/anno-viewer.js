@@ -21,6 +21,7 @@ const decideAuxMeta = require('../anno-cmp-mode/decideAuxiliaryMetaData.js');
 const assembleVersionRelatedUrl = require('./assembleVersionRelatedUrl.js');
 const bindDataApi = require('./dataApi.js');
 const formatters = require('./formatters.js');
+const identifyImportedFromNS = require('./identifyImportedFromNamespace.js');
 const simpleDateStamp = require('./simpleDateStamp.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
 const xrxUtilsUtils = require('./xrxUtilsUtils.js');
@@ -278,7 +279,22 @@ module.exports = {
 
     editable() {
       const viewer = this;
+      const appCfg = viewer.$store.state;
       const anno = viewer.annoData;
+      const impFromNS = identifyImportedFromNS(appCfg, anno);
+      const impButton = (function decide() {
+        if (impFromNS === 'anno') { return; }
+        const replaces = (anno['dc:replaces'] || null);
+        console.debug('ImportedFromNS:', { impFromNS, replaces });
+        if (impFromNS === 'draftStore') {
+          if (replaces) {
+            // Use default edit button, bypass ACL lookup.
+            return { icon: 'pencil', voc: 'edit' };
+          }
+        }
+        return { icon: 'pencil', voc: 'compose_from_imported_anno' };
+      }());
+      if (impButton) { return impButton; }
       const nonDebugEditable = (function decide() {
         const { isOwnAnno } = viewer;
         const auth = viewer.checkAclAuth({ isOwnAnno,
@@ -296,7 +312,7 @@ module.exports = {
           : { icon: 'medkit', voc: 'edit_as_moderator' });
       }());
       return orf(nonDebugEditable
-        || (viewer.$store.state.uiDebugMode && { icon: 'cog', voc: '' }));
+        || (appCfg.uiDebugMode && { icon: 'cog', voc: '' }));
     },
 
 
