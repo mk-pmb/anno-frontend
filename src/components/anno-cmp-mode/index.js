@@ -12,6 +12,7 @@ const verCache = require('./verCache.js');
 
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+function numOr(x, d) { return (+x || +d || 0); }
 
 
 const oppoSides = {
@@ -80,11 +81,11 @@ const compoDef = {
       priSide,
       priVerChoice: {
         onchange(evt) { return cmp.versionSelected(1, evt); },
-        verNum: (+st.initCmpPrimarySideVersionNumber || initVerSuffixNum),
+        verNum: numOr(st.initCmpPrimarySideVersionNumber, initVerSuffixNum),
       },
       secVerChoice: {
         onchange(evt) { return cmp.versionSelected(2, evt); },
-        verNum: (+st.initCmpSecondarySideVersionNumber || initVerSuffixNum),
+        verNum: numOr(st.initCmpSecondarySideVersionNumber, initVerSuffixNum),
       },
       knownVersions: false,
       reverseOrderKnownVersions: false, // because Vue2 v-for cannot reverse
@@ -118,8 +119,7 @@ const compoDef = {
 
     getSideAnnoData(side) {
       const cmp = this;
-      const verNum = ((+cmp[side + 'VerChoice'].verNum)
-        || (+cmp.knownVersions.latestVerNum));
+      const verNum = numOr(cmp[side + 'VerChoice'].verNum, cmp.latestVerNum);
       // console.debug('getSideAnnoData:', { side, verNum });
       if (!verNum) { return false; }
       const vueKey = [side, verNum, cmp.forcedRerenderTs].join('|');
