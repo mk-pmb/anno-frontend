@@ -95,15 +95,15 @@ const compoDef = {
 
   mounted() {
     const cmp = this;
-    const rllPr = fetchVersionsList(cmp);
-    rllPr.then(() => {
+    const versListPr = fetchVersionsList(cmp);
+    versListPr.then(() => {
       cmp.versionSelected(1, { verNum: cmp.priVerChoice.verNum });
       cmp.versionSelected(2, { verNum: cmp.secVerChoice.verNum });
     });
     Object.assign(cmp.$el, {
       getKnownVersions() { return jsonDeepCopy(cmp.knownVersions); },
     });
-    eventBus.$emit('trackPromise', rllPr);
+    eventBus.$emit('trackPromise', versListPr);
   },
 
   computed: {
