@@ -24,6 +24,8 @@ const oppoSides = {
 
 const defaultSidePadCls = 'container container-mandatory-for-bootstrap-rows';
 
+const sideNames = ['primary', 'secondary'];
+
 
 function categorizeTargetsEventMethod() {
   const event = this;
@@ -117,14 +119,39 @@ const compoDef = {
 
     ...verCache.vueMtd,
 
+    getVerNum(side) { // side IN ('pri', 'sec', 'max')
+      const cmp = this;
+      const num = numOr(orf(cmp[side + 'VerChoice']).verNum);
+      if (num) { return num; }
+      return numOr(orf(cmp.knownVersions).latestVerNum);
+    },
+
     getSideAnnoData(side) {
       const cmp = this;
-      const verNum = numOr(cmp[side + 'VerChoice'].verNum, cmp.latestVerNum);
+      const verNum = cmp.getVerNum(side);
       // console.debug('getSideAnnoData:', { side, verNum });
       if (!verNum) { return false; }
       const vueKey = [side, verNum, cmp.forcedRerenderTs].join('|');
       const rData = ((verNum && cmp.lookupCachedVerAnno(verNum)) || false);
-      return { vueKey, ...rData };
+      const isLatestVer = (verNum === cmp.getVerNum('max'));
+      return { vueKey, ...rData, isLatestVer };
+    },
+
+    decideOuterClasses() {
+      const cmp = this;
+      let layoutCls = 'layout';
+      const verNumCls = [];
+      const maxVerNum = cmp.getVerNum('max');
+      sideNames.forEach(function oneSide(snl) { // snl = side name long
+        const sns = snl.slice(0, 3); // sns = side name short
+        layoutCls += '-' + cmp[sns];
+        const verNum = cmp.getVerNum(sns);
+        const isLatest = (verNum === maxVerNum);
+        verNumCls.push(snl + '-side-' + (isLatest ? 'is' : 'not') + '-latest');
+      });
+      const allCls = ['wrapper', layoutCls, verNumCls];
+      const prefix = 'annocmp-';
+      return prefix + allCls.join(' ' + prefix);
     },
 
     forceRerenderAnnos() {

@@ -1,8 +1,10 @@
 <div
-  :class="[
-    'annocmp-wrapper',
-    `annocmp-layout-${priSide}-${secSide}`,
-    ].filter(Boolean)"
+  :class="decideOuterClasses()"
+  :data-max-vernum="getVerNum('max')"
+  :data-primary-side-mode="priSide"
+  :data-primary-side-vernum="getVerNum('pri')"
+  :data-secondary-side-mode="secSide"
+  :data-secondary-side-vernum="getVerNum('sec')"
   >
 
   <div class="
