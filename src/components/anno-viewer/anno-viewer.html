@@ -9,6 +9,7 @@
     (legacyPurlHighlight && 'annoviewer-purl-anno'),
     (asReply && 'annoviewer-asreply'),
     (otherVersionsExist() ? 'has' : 'no') + '-other-versions',
+    isLatestVersionCssClass,
     (isOwnAnno ? 'own-anno' : 'someone-elses-anno'),
   ].filter(Boolean)"
   @mouseenter="onMouseEnter"
@@ -301,15 +302,21 @@
     <div v-if="maybeUpdateMetaContextHints().length"
       class="border border-info text-default meta-context-hints-box">
       <div v-for="mch in metaContextHintsCache"
-        :class="'position-relative meta-context-hint ' + mch.cls"
-        >
-        <i :class="'fa fa-' + mch.faIcon"></i>
+        data-orig-index="mch.origIndex"
+        :class="'meta-context-hint ' + mch.cls"
+        ><div class="align">
+        <a role="button" aria-label="Close" :title="l10n('discard')"
+          v-if="!'2026-06-08: No good way to semi-persist dismissals. :-('"
+          class="close" @click="dismissMetaContextHint()"
+          ><i class="fa fa-close"></i></a>
+        <div class="icon"><i :class="'fa fa-' + mch.faIcon"></i></div>
         <div class="pad">
           <span class="intro">{{ mch.introText }}</span>
           <a :href="mch.linkUrl" :target="mch.linkFrame"
             >{{ mch.linkText || mch.linkUrl }}</a>
         </div><!-- /.pad -->
-      </div>
+        <div style="clear: both;"></div>
+      </div><!-- /.align --></div><!-- /.meta-context-hint -->
     </div><!-- /.border -->
 
     <div class="media anno-main-content-wrapper">

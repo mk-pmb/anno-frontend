@@ -46,13 +46,24 @@
   .meta-context-hints-box {
     font-size: small;
     line-height: 1.2;
-    padding: 0.2em 0.5em;
     margin-bottom: 1em;
   }
-  .meta-context-hints-box i.fa { position: absolute; margin-top: 0.2em; }
-  .meta-context-hints-box .pad { padding-left: 1.5em; }
+  .meta-context-hints-box,
+  .meta-context-hints-box .meta-context-hint { position: relative; }
+  .meta-context-hints-box .meta-context-hint { padding: 0.2em 0.5em; }
 
-  .meta-context-hints-box .meta-context-hint a {
+  .meta-context-hints-box .icon { position: absolute; }
+  .meta-context-hints-box .pad { padding: 0 1.5em; }
+
+
+  .meta-context-hints-box .meta-context-hint a.close {
+    display: block; float: right; visibility: hidden; font-size: inherit;
+  }
+  .meta-context-hints-box .meta-context-hint:hover a.close {
+    visibility: visible;
+  }
+
+  .meta-context-hints-box .meta-context-hint .pad a {
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     color: inherit; display: inline; vertical-align: bottom;
   }
@@ -60,6 +71,10 @@
   .meta-context-hints-box .meta-context-hint.imported-from-url a {
     display: inline-block; max-width: 20em;
   }
+
+  .meta-context-hint.anno-warning-outdated { background-color: peachpuff; }
+
+
 
   span.relation-predicate { font-size: smaller; }
   span.relation-predicate:after { content: ":"; }

@@ -83,7 +83,8 @@
             "open_all":            "Alle öffnen",
             "versions_dropdown_only": "Einzige Version",
             "versions_dropdown_more": "Weitere Versionen",
-            "newer_version":       "Es ist eine neuere Version verfügbar.",
+            "reminder_outdated_anno": "Ansicht zeigt alte Version!",
+
             "anno_created_by":     "Annotation erstellt von",
             "creator_none":        "unbekannt oder anonym",
             "purl":                "URL dieser Annotation",
@@ -373,9 +374,11 @@
             "anno_list:loadfail":  "Failed to load annotations:",
             "anno_list:empty":     "No annotations yet",
             "open_all":            "Open all",
+
             "versions_dropdown_only": "Only version",
             "versions_dropdown_more": "Other versions",
-            "newer_version":       "Newer version available",
+            "reminder_outdated_anno": "Showing an old version!",
+
             "anno_created_by":     "Annotation created by",
             "creator_none":        "unknown or anonymous",
             "purl":                "URL of this annotation",

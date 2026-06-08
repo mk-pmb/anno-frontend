@@ -232,6 +232,24 @@ module.exports = {
     },
 
 
+    isLatestVersion() {
+      const anno = this.annotation;
+      if (!anno) { return null; }
+      const idBfn = fileBaseName(anno.id);
+      if (!idBfn) { return null; }
+      const wCopy = fileBaseName(anno['iana:working-copy']);
+      if (!wCopy) { return null; }
+      return (idBfn === wCopy);
+    },
+
+    isLatestVersionCssClass() {
+      const isLatest = this.isLatestVersion;
+      if (isLatest === true) { return 'is-latest-version'; }
+      if (isLatest === false) { return 'not-latest-version'; }
+      return '';
+    },
+
+
     isOwnAnno() {
       const viewer = this;
       const { authorIdentities } = orf(viewer.$store.state.userSessionInfo);
@@ -627,6 +645,17 @@ module.exports = {
           linkFrame: state.additionalTargetsHintLinkFrame || '',
         });
       }());
+
+      if (el.isLatestVersion === false) {
+        mch.push({
+          cls: 'anno-warning-outdated',
+          faIcon: 'history',
+          introText: el.l10n('reminder_outdated_anno'),
+        });
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      mch.forEach(function assignIndex(v, i) { v.origIndex = i; });
 
       el.metaContextHintsCache = mch;
       return mch;
