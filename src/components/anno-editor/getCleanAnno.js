@@ -12,6 +12,7 @@ function deleteIf(o, k, c) { if (c) { delete o[k]; } }
 
 const omitFieldsIfFalsey = [
   'created',
+  'dcterms:dateAccepted',
   'id', /* Anno ID */
 ];
 
@@ -48,9 +49,6 @@ const EX = function getCleanAnno() {
   setAnnoPropIf('dcterms:isVersionOf', versionOf); // legacy compat
   setAnnoPropIf('dc:language', editor.annoLanguage.selected);
   setAnnoPropIf('dc:title', title);
-  if (anno['dcterms:dateAccepted'] === false) {
-    delete anno['dcterms:dateAccepted'];
-  }
 
   const oldFirstHtmlBody = editorModelDef.getters.firstHtmlBody(anno);
   if (oldFirstHtmlBody) {
@@ -86,6 +84,10 @@ Object.assign(EX, {
     if (extraFields['dcterms:dateAccepted'] === false) {
       // User is trying to edit an annotation that is still pending approval.
       delete extraFields['dcterms:dateAccepted'];
+      /* NB: This check is separate from the 'dcterms:dateAccepted' deletion
+        in omitFieldsIfFalsey because this one exempts from susXF-ness.
+        It's about bugs in Anno-FE's internal handling of the anno metadata,
+        not about submitting it. */
     }
 
     // eslint-disable-next-line array-callback-return
