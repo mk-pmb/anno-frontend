@@ -7,8 +7,11 @@ const api22 = require('../../api22.js');
 
 const decideAuxMeta = require('./decideAuxiliaryMetaData.js');
 
+function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function orf(x) { return x || false; }
 
+
+const cdbg = console.debug.bind(console, 'fetchVersionsList:');
 
 const fvl = async function fetchVersionsList(cmpVueElem) {
   try {
@@ -39,9 +42,9 @@ Object.assign(fvl, {
     const api = api22(cmpVueElem.$store.state);
     const { baseId } = cmpVueElem;
     const {
-      latestVerNum,
-      latestVerData,
-      latestVerErr,
+      defaultVerNum,
+      defaultVerData,
+      defaultVerErr,
       verHistUrl,
     } = await fvl.discoverInitialFacts({ api, baseId });
     if (!verHistUrl) { throw new Error('Cannot detect version history URL'); }
@@ -50,13 +53,20 @@ Object.assign(fvl, {
     if (!Array.isArray(verHistItems)) {
       throw new Error('Received version history in unexpected data format.');
     }
-    console.debug('Obtained version history:', verHistItems);
-    let versList = Array.from({ length: latestVerNum });
+    cdbg('Received official version history:', jsonDeepCopy(verHistItems));
+    let versList = Array.from({ length: defaultVerNum });
+    let latestVerNum = defaultVerNum;
     verHistItems.forEach(function learnVer(orig, histEntIdx) {
       if (!orig) { return; }
       const trace = 'Parse version history item #' + (histEntIdx + 1) + ': ';
       const rInfo = { anno: orig };
       rInfo.verNum = fvl.mustGuessVerNum(trace, orig, 'id');
+      if (rInfo.verNum > latestVerNum) {
+        /* It seems the version history had one more, potentially because
+          of race condition or because the latest version redirect hid a
+          not-yet-approved anno from us. */
+        latestVerNum = rInfo.verNum;
+      }
       const nowLoaded = makeDeferred();
       Object.assign(rInfo, {
         ...decideAuxMeta(orig, cmpVueElem),
@@ -66,6 +76,7 @@ Object.assign(fvl, {
         receiveAnnoData(data) {
           delete plumbing.receiveAnnoData;
           rInfo.fetchedAt = Date.now();
+          cdbg('receiveAnnoData:', jsonDeepCopy({ ...rInfo, '+': data }));
           Object.assign(rInfo.anno, data);
           Object.assign(rInfo, decideAuxMeta(rInfo.anno, cmpVueElem));
           const aclUpd = data['ubhd:aclPreviewBySubjectTargetUrl'];
@@ -82,20 +93,27 @@ Object.assign(fvl, {
     versList = versList.map((r, i) => (r
       || { verNum: i + 1, anno: { ...missing } }));
 
-    const [lastSlot] = versList.slice(-1);
-    if (!latestVerData) {
-      const { anno } = lastSlot;
-      let err = String(latestVerErr.message || latestVerErr);
+    const defaultVerSlot = versList[defaultVerNum - 1];
+    if (!defaultVerData) {
+      const { anno } = defaultVerSlot;
+      let err = String(defaultVerErr.message || defaultVerErr);
       err = err.trim().replace(/\n\s*/g, '¶ ').trim();
       err = cmpVueElem.l10n('error:') + ' ' + err;
       anno['dc:title'] = err;
-      const hdr = orf(latestVerErr.headers);
+      const hdr = orf(defaultVerErr.headers);
       if (hdr.sunset) { anno['as:deleted'] = hdr.sunset; }
     }
-    lastSlot.internalPlumbing().receiveAnnoData(latestVerData);
-    const meta = { latestVerNum, fetchedAt: lastSlot.fetchedAt };
+
+    cdbg('Before receiveAnnoData(defaultVerData)');
+    defaultVerSlot.internalPlumbing().receiveAnnoData(defaultVerData); /*
+      NB: Always call rAD even with false-y data, in order to do all meta
+      data checks and mark it as already received in the cache. */
+    cdbg('After receiveAnnoData(defaultVerData)');
+
+    const meta = { latestVerNum, fetchedAt: defaultVerSlot.fetchedAt };
     Object.assign(versList, meta);
 
+    cdbg('Consolidated versions list:', jsonDeepCopy(versList));
     cmpVueElem.knownVersions = versList;
     const reversed = Object.assign(versList.slice().reverse(), meta);
     cmpVueElem.reverseOrderKnownVersions = reversed;
@@ -104,19 +122,19 @@ Object.assign(fvl, {
 
 
   async discoverInitialFacts(ctx) {
-    let latestVerData = false;
-    // console.debug('discoverInitialFacts: baseId:', ctx.baseId);
+    let defaultVerData = false;
+    // cdbg('discoverInitialFacts: baseId:', ctx.baseId);
     try {
-      latestVerData = await ctx.api.getAnnoById(ctx.baseId);
+      defaultVerData = await ctx.api.getAnnoById(ctx.baseId);
     } catch (apiErr) {
       const { finalUrl } = apiErr;
       const linkRels = orf(apiErr.linkRels);
-      // console.debug('discoverInitialFacts:', { apiErr, finalUrl, linkRels });
-      let latestVerNum = 0;
+      // cdbg('discoverInitialFacts:', { apiErr, finalUrl, linkRels });
+      let defaultVerNum = 0;
       const trace = ('While describing API error "' + String(apiErr)
         + '" that occurred when fetching the latest version: ');
       try {
-        latestVerNum = (fvl.guessVerNum(trace, linkRels, 'latest-version')
+        defaultVerNum = (fvl.guessVerNum(trace, linkRels, 'latest-version')
           || fvl.guessVerNum(trace, linkRels, 'original')
           || fvl.mustGuessVerNum(trace, finalUrl, null, 'URL after redirects'));
       } catch (verNumErr) {
@@ -127,30 +145,30 @@ Object.assign(fvl, {
         verHistUrl = (new URL(verHistUrl, finalUrl)).href;
       }
       return {
-        latestVerData,
-        latestVerErr: apiErr,
-        latestVerNum,
+        defaultVerData,
+        defaultVerErr: apiErr,
+        defaultVerNum,
         verHistUrl,
       };
     }
 
     function lavStr(k) {
-      const v = latestVerData[k];
+      const v = defaultVerData[k];
       if ((v && typeof v) === 'string') { return v; }
       const msg = 'Latest anno version lacks the ' + k + ' field!';
-      console.error(msg, { latestVerData });
+      console.error(msg, { defaultVerData });
       throw new Error(msg);
     }
 
-    const latestVerUrl = lavStr('id');
+    const defaultVerUrl = lavStr('id');
     const trace = ('While reporting meta data for '
       + 'the successfully fetched latest version: ');
-    const latestVerNum = fvl.mustGuessVerNum(trace, latestVerUrl, null,
-      "latest version URL (i.e. the annotation's ID field)");
+    const defaultVerNum = fvl.mustGuessVerNum(trace, defaultVerUrl, null,
+      "minimum latest version URL (i.e. the annotation's ID field)");
     return {
-      latestVerData,
-      latestVerErr: false,
-      latestVerNum,
+      defaultVerData,
+      defaultVerErr: false,
+      defaultVerNum,
       verHistUrl: lavStr('iana:version-history'),
     };
   },
