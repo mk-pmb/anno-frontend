@@ -15,7 +15,7 @@ const upgr = function upgradeAnnoList(annos) {
       custom: byStrPropDict,
       fullIdUrl: byStrPropDict.getter('id'),
       idBasename: byStrPropDict.getter('id', a => mu.url2basename(a.id)),
-      versionOfBn: byStrPropDict.getter('dc:isVersionOf', mu.url2basename),
+      versionOfBn: byStrPropDict.getter('dcterms:isVersionOf', mu.url2basename),
     },
   };
   return upgrades;

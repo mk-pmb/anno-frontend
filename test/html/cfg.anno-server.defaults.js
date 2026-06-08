@@ -18,7 +18,7 @@
   cfg.draftStoreEndpoint = aux.testDirBaseUrl + 'fixtures/drafts/';
   cfg.stampActionPathPrefixesByStampName = {
     'as:deleted': '../../approver/anno/',
-    'dc:dateAccepted': '../../approver/anno/',
+    'dcterms:dateAccepted': '../../approver/anno/',
   };
 
   cfg.loginFormUrl = function guessLoginFormUrl(lateCfg) {

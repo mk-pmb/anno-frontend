@@ -41,7 +41,7 @@ const annoDataCfg = {
       numbers) near the beginning, in case the title is truncated. */
 
     /* Theoretically, we could add even more:
-      'dc:author': '…',
+      'dc:creator': '…',
       'dc:description': '…',
       … but most clients won't be able to use that anyway, and it may
       quickly become redundant for groups of similar targets, so we

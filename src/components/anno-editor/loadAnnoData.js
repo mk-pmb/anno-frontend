@@ -34,6 +34,23 @@ const EX = async function loadAnnoData(origAnno) {
   const { commit, state } = editor.$store;
 
   const anno = jsonDeepCopy(origAnno);
+
+  (function upgradeMistakenDcTermsFields() {
+    /* Anno-Frontend before 2026-06-01 had a bug where we used made-up
+      pseudo Dublin Core fields that actually should have been DC Terms. */
+    const names = ['dateAccepted', 'isVersionOf', 'replaces'];
+    const had = [];
+    names.forEach(function fixDcTermsField(key) {
+      const val = anno['dc:' + key];
+      if (val === undefined) { return; }
+      had.push(key);
+      delete anno['dc:' + key];
+      anno['dcterms:' + key] = val;
+    });
+    console.debug('Anno-Frontend: loadAnnoData: updated [dc→dcterms]:',
+      had, '@', (anno.id || { anno }));
+  }());
+
   const draftReply = unpackSingleProp(0, anno['as:inReplyTo']);
   if (draftReply) { anno['as:inReplyTo'] = draftReply; }
   anno.target = adjustMultiTarget(state, anno.target, {
@@ -42,8 +59,8 @@ const EX = async function loadAnnoData(origAnno) {
   const primTgtAdj = anno.target.primaryTargetAdjustHint;
 
   function enforceTLF(k, v) { if (v) { anno[k] = v; } else { delete anno[k]; } }
-  enforceTLF('dc:replaces', state.editEnforceReplaces);
-  enforceTLF('dc:isVersionOf', state.editEnforceVersionOf);
+  enforceTLF('dcterms:replaces', state.editEnforceReplaces);
+  enforceTLF('dcterms:isVersionOf', state.editEnforceVersionOf);
   fixupReplyMode(state, anno); // ATTN: modifies the anno inplace!
 
   const popField = objPop.d(anno); /* <- can only be used safely after
@@ -91,7 +108,7 @@ const EX = async function loadAnnoData(origAnno) {
     title,
     creator,
     target: fixedTargets,
-    versionOf: popStr('dc:isVersionOf'),
+    versionOf: popStr('dcterms:isVersionOf'),
     body: arrayOfTruths(popField('body')),
     rights: '',
   };

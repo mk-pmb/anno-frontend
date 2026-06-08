@@ -261,7 +261,7 @@ module.exports = {
 
 
     approval() {
-      const val = this.annoData['dc:dateAccepted'];
+      const val = this.annoData['dcterms:dateAccepted'];
       const st = { val, active: true, explain: '' };
       if (val === undefined) { return st; } // i.e. no approval required
       const { auxMeta } = this;
@@ -303,7 +303,7 @@ module.exports = {
       const impFromNS = identifyImportedFromNS(appCfg, anno);
       const impButton = (function decide() {
         if (impFromNS === 'anno') { return; }
-        const replaces = (anno['dc:replaces'] || null);
+        const replaces = (anno['dcterms:replaces'] || null);
         console.debug('ImportedFromNS:', { impFromNS, replaces });
         if (impFromNS === 'draftStore') {
           if (replaces) {
@@ -409,7 +409,7 @@ module.exports = {
     reply()  { return eventBus.$emit('reply',  this.annoData) },
 
     async approve() {
-      await simpleDateStamp(this, 'dc:dateAccepted');
+      await simpleDateStamp(this, 'dcterms:dateAccepted');
       window.location.reload();
     },
 
@@ -540,7 +540,7 @@ module.exports = {
     },
 
 
-    otherVersionsExist() { return !!this.annoData['dc:replaces']; },
+    otherVersionsExist() { return !!this.annoData['dcterms:replaces']; },
 
 
     decideShowPurlButton() {
@@ -669,7 +669,7 @@ module.exports = {
       if (!annoBn) { return; }
       return ((fileBaseName(annoData.id) === annoBn)
         || (fileBaseName(annoData['iana:latest-version']) === annoBn)
-        || (fileBaseName(annoData['dc:isVersionOf']) === annoBn)
+        || (fileBaseName(annoData['dcterms:isVersionOf']) === annoBn)
         );
     },
 

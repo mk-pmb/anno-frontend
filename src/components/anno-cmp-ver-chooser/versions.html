@@ -10,7 +10,8 @@
         >#</span>{{ ver.verNum }}</span>
       <span class="versdate"><span class="sep">&nbsp; </span>{{
         dateFmt(ver.anno.created) || l10n('date_time_unknown') }}</span>
-      <span class="verunapproved" v-if="ver.anno['dc:dateAccepted'] === false"
+      <span class="verunapproved"
+        v-if="ver.anno['dcterms:dateAccepted'] === false"
         >&#x1F512;</span>
       <span class="verssunset" v-if="ver.sunsetVoc"
         ><span class="sep">&nbsp; </span>&#x26D4; {{ ver.sunsetDescr }}</span>

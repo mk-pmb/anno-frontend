@@ -11,7 +11,7 @@
     "name": "R. Sterr",
     "type": "Person"
   },
-  "dc:dateAccepted": "2023-06-22T16:02:03Z",
+  "dcterms:dateAccepted": "2023-06-22T16:02:03Z",
   "dc:title": "Erster!!!1! 💯",
   "id": "test-esau-spam-rsterr~1",
   "rights": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -31,7 +31,7 @@
     "name": "Z. Weiter",
     "type": "Person"
   },
-  "dc:dateAccepted": "2023-06-22T16:07:30Z",
+  "dcterms:dateAccepted": "2023-06-22T16:07:30Z",
   "dc:identifier": "https://doi.org/10.82109/anno.frontend.test-esau-spam-zweiter_1",
   "dc:title": "Zweiter! 🏆",
   "id": "test-esau-spam-zweiter~1",
@@ -74,7 +74,7 @@
     "name": "D. Ritter",
     "type": "Person"
   },
-  "dc:isVersionOf": "test-esau-spam-dritter",
+  "dcterms:isVersionOf": "test-esau-spam-dritter",
   "dc:title": "Dritter!",
   "id": "test-esau-spam-dritter~1",
   "motivation": ["replying"],
@@ -100,8 +100,8 @@
     "name": "A. Nym",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
-  "dc:isVersionOf": "test-esau-spam-warhier",
+  "dcterms:dateAccepted": false,
+  "dcterms:isVersionOf": "test-esau-spam-warhier",
   "dc:title": "Ich war hier.",
   "id": "test-esau-spam-warhier~1",
   "motivation": ["replying"],
@@ -175,8 +175,8 @@
     "name": "A. Nym",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
-  "dc:isVersionOf": "test-esau-spam-warhier",
+  "dcterms:dateAccepted": false,
+  "dcterms:isVersionOf": "test-esau-spam-warhier",
   "dc:language": "en-GB",
   "dc:title": "Ich war hier.",
   "id": "test-esau-spam-warhier~2",
@@ -204,9 +204,9 @@
     "name": "A. Nym",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
+  "dcterms:dateAccepted": false,
   "dc:identifier": "https://doi.org/10.1000/182",
-  "dc:isVersionOf": "test-esau-spam-warhier",
+  "dcterms:isVersionOf": "test-esau-spam-warhier",
   "dc:language": "de-DE",
   "dc:title": "Ich war hier.",
   "id": "test-esau-spam-warhier~3",
@@ -233,7 +233,7 @@
     "name": "R. Sterr",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
+  "dcterms:dateAccepted": false,
   "dc:language": "de-DE",
   "dc:title": "Sie haben gewonnen!",
   "id": "test-esau-spam-rsterr~4",
@@ -254,8 +254,8 @@
     "name": "Z. Algo",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
-  "dc:isVersionOf": "test-esau-spam-hecomes",
+  "dcterms:dateAccepted": false,
+  "dcterms:isVersionOf": "test-esau-spam-hecomes",
   "dc:title": "H̡̪̘͕̞̱̬̀̉͂͊̽̀̏̚͝e͕̱͈̲̯̙̽̽͌͂̅͘͜͡ c̢̧̰͓̣͍̩͑̽̄̊̉̑̃̏o͎̹̱̤̞̾̀͌̉̀͗͘m̥̩̮̱̩͇̙̑̒̔̏͂́̋̾͘͢e̸̗̗̝̞̗͓̜̣̪̐͐̋̆̃́̂̉͑͠s͙̙̦͚̠̻̣̼͛̽̈́͛̾̋̾̓.̹͇̝͙̈́̒̊̊̍͟͡",
   "id": "test-esau-spam-hecomes~1",
   "motivation": ["replying"],
@@ -282,8 +282,8 @@
     "name": "Z. Algo",
     "type": "Person"
   },
-  "dc:dateAccepted": false,
-  "dc:isVersionOf": "test-esau-spam-hewaits",
+  "dcterms:dateAccepted": false,
+  "dcterms:isVersionOf": "test-esau-spam-hewaits",
   "dc:title": "H͓͚̼̙̼͍̺̗̝̑͌̾̍́̉e̡̛̗̯̪̋́̌͐̍͐̏̚͜͠ ŵ͚̳̝̭͈̗̬̅̈́͒͠a̷̲̻̗͍͎̻͍̯̐͐̓̄͋i̸̡̱̦͖̬̹̓̎̔̒̾͌̚t̼̭̬͔̓̋̅̀͢͟͝͠ş̡̭̟̝̹̠̥͖̂̀͆͛͘͢ b̷̧̨̛͖̟͕͇̤̲͇͆͛͑͐͗̑͟͞e̡̢͕̯͇̗͋̎̔͒̂͜͞͡h̡̬̗͙͙̱̜̜̦͂̈́̎̍̆̉̅̄͞į̹̖̪̥͎̹̦̔̐̈̎̑̍͋̓͒͟ņ͇̬̝̆̀̂͑̔͐͜͜ḏ̴̞̤̟̟͔͛̀͑̆̌̂͒̈̚͞ t̷͙̖͕͍̝̍̌̌͂́́̒̀͜͢͡ḩ̸̨̨̛̛̬̥̮̝̿͊͒͘͝͞é̡̨̖̼͂̈́͜͟͝͞ ẇ̢̧̻̟͎̼̹͋͑̾͐̍͂̀͢͟ȁ̢̧̺̼͓͎͐̔̑͢͝ļ̢͉͖̫̮̮̗͚͂̈́̈͑͒ľ̠̪̱̠̜̩̻͖̓̒̄̆̀͟͜.̷͙̗̤̠̫̓͊͒͡͝",
   "id": "test-esau-spam-hewaits~1",
   "motivation": ["replying"],
@@ -309,7 +309,7 @@
     "name": "Mose et al.",
     "type": "Person"
   },
-  "dc:isVersionOf": "test-esau-moses-fruit",
+  "dcterms:isVersionOf": "test-esau-moses-fruit",
   "dc:language": "de-DE",
   "dc:title": "Verbotene Früchte",
   "id": "test-esau-moses-fruit~1",
@@ -360,7 +360,7 @@
     "name": "Mose et al.",
     "type": "Person"
   },
-  "dc:isVersionOf": "test-esau-moses-adamsapfel",
+  "dcterms:isVersionOf": "test-esau-moses-adamsapfel",
   "dc:language": "de-DE",
   "dc:title": "Adams Apfel",
   "id": "test-esau-moses-adamsapfel~1",

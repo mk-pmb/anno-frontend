@@ -20,9 +20,9 @@ const EX = function assembleVersionRelatedUrl(cfg, tplKeyPrefix, anno) {
   slots['%ID'] = ores(anno.id);
   slots['%id'] = strU.fileBaseName(slots['%ID']);
 
-  // %VO  = dc:isVersionOf
-  // %vo  = last path segment of dc:isVersionOf
-  slots['%VO'] = ores(anno['dc:isVersionOf']);
+  // %VO  = dcterms:isVersionOf
+  // %vo  = last path segment of dcterms:isVersionOf
+  slots['%VO'] = ores(anno['dcterms:isVersionOf']);
   slots['%vo'] = strU.fileBaseName(slots['%VO']);
 
   // %tu   First target URL

@@ -45,10 +45,12 @@ const EX = function getCleanAnno() {
   anno.type = ['Annotation'];
   setAnnoPropIf('as:inReplyTo', replyTo); // legacy compat
   setAnnoPropIf('dc:identifier', doi); // legacy compat
-  setAnnoPropIf('dc:isVersionOf', versionOf); // legacy compat
+  setAnnoPropIf('dcterms:isVersionOf', versionOf); // legacy compat
   setAnnoPropIf('dc:language', editor.annoLanguage.selected);
   setAnnoPropIf('dc:title', title);
-  if (anno['dc:dateAccepted'] === false) { delete anno['dc:dateAccepted']; }
+  if (anno['dcterms:dateAccepted'] === false) {
+    delete anno['dcterms:dateAccepted'];
+  }
 
   const oldFirstHtmlBody = editorModelDef.getters.firstHtmlBody(anno);
   if (oldFirstHtmlBody) {
@@ -81,9 +83,9 @@ Object.assign(EX, {
   checkExtraFields(editor, anno, extraFields) {
     if (!extraFields) { return; }
 
-    if (extraFields['dc:dateAccepted'] === false) {
+    if (extraFields['dcterms:dateAccepted'] === false) {
       // User is trying to edit an annotation that is still pending approval.
-      delete extraFields['dc:dateAccepted'];
+      delete extraFields['dcterms:dateAccepted'];
     }
 
     // eslint-disable-next-line array-callback-return

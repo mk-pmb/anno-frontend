@@ -5,8 +5,8 @@ const EX = [
   'as:deleted',
   'collection', // <- non-standard legacy prop used by ancient anno-fe
   'created',
-  'dc:dateAccepted',
   'dc:identifier',
+  'dcterms:dateAccepted',
   'doi',
   'iana:latest-version',
   'iana:version-history',

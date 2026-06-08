@@ -39,7 +39,7 @@ const EX = async function downloadAndRestoreDraft(meta) {
 
 EX.neverRestoreFields = [
   ...neverSubmitFields,
-  'dc:replaces',
+  'dcterms:replaces',
 ];
 
 

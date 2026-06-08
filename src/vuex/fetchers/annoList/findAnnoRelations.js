@@ -74,7 +74,7 @@ Object.assign(EX, {
 
   decideReplyTarget(anno) {
     if (!anno) { return false; }
-    return (anno['dc:isVersionOf'] || anno.id);
+    return (anno['dcterms:isVersionOf'] || anno.id);
   },
 
   cmpAnnoDates(a, b) { return parseDate(a.created) - parseDate(b.created); },

@@ -127,7 +127,7 @@ const EX = { // exports namespace
       function by(k) { return allAnnos.find(a => a[k] === url); }
       const found = (by('id')
         || by('canonical')
-        || by('dc:isVersionOf')
+        || by('dcterms:isVersionOf')
         || false);
       return found;
     },

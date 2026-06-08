@@ -317,9 +317,9 @@ module.exports = {
         throw editor.uiPanic('reply_target_too_many');
       }
       const updEditMode = {
-        editEnforceReplaces: ores(anno['dc:replaces']),
+        editEnforceReplaces: ores(anno['dcterms:replaces']),
         editEnforceReplying: draftReply,
-        editEnforceVersionOf: ores(anno['dc:isVersionOf']),
+        editEnforceVersionOf: ores(anno['dcterms:isVersionOf']),
         editMode,
       };
       commit('FLAT_UPDATE_APP_STATE', updEditMode);
@@ -340,7 +340,7 @@ module.exports = {
       checkEventBusAnnoArgEvent('reply', refAnno);
       const editor = this;
       const replyToUrl = (
-        refAnno['dc:isVersionOf']
+        refAnno['dcterms:isVersionOf']
         || refAnno.id
         );
       const refAnnoTitle = (refAnno['dc:title'] || refAnno.title);
@@ -374,18 +374,18 @@ module.exports = {
       const impFromNS = identifyImportedFromNS(appCfg, anno);
       delete anno['ubhd:sourceUrl'];
       if (impFromNS === 'anno') {
-        if (!anno['dc:isVersionOf']) {
-          anno['dc:isVersionOf'] = (
+        if (!anno['dcterms:isVersionOf']) {
+          anno['dcterms:isVersionOf'] = (
             anno.canonical
             || oldAnnoIdUrl
             );
         }
-        anno['dc:replaces'] = oldAnnoIdUrl;
+        anno['dcterms:replaces'] = oldAnnoIdUrl;
       }
       if (impFromNS === 'web') {
         composeVerb = 'create';
-        delete anno['dc:isVersionOf'];
-        delete anno['dc:replaces'];
+        delete anno['dcterms:isVersionOf'];
+        delete anno['dcterms:replaces'];
       }
 
       delete anno.canonical;
