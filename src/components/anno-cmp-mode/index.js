@@ -13,6 +13,7 @@ const verCache = require('./verCache.js');
 
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 function numOr(x, d) { return (+x || +d || 0); }
+function orf(x) { return (x || false); }
 
 
 const oppoSides = {

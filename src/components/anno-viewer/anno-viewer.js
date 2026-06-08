@@ -171,6 +171,7 @@ module.exports = {
     const viewer = this;
     const initialAnnoId = viewer.annoIdUrl;
     Object.assign(viewer.$el, {
+      getInternalAnno() { return jsonDeepCopy(viewer.annotation || false); },
       getVueElem() { return viewer; },
       initialAnnoId,
     });
