@@ -11,6 +11,7 @@ const EX = [
   'iana:latest-version',
   'iana:version-history',
   'iana:working-copy',
+  'id',
   'replyTo',
   'ubhd:aclPreviewBySubjectTargetUrl',
 ];
