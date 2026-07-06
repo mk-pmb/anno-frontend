@@ -87,6 +87,7 @@ const EX = {
   getPluginByName(p) { return getOwn(plugins, p, false); },
   getPluginFactories: Object.bind(null, {}),
   getVueRootElem() { return vueRootElem; },
+  getEditorRef() { return vueRootElem.editor; },
 
   start() {
     if (vueRootElem) { fail('Cannot re-start annoApp!'); }
