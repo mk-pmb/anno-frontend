@@ -85,8 +85,21 @@ module.exports = {
     },
 
     tabPanesAsVueElements() {
-      const ctnr = this.$refs.panesContainer;
-      const r = this.$children.filter(c => (c.$el.parentNode === ctnr));
+      const tabMgr = this;
+      const ctnr = tabMgr.$refs.panesContainer;
+      const r = [];
+
+      const maybeTabDef = function maybeTabDef(depth, c) {
+        if (depth > 5) { return; }
+        if (c.$el.parentNode !== ctnr) { return; }
+        if (c.isBootstrapTab) { return r.push(c); }
+        maybeTabDef.dive(depth + 1, c);
+      };
+      maybeTabDef.dive = function dive(depth, el) {
+        el.$children.forEach(c => maybeTabDef(depth, c));
+      };
+      maybeTabDef.dive(0, tabMgr);
+
       r.byTopic = Object.create(null);
       r.forEach(function each(c, i) {
         c.tabIndex = i;
@@ -123,7 +136,6 @@ module.exports = {
       tabMgr.currentActiveTabTopic = topic;
       panes.forEach((c) => { c.active = (c.tabIndex === idx); });
       // console.debug('tabWasSwitchedTo', { idx, name, topic, activePane });
-      window.activePane = activePane;
     },
 
     switchToTabPaneByVueElem(elem) {

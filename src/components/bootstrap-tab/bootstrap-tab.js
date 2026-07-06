@@ -11,13 +11,14 @@ module.exports = {
     title:    {type: String, required: true},
     name:     {type: String, required: true},
     topic:    String,
-    tabCls:   String,
-    paneCls:  String,
+    tabCls:   { type: String, default: '' },
+    paneCls:  { type: String, default: '' },
     visible:  { type: Boolean, default: true },
   },
 
   data() {
     return {
+      isBootstrapTab: true,
       active: false,
       tabIndex: -1,
     };

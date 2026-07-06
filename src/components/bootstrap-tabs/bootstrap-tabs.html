@@ -20,11 +20,13 @@
           data-toggle="tab"
           :data-index="tab.tabIndex"
           :data-name="tab.name"
+          :data-title="tab.title"
           :data-topic="tab.topic"
-          :data-active="tab.active"
+          :data-visible="String(tab.visible)"
+          :data-active="String(tab.active)"
           @click="tabClicked"
           >
-          {{tab.title}}
+          {{ tab.title }}
 
           <help-button v-if="tab.topic"
             :topic="tab.topic"
