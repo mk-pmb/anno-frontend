@@ -12,6 +12,19 @@
   Assuming port 33380, the demo would be at
   http://localhost:33380/test/html/displayAnnotations.nm.html .
 
+  * You can find pre-built `dist/` bundles in the GitHub Releases.
+    The local development build scripts may be flaky and/or outdated,
+    so if they don't work, try to replicate the GitHub CI build.
+  * The surrounding webpage must provide jQuery v3 or newer,
+    and also Bootstrap v4 or a compatible web frontend framework.
+  * Possible alternative: Host anno-frontend inside an iframe.
+  * You may be able to drop some dependencies by e.g. simplifying the zone
+    editor or allowing only plain unformatted text instead of rich text for
+    the description.
+  * We have plans to further decouple the zone editor, especially the XRX
+    legacy fallback, so that both become optional and will communicate only
+    through a standardized plugin interface.
+
   -->
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">

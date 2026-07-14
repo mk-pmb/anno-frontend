@@ -2,7 +2,6 @@
 'use strict';
 /* eslint-disable global-require */
 
-const jq = require('jquery');
 const loMapValues = require('lodash.mapvalues');
 
 const eventBus = require('../../event-bus.js');
@@ -14,6 +13,8 @@ const listDraftsGrouped = require('./listDraftsGrouped.js');
 const parseDraftFileName = require('./parseDraftFileName.js');
 const reloadDraftsList = require('./reloadDraftsList.js');
 const saveNew = require('./saveNew.js');
+
+const jq = window.jQuery;
 
 
 function initDraftGroups(appCfg) {
