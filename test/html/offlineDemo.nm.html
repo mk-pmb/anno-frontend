@@ -45,9 +45,7 @@
 
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 ############################################################################
-
-Offline-specific specials:
-
+##  Offline-specific specials:
 ############################################################################
 !-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
 
@@ -78,6 +76,12 @@ window.globalAnnoData1 = [
 ];
 window.globalAnnoData2 = {"id": "global2", "dc:title":"From globalAnnoData2"};
 
+async function customPublishAnno(anno) {
+  const msg = 'customPublishAnno! empty/cancel = ok, text = Error message:';
+  const err = window.prompt(msg + JSON.stringify(anno, null, 2), '');
+  if (err) { throw new Error(err); }
+}
+
 window.ubhdAnnoApp.configure({
   annoEndpoint: 'about:blank#',
   annoListSearchUrl: 'about:blank',
@@ -88,6 +92,7 @@ window.ubhdAnnoApp.configure({
       '*': 'allow' // default for all privileges
     },
   },
+  customSaveCreateApiFunc: customPublishAnno,
 });
 window.ubhdAnnoApp.start();
 

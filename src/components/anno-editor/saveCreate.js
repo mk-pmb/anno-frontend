@@ -27,14 +27,18 @@ const EX = async function saveCreate(editor) {
   if (!validateEditorFields(editor, anno)) { return; }
 
   const { l10n } = editor;
-  console.debug(cTrace, 'Annotation about to be POSTed:', anno);
+  console.debug(cTrace, 'Annotation about to be submitted:', anno);
   // console.debug(cTrace, '  ^-- keys:', Object.keys(anno).sort().join(', '));
-  if (!window.confirm(l10n('confirm_publish'))) { return; }
-  console.debug(cTrace, 'Confirmed. Gonna POST.');
+  const confirmSend = l10n('confirm_publish');
+  if (confirmSend) {
+    if (!window.confirm(confirmSend)) { return; }
+  }
 
   let saveResp;
   try {
-    saveResp = await api22(state).aepPost('anno/', anno);
+    const saveImpl = (state.customSaveCreateApiFunc
+      || EX.defaultSaveCreateApiFunc);
+    saveResp = await saveImpl(anno, state);
   } catch (saveFailed) {
     console.error(cTrace, 'API fail:', saveFailed);
     // window.errSaveFailed = saveFailed;
@@ -55,6 +59,10 @@ const EX = async function saveCreate(editor) {
 
 
 Object.assign(EX, {
+
+  defaultSaveCreateApiFunc(anno, appCfg) {
+    return api22(appCfg).aepPost('anno/', anno);
+  },
 
   parseCustomToplevelAttributes(anno, ctaText) {
     const ctaDict = {};
