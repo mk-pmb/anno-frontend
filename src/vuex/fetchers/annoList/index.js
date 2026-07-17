@@ -1,6 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 'use strict';
 const autoDefault = require('require-mjs-autoprefer-default-export-pmb');
+const parseCeson = require('ceson/parse.js');
 
 const annoDataApi = autoDefault(require('../../../annoDataApi'));
 const api22 = require('../../../api22.js');
@@ -8,6 +9,7 @@ const deepFreeze = autoDefault(require('deep-freeze-es6'), 'deepFreeze');
 const eventBus = require('../../../event-bus.js');
 
 const optimizeAnnoList = require('./optimizeAnnoList.js');
+const fixupVeryBrokenAnnos = require('./fixupVeryBrokenAnnos.js');
 
 function orf(x) { return x || false; }
 
@@ -20,19 +22,9 @@ const EX = async function fetchAnnoList(store) {
     fetchFailed: false,
   });
   eventBus.$emit('fetching');
-  const annoListSearchUrl = (state.annoListSearchUrl || (
-    state.annoListSearchPrefix + state.targetSource));
   try {
-    let annos = await api22(state).aepGet(annoListSearchUrl);
-
-    const aclUpd = annos['ubhd:aclPreviewBySubjectTargetUrl'];
-    if (aclUpd) { commit('UPDATE_ACL', aclUpd); }
-
-    annos = orf(orf(annos).first).items;
-    if (!Array.isArray(annos)) {
-      throw new TypeError('Received an invalid annotations list');
-    }
-
+    let annos = await EX.collectAnnos(state);
+    if (annos.acl) { commit('UPDATE_ACL', annos.acl); }
     Object.assign(annos, EX.rawAnnoListApi);
     try {
       annoDataApi.upgradeAnnoList.inplace(annos);
@@ -63,6 +55,57 @@ const EX = async function fetchAnnoList(store) {
     eventBus.$emit('fetchListFailed', fetchFailed);
   }
 };
+
+
+Object.assign(EX, {
+
+  async collectAnnos(appCfg) {
+    const extras = {};
+    let allAnnos = (await Promise.all([
+      (async function loadFromUrl() {
+        const url = (appCfg.annoListSearchUrl || (
+          appCfg.annoListSearchPrefix + appCfg.targetSource));
+        if (!url) { throw new Error('Missing annoListSearchUrl'); }
+        if (url === 'about:blank') { return; }
+        const apiReply = await api22(appCfg).aepGet(url);
+        const parsed = EX.parseAnnoProtocolAnnos(apiReply);
+        extras.acl = parsed.acl;
+        return parsed;
+      }()),
+
+      [appCfg.annoListAddFromWindowGlobals].flat(99).map(g => g && window[g]),
+
+      (async function loadFromDom() {
+        const sel = appCfg.annoListAddFromDom;
+        return sel && window.jQuery(sel).toArray().map(function found(elem) {
+          const text = String(elem.value || elem.innerText || '').trim();
+          if (!text) { return; }
+          const parsed = parseCeson(text);
+          // console.debug('annoListAddFromDom:', elem, parsed);
+          return parsed;
+        });
+      }()),
+
+    ])).flat(9000);
+    allAnnos = fixupVeryBrokenAnnos(allAnnos);
+    Object.assign(allAnnos, extras);
+    return allAnnos;
+  },
+
+
+  parseAnnoProtocolAnnos(apiReply) {
+    const annos = orf(orf(apiReply).first).items;
+    if (!Array.isArray(annos)) {
+      throw new TypeError('Received an invalid annotations list');
+    }
+    Object.assign(annos, {
+      acl: apiReply['ubhd:aclPreviewBySubjectTargetUrl'],
+    });
+    return annos;
+  },
+
+
+});
 
 
 module.exports = EX;

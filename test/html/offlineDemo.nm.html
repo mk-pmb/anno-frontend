@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Display Annotations Test</title>
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+</head><body>
+
+<main class="sidebar-container"><div class="popups-boundary-marker">
+<div id="anno-app-sidebar">
+  <div id="anno-app-container"></div>
+</div><!-- #anno-app-sidebar -->
+</div></main><!-- .sidebar-container -->
+
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+<style>
+  @import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
+  @import url("../../node_modules/font-awesome/css/font-awesome.min.css");
+
+  @import url("tests.defaults.css");
+  @import url("../../.git/@/config-override/tests.css");
+  @import url("../../../anno-local/config-override/tests.css");
+</style>
+<!-- [2021-04-16] Do not load popper.js separately. It fails with
+  "TypeError: Popper__default.default is not a constructor".
+  Instead, use the bundled version of bootstrap, baked with popper inside.
+  -->
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../node_modules/quill/dist/quill.hotfix-issue-1768.min.js"></script>
+<script src="../../node_modules/axios/dist/axios.js"></script>
+<script src="../../node_modules/semtonotes-client/xrx.api.drawing.min.js"></script>
+<script src="../../node_modules/@ubhd/authorities-client/dist/authorities-client.js"></script>
+<script src="../../node_modules/semtonotes-utils/dist/xrx-utils.js"></script>
+<script src="../../node_modules/@kba/xrx-vue/dist/xrx-vue.js"></script>
+<script src="../../dist/anno-frontend.dev.js"></script>
+
+<script src="cfg.tests.defaults.js"></script>
+<script src="../../.git/@/config-override/cfg.tests.js"></script>
+<script src="../../../anno-local/config-override/cfg.tests.js"></script>
+
+
+
+
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+############################################################################
+
+Offline-specific specials:
+
+############################################################################
+!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
+
+<style type="text/css">
+  #annodata, .annodata { display: none; }
+</style>
+
+<div id="annodata">[
+{"id": "data1", "dc:title": "Anno 1 from #annodata"},
+{"id": "data2", "dc:title": "Anno 2 from #annodata"},
+{"id": "data3", "dc:title": "Anno 3 from #annodata"},
+// ^-- trailing comma is acceptable in CESON
+]</div>
+
+<del class="annodata">{"id": "apfel", "dc:title": "Apfel"}</del>
+<del class="annodata">{"id": "birne", "dc:title": "Birne"}</del>
+<del class="annodata">{"id": "clementine", "dc:title": "Clementine"}</del>
+<del class="annodata">[[{"id": "array00", "dc:title":"From array [0][0]"}
+],[{"id": "array10", "dc:title":"From array [1][0]"},
+{"id": "array11", "dc:title":"From array [1][1]"}],
+{"id": "array1", "dc:title":"From array [1]"}]
+</del>
+
+<script>
+window.globalAnnoData1 = [
+  {"id": "global10", "dc:title":"From globalAnnoData1[0]"},
+  {"id": "global11", "dc:title":"From globalAnnoData1[1]"},
+];
+window.globalAnnoData2 = {"id": "global2", "dc:title":"From globalAnnoData2"};
+
+window.ubhdAnnoApp.configure({
+  annoEndpoint: 'about:blank#',
+  annoListSearchUrl: 'about:blank',
+  annoListAddFromWindowGlobals: ['globalAnnoData1', 'globalAnnoData2'],
+  annoListAddFromDom: '#annodata, .annodata',
+  aclOverrides: {
+    '*': { // default for all annos
+      '*': 'allow' // default for all privileges
+    },
+  },
+});
+window.ubhdAnnoApp.start();
+
+</script>
+
+</body></html>
