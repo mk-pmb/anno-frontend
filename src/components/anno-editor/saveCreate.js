@@ -14,6 +14,7 @@ const EX = async function saveCreate(editor) {
   const anno = editor.getCleanAnno();
   neverSubmitFields.forEach(k => delete anno[k]);
   const { state, commit, dispatch } = editor.$store;
+  const cTrace = 'Anno-Frontend: saveCreate:';
 
   // window.relaEd = editor.$refs.relationLinkEditor;
   Object.assign(anno, EX.parseCustomToplevelAttributes(anno,
@@ -26,21 +27,21 @@ const EX = async function saveCreate(editor) {
   if (!validateEditorFields(editor, anno)) { return; }
 
   const { l10n } = editor;
-  console.debug('Annotation about to be POSTed:', anno);
-  // console.debug('  ^-- keys:', Object.keys(anno).sort().join(', '));
+  console.debug(cTrace, 'Annotation about to be POSTed:', anno);
+  // console.debug(cTrace, '  ^-- keys:', Object.keys(anno).sort().join(', '));
   if (!window.confirm(l10n('confirm_publish'))) { return; }
-  console.debug('Confirmed. Gonna POST.');
+  console.debug(cTrace, 'Confirmed. Gonna POST.');
 
   let saveResp;
   try {
     saveResp = await api22(state).aepPost('anno/', anno);
   } catch (saveFailed) {
-    console.error('saveCreate API fail:', saveFailed);
+    console.error(cTrace, 'API fail:', saveFailed);
     // window.errSaveFailed = saveFailed;
     window.alert(l10n('error:') + '\n' + saveFailed);
     return;
   }
-  console.info('saveCreate API success:', saveResp);
+  console.info(cTrace, 'API success:', saveResp);
   commit('RESET_ANNOTATION');
   eventBus.$emit('close-editor');
 
