@@ -25,6 +25,7 @@ const EX = async function fetchAnnoList(store) {
   try {
     let annos = await EX.collectAnnos(state);
     if (annos.acl) { commit('UPDATE_ACL', annos.acl); }
+    delete annos.acl;
     Object.assign(annos, EX.rawAnnoListApi);
     try {
       annoDataApi.upgradeAnnoList.inplace(annos);
