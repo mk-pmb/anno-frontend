@@ -21,6 +21,7 @@ Vue.use(Vuex);
 require('./components/index.js').registerAll(Vue);
 
 const applyCheats = require('./cheats.js');
+const appStub = require('./appStub.js');
 const bootstrapCompat = require('./bootstrap-compat')
 const browserStorage = require('./browserStorage.js');
 const decideDefaultOptions = require('./default-config');
@@ -45,13 +46,10 @@ let vueRootElem;
 let configAccum = decideDefaultOptions();
 let currentAnnosList = false;
 
+
 const EX = {
-
-  appName: 'ubhdAnnoApp',
-  appBundleMeta: {}, // will be inserted at build time.
-
+  ...appStub,
   browserStorage,
-
   defaultConfig: configAccum,
 
   configure(update) {
