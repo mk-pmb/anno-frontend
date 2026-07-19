@@ -214,10 +214,6 @@ module.exports = {
       set(t) { this.$store.commit('SET_EDITOR_ANNO_PROP', ['title', t]); },
     },
 
-    activeTabTopic() {
-      return ores(orf(this.$refs.tablist).currentActiveTabTopic);
-    },
-
   },
 
   methods: {
@@ -243,6 +239,10 @@ module.exports = {
       editor.pluginImplCache = objFromKeysList({
         gen: editor.$store.getAnnoAppRef().getPluginByName,
       }, pluginsUsed);
+    },
+
+    getActiveTabTopic() {
+      return ores(orf(this.$refs.tablist).currentActiveTabTopic);
     },
 
     switchTabByChildRefName(refName) {

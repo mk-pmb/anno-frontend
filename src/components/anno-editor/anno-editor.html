@@ -274,7 +274,7 @@
     tab-cls="ml-auto debug-feature debug-panel-tab"
     >
     <anno-editor-debug-panel
-      v-if="activeTabTopic === 'debug-tab'"
+      v-if="getActiveTabTopic() === 'debug-tab'"
       ref="debugPanel"
       :editorApi="{ getCleanAnno }"
       />

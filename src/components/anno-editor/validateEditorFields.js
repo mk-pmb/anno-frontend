@@ -101,7 +101,7 @@ Object.assign(vali, {
     }
 
     if (orf(editor.previewWarnings).found) {
-      if (editor.activeTabTopic !== 'preview') {
+      if (editor.getActiveTabTopic() !== 'preview') {
         problems.push(l10n('preview:sus:mustView'));
       }
     }
