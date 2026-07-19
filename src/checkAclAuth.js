@@ -29,35 +29,17 @@ const EX = function checkAclAuth(appCfg, opt, overrideSubjTgt) {
     return false;
   }
 
-  const searchPriorities = [
-    ['aclOverrides', subjTgt, privName],
-    ['aclOverrides', subjTgt, '*'],
-    ['aclOverrides', '*', privName],
-    ['aclOverrides', '*', '*'],
-    ['acl', subjTgt, privName],
-    ['acl', subjTgt, '*'],
-    ['acl', '*', privName],
-    ['acl', '*', '*'],
-  ];
-  let found;
-  let trace;
-  searchPriorities.every(function s(sp) {
-    trace = sp;
-    found = getOwn(getOwn(getOwn(appCfg, sp[0]), sp[1]), sp[2]);
-    // console.debug(EX.name, sp, { privName, found, subjTgt });
-    return (found === undefined);
-  });
-  // console.debug(EX.name, { privName, subjTgt, found }, opt);
-  if (found === undefined) { return false; }
-  if (found === 'allow') { return true; }
-  if (found === 'deny') { return false; }
+  const { decision, trace } = EX.lookupAclEntry(appCfg, subjTgt, privName);
+  if (decision === undefined) { return false; }
+  if (decision === 'allow') { return true; }
+  if (decision === 'deny') { return false; }
 
   const err = new TypeError('AnnoApp: Unsupported ACL permission value'
     + ' for privilege ' + privName
     + ' for subject target URL ' + subjTgt
     + ' via trace<' + trace.join(' | ') + '>'
-    + ': ' + (typeof found) + ' ' + String(found));
-  err.aclLookup = { subjTgt, privName, trace, found };
+    + ': ' + (typeof decision) + ' ' + String(decision));
+  err.aclLookup = { subjTgt, privName, trace, decision };
   console.error(err);
   throw err;
 };
@@ -91,6 +73,53 @@ Object.assign(EX, {
     methods: {
       checkAclAuth(...args) { return EX(this.$store.state, ...args); },
     },
+  },
+
+
+  lookupAclEntry(appCfg, subjTgt, privName) {
+    const searchOrder = [
+      ['aclOverrides', subjTgt, privName],
+      ['aclOverrides', subjTgt, '*'],
+      ['aclOverrides', '*', privName],
+      ['aclOverrides', '*', '*'],
+      ['acl', subjTgt, privName],
+      ['acl', subjTgt, '*'],
+      ['acl', '*', privName],
+      ['acl', '*', '*'],
+    ];
+    let trace;
+    let decision;
+    const fails = [];
+    searchOrder.every(function s(path) {
+      /* Without Vue proxy interference, this would be as simple as
+            decision = lodash.get(appCfg, path);
+        but since Vue spams the console with errors, we have to trace them
+        to at least try and debug them.
+      */
+      try {
+        trace = [];
+        decision = path.reduce(function nextStep(from, key) {
+          if (!from) { return; }
+          const val = getOwn(from, key);
+          trace.push(key);
+          trace.push('=' + (val && typeof val));
+          return val;
+        }, appCfg);
+      } catch (aclLookupErr) {
+        fails.push({
+          msg: String(aclLookupErr),
+          getOrigErr: () => aclLookupErr,
+          path: path.join('|'),
+          dived: trace.join('|'),
+        });
+      }
+      return (decision === undefined);
+    });
+    if (fails.length) {
+      console.warn('Anno-Frontend: Had errors while doing benign ACL lookups'
+        + ' => probably some weird Vue proxy interference:', ...fails);
+    }
+    return { decision, trace };
   },
 
 
