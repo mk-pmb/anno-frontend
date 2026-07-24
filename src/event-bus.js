@@ -15,12 +15,21 @@ Object.assign(bus, {
     if (unsupported.length) { fail('Too many arguments.'); }
     let nextIndex = 0;
     // console.debug('eventBus multiEmit:', queue);
+
+    function decideDelay(ev, ...args) {
+      if (!ev) { return 1; }
+      const [arg1] = args;
+      if (ev === 'wait') { return (+arg1 || 1) * 1e3; }
+      bus.$emit(ev, ...args);
+      return 100;
+    }
+
     (function emitNext() {
       const ev = queue[nextIndex];
       // console.debug('eventBus multiEmit: emitNext:', nextIndex, ev);
       nextIndex += 1;
-      if (ev) { bus.$emit(...[].concat(ev)); }
-      if (nextIndex < queue.length) { setTimeout(emitNext, 100); }
+      const delay = decideDelay(...[].concat(ev));
+      if (nextIndex < queue.length) { setTimeout(emitNext, delay); }
     }());
   },
 
