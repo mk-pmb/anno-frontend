@@ -249,13 +249,13 @@ module.exports = {
       const editor = this;
       const inside = this.$refs[refName]; // something inside the tab
       if (inside) {
-        return editor.$refs.tablist.switchToTabPaneByVueElem(inside);
+        return editor.$refs.tablist.switchToTabByVueElem(inside);
       }
       throw new Error('Anno-Editor: $ref not found (try topic?): ' + refName);
     },
 
     switchTabByTopic(topic) {
-      return this.$refs.tablist.switchToTabPaneByTopic(topic);
+      return this.$refs.tablist.switchToTabByDataSetProp('topic', topic);
     },
 
     getPrimarySubjectTarget() {

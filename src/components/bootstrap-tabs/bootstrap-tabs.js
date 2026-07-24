@@ -7,9 +7,7 @@ const HelpButton = require('../help-button');
 const { jQuery } = window;
 
 
-function jqSetSingularClass(cls, idx, list) {
-  jQuery(list).removeClass(cls).eq(idx).addClass(cls);
-}
+function orf(x) { return x || false; }
 
 
 module.exports = {
@@ -108,16 +106,24 @@ module.exports = {
       return r;
     },
 
-    switchToNthTab(n) {
-      const tabMgr = this;
-      const idx = (+n || 0) - 1;
-      // console.debug({ switchToNthTab: n });
-      const activate = jqSetSingularClass.bind(null, 'active', idx);
-      // Highlight the correct tab in BS4:
-      activate(tabMgr.$refs.tabs.querySelectorAll('.nav-link'));
-      // Show only the relevant pane:
-      activate(tabMgr.$refs.panesContainer.children);
-      tabMgr.tabWasSwitchedTo(idx);
+    getTabButtons(nth) {
+      const b = this.$refs.tabs.querySelectorAll('.nav-link');
+      const i = (+nth || 0);
+      if (i >= 1) { return orf(b[i - 1]); }
+      return Array.from(b);
+    },
+
+    switchToNthTab(nth) {
+      jQuery(this.getTabButtons(nth)).click();
+      // jQuery(some_falsey_argument).click() is a safe no-op.
+    },
+
+    getTabButtonByDataSetProp(key, val) {
+      return orf(this.getTabButtons().find(t => t.dataset[key] === val));
+    },
+
+    switchToTabByDataSetProp(key, val) {
+      jQuery(this.getTabButtonByDataSetProp(key, val)).click();
     },
 
     tabWasSwitchedTo(idx) {
@@ -130,7 +136,7 @@ module.exports = {
       const tabMgr = this;
       tabMgr.currentActiveTabIndex = idx;
       const panes = tabMgr.tabPanesAsVueElements();
-      const activePane = (panes[idx] || false);
+      const activePane = orf(panes[idx]);
       const { name, topic } = activePane;
       tabMgr.currentActiveTabName = name;
       tabMgr.currentActiveTabTopic = topic;
@@ -138,11 +144,11 @@ module.exports = {
       // console.debug('tabWasSwitchedTo', { idx, name, topic, activePane });
     },
 
-    switchToTabPaneByVueElem(elem) {
+    switchToTabByVueElem(elem) {
       const tabMgr = this;
       const panes = tabMgr.tabPanesAsVueElements();
       let n = 0;
-      // console.debug('switchToTabPaneByVueElem:', elem);
+      // console.debug('switchToTabByVueElem:', elem);
       if (elem) {
         panes.some(function compare(p, i) {
           const same = ((p === elem)
@@ -156,13 +162,6 @@ module.exports = {
         });
       }
       tabMgr.switchToNthTab(n);
-    },
-
-    switchToTabPaneByTopic(topic) {
-      const tabMgr = this;
-      const pane = (tabMgr.tabPanesAsVueElements().byTopic[topic] || false);
-      const idx = (+pane.tabIndex || 0);
-      tabMgr.switchToNthTab(idx + 1);
     },
 
   },
