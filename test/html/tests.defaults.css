@@ -13,11 +13,10 @@ body[anno-app-mode="cmp"] > main { width: 90%; }
 
 .resizer { resize: both; overflow: scroll; overflow-x: auto; }
 
-body > chapter aside {
-  float: right; margin: 2em;
-  border: 1px solid grey; padding: 1ex 1em;
-  background-color: white;
-}
+body > chapter > iframe:only-child,
+body > chapter aside { float: right; margin: 1em 2em;
+  border: 1px solid grey; background-color: white; }
+body > chapter aside { padding: 1ex 1em; overflow: hidden; }
 
 body > chapter aside > fieldset > legend { font: inherit; }
 body > chapter aside > fieldset > legend > h3:empty { display: none; }
@@ -25,6 +24,7 @@ body > chapter aside > fieldset > legend > h3 { display: inline; }
 body > chapter aside > fieldset { position: relative; }
 body > chapter aside > fieldset label { margin: 0; margin-left: 1ex; }
 body > chapter aside > fieldset p { margin: 0.5em 0; }
+
 
 fieldset textarea.code {
   border: 1px solid silver; overflow: scroll; resize: both;
