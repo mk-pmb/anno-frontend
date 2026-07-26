@@ -47,20 +47,6 @@ const EX = function checkAclAuth(appCfg, opt, overrideSubjTgt) {
 
 Object.assign(EX, {
 
-  knownPrivilegeNames: [
-    'create',
-    'reply',
-    'revise_any',
-    'revise_own',
-    'stamp_any_add__ubhd_doiAssign',
-    'stamp_any_add_as_deleted',
-    'stamp_any_add_dc_dateAccepted',
-    'stamp_own_add__ubhd_doiAssign',
-    'stamp_own_add_as_deleted',
-    'stamp_own_add_dc_dateAccepted',
-  ],
-
-
   apiError(descr) {
     const msg = 'AnnoApp ACL lookup error: ' + descr;
     console.error(msg);
@@ -124,6 +110,26 @@ Object.assign(EX, {
 
 
 });
+
+
+EX.knownStampNames = [
+  '_ubhd:doiAssign',
+  'as:deleted',
+  'dcterms:dateAccepted',
+];
+
+
+EX.knownPrivilegeNames = [
+  'create',
+  'reply',
+  ['any', 'own'].map(w => [
+    'revise_' + w,
+    EX.knownStampNames.map(s => 'stamp_' + w + '_add_' + s.replace(':', '_')),
+  ]),
+].flat(9).sort();
+
+
+
 
 
 
