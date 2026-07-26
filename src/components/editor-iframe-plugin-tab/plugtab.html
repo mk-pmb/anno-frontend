@@ -1,0 +1,15 @@
+<bootstrap-tab
+  :title="tabTitle"
+  :name="`${prefix}-anno-editor-tab-${helpTopic}`"
+  :topic="helpTopic"
+  :data-refname="refName"
+  pane-cls="editor-iframe-plugin-tab"
+  >
+  <div :class="'external-' + helpTopic + '-resizer tab-plugin-resizer'">
+    <div :class="'external-' + helpTopic + '-wrapper fill-area'">
+      <div ref="ctnr" class="fill-area ctnr">
+        <iframe ref="iframe" class="fill-area"></iframe>
+      </div>
+    </div>
+  </div>
+</bootstrap-tab>

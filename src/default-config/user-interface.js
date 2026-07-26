@@ -133,6 +133,14 @@ const uiCfg = {
     */
 
 
+  editorTabIframePlugins: {
+    SemTags: {
+      url: 'plugnm://authority-file-browser-26/dist/widget.html',
+      config: { bodyFilter: { purpose: 'classifying' } },
+    },
+  },
+
+
 
 
 
@@ -144,5 +152,8 @@ const uiCfg = {
 
 };
 
+
+
+uiCfg.editorTabIframePlugins.SemTags.forceTitle = 'SW';
 
 module.exports = uiCfg;

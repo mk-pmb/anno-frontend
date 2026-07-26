@@ -26,6 +26,7 @@ const components = {
     'anno-drafts-panel':          require('./anno-drafts-panel'),
     'anno-editor-licenses':       require('./anno-editor-licenses'),
     'anno-editor-modal':          require('./anno-editor-modal'),
+    'editor-iframe-plugin-tab':   require('./editor-iframe-plugin-tab'),
     'anno-editor-rows-addable':   require('./anno-editor-rows-addable'),
     'anno-editor':                require('./anno-editor'),
     'html-editor':         require('./html-editor'),

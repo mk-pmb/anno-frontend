@@ -129,6 +129,11 @@
     <semtags-editor />
   </bootstrap-tab>
 
+  <editor-iframe-plugin-tab
+    v-for="(pluginDef, pluginName) in $store.state.editorTabIframePlugins"
+    :key="pluginName" :pluginName="pluginName" :pluginDef="pluginDef"
+    ></editor-iframe-plugin-tab>
+
   <bootstrap-tab
     :name="`${prefix}-anno-editor-tab-links`"
     :title="l10n('relationlinks')"

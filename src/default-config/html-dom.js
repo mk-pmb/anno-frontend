@@ -27,6 +27,9 @@ const domCfg = {
   */
 
 
+  pluginsNodeModulesUrl: '/node_modules/', /*
+    ^-- used in some places for the `plugnm://` pseudo-protocol */
+
 
 };
 
