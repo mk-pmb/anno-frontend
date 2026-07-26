@@ -150,3 +150,14 @@ module.exports = {
         },
     },
 }
+
+
+
+
+
+/*
+window.name = 'ubhdAnnoApp:autoEmitQ:' + JSON.stringify([
+  ['reviseByUrl', 'test-esau-moses-adamsapfel~1'],
+  ['switchEditorTabByRefName', 'semtagsTab'],
+  ])
+*/

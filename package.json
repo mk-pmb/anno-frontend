@@ -43,6 +43,7 @@
     "delay": "^4.4.1",
     "flood-barrier": "^0.1.0",
     "getown": "^1.0.0",
+    "iframe-plugin-base-2606-pmb": "^0.0.2",
     "is-string": "^1.0.7",
     "li": "^1.3.0",
     "lighter-crc32": "^1.0.0",

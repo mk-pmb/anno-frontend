@@ -123,11 +123,16 @@
 
   <bootstrap-tab
     :name="`${prefix}-anno-editor-tab-semtags`"
-    :title="l10n('semtags')"
+    :title="l10n('semTagsEditorTab')"
     topic="tags"
     >
     <semtags-editor />
   </bootstrap-tab>
+
+  <editor-iframe-plugin-tab
+    v-for="(pluginDef, pluginName) in $store.state.editorTabIframePlugins"
+    :key="pluginName" :pluginName="pluginName" :pluginDef="pluginDef"
+    ></editor-iframe-plugin-tab>
 
   <bootstrap-tab
     :name="`${prefix}-anno-editor-tab-links`"

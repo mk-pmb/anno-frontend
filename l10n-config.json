@@ -194,7 +194,7 @@
             "add_semtag":          "Schlagwort hinzufügen",
             "delete_semtag":       "Löschen",
             "semtag":              "Schlagwort",
-            "semtags":             "Schlagworte",
+            "semTagsEditorTab":    "Schlagworte",
             "semtag_no_source": "Bitte wählen Sie einen Katalog-Eintrag aus der Vorschlagliste.",
             "semtag_no_source_for": "Unvollständige Schlagwort-Angabe, bitte wählen Sie einen Katalog-Eintrag für folgendes Schlagwort:",
 
@@ -462,7 +462,7 @@
             "add_semtag":          "Add Semantic Tag",
             "delete_semtag":       "Delete",
             "semtag":              "Semantic Tag",
-            "semtags":             "Semantic Tags",
+            "semTagsEditorTab":    "Semantic Tags",
             "semtag_no_source": "Please choose a catalog entry from the suggestion list.",
             "semtag_no_source_for": "Incomplete semantic tag data, please choose a catalog entry for this tag:",
 
