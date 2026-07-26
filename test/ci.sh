@@ -30,7 +30,7 @@ function ci_multipack () {
   local DEST_BFN="$1"; shift
   echo "pack $DEST_BFN:"
   zip -r9 "$DEST_BFN".zip -- "$@" || return $?
-  tar czvf "$DEST_BFN".tgz -- "$@" || return $?
+  tar czf "$DEST_BFN".tgz -- "$@" || return $?
   du --apparent-size -- "$DEST_BFN".*
   echo
 }
