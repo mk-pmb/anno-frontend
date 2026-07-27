@@ -19,7 +19,10 @@
 
   Object.assign(tu, {
 
+    alert(msg) { window.alert(msg); }, // eslint-disable-line no-alert
     alwaysFalse() { return false; },
+    appCfg() { return window.ubhdAnnoApp.getVueRootElem().$store.state; },
+    convertSetToSortedArray(x) { return Array.from(x.values()).sort(); },
 
     camelCase(s) {
       let c = String(s).toLowerCase();
@@ -33,10 +36,6 @@
         && Object.prototype.toString.call(x).slice(8, -1));
     },
 
-
-    convertSetToSortedArray(x) { return Array.from(x.values()).sort(); },
-
-
     convertMapToStringKeyedDict(x) {
       const d = {};
       const keys = Array.from(x.keys()).map(String);
@@ -45,17 +44,9 @@
       return d;
     },
 
-
     wrappedConvert(mthd, orig) {
       return { ['<<< ' + mthd + ' >>>']: tu[mthd](orig) };
     },
-
-
-    alert(msg) {
-      // eslint-disable-next-line no-alert
-      window.alert(msg);
-    },
-
 
     logPromise(descr, pr) {
       function onSuccess(val) {
@@ -286,7 +277,7 @@
     },
 
 
-  });
+  }); // Object.assign(tu, …
 
 
 
