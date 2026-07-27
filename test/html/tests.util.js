@@ -277,7 +277,28 @@
     },
 
 
+    lateReadyTimer(delaySec, func) {
+      jq().ready(function late() { setTimeout(func, delaySec * 1e3); });
+    },
+
+
+
   }); // Object.assign(tu, …
+
+
+  jq().ready(function quickLoginPanel() {
+    const aep = tu.appCfg().annoEndpoint;
+    jq('<iframe>').appendTo(jq('<chapter>').appendTo('body')
+      ).css({ width: '35em',  height: '6em' }
+      ).attr('src', aep + 'static/local/debug/quicklogin.html');
+  });
+
+
+
+
+
+
+
 
 
 
