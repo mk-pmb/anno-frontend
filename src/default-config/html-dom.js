@@ -31,6 +31,17 @@ const domCfg = {
     ^-- used in some places for the `plugnm://` pseudo-protocol */
 
 
+  injectCustomHtmlByAnnoIdUrl: false, /*
+    You may inject raw HTML above and below annotations. Danger zone!
+    To use this feature, set it to a dictionary object in format
+    { '*': { above: '', below: '' } }.
+    The '*' URL is the default for annos that don't have their own settings.
+    Vue will modify your object in-place to install observers, so later updates
+    to your object should take effect as soon as the anno is re-rendered (e.g.
+    when its hover state changes). */
+
+
+
 };
 
 

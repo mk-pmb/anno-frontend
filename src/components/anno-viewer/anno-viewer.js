@@ -7,6 +7,7 @@ const {
 
 const arrayOfTruths = require('array-of-truths');
 const floodBarrier = require('flood-barrier');
+const getOwn = require('getown');
 const pDelay = require('delay');
 
 const applyDebugCheats = require('../../cheats.js');
@@ -665,6 +666,15 @@ module.exports = {
         || (fileBaseName(annoData['iana:latest-version']) === annoBn)
         || (fileBaseName(annoData['dcterms:isVersionOf']) === annoBn)
         );
+    },
+
+
+    getInjectedCustomHtml(where) {
+      const viewer = this;
+      const allInjections = viewer.$store.state.injectCustomHtmlByAnnoIdUrl;
+      const { annoIdUrl } = viewer;
+      const injectionsForThisAnno = orf(getOwn(allInjections, annoIdUrl, '*'));
+      return ores(injectionsForThisAnno[where]);
     },
 
 

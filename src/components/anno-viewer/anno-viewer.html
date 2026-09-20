@@ -327,6 +327,9 @@
           {{ title }}
         </h4>
 
+        <div class="custom-html-above-anno"
+          v-html="getInjectedCustomHtml('above')"></div>
+
         <div v-if="firstHtmlBody"
           class="first-html-body"
           v-html="firstHtmlBody.value"></div>
@@ -382,6 +385,9 @@
             </span>
           </a>
         </div>
+
+        <div class="custom-html-below-anno"
+          v-html="getInjectedCustomHtml('below')"></div>
 
       </div><!-- /class="media-body" -->
     </div><!-- /class="media" -->
