@@ -59,6 +59,7 @@ const { cdbg, cerr, cwarn } = require('../../clog.js')('Anno-Viewer');
 
 function firstEntryIfArray(x) { return (x && Array.isArray(x) && x[0]); }
 function jsonDeepCopy(x) { return JSON.parse(JSON.stringify(x)); }
+function ores(x) { return String(x || ''); }
 function orf(x) { return x || false; }
 
 
@@ -128,7 +129,7 @@ module.exports = {
     const initData = {
       auxMeta: decideAuxMeta(anno, el),
       collapsed,
-      currentVersionDoiUri: String(anno['dc:identifier'] || ''),
+      currentVersionDoiUri: ores(anno['dc:identifier']),
       detailBarClipCopyBtnCls: 'float-right',
       doiLinkPreviewWarning: '',
       hasRealPublicDoi,
@@ -206,17 +207,17 @@ module.exports = {
 
   computed: {
     annoData() { return orf(this.annotation); },
-    annoIdUrl() { return this.annoData.id || ''; },
+    annoIdUrl() { return ores(this.annoData.id); },
 
     firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
 
     title() {
       const anno = this.annoData;
-      return String(anno['dc:title'] || anno.title || '');
+      return ores(anno['dc:title'] || anno.title);
     },
 
-    targetFragment() { return (this.dataApi('findTargetFragment') || ''); },
+    targetFragment() { return ores(this.dataApi('findTargetFragment')); },
 
     uiModeCmp() { return this.$store.state.initAppMode === 'cmp'; },
     uiModeList() { return this.$store.state.initAppMode === 'list'; },
@@ -635,7 +636,7 @@ module.exports = {
           introText,
           linkText: '[' + el.l10n('additional_subjects_show') + ']',
           linkUrl: assembleVersionRelatedUrl(state, 'versionsButton', anno),
-          linkFrame: state.additionalTargetsHintLinkFrame || '',
+          linkFrame: ores(state.additionalTargetsHintLinkFrame),
         });
       }());
 
