@@ -33,8 +33,6 @@ const components = {
     'relationlink-editor': require('./relationlink-editor'),
     'semtags-editor':      require('./semtags-editor'),
 
-    'xrx-vue':    window.XrxVue.XrxVue, // require('@kba/xrx-vue').XrxVue,
-
     // debugging
     'anno-editor-debug-panel':    require('./anno-editor-debug-panel'),
     'json-export-import-field':   require('./json-export-import-field'),
@@ -43,6 +41,11 @@ const components = {
     'sidebar-app':       require('./sidebar-app'),
 
 };
+
+if (window.XrxVue) { // = re¤quire('@kba/xrx-vue');
+  components['xrx-vue'] = window.XrxVue.XrxVue;
+}
+
 
 function registerAll(Vue) {
   Object.entries(components).forEach(kv => Vue.component(...kv));

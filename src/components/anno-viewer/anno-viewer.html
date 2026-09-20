@@ -383,22 +383,6 @@
           </a>
         </div>
 
-        <div class="annoeditor-iiif-link"
-          v-if="$store.state.iiifUrlTemplate && svgTarget"
-          ><strong>{{ l10n('iiif_link') }}:</strong>
-          <a class="render-iiif-link"
-            role="button"
-            v-show="!cachedIiifLink"
-            @click="renderIiifLink"
-            >{{ l10n('calculate_now') }}</a>
-          <span class="cached-iiif-link" v-show="cachedIiifLink">
-            <a :href="cachedIiifLink"
-              class="url-caption-link"
-              target="_blank" rel="noopener noreferrer"
-              >{{ cachedIiifLink }}</a>
-          </span>
-        </div>
-
       </div><!-- /class="media-body" -->
     </div><!-- /class="media" -->
 

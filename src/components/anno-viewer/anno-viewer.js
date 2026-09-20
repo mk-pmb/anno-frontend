@@ -24,7 +24,6 @@ const formatters = require('./formatters.js');
 const identifyImportedFromNS = require('./identifyImportedFromNamespace.js');
 const simpleDateStamp = require('./simpleDateStamp.js');
 const toggleDetailBar = require('./toggleDetailBar.js');
-const xrxUtilsUtils = require('./xrxUtilsUtils.js');
 
 
 /**
@@ -128,7 +127,6 @@ module.exports = {
 
     const initData = {
       auxMeta: decideAuxMeta(anno, el),
-      cachedIiifLink: '',
       collapsed,
       currentVersionDoiUri: String(anno['dc:identifier'] || ''),
       detailBarClipCopyBtnCls: 'float-right',
@@ -523,11 +521,6 @@ module.exports = {
           inReplyTo.forEach(a => eventBus.$emit('expandAnno', a));
         }
       }
-    },
-
-    renderIiifLink() {
-      const viewer = this;
-      viewer.cachedIiifLink = xrxUtilsUtils.calcIiifLink(viewer);
     },
 
 
