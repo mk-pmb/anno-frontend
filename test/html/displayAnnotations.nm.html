@@ -21,9 +21,6 @@
   * You may be able to drop some dependencies by e.g. simplifying the zone
     editor or allowing only plain unformatted text instead of rich text for
     the description.
-  * We have plans to further decouple the zone editor, especially the XRX
-    legacy fallback, so that both become optional and will communicate only
-    through a standardized plugin interface.
 
   -->
   <meta http-equiv="Content-Script-Type" content="text/javascript">
@@ -63,10 +60,7 @@
 <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../node_modules/quill/dist/quill.hotfix-issue-1768.min.js"></script>
 <script src="../../node_modules/axios/dist/axios.js"></script>
-<script src="../../node_modules/semtonotes-client/xrx.api.drawing.min.js"></script>
 <script src="../../node_modules/@ubhd/authorities-client/dist/authorities-client.js"></script>
-<script src="../../node_modules/semtonotes-utils/dist/xrx-utils.js"></script>
-<script src="../../node_modules/@kba/xrx-vue/dist/xrx-vue.js"></script>
 <script src="../../dist/anno-frontend.dev.js"></script>
 
 <script src="cfg.anno-server.defaults.js"></script>
