@@ -12,6 +12,7 @@ on:
       - 'master'
       - 'stable'
       - 'staging'
+  workflow_dispatch:
 
 
 jobs:
