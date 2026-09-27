@@ -1,0 +1,19 @@
+
+### BEGIN ghpages-autodist-bundles ###
+/anno-frontend.*.js*
+### ENDOF ghpages-autodist-bundles ###
+
+
+
+# Auto-generated files:
+/tmp.*
+
+
+
+# Host-specific files
+/*.@*
+/index.js.map
+
+
+
+# Unsorted stuff (this section should be empty):
