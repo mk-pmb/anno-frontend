@@ -47,8 +47,10 @@ const EX = async function loadAnnoData(origAnno) {
       delete anno['dc:' + key];
       anno['dcterms:' + key] = val;
     });
-    console.debug('Anno-Frontend: loadAnnoData: updated [dc→dcterms]:',
-      had, '@', (anno.id || { anno }));
+    if (had.length) {
+      console.debug('Anno-Frontend: loadAnnoData: updated [dc→dcterms]:',
+        (had.length && had), '@', (anno.id || { anno }));
+    }
   }());
 
   const draftReply = unpackSingleProp(0, anno['as:inReplyTo']);
