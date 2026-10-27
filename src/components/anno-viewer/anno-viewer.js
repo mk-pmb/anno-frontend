@@ -400,10 +400,10 @@ module.exports = {
   },
 
   methods: {
+    applyDebugCheats,
     assembleVersionRelatedUrl: assembleVersionRelatedUrl.asVueMethod,
     formatters,
     toggleDetailBar,
-    applyDebugCheats,
 
     revise() { return eventBus.$emit('revise', this.annoData) },
     reply()  { return eventBus.$emit('reply',  this.annoData) },
