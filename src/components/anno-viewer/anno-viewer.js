@@ -21,6 +21,7 @@ const decideAuxMeta = require('../anno-cmp-mode/decideAuxiliaryMetaData.js');
 
 const assembleVersionRelatedUrl = require('./assembleVersionRelatedUrl.js');
 const bindDataApi = require('./dataApi.js');
+const firstHtmlBodyEvents = require('./firstHtmlBodyEvents.js');
 const formatters = require('./formatters.js');
 const identifyImportedFromNS = require('./identifyImportedFromNamespace.js');
 const simpleDateStamp = require('./simpleDateStamp.js');
@@ -204,13 +205,14 @@ module.exports = {
     eventBus.$emit('simpleDateStampSucceeded',
       ev => setTimeout(() => stampedReloadUnlessHandled(ev), 100));
     viewer.toplevelCreated = viewer.annotation.modified;
+    firstHtmlBodyEvents.install(viewer);
   },
 
   computed: {
     annoData() { return orf(this.annotation); },
     annoIdUrl() { return ores(this.annoData.id); },
 
-    firstHtmlBody()      {return textualHtmlBody.first(this.annotation)},
+    firstHtmlBody()      {return orf(textualHtmlBody.first(this.annotation))},
     svgTarget()          {return svgSelectorResource.first(this.annotation)},
 
     title() {

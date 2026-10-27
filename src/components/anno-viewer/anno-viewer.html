@@ -330,7 +330,7 @@
         <div class="custom-html-above-anno"
           v-html="getInjectedCustomHtml('above')"></div>
 
-        <div v-if="firstHtmlBody"
+        <div v-show="firstHtmlBody" ref="firstHtmlBodyTag"
           class="first-html-body"
           v-html="firstHtmlBody.value"></div>
 
