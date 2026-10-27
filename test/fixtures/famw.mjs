@@ -4,7 +4,7 @@ export default [
   "body": [
     { "format": "text/html",
       "type": "TextualBody",
-      "value": "<p>Einliefernde Institution war das Finanzamt Moabit-West, Berlin. Das Versteigerungsgut, das einen Erlös von…</p>"
+      "value": "<p>Einliefernde Institution war das Finanzamt Moabit-West, Berlin. […] Heilbronner.<a href=\"#_ftn1\"><sup>[1]</sup></a> Vgl. hierzu […]</p>\n<p><a href=\"#_ftnref1\"><sup><em>[1]</em></sup></a><em> Abrechnung Hans […]</em></p>"
     },
     { "dc:title": "Lange, Hans W., Auktionshaus, Berlin",
       "purpose": "classifying",
