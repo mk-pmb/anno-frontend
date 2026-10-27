@@ -351,9 +351,10 @@
 
               <span class="relation-predicate"
                 ><a class="relation-predicate"
-                  :data-="(rlb.predicate || 'about:blank')"
-                  :href="(rlb.predicate || 'about:blank')"
-                  target="_blank" rel="noopener noreferrer"
+                  :data-predicate="rlb.predicate"
+                  :href="ifValidExternalUrl(rlb.predicate) || '#'"
+                  :target="ifValidExternalUrl(rlb.predicate) && '_blank'"
+                  rel="noopener noreferrer"
                   >{{ determinePredicateCaption(rlb.predicate)
                   }}</a></span>
               <span class="
@@ -362,8 +363,10 @@
                 danger
                 " v-if="!rlb.url">&#x26A0; {{ l10n('missing_required_field')
                   }}{{ l10n('relationlink_url') }} &#x26A0;</span>
-              <a :href="rlb.url || 'about:blank'" :title="rlb.caption"
-                target="_blank" rel="noopener noreferrer">
+              <a :href="ifValidExternalUrl(rlb.url) || '#'"
+                :target="ifValidExternalUrl(rlb.url) && '_blank'"
+                :title="rlb.caption"
+                rel="noopener noreferrer">
                 <!-- i class="fa fa-tag"></i -->
                 {{ rlb.caption || rlb.url
                   || ('\u26A0 ' + l10n('missing_required_field')
@@ -376,9 +379,9 @@
 
         <div class="annoeditor-tags semantic-tags">
           <a v-for="semtagBody in preparsePurposeTagBodies('classifying')"
-            :href="semtagBody.url || 'about:blank'"
-            :title="semtagBody.caption"
-            target="_blank" rel="noopener noreferrer">
+            :href="ifValidExternalUrl(semtagBody.url) || '#'"
+            :target="ifValidExternalUrl(semtagBody.url) && '_blank'"
+            :title="semtagBody.caption" rel="noopener noreferrer">
             <span class="annoeditor-tag label label-primary">
               <i class="fa fa-tag"></i>
               {{ semtagBody.caption || semtagBody.url }}

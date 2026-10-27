@@ -680,6 +680,15 @@ module.exports = {
     },
 
 
+    ifValidExternalUrl(url) {
+      const s = ores(url);
+      if (!s) { return ''; }
+      const ok = (s.startsWith('http://') || s.startsWith('https://'));
+      if (!ok) { return ''; }
+      return s;
+    },
+
+
 
 
 
