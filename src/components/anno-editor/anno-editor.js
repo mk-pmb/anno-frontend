@@ -751,6 +751,16 @@ module.exports = {
     },
 
 
+    quill2base64upd: function qbu() {
+      const editor = this;
+      const txa = editor.$refs.quill2base64;
+      let b = btoa(encodeURIComponent(editor.dirtyHtmlBodyValue));
+      b = ('==start==' + b).replace(/(\S{72})(?!$)/g, '$1\n') + '\n==end==\n';
+      txa.value = b;
+      txa.select();
+    },
+
+
 
 
 

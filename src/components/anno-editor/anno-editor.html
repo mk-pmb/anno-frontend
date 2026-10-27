@@ -66,6 +66,17 @@
           </div>
           <anno-editor-licenses iconsColumnCssClass="col-md-8" />
         </div>
+        <section class="quill2base64"
+          v-show="$store.state.editing.title === '261027quill2base64'">
+          <textarea ref="quill2base64" cols="40" rows="10" wrap="off" style="
+            width: 100%; overflow: scroll; resize: vertical; min-height: 5em;
+            background-color: lightgreen;
+            "
+            @focus="quill2base64upd"
+            @keyup="quill2base64upd"
+            @mouseup="quill2base64upd"
+            ></textarea>
+        </section>
       </template><!-- /slot="extra-bodyparts-bottom" -->
     </html-editor>
   </bootstrap-tab>
