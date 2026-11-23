@@ -1,11 +1,9 @@
-const arrayOfTruths = require('array-of-truths');
 const isStr = require('is-string');
 const mergeOptions = require('merge-options');
 const objFromKeysList = require('obj-from-keys-list').default;
 const unpackSingleProp = require('unwrap-single-prop').default
 
 const eventBus = require('../../event-bus.js');
-const guessPrimaryTargetUri = require('../../guessPrimaryTargetUri.js');
 const persistentConfig = require('../../browserStorage.js').appConfig;
 
 const identifyImportedFromNS = require(
@@ -18,6 +16,7 @@ const getCleanAnno = require('./getCleanAnno.js');
 const libPreviewWarnings = require('./previewWarnings.js');
 const loadAnnoData = require('./loadAnnoData.js');
 const saveCreate = require('./saveCreate.js');
+const targetListFmt = require('./targetListFmt.js');
 const validateEditorFields = require('./validateEditorFields.js');
 
 const { jQuery } = window;
@@ -499,60 +498,7 @@ module.exports = {
 
 
     compileTargetsListForTemplating() {
-      const editor = this;
-      const { state } = editor.$store;
-      const extra = orf(state.editing.extraFields);
-      const replyTo = arrayOfTruths(extra['as:inReplyTo']);
-
-      function getTypeSafe(tgt, index, url) {
-        const tt = tgt[':ANNO_FE:targetType'];
-        if (tt === 'primary') { return tt; }
-        if ((tt === 'anno') && replyTo.includes(url)) { return 'replyingTo'; }
-        if ((url === state.targetSource) || (url === state.targetImage)) {
-          const hints = { targetIdx: index, tt, expected: 'primary' };
-          hints.id = (tgt.id || tgt);
-          cwarn('compileTargetsListForTemplating: fixing:', hints);
-          return 'primary';
-        }
-        return (tt || 'unknown');
-      }
-
-      let prevRec = false;
-      let hadPrimary = false;
-
-      function fmt(tgt, index) {
-        if (isStr(tgt)) { return fmt({ id: tgt }, index); }
-        const url = guessPrimaryTargetUri({ target: tgt }, state);
-        const unconfirmed = tgt[':ANNO_FE:unconfirmed'];
-        let tgtType = getTypeSafe(tgt, index, url);
-        if (tgtType === 'primary') {
-          if (hadPrimary) { tgtType = 'additional'; }
-          hadPrimary = true;
-        }
-        const typeCls = [''].concat(arrayOfTruths([
-          tgtType,
-          (unconfirmed && 'unconfirmed'),
-        ])).map(c => ('anno-target' + (c && '-') + c));
-        const rec = {
-          index,
-          title: (tgt['dc:title'] || url),
-          type: tgtType,
-          typeCls,
-          unconfirmed,
-          url,
-          sameTypeAsPrev: (prevRec.type === tgtType),
-          sameTypeAsNext: false, // will be updated if there is a next entry.
-        };
-        if (prevRec) { prevRec.sameTypeAsNext = rec.sameTypeAsPrev; }
-        prevRec = rec;
-        return rec;
-      }
-
-      const input = jsonDeepCopy(arrayOfTruths(state.editing.target));
-      // cdbg('compileTargetsListForTemplating <<', { replyTo, extra, input });
-      const result = input.map(fmt);
-      // cdbg('compileTargetsListForTemplating >>', jsonDeepCopy(result));
-      return result;
+      return targetListFmt.compileForTemplating(this.$store.state);
     },
 
 
